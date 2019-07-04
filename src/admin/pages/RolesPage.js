@@ -157,7 +157,7 @@ componentDidUpdate(){
   removeItem(element){
    let {rows} = this.state;
    const index = rows.indexOf(element);
-   rows.splice(-index,1);
+   rows.splice(index,1);
    console.log('abc');
    this.setState({
      rows:rows
