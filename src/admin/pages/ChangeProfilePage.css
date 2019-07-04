@@ -1,0 +1,9 @@
+.change-profile-card {
+  width: 50%;
+  margin-top: 20px;
+  align-self: center;
+}
+.change-profile-buttons {
+  margin-left : 70%;
+  display: flex;
+}

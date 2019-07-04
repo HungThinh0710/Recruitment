@@ -1,0 +1,8 @@
+.btn-reset {
+  margin-right: 20%;
+  background: black !important;
+    border-color: black !important;
+}
+.btn-reset:focus {
+  box-shadow: 0 0 0 0.2rem black !important;
+}
