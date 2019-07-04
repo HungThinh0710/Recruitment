@@ -57,7 +57,7 @@ jobs:
       - run:
             #Update for config server-dev-02072019
             name: SCP code to server
-            command: scp -r frontend.tar.gz hungthinh168.63.251.210:~/
+            command: scp -r frontend.tar.gz hungthinh@168.63.251.210:~/
       - run:
             #Update for config server-dev-02072019
             name: deploy to server
