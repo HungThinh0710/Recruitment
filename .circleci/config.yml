@@ -71,3 +71,13 @@ jobs:
                 rm -rf frontend.tar.gz
                 exit
                 exit
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: 
+              - master
+              - dev
