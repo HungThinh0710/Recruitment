@@ -204,7 +204,7 @@ class Applyform extends Component{
               </div>
             </Form.Group>
             <Form.Group>
-              <label class="col-form-label">Technical skill</label>
+            <label class="col-form-label">Technical skill</label>
               <select class="form-control"
                 className={formErrors.technical.length > 0 ? "error" : null}
                 placeholder="Write your technical skill here"
@@ -223,6 +223,7 @@ class Applyform extends Component{
                 <span className="errorMessage">{formErrors.technical}</span>
               )}
             </Form.Group>
+            
             
           </Form>
           </ModalBody>
