@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Button,Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
+import ModalRemoveItem from '../components/ModalRemoveItem';
+import ModalEditItem from '../components/ModalEditItem';
 const $ = require('jquery');
 
 const actionStyle = {
@@ -88,12 +90,12 @@ export default class RolesPage extends Component {
         },
         {
           role: 'User',
-          permission: 'Add Articles',
+          permission: 'Edit Articles',
          
         },
         {
           role: 'User',
-          permission: 'Add Articles',
+          permission: 'Delete Articles',
           
         },
         {
@@ -111,79 +113,26 @@ export default class RolesPage extends Component {
    
     };
    this.addRole = this.addRole.bind(this);
-  //  this.removeItem = this.removeItem.bind(this);
-  //  this.removeItem = () => {
-  //    console.log('av');
-  //  }
 }
    
-  componentDidMount(){
+componentDidMount(){
     
-    const {rows} = this.state;
-    
-    rows.forEach(function(element) {
-    element.action = <div style={actionStyle}>
-                     <Button color="primary" >Edit</Button>{' '}
-                     <Button color="danger" className='table-remove' onClick={removeItem} >Delete</Button>{' '}
-                     </div>
-    function removeItem(){
-      const index = rows.indexOf(element);
-      rows.splice(-index,1);
-      console.log(rows);
-      
-      // this.setState({
-      //   rows:rows
-      // })
-    }
-    });
-   
-  }
+  const {rows} = this.state;
+  rows.map(e => e.action = <div style={actionStyle}>
+                            <ModalEditItem color='primary' item={e}  buttonLabel='Edit' nameButtonAccept='Edit'/>
+                            <ModalRemoveItem item={e} buttonLabel='Delete' function={()=>this.removeItem(e)}/>
+                           </div>)
+ 
+}
 
+componentDidUpdate(){
+  const {rows} = this.state;
+  rows.map(e => e.action = <div style={actionStyle}>
+                            <ModalEditItem color='primary' item={e} buttonLabel='Edit' nameButtonAccept='Edit' />
+                            <ModalRemoveItem item={e} buttonLabel='Delete' function={()=>this.removeItem(e)}/>
+                           </div>)
+}
 
-
-  ////////
-   removeItem(){
-    //  const {rows} = this.state;
-    // const index = rows.indexOf(element);
-    // rows.splice(-index,1);
-    console.log('abc');
-    // this.setState({
-    //   rows:rows
-    // })
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///////////
-  componentDidUpdate(){
-    const {rows} = this.state;
-    rows.forEach(function(element) {
-    element.action = <div style={actionStyle}>
-                     <Button color="primary" >Edit</Button>{' '}
-                     <Button color="danger" className='table-remove' onClick={removeItem} >Delete</Button>{' '}
-                     </div>
-                     function removeItem(){
-                      const index = rows.indexOf(element);
-                      rows.splice(-index,1);
-                      console.log(rows);
-                    }
-    });
-  }
   addRole(){
     const {rows}=this.state;
     const newRole ={
@@ -196,13 +145,32 @@ export default class RolesPage extends Component {
     });
     
   }
+  editItem(element) {
+    let {rows} = this.state;
+    const index = rows.indexOf(element);
+    rows[index].role='abc';
+    rows[index].permission='bcd';
+    this.setState({
+      rows:rows
+    })
+  }
+  removeItem(element){
+   let {rows} = this.state;
+   const index = rows.indexOf(element);
+   rows.splice(-index,1);
+   console.log('abc');
+   this.setState({
+     rows:rows
+   })
+  }
+
   render() {
     return (
       
         <Card className="mb-3" style={styleCard}>
         <CardHeader style={styleFont}>Roles Management</CardHeader>
         <CardBody>
-        <Button id="add" className="table-add" color="success" onClick={this.addRole}  >Add New Row</Button>{' '}
+        <ModalEditItem color='success' buttonLabel='Add New Role' nameButtonAccept='Add' function={this.addRole} />
         <br/>
         <br/>  
         <MDBDataTable id="table"
