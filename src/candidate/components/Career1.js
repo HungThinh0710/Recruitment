@@ -7,7 +7,7 @@ import './Career1.css';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       visible: true,
       modalisOpen: false
     };
@@ -36,10 +36,10 @@ export default class Careers extends Component {
           <div className="site-mobile-menu-body" />
         </div> {/* .site-mobile-menu */}
         {/* NAVBAR */}
-        
+
         <header className="site-navbar mt-3">
           <div className="container-fluid"></div>
-          
+
           <RouterURL />
         </header>
         <div>
@@ -47,7 +47,7 @@ export default class Careers extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-md-7">
-                  <h1 className="text-white font-weight-bold">Product Designer</h1>
+                  <h1 className="text-white font-weight-bold">Game Audio Headset Engineer</h1>
                 </div>
               </div>
             </div>
@@ -58,13 +58,13 @@ export default class Careers extends Component {
                 <div className="col-lg-8 mb-4 mb-lg-0">
                   <div className="d-flex align-items-center">
                     <div className="border p-2 d-inline-block mr-3 rounded">
-                      <img src="/candidate/images/featured-listing-1.jpg" alt="Free Website Template By Free-Template.co" />
+                      <img src="/candidate/images/featured-listing-5.jpg" alt="Free Website Template By Free-Template.co" />
                     </div>
                     <div>
-                      <h2>Product Designer</h2>
+                      <h2>Game Audio Headset Engineer</h2>
                       <div>
-                        <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />Puma</span>
-                        <span className="m-2"><span className="icon-room mr-2" />New York City</span>
+                        <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />Senior</span>
+                        <span className="m-2"><span className="icon-room mr-2" />453-455 Hoang Dieu</span>
                         <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text-primary">Full
                     Time</span></span>
                       </div>
@@ -78,20 +78,20 @@ export default class Careers extends Component {
                 Job</a>
                     </div>
                     <div className="col-6">
-                    
-                    <Button block={true} color="info" onClick={this.toggleModal.bind(this)} >Apply Now</Button>
-                      <Button color="danger" className="close" 
+
+                      <Button block={true} color="info" onClick={this.toggleModal.bind(this)} >Apply Now</Button>
+                      <Button color="danger" className="close"
                         onClick={this.toggleModal.bind(this)}>{this.props.buttonLabel}
-                        </Button>
-                      <Modal isOpen={this.state.modalisOpen} 
-                      toggle={this.toggleModal.bind(this)} className={this.props.className} external={externalCloseBtn}
+                      </Button>
+                      <Modal isOpen={this.state.modalisOpen}
+                        toggle={this.toggleModal.bind(this)} className={this.props.className} external={externalCloseBtn}
                       >
                         <h3 className="modal-title" id="myModallabel">Application form</h3>
                         <Applyform />
                         <ModalFooter>
-                        <Button type="submit" color="info" className="primary" onClick={this.toggleModal.bind(this)}>Apply for job</Button>{' '}
-                        <Button type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
-                        <small>Ready have a new job?</small>
+                          <Button type="submit" color="info" className="primary" onClick={this.toggleModal.bind(this)}>Apply for job</Button>{' '}
+                          <Button type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
+                          <small>Ready have a new job?</small>
                         </ModalFooter>
                       </Modal>
                     </div>
@@ -104,39 +104,46 @@ export default class Careers extends Component {
                     <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded" /></figure>
                     <h3 className="h5 d-flex align-items-center mb-4 text-primary"><span className="icon-align-left mr-3" />Job
               Description</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis illum fuga eveniet. Deleniti asperiores,
-                      commodi quae ipsum quas est itaque, ipsa, dolore beatae voluptates nemo blanditiis iste eius officia minus.
+                    <p>Enclave, a company of and by software engineering professionals. We have been providing outstanding quality for software engineering and software testing services since 2007.
+                      Basing on demanding features collecting from many big names in IT and ITO industries,
+                      we – by ourselves – have created innovative working environment and effective solutions that are now available to all-sized companies.
             </p>
-                    <p>Velit unde aliquam et voluptas reiciendis non sapiente labore, deleniti asperiores blanditiis nihil quia
-                      officiis dolor vero iste dolore vel molestiae saepe. Id nisi, consequuntur sunt impedit quidem, vitae
-              mollitia!</p>
+                    <p>We are looking for an experience engineer for the gaming audio headset project.</p>
                   </div>
                   <div className="mb-5">
                     <h3 className="h5 d-flex align-items-center mb-4 text-primary"><span className="icon-rocket mr-3" />Responsibilities</h3>
                     <ul className="list-unstyled m-0 p-0">
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Necessitatibus quibusdam facilis</span></li>
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Velit
-                          unde aliquam et voluptas reiciendis n Velit unde aliquam et voluptas reiciendis non sapiente
-                  labore</span></li>
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Commodi quae ipsum quas est itaque</span></li>
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit</span></li>
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Deleniti asperiores blanditiis nihil quia
-                  officiis dolor</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Work with the audio team to implement new features in new products.</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Work closely with the audio design team to improve our gaming headset audio.
+                  </span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Work with other engineers to interface audio systems to other game systems.</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Design, document, implement audio gaming headsets to achieve the team’s vision.</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Expand our audio technology to enable our designers to create world class game audio.
+</span></li>
                     </ul>
                   </div>
                   <div className="mb-5">
-                    <h3 className="h5 d-flex align-items-center mb-4 text-primary"><span className="icon-book mr-3" />Education +
-              Experience</h3>
+                    <h3 className="h5 d-flex align-items-center mb-4 text-primary"><span className="icon-book mr-3" />Qualification</h3>
+                    <h3 className="h6 d-flex align-items-center mb-4 text-primary"><span className="fas fa-bullseye" /> &nbsp; Minimum Qualification</h3>
                     <ul className="list-unstyled m-0 p-0">
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Necessitatibus quibusdam facilis</span></li>
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Velit
-                  unde aliquam et voluptas reiciendis non sapiente labore</span></li>
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Commodi quae ipsum quas est itaque</span></li>
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Lorem
-                  ipsum dolor sit amet, consectetur adipisicing elit</span></li>
-                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Deleniti asperiores blanditiis nihil quia
-                  officiis dolor</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>3+ years as an Audio/Sound software Engineer.</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Experience with Windows Core Audio APIs.</span></li>
+                      <li className="d-flex align-items-start mb-4"><span className="icon-check_circle mr-2 text-muted" /><span>Windows audio driver experience.</span></li>
+                    </ul>
+
+                    <h3 className="h6 d-flex align-items-center mb-4 text-primary"><span className="fab fa-buffer" />&nbsp; Preferred Qualification</h3>
+                    <ul className="list-unstyled m-0 p-0">
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Fluent in C++, strong C# skills.</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>BS/BEng in Math, CS or equivalent.</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Experience with Universal Windows Drivers for Audio.</span></li>
+                      <li className="d-flex align-items-start mb-4"><span className="icon-check_circle mr-2 text-muted" /><span>Technical knowledge of the principles of sound and audio manipulation.</span></li>
+                    </ul>
+                    <h3 className="h6 d-flex align-items-center mb-4 text-primary"><span className="fab fa-gripfire" />&nbsp; Bonus skills</h3>
+                    <ul className="list-unstyled m-0 p-0">
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Windows Spatial Audio Session API (SASAPI) Experience.</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>Python.</span></li>
+                      <li className="d-flex align-items-start mb-2"><span className="icon-check_circle mr-2 text-muted" /><span>knowledge and/or experience of audio DSP technology.</span></li>
+
                     </ul>
                   </div>
                   <div className="mb-5">
@@ -158,19 +165,19 @@ export default class Careers extends Component {
                   <div className="bg-light p-3 border rounded mb-4">
                     <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">Job Summary</h3>
                     <ul className="list-unstyled pl-3 mb-0">
-                      <li className="mb-2"><strong className="text-black">Published on:</strong> April 14, 2019</li>
+                      <li className="mb-2"><strong className="text-black">Published on:</strong> July 14, 2019</li>
                       <li className="mb-2"><strong className="text-black">Vacancy:</strong> 20</li>
                       <li className="mb-2"><strong className="text-black">Employment Status:</strong> Full-time</li>
                       <li className="mb-2"><strong className="text-black">Experience:</strong> 2 to 3 year(s)</li>
-                      <li className="mb-2"><strong className="text-black">Job Location:</strong> New ork City</li>
-                      <li className="mb-2"><strong className="text-black">Salary:</strong> $60k - $100k</li>
+                      <li className="mb-2"><strong className="text-black">Job Location:</strong> 453-455 Hoang Dieu</li>
+                      <li className="mb-2"><strong className="text-black">Salary:</strong> 800$ - 1000$</li>
                       <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li>
-                      <li className="mb-2"><strong className="text-black">Application Deadline:</strong> April 28, 2019</li>
+                      <li className="mb-2"><strong className="text-black">Application Deadline:</strong> July 28, 2019</li>
                     </ul>
                   </div>
                   <div className="bg-light p-3 border rounded">
-                    <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">Share</h3>
-                    <div className="px-3">
+                    <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center">Share &nbsp; &nbsp; &nbsp; </h3>
+                    <div className="px-3 text-center">
                       <a href="#" className="pt-3 pb-3 pr-3 pl-0"><span className="icon-facebook" /></a>
                       <a href="#" className="pt-3 pb-3 pr-3 pl-0"><span className="icon-twitter" /></a>
                       <a href="#" className="pt-3 pb-3 pr-3 pl-0"><span className="icon-linkedin" /></a>
@@ -183,11 +190,11 @@ export default class Careers extends Component {
           </section>
           <footer className="site-footer">
             <div className="container">
-              <div className="row mb-5">
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
+              <div className="row mb-5 justify-content-center">
+                <div className="col-6 col-md-3 mb-4 mb-md-0 ">
                   <h3>Search Trending</h3>
                   <ul className="list-unstyled">
-                    <li><a href="#">Web Design</a></li>
+                    <li><a href="#" >Web Design</a></li>
                     <li><a href="#">Graphic Design</a></li>
                     <li><a href="#">Web Developers</a></li>
                     <li><a href="#">Python</a></li>
@@ -222,23 +229,10 @@ export default class Careers extends Component {
                   </div>
                 </div>
               </div>
-              <div className="row text-center">
-                <div className="col-12">
-                  <p>
-                    {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                    Copyright ©
-                    All rights reserved | This template is made
-            with <i className="icon-heart-o" aria-hidden="true" /> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                    {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                  </p>
-                </div>
-              </div>
             </div>
           </footer>
         </div>
       </div>
-      
-
     )
   }
 }

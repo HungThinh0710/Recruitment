@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RouterURL from './RouterURL';
+import './homepage.css';
 export default class Homepage extends Component {
     render() {
         return(
@@ -342,16 +343,6 @@ export default class Homepage extends Component {
                   <a href="#"><span className="icon-instagram" /></a>
                   <a href="#"><span className="icon-linkedin" /></a>
                 </div>
-              </div>
-            </div>
-            <div className="row text-center">
-              <div className="col-12">
-                <p>
-                  {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                  Copyright ©
-                  All rights reserved | This template is made with <i className="icon-heart-o" aria-hidden="true" /> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                  {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                </p>
               </div>
             </div>
           </div>
