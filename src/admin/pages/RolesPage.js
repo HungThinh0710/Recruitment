@@ -4,12 +4,10 @@ import { Card, CardBody, CardHeader, Button,Modal, ModalHeader, ModalBody, Modal
 import { MDBDataTable } from 'mdbreact';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalEditItem from '../components/ModalEditItem';
-const $ = require('jquery');
 
-const actionStyle = {
-  display : 'flex',
-  justifyContent: 'center'
-};
+import './RolesPage.css';
+
+
 const styleFont = {
   fontSize: '200%',
 };
@@ -28,18 +26,18 @@ export default class RolesPage extends Component {
           label: 'Role',
           field: 'role',
           sort: 'asc',
-          width: 400
+          width: '30%'
         },
         {
           label: 'Permission',
           field: 'permission',
           sort: 'asc',
-          width: 400
+          width: '30%'
         },
         {
           label: 'Action',
           field: 'action',
-          width: 50
+          width: '30%'
         }
       ],
       rows: [
@@ -118,18 +116,18 @@ export default class RolesPage extends Component {
 componentDidMount(){
     
   const {rows} = this.state;
-  rows.map(e => e.action = <div style={actionStyle}>
-                            <ModalEditItem color='primary' item={e}  buttonLabel='Edit' nameButtonAccept='Edit'/>
-                            <ModalRemoveItem item={e} buttonLabel='Delete' function={()=>this.removeItem(e)}/>
+  rows.map(e => e.action = <div  className="action">
+                            <ModalEditItem  color='primary' item={e}  buttonLabel='Edit' nameButtonAccept='Edit'/>
+                            <ModalRemoveItem  item={e} buttonLabel='Delete' function={()=>this.removeItem(e)}/>
                            </div>)
  
 }
 
 componentDidUpdate(){
   const {rows} = this.state;
-  rows.map(e => e.action = <div style={actionStyle}>
-                            <ModalEditItem color='primary' item={e} buttonLabel='Edit' nameButtonAccept='Edit' />
-                            <ModalRemoveItem item={e} buttonLabel='Delete' function={()=>this.removeItem(e)}/>
+  rows.map(e => e.action = <div  className="action">
+                            <ModalEditItem color='primary'   item={e} buttonLabel='Edit' nameButtonAccept='Edit' />
+                            <ModalRemoveItem item={e}  buttonLabel='Delete' function={()=>this.removeItem(e)}/>
                            </div>)
 }
 

@@ -1,0 +1,13 @@
+.action {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 768px){
+  .action{
+      flex-direction: column;
+  }
+  .button-first  {
+    font-size: 50% !important;
+  }
+}
