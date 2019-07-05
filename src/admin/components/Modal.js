@@ -10,7 +10,10 @@ export default class ModalExample extends React.Component {
 
     this.toggle = this.toggle.bind(this);
   }
-
+  wrapperFunction= () => {
+    this.props.function();
+    this.toggle();
+  }
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
@@ -29,7 +32,7 @@ export default class ModalExample extends React.Component {
           </ModalBody>
           <ModalFooter>
             <Link to={this.props.url}>
-            <Button color="primary" onClick={this.toggle}>Yes</Button>{' '}
+            <Button color="primary" onClick={this.wrapperFunction}>Yes</Button>{' '}
             </Link>
             
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
