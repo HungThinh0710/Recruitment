@@ -3,6 +3,7 @@ import {NavLink} from 'react-router-dom';
 import Homepage from './Hompage';
 import Joblistings from './Careers';
 import {NavItem} from 'react-bootstrap';
+import './layout.css';
 class RouterURL extends Component {
     render() {
         return(
@@ -11,10 +12,10 @@ class RouterURL extends Component {
               <div className="site-logo col-4"><img src="/candidate/images/download.png" width="40px"/></div>
               <div className="site-logo col-5"><NavLink to="/">&nbsp; &nbsp; &nbsp; Enclave</NavLink></div>
               <nav className="mx-auto site-navigation">
-                <ul className="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-                  <li><NavLink to={"/home"} exact>Home</NavLink></li>
-                  <li><NavLink to={"/home/careers"} >Job Opening</NavLink></li>
-                  <li><NavLink to={"/home/about"} >About</NavLink></li>
+                <ul id="nav" className="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
+                  <li><NavLink to={"/home"} exact className="smoothscroll">Home</NavLink></li>
+                  <li><NavLink to={"/careers"} className="smoothscroll">Job Opening</NavLink></li>
+                  <li><NavLink to={"/about"} className="smoothscroll">About</NavLink></li>
                   <li><a >Services</a></li>
                   <li><a >Apply</a></li>
                   <li className="d-lg-none"><a >Contact Us</a></li>
