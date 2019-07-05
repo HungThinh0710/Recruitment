@@ -1,0 +1,27 @@
+ul#nav li {
+
+    /* 8px padding top + 8px padding bottom + 32px line-height = 48px */
+    position: relative;
+       display: inline-block;
+       padding: 13px 20px ;
+       line-height: 48px;
+        text-decoration: none;
+       text-align: left;
+       color: #548f11;
+       font-size: 17px;
+        -webkit-transition: color .2s ease-in-out;
+        -moz-transition: color .2s ease-in-out;
+        -o-transition: color .2s ease-in-out;
+        -ms-transition: color .2s ease-in-out;
+        transition: color .2s ease-in-out;
+    }
+ul#nav li .smoothscroll:focus { color: #fff; 
+    transform: scale(1.5);
+    /* Safari & Google Chrome */
+    -webkit-transform: scale(1.5);
+    /* Mozilla Firefox */
+    -moz-transform: scale(1.5); 
+    /* Opera */
+    -o-transform: scale(1.5);
+    /* IE 9 */
+    -ms-transform: scale(1.5);}

@@ -1,0 +1,16 @@
+.list-unstyled li a {
+    display: flex;
+    vertical-align: middle;
+    text-align: center;
+   justify-content: center;
+  }
+  .footer-social a {
+    margin-left: 20px;
+   vertical-align: middle;
+   text-align: center;
+  justify-content: center;
+  align-items: center;
+  }
+  #careers {
+      background-position: 0px 0px;
+  }

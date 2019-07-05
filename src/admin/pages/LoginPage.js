@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import {Redirect} from 'react-router-dom';
-
+import './LoginPage.css';
 const style = {
-  width: '50%',
+    width: '30%',
+    height: '57%',
     backgroundColor: 'white',
-    padding: '10%',
-    borderRadius: '5%',
+    padding: '2%',
+    borderRadius: '3%',
     alignSelf: 'center'
 }
 const stl = {
@@ -94,11 +95,11 @@ export default class LoginPage extends React.Component {
     return (
       <Form style={style} onSubmit={this.handleSubmit}>
         {showLogo && (
-          <div className="text-center pb-4">
+          <div className="text-center pb-4" style={{marginBottom:'5%'}}>
             <img
               src={logo200Image}
               className="rounded"
-              style={{ width: 60, height: 60, cursor: 'pointer' }}
+              style={{ width: '70%', cursor: 'pointer' }}
               alt="logo"
               onClick={onLogoClick}
             />
@@ -106,19 +107,20 @@ export default class LoginPage extends React.Component {
           </div>
         )}
         <span style={stl}>{this.state.messenger}</span>
-        <FormGroup>
+        <FormGroup style={{marginBottom:'5%'}}>
           <Label for={usernameLabel}>{usernameLabel}</Label>
           <Input {...usernameInputProps} value ={this.state.username} onChange={this.handleChange}/>
         </FormGroup>
-        <FormGroup>
+        <FormGroup style={{marginBottom:'8%'}}>
           <Label for={passwordLabel}>{passwordLabel}</Label>
           <Input {...passwordInputProps} value ={this.state.password} onChange={this.handleChange}/>
         </FormGroup>
         <hr />
+        
         {this.renderRedirect()}
         <Button
           size="lg"
-          className="bg-gradient-theme-left border-0"
+          className="btn-login"
           block
           onClick={this.handleSubmit}> LOGIN
         </Button>
@@ -144,14 +146,14 @@ LoginPage.defaultProps = {
   usernameInputProps: {
     type: 'text',
     name:'username',
-    placeholder: 'your username',
+    placeholder: 'username',
     
   },
   passwordLabel: 'Password',
   passwordInputProps: {
     type: 'password',
     name:'password',
-    placeholder: 'your password',
+    placeholder: 'password',
   },
   onLogoClick: () => {}
 };

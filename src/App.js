@@ -86,10 +86,11 @@ class App extends React.Component {
             />
         
             {/* <Redirect to="/" /> */}
+            <Route path="/" component={Homepage} exact/>
             <Route path="/home" component={Homepage} exact/>
-        <Route path="/home/careers" component={Careers} exact />
-        <Route path="/home/about" component={About} exact/>
-        <Route path="/home/describe" component={Career1} exact />
+        <Route path="/careers" component={Careers} exact />
+        <Route path="/about" component={About} exact/>
+        <Route path="/describe" component={Career1} exact />
           </Switch>
         </GAListener>
       </BrowserRouter>

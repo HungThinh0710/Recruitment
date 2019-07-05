@@ -2,7 +2,7 @@
   "name": "enclave-rm",
   "version": "1.0.0",
   "private": false,
-  "homepage": "./",
+  "homepage": "/",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "chart.js": "2.7.2",

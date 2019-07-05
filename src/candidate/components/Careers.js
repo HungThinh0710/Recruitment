@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import RouterURL from './RouterURL';
+import './career.css';
+import Footer from './Footer';
+
 export default class Careers extends Component {
   render() {
     return (
@@ -39,110 +42,25 @@ export default class Careers extends Component {
             <div className="container">
               <div className="row mb-5 justify-content-center">
                 <div className="col-md-7 text-center">
-                  <h2 className="section-title mb-2">109,234 Job Listed</h2>
+                  <h2 className="section-title mb-2">Job Opening</h2>
                 </div>
               </div>
               <div className="mb-5">
                 <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
                   <div className="col-md-2">
-                    <a href="job-single.html"><img src="/candidate/images/featured-listing-1.jpg" alt="Image" className="img-fluid" /></a>
-                  </div>
-                  <div className="col-md-4">
-                    <span className="badge badge-primary px-2 py-1 mb-3">Developer</span>
-                    <h2><NavLink to={"/home/describe"}>Game Audio Headset Engineer</NavLink></h2>
-                    <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
-                  </div>
-                  <div className="col-md-3 text-left">
-                    <h3>Melbourn</h3>
-                    <span className="meta">Australia</span>
-                  </div>
-                  <div className="col-md-3 text-md-right">
-                    <strong className="text-black">$60k — $100k</strong>
-                  </div>
-                </div>
-                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
-                  <div className="col-md-2">
-                    <a href="job-single.html"><img src="/candidate/images/featured-listing-2.jpg" alt="Image" className="img-fluid" /></a>
-                  </div>
-                  <div className="col-md-4">
-                    <span className="badge badge-warning px-2 py-1 mb-3">Tester</span>
-                    <h2><a href="job-single.html"></a>Automation Tester</h2>
-                    <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
-                  </div>
-                  <div className="col-md-3 text-left">
-                    <h3>London</h3>
-                    <span className="meta">United Kingdom</span>
-                  </div>
-                  <div className="col-md-3 text-md-right">
-                    <strong className="text-black">$60k — $100k</strong>
-                  </div>
-                </div>
-                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
-                  <div className="col-md-2">
-                    <a href="job-single.html"><img src="/candidate/images/featured-listing-3.jpg" alt="Image" className="img-fluid" /></a>
-                  </div>
-                  <div className="col-md-4">
-                    <span className="badge badge-success px-2 py-1 mb-3">Tester</span>
-                    <h2><a href="job-single.html">Performance Tester</a> </h2>
-                    <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
-                  </div>
-                  <div className="col-md-3 text-left">
-                    <h3>London</h3>
-                    <span className="meta">United Kingdom</span>
-                  </div>
-                  <div className="col-md-3 text-md-right">
-                    <strong className="text-black">$60k — $100k</strong>
-                  </div>
-                </div>
-                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
-                  <div className="col-md-2">
-                    <a href="job-single.html"><img src="/candidate/images/featured-listing-4.jpg" alt="Image" className="img-fluid" /></a>
-                  </div>
-                  <div className="col-md-4">
-                    <span className="badge badge-primary px-2 py-1 mb-3">Senior</span>
-                    <h2><a href="job-single.html">Senior .NET Engineers</a> </h2>
-                    <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
-                  </div>
-                  <div className="col-md-3 text-left">
-                    <h3>Melbourn</h3>
-                    <span className="meta">Australia</span>
-                  </div>
-                  <div className="col-md-3 text-md-right">
-                    <strong className="text-black">$60k — $100k</strong>
-                  </div>
-                </div>
-                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
-                  <div className="col-md-2">
                     <a href="job-single.html"><img src="/candidate/images/featured-listing-5.jpg" alt="Image" className="img-fluid" /></a>
                   </div>
                   <div className="col-md-4">
-                    <span className="badge badge-warning px-2 py-1 mb-3">Full-time</span>
-                    <h2><a href="job-single.html">Creative Director in Intercom</a> </h2>
+                    <span className="badge badge-primary px-2 py-1 mb-3">Senior</span>
+                    <h2><NavLink to={"/describe"}>Game Audio Headset Engineer</NavLink></h2>
                     <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
                   </div>
-                  <div className="col-md-3 text-left">
-                    <h3>London</h3>
-                    <span className="meta">United Kingdom</span>
+                  <div className="col-md-3 text-center">
+                    <h3>Office 1</h3>
+                    <span className="meta">453-455 Hoang Dieu</span>
                   </div>
                   <div className="col-md-3 text-md-right">
-                    <strong className="text-black">$60k — $100k</strong>
-                  </div>
-                </div>
-                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
-                  <div className="col-md-2">
-                    <a href="job-single.html"><img src="/candidate/images/featured-listing-4.jpg" alt="Image" className="img-fluid" /></a>
-                  </div>
-                  <div className="col-md-4">
-                    <span className="badge badge-success px-2 py-1 mb-3">Senior</span>
-                    <h2><a href="job-single.html">Embedded Engineers</a> </h2>
-                    <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
-                  </div>
-                  <div className="col-md-3 text-left">
-                    <h3>London</h3>
-                    <span className="meta">United Kingdom</span>
-                  </div>
-                  <div className="col-md-3 text-md-right">
-                    <strong className="text-black">$60k — $100k</strong>
+                    <strong className="text-black">800$ — 1000$</strong>
                   </div>
                 </div>
                 <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
@@ -150,16 +68,101 @@ export default class Careers extends Component {
                     <a href="job-single.html"><img src="/candidate/images/featured-listing-3.jpg" alt="Image" className="img-fluid" /></a>
                   </div>
                   <div className="col-md-4">
-                    <span className="badge badge-success px-2 py-1 mb-3">Designer</span>
-                    <h2><a href="job-single.html">Graphic Designer</a> </h2>
-                    <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
+                    <span className="badge badge-warning px-2 py-1 mb-3">Tester</span>
+                    <h2><a ></a>Automation Tester</h2>
+
                   </div>
-                  <div className="col-md-3 text-left">
-                    <h3>London</h3>
-                    <span className="meta">United Kingdom</span>
+                  <div className="col-md-3 text-center">
+                    <h3>Office 2</h3>
+                    <span className="meta">117 Nguyen Huu Tho</span>
                   </div>
                   <div className="col-md-3 text-md-right">
-                    <strong className="text-black">$60k — $100k</strong>
+                    <strong className="text-black">800$ — 1000$</strong>
+                  </div>
+                </div>
+                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
+                  <div className="col-md-2">
+                    <a ><img src="/candidate/images/featured-listing-3.jpg" alt="Image" className="img-fluid" /></a>
+                  </div>
+                  <div className="col-md-4">
+                    <span className="badge badge-warning px-2 py-1 mb-3">Tester</span>
+                    <h2><a >Performance Tester</a> </h2>
+
+                  </div>
+                  <div className="col-md-3 text-center">
+                    <h3>Office 2</h3>
+                    <span className="meta">117 Nguyen Huu Tho</span>
+                  </div>
+                  <div className="col-md-3 text-md-right">
+                    <strong className="text-black">800$ — 1000$</strong>
+                  </div>
+                </div>
+                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
+                  <div className="col-md-2">
+                    <a ><img src="/candidate/images/featured-listing-5.jpg" alt="Image" className="img-fluid" /></a>
+                  </div>
+                  <div className="col-md-4">
+                    <span className="badge badge-primary px-2 py-1 mb-3">Senior</span>
+                    <h2><a >Senior .NET Engineers</a> </h2>
+
+                  </div>
+                  <div className="col-md-3 text-center">
+                    <h3>Office 1</h3>
+                    <span className="meta">453-455 Hoang Dieu</span>
+                  </div>
+                  <div className="col-md-3 text-md-right">
+                    <strong className="text-black">800$ — 1000$</strong>
+                  </div>
+                </div>
+                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
+                  <div className="col-md-2">
+                    <a ><img src="/candidate/images/featured-listing-1.jpg" alt="Image" className="img-fluid" /></a>
+                  </div>
+                  <div className="col-md-4">
+                    <span className="badge badge-success px-2 py-1 mb-3">Designer</span>
+                    <h2><a >Graphic Designer</a> </h2>
+
+                  </div>
+                  <div className="col-md-3 text-center">
+                    <h3>Office 1</h3>
+                    <span className="meta">453-455 Hoang Dieu</span>
+                  </div>
+                  <div className="col-md-3 text-md-right">
+                    <strong className="text-black">700$ — 800$</strong>
+                  </div>
+                </div>
+                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
+                  <div className="col-md-2">
+                    <a ><img src="/candidate/images/featured-listing-5.jpg" alt="Image" className="img-fluid" /></a>
+                  </div>
+                  <div className="col-md-4">
+                    <span className="badge badge-primary px-2 py-1 mb-3">Senior</span>
+                    <h2><a >Embedded Engineers</a> </h2>
+
+                  </div>
+                  <div className="col-md-3 text-center">
+                    <h3>Office 2</h3>
+                    <span className="meta">117 Nguyen Huu Tho</span>
+                  </div>
+                  <div className="col-md-3 text-md-right">
+                    <strong className="text-black">800$ — 1000$</strong>
+                  </div>
+                </div>
+                <div className="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
+                  <div className="col-md-2">
+                    <a ><img src="/candidate/images/featured-listing-5.jpg" alt="Image" className="img-fluid" /></a>
+                  </div>
+                  <div className="col-md-4">
+                    <span className="badge badge-primary px-2 py-1 mb-3">Senior</span>
+                    <h2><a >iOS Engineers</a> </h2>
+
+                  </div>
+                  <div className="col-md-3 text-center">
+                    <h3>Office 1</h3>
+                    <span className="meta">453-455 Hoang Dieu</span>
+                  </div>
+                  <div className="col-md-3 text-md-right">
+                    <strong className="text-black">800$ — 1000$</strong>
                   </div>
                 </div>
               </div>
@@ -206,74 +209,7 @@ export default class Careers extends Component {
               </div>
             </div>
           </section>
-          <section className="py-5 bg-image overlay-primary fixed overlay" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }}>
-            <div className="container">
-              <div className="row align-items-center">
-                <div className="col-md-8">
-                  <h2 className="text-white">Looking For A Job?</h2>
-                  <p className="mb-0 text-white lead">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora adipisci
-                  impedit.</p>
-                </div>
-                <div className="col-md-3 ml-auto">
-                  <a href="#" className="btn btn-warning btn-block btn-lg">Sign Up</a>
-                </div>
-              </div>
-            </div>
-          </section>
-          <footer className="site-footer">
-            <div className="container">
-              <div className="row mb-5">
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
-                  <h3>Search Trending</h3>
-                  <ul className="list-unstyled">
-                    <li><a href="#">Web Design</a></li>
-                    <li><a href="#">Graphic Design</a></li>
-                    <li><a href="#">Web Developers</a></li>
-                    <li><a href="#">Python</a></li>
-                    <li><a href="#">HTML5</a></li>
-                    <li><a href="#">CSS3</a></li>
-                  </ul>
-                </div>
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
-                  <h3>Company</h3>
-                  <ul className="list-unstyled">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Career</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Resources</a></li>
-                  </ul>
-                </div>
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
-                  <h3>Support</h3>
-                  <ul className="list-unstyled">
-                    <li><a href="#">Support</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                  </ul>
-                </div>
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
-                  <h3>Contact Us</h3>
-                  <div className="footer-social">
-                    <a href="#"><span className="icon-facebook" /></a>
-                    <a href="#"><span className="icon-twitter" /></a>
-                    <a href="#"><span className="icon-instagram" /></a>
-                    <a href="#"><span className="icon-linkedin" /></a>
-                  </div>
-                </div>
-              </div>
-              <div className="row text-center">
-                <div className="col-12">
-                  <p>
-                    {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                    Copyright ©
-                    All rights reserved | This template is made
-                  with <i className="icon-heart-o" aria-hidden="true" /> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                    {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </footer>
+          <Footer/>
         </div>
       </section>
 

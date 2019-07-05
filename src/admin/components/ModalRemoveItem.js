@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import {Link} from 'react-router-dom';
-export default class ModalExample extends React.Component {
+import '../pages/RolesPage.css'
+export default class ModalRemoveItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,20 +21,19 @@ export default class ModalExample extends React.Component {
   }
 
   render() {
-    
     return (
       <div>
-        <Button color="success" onClick={this.toggle}>{this.props.children}</Button>
+       <Button color="danger" className='button-first' onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Change Profile</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Are you sure to delete this role ?</ModalHeader>
           <ModalBody>
-            Do You Want To Change Your {this.props.title} ?
+           Role : {this.props.item.role} 
+          </ModalBody>
+          <ModalBody>
+           Permission : {this.props.item.permission}
           </ModalBody>
           <ModalFooter>
-            <Link to={this.props.url}>
-            <Button color="primary" onClick={this.wrapperFunction}>Yes</Button>{' '}
-            </Link>
-            
+            <Button color="primary" onClick={this.wrapperFunction}>Yes, I'm sure</Button>{' '}
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>

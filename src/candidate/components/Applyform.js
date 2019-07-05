@@ -157,11 +157,10 @@ class Applyform extends Component{
             <Form.Group>
               <div className="address">
               <label class="col-form-label">Address
-    </label>
+              </label>
               <input class="form-control"
                 className={formErrors.address.length > 0 ? "error" : null}
-                placeholder="Address
-      "
+                placeholder="Address"
                 type="text"
                 name="address"
                 noValidate
@@ -204,7 +203,7 @@ class Applyform extends Component{
               </div>
             </Form.Group>
             <Form.Group>
-              <label class="col-form-label">Technical skill</label>
+            <label class="col-form-label">Technical skill</label>
               <select class="form-control"
                 className={formErrors.technical.length > 0 ? "error" : null}
                 placeholder="Write your technical skill here"
@@ -223,6 +222,7 @@ class Applyform extends Component{
                 <span className="errorMessage">{formErrors.technical}</span>
               )}
             </Form.Group>
+            
             
           </Form>
           </ModalBody>
