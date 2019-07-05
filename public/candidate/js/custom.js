@@ -2,12 +2,14 @@ jQuery(function($) {
 
 	'use strict';
 	
+	
 	var siteMenuClone = function() {
 
 		$('.js-clone-nav').each(function() {
 			var $this = $(this);
 			$this.clone().attr('class', 'site-nav-wrap').appendTo('.site-mobile-menu-body');
 		});
+		
 
 
 		setTimeout(function() {
@@ -78,6 +80,8 @@ jQuery(function($) {
 				}
 	    }
 		});
+		
+
 	}; 
 	siteMenuClone();
 
@@ -159,7 +163,8 @@ jQuery(function($) {
       e.preventDefault();
 
       var hash = this.hash;
-
+		
+		
       $('html, body').animate({
         'scrollTop': $(hash).offset().top
       }, 600, 'easeInOutCirc', function(){

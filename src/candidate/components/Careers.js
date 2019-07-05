@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import RouterURL from './RouterURL';
 import './career.css';
+import Footer from './Footer';
 
 export default class Careers extends Component {
   render() {
@@ -51,7 +52,7 @@ export default class Careers extends Component {
                   </div>
                   <div className="col-md-4">
                     <span className="badge badge-primary px-2 py-1 mb-3">Senior</span>
-                    <h2><NavLink to={"/home/describe"}>Game Audio Headset Engineer</NavLink></h2>
+                    <h2><NavLink to={"/describe"}>Game Audio Headset Engineer</NavLink></h2>
                     <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
                   </div>
                   <div className="col-md-3 text-center">
@@ -208,63 +209,7 @@ export default class Careers extends Component {
               </div>
             </div>
           </section>
-          <section className="py-5 bg-image overlay-primary fixed overlay" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }}>
-            <div className="container">
-              <div className="row align-items-center">
-                <div className="col-md-8">
-                  <h2 className="text-white">Looking For A Job?</h2>
-                  <p className="mb-0 text-white lead">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora adipisci
-                  impedit.</p>
-                </div>
-                <div className="col-md-3 ml-auto">
-                  <a href="#" className="btn btn-warning btn-block btn-lg">Sign Up</a>
-                </div>
-              </div>
-            </div>
-          </section>
-          <footer className="site-footer">
-            <div className="container">
-              <div className="row mb-5">
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
-                  <h3>Search Trending</h3>
-                  <ul className="list-unstyled">
-                    <li><a href="#">Web Design</a></li>
-                    <li><a href="#">Graphic Design</a></li>
-                    <li><a href="#">Web Developers</a></li>
-                    <li><a href="#">Python</a></li>
-                    <li><a href="#">HTML5</a></li>
-                    <li><a href="#">CSS3</a></li>
-                  </ul>
-                </div>
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
-                  <h3>Company</h3>
-                  <ul className="list-unstyled">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Career</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Resources</a></li>
-                  </ul>
-                </div>
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
-                  <h3>Support</h3>
-                  <ul className="list-unstyled">
-                    <li><a href="#">Support</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                  </ul>
-                </div>
-                <div className="col-6 col-md-3 mb-4 mb-md-0">
-                  <h3>Contact Us</h3>
-                  <div className="footer-social">
-                    <a href="#"><span className="icon-facebook" /></a>
-                    <a href="#"><span className="icon-twitter" /></a>
-                    <a href="#"><span className="icon-instagram" /></a>
-                    <a href="#"><span className="icon-linkedin" /></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </footer>
+          <Footer/>
         </div>
       </section>
 

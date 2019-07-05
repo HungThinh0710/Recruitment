@@ -157,11 +157,10 @@ class Applyform extends Component{
             <Form.Group>
               <div className="address">
               <label class="col-form-label">Address
-    </label>
+              </label>
               <input class="form-control"
                 className={formErrors.address.length > 0 ? "error" : null}
-                placeholder="Address
-      "
+                placeholder="Address"
                 type="text"
                 name="address"
                 noValidate
