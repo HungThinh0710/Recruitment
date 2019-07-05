@@ -116,14 +116,10 @@ class Sidebar extends React.Component {
             <SourceLink className="navbar-brand d-flex">
               <img
                 src={logo200Image}
-                width="40"
-                height="30"
+                width='100%'
                 className="pr-2"
                 alt=""
               />
-              <span className="text-white">
-                Enclave
-              </span>
             </SourceLink>
           </Navbar>
           <Nav vertical>
