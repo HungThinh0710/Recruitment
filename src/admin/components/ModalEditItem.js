@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, 
   ModalFooter,Card,CardBody,FormGroup,Form,Label,Input } from 'reactstrap';
   import './ModalConfirmPassword.css';
+  import '../pages/RolesPage.css'
 export default class ModalEditItem extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +28,13 @@ export default class ModalEditItem extends Component {
   render() {
     return (
       <div>
-        <Button color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        {(this.props.buttonLabel==='Add New Role') ? 
+          (<Button color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button>) 
+          :(
+            <Button className='button-first' color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button>
+          )
+        }
+        
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Edit Role</ModalHeader>
           <ModalBody>
