@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import RouterURL from './RouterURL';
+import RouterURL from '../RouterURL';
 import './about.css';
-import Footer from './Footer';
+import Footer from '../Footer';
 export default class About extends Component {
   render() {
     return (
@@ -93,7 +93,6 @@ export default class About extends Component {
           <Footer />
         </div>
       </section>
-
     )
   }
 }

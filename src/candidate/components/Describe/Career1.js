@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import RouterURL from './RouterURL';
+import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './Career1.css';
-import Footer from './Footer';
+import Footer from '../Footer';
+import careerdata from '../data/careerdata.json';
+import describe from '../data/describe.json';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +46,7 @@ export default class Careers extends Component {
           <RouterURL />
         </header>
         <div>
-          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }} id="home-section">
+          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }} id="career1">
             <div className="container">
               <div className="row">
                 <div className="col-md-7">
@@ -99,7 +101,8 @@ export default class Careers extends Component {
                   </div>
                 </div>
               </div>
-              <div className="row">
+              
+                 <div className="row">
                 <div className="col-lg-8">
                   <div className="mb-5">
                     <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded" /></figure>
@@ -187,6 +190,8 @@ export default class Careers extends Component {
                   </div>
                 </div>
               </div>
+             
+              
             </div>
           </section>
           <Footer/>
