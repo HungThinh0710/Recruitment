@@ -67,7 +67,7 @@ export default class ChangeProfilePage extends Component {
   render() {
     
     return (
-      <Card className="change-profile-card">
+      <Card className="change-profile-card" style={{marginBottom:'18%'}}>
             <HeaderForm url='/admin/profile'>Change Profile Information</HeaderForm>
             <CardBody>
               <Form id="profile-form" onSubmit={this.handleSubmit}>
@@ -113,7 +113,7 @@ export default class ChangeProfilePage extends Component {
                     onChange={this.handleChange}
                   />
                 </FormGroup>
-
+{/* 
                 {/* <FormGroup>
                   <Label for="exampleJob">Job : Recruitment Manage</Label>
                 </FormGroup>

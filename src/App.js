@@ -3,6 +3,8 @@ import GAListener from './admin/components/GAListener';
 import { EmptyLayout, LayoutRoute, MainLayout } from './admin/components/Layout';
 
 // page
+import RoleDetail from './admin/pages/RoleDetail';
+import Roles from './admin/pages/Roles';
 import RolesPage from './admin/pages/RolesPage';
 import LoginPage from './admin/pages/LoginPage'
 import DashboardPage from './admin/pages/DashboardPage';
@@ -42,6 +44,21 @@ class App extends React.Component {
         <GAListener>
           <Switch>
             <LayoutRoute 
+
+              exact
+              path={"/admin/role/:id"}
+              layout={MainLayout}
+              component={RoleDetail}
+              
+            />
+            <LayoutRoute 
+              exact
+              path={"/admin/role"}
+              layout={MainLayout}
+              component={Roles}
+              
+            />
+            <LayoutRoute 
               exact
               path={"/admin"}
               layout={EmptyLayout}
@@ -80,7 +97,7 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
-              path="/admin/roles"
+              path="/admin/test"
               layout={MainLayout}
               component={RolesPage}
             />

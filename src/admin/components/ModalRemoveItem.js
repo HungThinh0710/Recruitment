@@ -27,10 +27,10 @@ export default class ModalRemoveItem extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Are you sure to delete this role ?</ModalHeader>
           <ModalBody>
-           Role : {this.props.item.role} 
+           Id : {this.props.id} 
           </ModalBody>
           <ModalBody>
-           Permission : {this.props.item.permission}
+           Role : {this.props.item.name}
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.wrapperFunction}>Yes, I'm sure</Button>{' '}

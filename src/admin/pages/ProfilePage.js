@@ -27,8 +27,7 @@ export default class ProfilePage extends Component {
         'Accept' : 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
-    }).then(res => res.json()) 
-    console.log(data);  
+    }).then(res => res.json())  
     this.setState({
       name : data.name,
       fullName: data.fullname,

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Button,Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalEditItem from '../components/ModalEditItem';
@@ -43,8 +43,7 @@ export default class RolesPage extends Component {
       rows: [
         {
           role: 'Admin',
-          permission: 'Add Users', 
-          action: ''
+          permission: 'Add Users'
         },
         {
           role: 'Admin',
