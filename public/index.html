@@ -5,27 +5,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="theme-color" content="#000000">
+  <meta name="author" content="">
   <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-
   <meta name="application-name" content="%REACT_APP_NAME%">
   <meta name="description" content="%REACT_APP_DESCRIPTION%">
-
   <meta property="og:url" content="%PUBLIC_URL%">
   <meta property="og:type" content="website">
   <meta property="og:title" content="%REACT_APP_NAME%">
   <meta property="og:image" content="%PUBLIC_URL%/img/screenshots/reduction-admin.jpg">
   <meta property="og:description" content="%REACT_APP_DESCRIPTION%">
   <meta property="og:site_name" content="%REACT_APP_NAME%">
-
   <meta name="twitter:card" content="summary">
   <meta name="twitter:url" content="%PUBLIC_URL%">
   <meta name="twitter:title" content="%REACT_APP_NAME%">
   <meta name="twitter:description" content="%REACT_APP_DESCRIPTION%">
   <meta name="twitter:image" content="%PUBLIC_URL%/img/screenshots/reduction-admin.jpg">
-
   <link rel="manifest" href="%PUBLIC_URL%/admin/manifest.json" />
   <link rel="shortcut icon" href="%PUBLIC_URL%/admin/favicon.ico" />
   <link rel="apple-touch-icon" sizes="57x57" href="%PUBLIC_URL%/admin/apple-icon-57x57.png" />
@@ -51,7 +48,8 @@
   <link rel="stylesheet" href="%PUBLIC_URL%/candidate/fonts/line-icons/style.css">
   <link rel="stylesheet" href="%PUBLIC_URL%/candidate/css/owl.carousel.min.css">
   <link rel="stylesheet" href="%PUBLIC_URL%/candidate/css/animate.min.css">
-  <link rel="stylesheet" href="%PUBLIC_URL%/candidate/css/style.css">    
+  <link rel="stylesheet" href="%PUBLIC_URL%/candidate/css/style.css">
+  <link href="/dist/css/btr-menu.css" rel="stylesheet" />
   <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -100,18 +98,25 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script src="%PUBLIC_URL%/candidate/js/jquery.min.js"></script>
-    <script src="%PUBLIC_URL%/candidate/js/bootstrap.bundle.min.js"></script>
-    <script src="%PUBLIC_URL%/candidate/js/isotope.pkgd.min.js"></script>
-    <script src="%PUBLIC_URL%/candidate/js/stickyfill.min.js"></script>
-    <script src="%PUBLIC_URL%/candidate/js/jquery.fancybox.min.js"></script>
-    <script src="%PUBLIC_URL%/candidate/js/jquery.easing.1.3.js"></script>
-    <script src="%PUBLIC_URL%/candidate/js/jquery.waypoints.min.js"></script>
-    <script src="%PUBLIC_URL%/candidate/js/jquery.animateNumber.min.js"></script>
-    <script src="%PUBLIC_URL%%PUBLIC_URL%/candidate/js/owl.carousel.min.js"></script>
-    
-    <script src="%PUBLIC_URL%/candidate/js/custom.js"></script>
-    <!-- <script type="text/javascript" src="%src%/candidate/components/Applyform.js"></script>
+  <script src="%PUBLIC_URL%/candidate/js/jquery.min.js"></script>
+  <script src="%PUBLIC_URL%/candidate/js/bootstrap.bundle.min.js"></script>
+  <script src="%PUBLIC_URL%/candidate/js/isotope.pkgd.min.js"></script>
+  <script src="%PUBLIC_URL%/candidate/js/stickyfill.min.js"></script>
+  <script src="%PUBLIC_URL%/candidate/js/jquery.fancybox.min.js"></script>
+  <script src="%PUBLIC_URL%/candidate/js/jquery.easing.1.3.js"></script>
+  <script src="%PUBLIC_URL%/candidate/js/jquery.waypoints.min.js"></script>
+  <script src="%PUBLIC_URL%/candidate/js/jquery.animateNumber.min.js"></script>
+  <script src="%PUBLIC_URL%%PUBLIC_URL%/candidate/js/owl.carousel.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="/Theme/js/btr-menu.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#navbar").btrmenu();
+    });
+</script>
+
+ 
+  <!-- <script type="text/javascript" src="%src%/candidate/components/Applyform.js"></script>
     <script type="text/javascript" src="%src%/candidate/components/Career1.js"></script> -->
 </body>
 

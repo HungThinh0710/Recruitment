@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
-import Homepage from './Hompage';
-import Joblistings from './Careers';
+import Homepage from './Home/Hompage';
+import Joblistings from './Career/Careers';
 import {NavItem} from 'react-bootstrap';
 import './layout.css';
 class RouterURL extends Component {
     render() {
         return(
             <div className="row align-items-center">
-     
-              <div className="site-logo col-4"><img src="/candidate/images/download.png" width="40px"/></div>
-              <div className="site-logo col-5"><NavLink to="/">&nbsp; &nbsp; &nbsp; Enclave</NavLink></div>
+
+              <div className="site-logo col-4"><NavLink to="/"><img src="/candidate/images/EnclaveLogo.png" width="200px"/></NavLink></div>
+   
               <nav className="mx-auto site-navigation">
-                <ul id="nav" className="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-                  <li><NavLink to={"/home"} exact className="smoothscroll">Home</NavLink></li>
-                  <li><NavLink to={"/careers"} className="smoothscroll">Job Opening</NavLink></li>
-                  <li><NavLink to={"/about"} className="smoothscroll">About</NavLink></li>
+                <ul className="navbar-header" className="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
+                  <li className="navbar-item"><NavLink to={"/home"} exact className="smoothscroll">Home</NavLink></li>
+                  <li className="navbar-item"><NavLink to={"/careers"} className="smoothscroll">Job Opening</NavLink></li>
+                  <li className="navbar-item"><NavLink to={"/about"} className="smoothscroll">About</NavLink></li>
                   <li><a >Services</a></li>
                   <li><a >Apply</a></li>
                   <li className="d-lg-none"><a >Contact Us</a></li>
