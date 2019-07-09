@@ -82,7 +82,7 @@ const sidebarBackground = {
 
 const navItems = [
   { to: '/admin/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
-  { to: '/admin/roles', name: 'roles', exact: false, Icon: MdAccountCircle },
+  { to: '/admin/role', name: 'roles', exact: false, Icon: MdAccountCircle },
   // { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
   // { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
   // { to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },

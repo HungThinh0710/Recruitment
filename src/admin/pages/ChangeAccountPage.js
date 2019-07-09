@@ -21,7 +21,7 @@ export default class ChangeAccountPage extends Component {
   } 
   render() {
     return (
-         <Card className="change-profile-card">
+         <Card className="change-profile-card" style={{marginBottom:'13%'}}>
             <HeaderForm url="/admin/account">Change Account Information</HeaderForm>
             <CardBody>
               <Form id="form-profile">

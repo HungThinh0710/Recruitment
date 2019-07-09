@@ -8,7 +8,7 @@ import ModalConfirmPassword from '../components/ModalConfirmPassword';
 export default class AccountPage extends Component {
   render() {
     return (
-        <Card className="account-form">
+        <Card className="account-form" style={{marginBottom:'13%'}}>
         <CardBody >
           <CardTitle className="title">My Account</CardTitle>
           <Container>
