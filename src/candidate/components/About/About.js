@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import RouterURL from '../RouterURL';
 import './about.css';
 import Footer from '../Footer';
+import {Link} from 'react-router-dom';
 export default class About extends Component {
   render() {
     return (
@@ -68,10 +69,10 @@ export default class About extends Component {
                     dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae voluptatibus ut? Ex vel ad
             explicabo iure ipsa possimus consectetur neque rem molestiae eligendi velit?.</p>
                   <div className="social mt-4">
-                    <a href="#"><span className="icon-facebook" /></a>
-                    <a href="#"><span className="icon-twitter" /></a>
-                    <a href="#"><span className="icon-instagram" /></a>
-                    <a href="#"><span className="icon-linkedin" /></a>
+                    <Link to={"#"}><span className="icon-facebook" /></Link>
+                    <Link to={"#"}><span className="icon-twitter" /></Link>
+                    <Link to={"#"}><span className="icon-instagram" /></Link>
+                    <Link to={"#"}><span className="icon-linkedin" /></Link>
                   </div>
                 </div>
                 <div className="col-md-6 order-md-2">
@@ -82,10 +83,10 @@ export default class About extends Component {
                     dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae voluptatibus ut? Ex vel ad
             explicabo iure ipsa possimus consectetur neque rem molestiae eligendi velit?.</p>
                   <div className="social mt-4">
-                    <a href="#"><span className="icon-facebook" /></a>
-                    <a href="#"><span className="icon-twitter" /></a>
-                    <a href="#"><span className="icon-instagram" /></a>
-                    <a href="#"><span className="icon-linkedin" /></a>
+                    <Link to={"#"}><span className="icon-facebook" /></Link>
+                    <Link to={"#"}><span className="icon-twitter" /></Link>
+                    <Link to={"#"}><span className="icon-instagram" /></Link>
+                    <Link to={"#"}><span className="icon-linkedin" /></Link>
                   </div>
                 </div>
               </div>
