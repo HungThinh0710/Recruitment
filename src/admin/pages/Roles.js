@@ -22,6 +22,11 @@ export default class Roles extends Component {
     this.state={
       columns: [
         {
+          label: 'Id',
+          field: 'id',
+          sort: 'asc'
+        },
+        {
           label: 'Role',
           field: 'role',
           sort: 'asc'
@@ -31,14 +36,10 @@ export default class Roles extends Component {
           field: 'action',
         }
       ],
-      rows: [],
-      listId: []
+      rows: []
     };
-    
-    // this.addRole = this.addRole.bind(this);
   }
   async componentWillMount(){
-    //const {firstName, lastName, email} = this.state;
     const {listId}= this.state;
     var url = 'http://api.enclavei3dev.tk/api/role';
     const data = await fetch(url, {
@@ -52,59 +53,46 @@ export default class Roles extends Component {
     data.data.forEach(function(e) {
       delete e.created_at;
       delete e.updated_at;
-      listId.push(e.id);
-      delete e.id;
     })
     this.setState({
-      listId:listId,
       rows: data.data
     })
   }
   componentDidMount(){
     
     const {rows} = this.state;
-    const {listId} = this.state;
     var i=0;
     rows.map(e => {
-      let url = '/admin/role/'+listId[i];
-      i++;
+      let url = '/admin/role/'+e.id;
       return  e.action = <div  className="action">
               <Link to={url} >
               <Button color='info'>View</Button>
               </Link>
               <ModalEditItem  color='primary' item={e}  buttonLabel='Edit' nameButtonAccept='Edit'/>
-              <ModalRemoveItem  item={e} id={listId[i-1]} buttonLabel='Delete' function={()=>this.removeItem(e)}/>
+              <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
     </div>})
    
   }
-  
+
   componentDidUpdate(){
     const {rows} = this.state;
-    const {listId} = this.state;
     var i=0;
     rows.map(e => {
-      const url = '/admin/role/'+listId[i];
+      let url = '/admin/role/'+e.id;
       i++;
       return  e.action = <div  className="action">
               <Link to={url} >
               <Button color='info'>View</Button>
               </Link>
               <ModalEditItem  color='primary' item={e}  buttonLabel='Edit' nameButtonAccept='Edit'/>
-              <ModalRemoveItem  item={e} id={listId[i-1]} buttonLabel='Delete' function={()=>this.removeItem(e)}/>
+              <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
     </div>})
   }
 
-    addRole(name){
-      
-      const {rows}=this.state;
-      const newRole ={
-        role: name
-      };
-      rows.push(newRole);
-       this.setState({
+    addRole(rows) {
+      this.setState({
         rows: rows
-      });
-      
+      })
     }
     editItem(element) {
       let {rows} = this.state;
@@ -115,14 +103,17 @@ export default class Roles extends Component {
         rows:rows
       })
     }
-    removeItem(element){
+    
+    
+    removeItem(element,id){
+      
      let {rows} = this.state;
      const index = rows.indexOf(element);
      var url = 'http://api.enclavei3dev.tk/api/role'; 
      fetch(url, {
       method: 'DELETE', 
       body: JSON.stringify({
-        roles: element.id
+        roles: id
       }), 
       headers:{
         'Content-Type': 'application/json',
@@ -132,14 +123,13 @@ export default class Roles extends Component {
     }).then(res =>{
       rows.splice(index,1);
       this.setState({
-        rows:rows
+        rows:rows,
       })
     })
      
     }
   
   render() {
-    console.log(this.state.listId);
     return (
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
