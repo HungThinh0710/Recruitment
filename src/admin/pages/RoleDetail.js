@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Card, CardBody, CardHeader , Button} from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
-
+import ModalEditItem from '../components/ModalEditItem';
 const styleFont = {
   fontSize: '200%',
 };
@@ -18,22 +18,10 @@ export default class RoleDetail extends Component {
       name:'',
       columns: [
         {
-          label: 'Id',
-          field: 'id',
-          sort: 'asc',
-          width: 100
-        },
-        {
           label: 'Name',
           field: 'name',
           sort: 'asc',
           width: 300
-        },
-        {
-          label: 'Action',
-          field: 'action',
-          sort: 'asc',
-          width: 100
         }
         ],
       rows : []
@@ -50,6 +38,7 @@ export default class RoleDetail extends Component {
       }
     }).then(res => res.json()) 
     data.permissions.forEach(function(e){
+      delete e.id;
       delete e.created_at;
       delete e.updated_at;
       delete e.pivot;
@@ -60,12 +49,23 @@ export default class RoleDetail extends Component {
       rows: data.permissions
     })
   }
-  render() {
 
+  editRole(rows,name){
+    this.setState({
+      name: name,
+      rows: rows
+    })
+  }
+
+
+
+  render() {  
+    const {id} = this.props.match.params;
     return (
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>{this.state.name}'s Permissions</CardHeader>
       <CardBody>
+      <ModalEditItem  id={id} name={this.state.name} color='primary' buttonLabel='Edit' function={this.editRole.bind(this)} />
       <MDBDataTable
       striped
       bordered

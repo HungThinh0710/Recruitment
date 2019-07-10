@@ -66,9 +66,8 @@ export default class Roles extends Component {
       let url = '/admin/role/'+e.id;
       return  e.action = <div  className="action">
               <Link to={url} >
-              <Button color='info'>View</Button>
+              <Button color='primary'>View</Button>
               </Link>
-              <ModalEditItem  color='primary' item={e}  buttonLabel='Edit' nameButtonAccept='Edit'/>
               <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
     </div>})
    
@@ -82,9 +81,8 @@ export default class Roles extends Component {
       i++;
       return  e.action = <div  className="action">
               <Link to={url} >
-              <Button color='info'>View</Button>
+              <Button color='primary'>View</Button>
               </Link>
-              <ModalEditItem  color='primary' item={e}  buttonLabel='Edit' nameButtonAccept='Edit'/>
               <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
     </div>})
   }
@@ -94,15 +92,7 @@ export default class Roles extends Component {
         rows: rows
       })
     }
-    editItem(element) {
-      let {rows} = this.state;
-      const index = rows.indexOf(element);
-      rows[index].role='abc';
-      rows[index].permission='bcd';
-      this.setState({
-        rows:rows
-      })
-    }
+
     
     
     removeItem(element,id){

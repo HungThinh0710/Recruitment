@@ -4,7 +4,6 @@ import { Button, Modal, ModalHeader, ModalBody,
   import './ModalConfirmPassword.css';
   import '../pages/RolesPage.css'
 import CollapsePermission from '../components/CollapsePermission';
-import {Redirect} from 'react-router-dom';
 export default class ModalAddRole extends Component {
   constructor(props) {
     super(props);
