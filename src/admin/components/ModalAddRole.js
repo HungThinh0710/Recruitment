@@ -42,7 +42,7 @@ export default class ModalAddRole extends Component {
     this.toggle = this.toggle.bind(this);
   }
 
-  async componentDidMount(){
+  async componentWillMount(){
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.permissions.columns;
     let list = this.state.listChecked;
@@ -72,7 +72,6 @@ export default class ModalAddRole extends Component {
       listChecked: list
     })
   }
-
   handleChange(event) {
     this.setState({
       itemName: event.target.value
@@ -87,11 +86,8 @@ export default class ModalAddRole extends Component {
   }
 
   addItem(){
-    const itemName = this.state.itemName;
-    const arrayList = this.state.listChecked;
-    const list = arrayList.toString();
-    console.log(list);
-    console.log(itemName);
+    const {itemName,listChecked} = this.state;
+    const list = listChecked.toString();
     var url = 'http://api.enclavei3dev.tk/api/role'; 
     fetch(url, {
       method: 'POST', 
@@ -114,25 +110,38 @@ export default class ModalAddRole extends Component {
       }
       if (res.status === 200) {
         res.json().then(data =>{
-          console.log(data)
+          fetch(url, {
+            headers:{
+              'Content-Type': 'application/json',
+              'Accept' : 'application/json',
+              'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+            }
+          }).then(res => {
+            res.json().then(data => {
+               
+              data.data.forEach(function(e) {
+                delete e.created_at;
+                delete e.updated_at;
+                // delete e.id;
+              })
+              this.props.function(data.data);
+            })
+          }) 
         })
       }
     })
-    .catch(error => console.error('Error:', error));
-    this.props.function(itemName);
+    .catch(error => console.error('Error:', error)); 
   }
-
   
-
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
   }
+  
   render() {
     return (
       <div>
-        
           <Button color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} >
           <ModalHeader toggle={this.toggle} >Add A New</ModalHeader>
@@ -155,13 +164,11 @@ export default class ModalAddRole extends Component {
                   <CollapsePermission data={this.state.permissions}/>
                   </FormGroup>
                 </Form>
-
               </CardBody>
             </Card>
           </ModalBody>
           <ModalFooter>
             <Button color="success" onClick={this.wrapperFunction}>{this.props.nameButtonAccept}</Button>{' '}
-            
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>

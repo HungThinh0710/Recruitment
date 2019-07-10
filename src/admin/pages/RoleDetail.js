@@ -41,7 +41,6 @@ export default class RoleDetail extends Component {
   }
   async componentWillMount(){
     const {id} = this.props.match.params;
-    //const {firstName, lastName, email} = this.state;
     var url = 'http://api.enclavei3dev.tk/api/role/'+id;
     const data = await fetch(url, {
       headers:{

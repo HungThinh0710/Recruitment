@@ -27,7 +27,7 @@ export default class ModalRemoveItem extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Are you sure to delete this role ?</ModalHeader>
           <ModalBody>
-           Id : {this.props.id} 
+           Id : {this.props.item.id} 
           </ModalBody>
           <ModalBody>
            Role : {this.props.item.name}
