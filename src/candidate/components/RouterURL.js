@@ -21,7 +21,7 @@ class RouterURL extends Component {
                 <div className="ml-auto">
                   <NavLink to={"#"} className="btn btn-primary border-width-2 d-none d-lg-inline-block"><span className="mr-2 icon-paper-plane" />Contact Us</NavLink>
                 </div>
-                <NavLink to={"#"} className="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span className="icon-menu h3 m-0 p-0 mt-2" /></NavLink>
+                <NavLink to={"#"} className="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><nav className="icon-menu h3 m-0 p-0 mt-2" /></NavLink>
               </div>
             </div>
             
