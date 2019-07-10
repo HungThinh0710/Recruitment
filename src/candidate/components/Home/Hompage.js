@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import RouterURL from '../RouterURL';
 import './homepage.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
 import careerdata from '../data/careerdata.json';
 export default class Homepage extends Component {
   render() {
     return (
       <section id="Home">
-        <div className="site-wrap">
-
+        <div className="site-wrap" >
           <div className="site-mobile-menu site-navbar-target">
             <div className="site-mobile-menu-header">
               <div className="site-mobile-menu-close mt-3">
@@ -21,7 +20,7 @@ export default class Homepage extends Component {
           {/* NAVBAR */}
           <header className="site-navbar mt-3">
             <div className="container">
-              <div class="collapse navbar-collapse" id="navbarResponsive"></div>
+             
               <RouterURL />
             </div>
           </header>
@@ -64,7 +63,7 @@ export default class Homepage extends Component {
               </div>
             </div>
           </section>
-          <section className="site-section">
+          <section className="site-section" id="jobjob">
             <div className="container">
               <div className="row mb-5 justify-content-center">
                 <div className="col-md-7 text-center">
@@ -88,25 +87,26 @@ export default class Homepage extends Component {
               <p>
 
               </p>
-              {careerdata.map((p, index) => {
-                return <div className="mb-1">
-                  <div className="row align-items-start job-item border pb-1 mb-1 pt-1">
-                    <div className="col-md-2">
-                      <NavLink to={"/describe"} key={index}><img src={p.img} alt="Image" className="img-fluid" /></NavLink>
-                    </div>
-                    <div className="col-md-4">
-                      <span className={p.color}>{p.position}</span>
-                      <h2><NavLink to={"/describe"} key={index}>{p.name}</NavLink></h2>
-                      <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
-                    </div>
-                    <div className="col-md-3 text-center">
-                      <h3>{p.namelocal}</h3>
-                      <span className="meta">{p.local}</span>
-                    </div>
-                    <div className="col-md-3 text-md-right">
-                      <strong className="text-black">{p.salary}</strong>
-                    </div>
+              {careerdata.map((p, index)=> { 
+                return <div pid={p.id} className="mb-1">
+                    <div className="row align-items-start job-item border pb-1 mb-1 pt-1">
+                  <div className="col-md-2">
+                  <NavLink to={"/describe"} key={index}><img src={p.img} alt="Image" className="img-fluid" /></NavLink>
                   </div>
+                  <div className="col-md-4">
+                    <span className={p.color}>{p.position}</span>
+                    <h2><Link to={"/describe/" + this.props.match.params.pid} key={index}>{p.name}</Link></h2>
+                    
+                    <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
+                  </div>
+                  <div className="col-md-3 text-center justify-content-center align-items-center">
+                    <h3>{p.namelocal}</h3>
+                    <span className="meta">{p.local}</span>
+                  </div>
+                  <div className="col-md-3 text-md-right justify-content-center">
+                    <strong className="text-black">{p.salary}</strong>
+                  </div>
+                </div>
                 </div>
               })}
               <div className="row pagination-wrap">
