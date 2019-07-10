@@ -4,6 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody,
   import './ModalConfirmPassword.css';
   import '../pages/RolesPage.css'
 import CollapsePermission from '../components/CollapsePermission';
+
 export default class ModalAddRole extends Component {
   constructor(props) {
     super(props);
