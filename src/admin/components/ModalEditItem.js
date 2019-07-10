@@ -127,7 +127,6 @@ export default class ModalEditItem extends Component {
                 delete e.created_at;
                 delete e.updated_at;
                 delete e.pivot;
-                
               })
               this.props.function(data.permissions,itemName);
             })

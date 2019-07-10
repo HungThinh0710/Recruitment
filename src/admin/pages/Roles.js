@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Card, CardBody, CardHeader , Button} from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ModalRemoveItem from '../components/ModalRemoveItem';
-import ModalEditItem from '../components/ModalEditItem';
 import ModalAddRole from '../components/ModalAddRole';
 import {Link} from 'react-router-dom';
 import './RolesPage.css';
@@ -40,7 +39,6 @@ export default class Roles extends Component {
     };
   }
   async componentWillMount(){
-    const {listId}= this.state;
     var url = 'http://api.enclavei3dev.tk/api/role';
     const data = await fetch(url, {
       headers:{
@@ -61,7 +59,6 @@ export default class Roles extends Component {
   componentDidMount(){
     
     const {rows} = this.state;
-    var i=0;
     rows.map(e => {
       let url = '/admin/role/'+e.id;
       return  e.action = <div  className="action">
@@ -75,10 +72,8 @@ export default class Roles extends Component {
 
   componentDidUpdate(){
     const {rows} = this.state;
-    var i=0;
     rows.map(e => {
       let url = '/admin/role/'+e.id;
-      i++;
       return  e.action = <div  className="action">
               <Link to={url} >
               <Button color='primary'>View</Button>
