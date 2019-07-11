@@ -3,6 +3,7 @@ import GAListener from './admin/components/GAListener';
 import { EmptyLayout, LayoutRoute, MainLayout } from './admin/components/Layout';
 
 // page
+import TestPage from './admin/pages/TestPage';
 import UsersPage from './admin/pages/UsersPage';
 import RoleDetail from './admin/pages/RoleDetail';
 import Roles from './admin/pages/Roles';
@@ -43,6 +44,14 @@ class App extends React.Component {
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
+          <LayoutRoute 
+
+            exact
+            path={"/admin/test"}
+            layout={MainLayout}
+            component={TestPage}
+
+            />
             <LayoutRoute 
 
               exact

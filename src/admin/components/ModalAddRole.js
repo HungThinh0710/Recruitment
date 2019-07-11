@@ -141,7 +141,7 @@ export default class ModalAddRole extends Component {
   
   render() {
     return (
-      <div>
+      <div style={this.props.style}>
           <Button color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} >
           <ModalHeader toggle={this.toggle} >Add A New</ModalHeader>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, CardBody, CardHeader , Button} from 'reactstrap';
-import { MDBDataTable } from 'mdbreact';
+import { MDBTable, MDBTableBody, MDBTableHead,MDBDataTable  } from 'mdbreact';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalAddRole from '../components/ModalAddRole';
 import {Link} from 'react-router-dom';
@@ -27,7 +27,7 @@ export default class Roles extends Component {
         },
         {
           label: 'Role',
-          field: 'role',
+          field: 'name',
           sort: 'asc'
         },
         {
@@ -52,13 +52,7 @@ export default class Roles extends Component {
       delete e.created_at;
       delete e.updated_at;
     })
-    this.setState({
-      rows: data.data
-    })
-  }
-  componentDidMount(){
-    
-    const {rows} = this.state;
+    var rows = data.data;
     rows.map(e => {
       let url = '/admin/role/'+e.id;
       return  e.action = <div  className="action">
@@ -67,8 +61,24 @@ export default class Roles extends Component {
               </Link>
               <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
     </div>})
-   
+    this.setState({
+      rows: rows
+    })
   }
+  // componentDidMount(){
+    
+  //   const {rows} = this.state;
+  //   rows.map(e => {
+  //     let url = '/admin/role/'+e.id;
+  //   //   return  e.action = <div  className="action">
+  //   //           <Link to={url} >
+  //   //           <Button color='primary'>View</Button>
+  //   //           </Link>
+  //   //           <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
+  //   // </div>})
+  //   return e.action ='abcd'
+  //   })
+  // }
 
   componentDidUpdate(){
     const {rows} = this.state;
@@ -80,6 +90,7 @@ export default class Roles extends Component {
               </Link>
               <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
     </div>})
+
   }
 
     addRole(rows) {
@@ -115,17 +126,20 @@ export default class Roles extends Component {
     }
   
   render() {
+    const {columns,rows} = this.state;
+    console.log(this.state)
     return (
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
       <CardBody>
-      <ModalAddRole  color='success' buttonLabel='Add New Role' nameButtonAccept='Add' function={this.addRole.bind(this)} />
-      <MDBDataTable id="table"
-      striped
+      <ModalAddRole  style={{marginBottom:'5%'}} color='warning' buttonLabel='Add New Role' nameButtonAccept='Add' function={this.addRole.bind(this)} />
+      <MDBTable responsive striped
       bordered
-      hover
-      data={this.state}
-    />
+      hover>
+      <MDBTableHead style={{backgroundColor:'#1ec223',color:'white '}} columns={columns}/>
+      <MDBTableBody rows={rows} />
+      </MDBTable>
+
     </CardBody>
         </Card> 
     )

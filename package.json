@@ -29,6 +29,7 @@
     "react-scripts": "3.0.1",
     "react-simple-maps": "^0.12.1",
     "react-sizeme": "^2.5.2",
+    "react-table": "^6.10.0",
     "reactstrap": "^7.1.0",
     "victory": "^32.0.0"
   },
