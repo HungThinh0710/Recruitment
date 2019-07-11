@@ -15,7 +15,7 @@ import ChangeProfilePage from './admin/pages/ChangeProfilePage';
 import ChangeAccountPage from './admin/pages/ChangeAccountPage';
 import React from 'react';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Redirect, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './admin/styles/reduction.scss';
 import Homepage from './candidate/components/Home/Hompage';
 import Careers from './candidate/components/Career/Careers';
@@ -114,10 +114,10 @@ class App extends React.Component {
 
             {/* <Redirect to="/" /> */}
             <Route path="/" component={Homepage} exact />
-            <Route path="/home" component={Homepage} exact />
-            <Route path="/careers" component={Careers} exact />
-            <Route path="/about" component={About} exact />
-            <Route path="/describe" component={Career1} exact />
+            <Route path="/home" component={Homepage} />
+            <Route path="/careers" component={Careers} />
+            <Route path="/about" component={About} />
+            <Route path="/describe/:id" component={Career1} />
           </Switch>
         </GAListener>
       </BrowserRouter>

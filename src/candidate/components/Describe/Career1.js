@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
 import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalFooter } from 'reactstrap';
 import './Career1.css';
 import Footer from '../Footer';
-import careerdata from '../data/careerdata.json';
-import describe from '../data/describe.json';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
@@ -89,12 +87,12 @@ export default class Careers extends Component {
                       <Modal isOpen={this.state.modalisOpen}
                         toggle={this.toggleModal.bind(this)} className={this.props.className} external={externalCloseBtn}
                       >
+                        <p></p>
                         <h3 className="modal-title" id="myModallabel">Application form</h3>
                         <Applyform />
                         <ModalFooter>
-                          <Button type="submit" color="info" className="primary" onClick={this.toggleModal.bind(this)}>Apply for job</Button>{' '}
+                          <Button type="submit" color="info" className="primary ml-auto" onClick={this.toggleModal.bind(this)}>Apply</Button>{' '}
                           <Button type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
-                          <small>Ready have a new job?</small>
                         </ModalFooter>
                       </Modal>
                     </div>

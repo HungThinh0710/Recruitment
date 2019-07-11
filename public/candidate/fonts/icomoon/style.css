@@ -3850,6 +3850,7 @@
   content: "\e322";
 }
 .icon-menu:before {
+  padding-left: 130%;
   content: "\e5d2";
 }
 .icon-message:before {
