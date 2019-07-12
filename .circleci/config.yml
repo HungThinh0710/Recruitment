@@ -9,10 +9,10 @@ jobs:
       
       - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
           fingerprints:
-            - "84:f6:98:9e:c2:b1:3c:0d:39:ff:96:df:a1:6f:e4:80"
+            - "72:14:ea:79:61:df:a6:51:07:e3:2c:88:27:eb:b4:3f"
       - run:
-            name: fix host authenticity for dev server
-            command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
+            name: fix host authenticity for production server
+            command: ssh-keyscan 168.63.251.210 >> ~/.ssh/known_hosts
       
      
         # Download and cache dependencies
@@ -22,7 +22,7 @@ jobs:
           # fallback to using the latest cache if no exact match is found
          # - v1-dependencies-
       - run:
-          name: Yarn install
+          name: Install npm
           #command: npm install
           command: yarn install
           
@@ -57,16 +57,16 @@ jobs:
       - run:
             #Update for config server-dev-02072019
             name: SCP code to server
-            command: scp -r frontend.tar.gz hungthinh@13.76.3.251:~/
+            command: scp -r frontend.tar.gz hungthinh@168.63.251.210:~/
       - run:
             #Update for config server-dev-02072019
             name: deploy to server
             command: |
-              ssh -tt hungthinh@13.76.3.251 <<EOF
+              ssh -tt hungthinh@168.63.251.210 <<EOF
                 sudo su
-                cd enclavei3dev.tk/public_html/
+                cd enclavei3.tk/public_html/
                 sudo rm -rf *
-                mv ../../hungthinh/frontend.tar.gz /home/enclavei3dev.tk/public_html
+                mv ../../hungthinh/frontend.tar.gz /home/enclavei3.tk/public_html
                 tar xf frontend.tar.gz
                 rm -rf frontend.tar.gz
                 exit
