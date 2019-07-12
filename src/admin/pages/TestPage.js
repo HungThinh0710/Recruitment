@@ -39,7 +39,7 @@ export default class Roles extends Component {
     };
   }
   async componentWillMount(){
-    var url = 'http://api.enclavei3dev.tk/api/role';
+    var url = 'http://api.enclavei3.tk/api/role';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export default class Roles extends Component {
       
      let {rows} = this.state;
      const index = rows.indexOf(element);
-     var url = 'http://api.enclavei3dev.tk/api/role'; 
+     var url = 'http://api.enclavei3.tk/api/role'; 
      fetch(url, {
       method: 'DELETE', 
       body: JSON.stringify({

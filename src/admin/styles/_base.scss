@@ -10,6 +10,7 @@ h4,
 h5,
 h6,
 p,
+a,
 td,
 button,
 .h1,
@@ -25,12 +26,6 @@ button,
 .navbar,
 .brand,
 .alert {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: $font-weight-normal;
-}
-a {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;

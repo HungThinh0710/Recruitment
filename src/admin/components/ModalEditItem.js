@@ -47,7 +47,7 @@ export default class ModalEditItem extends Component {
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.permissions.columns;
     let list = this.state.listChecked;
-    var url = 'http://api.enclavei3dev.tk/api/permission';
+    var url = 'http://api.enclavei3.tk/api/permission';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export default class ModalEditItem extends Component {
     const {itemName,listChecked} = this.state;
     const {id} = this.props;
     const list = listChecked.toString();
-    var url = 'http://api.enclavei3dev.tk/api/role/'+id; 
+    var url = 'http://api.enclavei3.tk/api/role/'+id; 
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({

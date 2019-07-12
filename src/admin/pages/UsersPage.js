@@ -30,7 +30,7 @@ export default class UsersPage extends Component {
   }
   
   async componentWillMount(){
-    var url = 'http://api.enclavei3dev.tk/api/user?page=1';
+    var url = 'http://api.enclavei3.tk/api/user?page=1';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export default class UsersPage extends Component {
   edit(index){
     $('.item').removeClass('item-active');
     $('#'+index).addClass('item-active');
-    var url = 'http://api.enclavei3dev.tk/api/user?page='+index;
+    var url = 'http://api.enclavei3.tk/api/user?page='+index;
     fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default class UsersPage extends Component {
       
     let {data,totalPage} = this.state;
     const index = data.indexOf(element);
-    var url = 'http://api.enclavei3dev.tk/api/user'; 
+    var url = 'http://api.enclavei3.tk/api/user'; 
     fetch(url, {
      method: 'DELETE', 
      body: JSON.stringify({
@@ -101,7 +101,7 @@ export default class UsersPage extends Component {
     //  })
     if (res.status === 200) {
       res.json().then(data =>{
-        fetch('http://api.enclavei3dev.tk/api/user?page=1', {
+        fetch('http://api.enclavei3.tk/api/user?page=1', {
           headers:{
             'Content-Type': 'application/json',
             'Accept' : 'application/json',
