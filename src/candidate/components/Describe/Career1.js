@@ -44,7 +44,7 @@ export default class Careers extends Component {
           <RouterURL />
         </header>
         <div>
-          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }} id="career1">
+          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/back2.png")' }} id="career1">
             <div className="container">
               <div className="row">
                 <div className="col-md-7">
@@ -91,8 +91,8 @@ export default class Careers extends Component {
                         <h3 className="modal-title" id="myModallabel">Application form</h3>
                         <Applyform />
                         <ModalFooter>
-                          <Button type="submit" color="info" className="primary ml-auto" onClick={this.toggleModal.bind(this)}>Apply</Button>{' '}
-                          <Button type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
+                          <Button id="abc" type="submit" color="info" className="primary ml-auto" onClick={this.toggleModal.bind(this)}>Apply</Button>{' '}
+                          <Button id="abc" type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
                         </ModalFooter>
                       </Modal>
                     </div>

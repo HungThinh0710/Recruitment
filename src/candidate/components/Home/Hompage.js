@@ -19,14 +19,14 @@ export default class Homepage extends Component {
           </div> {/* .site-mobile-menu */}
           {/* NAVBAR */}
           <header className="site-navbar mt-3">
-            <div className="container">
+            <div className="container-fluid">
              
               <RouterURL />
             </div>
           </header>
 
           {/* HOME */}
-          <section className="home-section section-hero overlay bg-image" style={{ backgroundImage: 'url("candidate/images/hero_1.jpg")' }} id="home-section">
+          <section className="home-section section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("candidate/images/back2.png")' }} id="home-section">
             <div className="container">
               <div className="row align-items-center justify-content-center">
                 <div className="col-md-12">
