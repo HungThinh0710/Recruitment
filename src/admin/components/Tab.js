@@ -33,7 +33,7 @@ export default class Tab extends Component {
   handleSubmit = () => {
 
     const {fullname,email,phone,address} = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/profile';
+    var url = 'http://api.enclavei3.tk/api/profile';
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -47,7 +47,11 @@ export default class Tab extends Component {
         'Accept' : 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
-    }).then(res => res.json())
+    }).then(res => {
+      res.json().then(data => {
+        this.props.function(fullname,email,phone,address);
+      })
+    })
     .catch(error => console.error('Error:', error))
     }
 

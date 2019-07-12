@@ -36,7 +36,7 @@ export default class LoginPage extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const { username, password } = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/login';
+    var url = 'http://api.enclavei3.tk/api/login';
   
     fetch(url, {
       method: 'POST', 
