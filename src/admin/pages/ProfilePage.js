@@ -2,10 +2,10 @@
 import React, { Component } from 'react'
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button,Row,Col,Container } from 'reactstrap';
-
+  import { IconWidget, NumberWidget } from '../components/Widget';
 import {Redirect, Link } from 'react-router-dom';
 import './ProfilePage.css';
-
+import Tab from '../components/Tab';
 export default class ProfilePage extends Component {
   constructor(props) {
     super(props);
@@ -51,15 +51,72 @@ export default class ProfilePage extends Component {
 //}
 
   render() {
-    
+    const {name,fullName,email,phone,address} = this.state;
     return (
       <div className="profile-card">
         <Card className="card-body">
         <CardTitle className="title">My Profile</CardTitle>
         <CardBody >
+          <Container style={{marginTop:'5%'}}>
           <Row>
-            <Col-2>
+            <Col xs="4">
+            <img className="avatar" src="https://loremflickr.com/320/240" alt="Card image cap" />
+            </Col>
+            <Col xs="auto">
+            </Col>
+            <Col xs="6">
+            <div className="persional-title">
+              <h4 style={{fontSize:'250%'}}>{this.state.fullName}</h4>
+              <h6 style={{color:'green'}}>Admin Of Enclave Recruitment System</h6>
+            </div>
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col xs="4">
+            <hr />
+            <br />
+            <NumberWidget
+              title="Total Article"
+              subtitle="This month"
+              number="500"
+              color="success"
+              progress={{
+                value: 75,
+                label: 'Last month',
+              }}
             
+            />
+            <br />
+            <NumberWidget
+              title="Total Candidate"
+              subtitle="This month"
+              number="9.8k"
+              color="warning"
+              progress={{
+                value: 80,
+                label: 'Last month',
+              }}
+              
+            />
+             <br />
+             
+            </Col>
+            <Col xs="auto"></Col>
+            <Col xs="6">
+              <Container>
+                <Row>
+                  <Tab name={name} fullName={fullName} phone={phone} email={email} address={address} />
+                </Row>
+              </Container>    
+            </Col>
+
+          </Row>
+          </Container>
+          {/* <Container style={{marginTop:'5%'}}>
+          <Row>
+            <Col></Col>
+            <Col-2>
             <div className="job-profile"> 
             <img className="avatar" src="https://loremflickr.com/320/240" alt="Card image cap" />
             <div className="job-profile-information">
@@ -82,6 +139,7 @@ export default class ProfilePage extends Component {
               <h5>Name:</h5>
               <h5>Fullname:</h5>
               <h5>Address:</h5>
+              <br/>
               <h5>Phone:</h5>
               <h5>Image:</h5>
             </div>
@@ -106,6 +164,8 @@ export default class ProfilePage extends Component {
             
           
           </Row>
+          </Container> */}
+          
         </CardBody>
       </Card>
       </div>

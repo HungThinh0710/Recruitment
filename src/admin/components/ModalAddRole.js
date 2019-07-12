@@ -1,39 +1,39 @@
 import React, { Component } from 'react'
-import { Button, Modal, ModalHeader, ModalBody, 
+import { Button,Modal, ModalHeader, ModalBody, 
   ModalFooter,Card,CardBody,FormGroup,Form,Label,Input } from 'reactstrap';
   import './ModalConfirmPassword.css';
   import '../pages/RolesPage.css'
 import CollapsePermission from '../components/CollapsePermission';
-
+import { MDBBtn } from "mdbreact";
 export default class ModalAddRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
       permissions : {
-        columns: [
-        {
-          label: 'Id',
-          field: 'id',
-          sort: 'asc',
-          width: 100
+          columns: [
+          {
+            label: 'Id',
+            field: 'id',
+            sort: 'asc',
+            width: 100
+          },
+          {
+            label: 'Name',
+            field: 'name',
+            sort: 'asc',
+            width: 300
+          },
+          {
+            label: 'Action',
+            field: 'action',
+            sort: 'asc',
+            width: 100
+          }
+          ],
+        rows : []
         },
-        {
-          label: 'Name',
-          field: 'name',
-          sort: 'asc',
-          width: 300
-        },
-        {
-          label: 'Action',
-          field: 'action',
-          sort: 'asc',
-          width: 100
-        }
-        ],
-      rows : []
-      },
-      itemId:'',
+        itemId:'',
       itemName: '',
       listChecked : []
     };
@@ -110,7 +110,7 @@ export default class ModalAddRole extends Component {
       }
       if (res.status === 200) {
         res.json().then(data =>{
-          fetch(url, {
+          fetch('http://api.enclavei3dev.tk/api/role?page=1', {
             headers:{
               'Content-Type': 'application/json',
               'Accept' : 'application/json',
@@ -124,7 +124,8 @@ export default class ModalAddRole extends Component {
                 delete e.updated_at;
                 // delete e.id;
               })
-              this.props.function(data.data);
+              console.log(data)
+              this.props.function(data);
             })
           }) 
         })
@@ -141,8 +142,9 @@ export default class ModalAddRole extends Component {
   
   render() {
     return (
-      <div style={this.props.style}>
-          <Button color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button>
+      <div >
+        <MDBBtn style={{marginLeft:'6.2%',marginBottom:'5%',border:'none',color:'white'}} onClick={this.toggle} rounded color='success'>{this.props.buttonLabel}</MDBBtn>
+          {/* <Button style={{marginLeft:'6.2%',marginBottom:'5%'}} color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
         <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} >
           <ModalHeader toggle={this.toggle} >Add A New</ModalHeader>
           <ModalBody>
