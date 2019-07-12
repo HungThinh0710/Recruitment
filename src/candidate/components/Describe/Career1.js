@@ -91,8 +91,8 @@ export default class Careers extends Component {
                         <h3 className="modal-title" id="myModallabel">Application form</h3>
                         <Applyform />
                         <ModalFooter>
-                          <Button type="submit" color="info" className="primary ml-auto" onClick={this.toggleModal.bind(this)}>Apply</Button>{' '}
-                          <Button type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
+                          <Button id="abc" type="submit" color="info" className="primary ml-auto" onClick={this.toggleModal.bind(this)}>Apply</Button>{' '}
+                          <Button id="abc" type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
                         </ModalFooter>
                       </Modal>
                     </div>
