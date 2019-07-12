@@ -44,7 +44,7 @@ export default class Careers extends Component {
           <RouterURL />
         </header>
         <div>
-          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }} id="career1">
+          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/back2.png")' }} id="career1">
             <div className="container">
               <div className="row">
                 <div className="col-md-7">
