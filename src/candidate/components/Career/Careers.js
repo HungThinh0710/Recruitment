@@ -5,30 +5,9 @@ import RouterURL from '../RouterURL';
 import './career.css';
 import Footer from '../Footer';
 import careerdata from '../data/careerdata.json';
-import axios from 'axios';
 
 export default class Careers extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      jobOpening: []
-    }
-  }
-  componentDidMount(){
-    
-  }
   render() {
-    axios({
-      method: 'GET',
-      url: 'http://api.enclavei3dev.tk/api/job',
-      data: null
-    }).then(res => {
-      console.log(res);
-      jobOpening = this.data;
-    }).catch(err => {
-      console.log(err);
-    })
-    const {jobOpening} =this.state;
     return ( 
     <div className="site-wrap">
         <div className="site-mobile-menu site-navbar-target">
@@ -46,7 +25,7 @@ export default class Careers extends Component {
           </div>
         </header>
         {/* HOME */}
-        <section className="home-section section-hero inner-page overlay bg-image" style={{ backgroundImage: 'url("/candidate/images/back2.png")' }} id="career">
+        <section className="home-section section-hero inner-page overlay bg-image" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }} id="career">
           <div className="container">
             <div className="row align-items-center justify-content-center">
               <div className="col-md-12">
@@ -128,7 +107,7 @@ export default class Careers extends Component {
         </section>
         <Footer />
       </div>
-
+      
     )
   }
 }

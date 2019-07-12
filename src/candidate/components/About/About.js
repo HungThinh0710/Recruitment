@@ -22,7 +22,7 @@ export default class About extends Component {
               <RouterURL />
             </div>
           </header>
-          <section className="home-section section-hero inner-page overlay bg-image" style={{ backgroundImage: 'url("/candidate/images/back2.png")' }} id="about">
+          <section className="home-section section-hero inner-page overlay bg-image" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }} id="about">
             <div className="container">
               <div className="row align-items-center justify-content-center">
                 <div className="col-md-12">

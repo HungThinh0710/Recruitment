@@ -22,7 +22,6 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-top: -40px;
 }
 
 .icon-asterisk:before {
@@ -230,15 +229,6 @@
   content: "\f03d";
 }
 .icon-image:before {
-  text-transform: none;
-  text-align: center;
-  position: fixed;
-  content: "\2261"; /* Hamburger icon */
-  text-indent: 0;
-  
-  width: 100%; 
-  left: 0;
-  top: 0;
   content: "\f03e";
 }
 .icon-photo:before {
@@ -3860,12 +3850,7 @@
   content: "\e322";
 }
 .icon-menu:before {
-  height: 24;
-  width: 28px;
-  /* position: absolute; */
-  text-indent: 0;
-  right: 15px;
-  top: 18px;
+  padding-left: 130%;
   content: "\e5d2";
 }
 .icon-message:before {

@@ -257,7 +257,7 @@ textarea.form-control {
 
 .form-inline {
   display: flex;
-  // flex-flow: row wrap;
+  flex-flow: row wrap;
   align-items: center; // Prevent shorter elements from growing to same height as others (e.g., small buttons growing to normal sized button height)
 
   // Because we use flex, the initial sizing of checkboxes is collapsed and

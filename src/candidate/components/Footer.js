@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
-import '../components/Footer/footer.css';
 export default class Footer extends Component {
   render() {
     return (
@@ -9,7 +8,7 @@ export default class Footer extends Component {
             <div className="container">
               <div class="row">
                 <div class="col-md-12 py-1">
-                  <div class="mb-5 flex-center footer-social" id="fixa">
+                  <div class="mb-5 flex-center footer-social">
                     <h5>Contact us: &nbsp;</h5>
                     <NavLink to={"#"}><span className="icon-facebook" /></NavLink>
                     <NavLink to={"#"}><span className="icon-twitter" /></NavLink>

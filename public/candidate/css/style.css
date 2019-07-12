@@ -7,22 +7,18 @@
   top: 2rem; }
   .site-navbar .container-fluid {
     padding-left: 7rem;
-    padding-right: 7rem; 
-  }
+    padding-right: 7rem; }
     @media (max-width: 1199.98px) {
       .site-navbar .container-fluid {
         padding-left: 15px;
-        padding-right: 15px; 
-        position: absolute;
-        margin-top: 0px;} }
+        padding-right: 15px; } }
   .site-navbar .site-logo {
     position: absolute;
     left: 5%; }
     @media (max-width: 767.98px) {
       .site-navbar .site-logo {
         position: relative;
-        left: auto;
-        top: 0px; } }
+        left: auto; } }
     .site-navbar .site-logo a {
       color: #fff;
       font-size: 1.5rem;
@@ -865,7 +861,7 @@ h1, h2, h3, h4 {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(45, 51, 51, 0.77); }
+    background: rgba(0, 0, 0, 0.5); }
 
 .section-hero.overlay-2:before {
   background: rgba(125, 131, 132, 0.95); }
@@ -1371,8 +1367,7 @@ h1, h2, h3, h4 {
     color: #fff;
     -webkit-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%); 
-    margin-top: 0px;}
+    transform: translate(-50%, -50%); }
   .footer-social a:hover, .social a:hover {
     background: #fff; }
     .footer-social a:hover span, .social a:hover span {
@@ -1668,3 +1663,6 @@ h1, h2, h3, h4 {
   color: #b5b5b5; }
   .job-item .meta strong {
     color: #3c3c3c; }
+    .active1 {
+      color: white !important
+    }
