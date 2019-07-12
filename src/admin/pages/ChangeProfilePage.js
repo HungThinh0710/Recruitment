@@ -9,7 +9,7 @@ import {
   Form,
 
   FormGroup,
-
+  Button,
   Input,
   Label,
 } from 'reactstrap';
@@ -18,69 +18,99 @@ import ButtonReset from '../components/ButtonReset';
 import HeaderForm from '../components/Layout/HeaderForm';
 import './ChangeProfilePage.css';
 
-export default class ProfilePage extends Component {
+export default class ChangeProfilePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        fullname: '',
+        email: '',
+        phone: '',
+        address: ''
+    }
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+  handleSubmit = () => {
+
+    const {fullname,email,phone,address} = this.state;
+    var url = 'http://api.enclavei3dev.tk/api/profile';
+    fetch(url, {
+      method: 'PUT', 
+      body: JSON.stringify({
+        fullname: fullname,
+        email: email,
+        phone: phone,
+        address: address
+      }), 
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+      }
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    }
+    // console.log(data);  
+    // this.setState({
+    //   name : data.name,
+    //   fullName: data.fullname,
+    //   email: data.email,
+    //   phone: data.phone,
+    //   address: data.address,
+    //   image: data.image
+    // })       
 
   render() {
     
     return (
-      <Card className="change-profile-card">
+      <Card className="change-profile-card" style={{marginBottom:'18%'}}>
             <HeaderForm url='/admin/profile'>Change Profile Information</HeaderForm>
             <CardBody>
-              <Form id="profile-form">
+              <Form id="profile-form" onSubmit={this.handleSubmit}>
               <FormGroup>
                   <Label for="exampleName">Fullname</Label>
                   <Input
                     type="text"
-                    name="fullname"
-                    placeholder="Elva"
+                    name='fullname'
+                    value={this.state.fullname}
+                    onChange={this.handleChange}
                   />
               </FormGroup>
               <FormGroup>
-                  <Label for="exampleNumber">Age</Label>
+                  <Label for="exampleEmail">Email</Label>
                   <Input
-                    type="number"
-                    name="age"
-                    placeholder="18"
-                  />
-              </FormGroup>
-               <FormGroup>
-                  <Label for="exampleDate">Date Of Birth</Label>
-                  <Input
-                    type="date"
-                    name="date"
-                    id="exampleDate"
-                    placeholder="23/05/2000"
+                    type="email"
+                    name='email'
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                    
                   />
                 </FormGroup>
+               
                 <FormGroup>
                   <Label for="exampleAddress">Address</Label>
                   <Input
                     type="text"
-                    name="address"
-                    placeholder="25 Hill Street"
+                    name='address'
+                    value={this.state.address}
+                    onChange={this.handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label for="examplePhone">Phone</Label>
                   <Input
                     type="text"
-                    name="phone"
-                    placeholder="89049594"
+                    name='phone'
+                    value={this.state.phone}
+                    onChange={this.handleChange}
                   />
                 </FormGroup>
-
-               
-               <FormGroup>
-                  <Label for="exampleEmail">Email</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="Briana.Stiedemann44@gmail.com"
-                  />
-                </FormGroup>
-               
-                
-                <FormGroup>
+{/* 
+                {/* <FormGroup>
                   <Label for="exampleJob">Job : Recruitment Manage</Label>
                 </FormGroup>
                 <FormGroup>
@@ -90,10 +120,11 @@ export default class ProfilePage extends Component {
                 <FormGroup>
                   <Label for="exampleFile">Update My Avatar</Label>
                   <Input type="file" name="file" />
-                </FormGroup>
+                </FormGroup> */}
                 <FormGroup className="change-profile-buttons">
                   <ButtonReset idForm='profile-form' />
-                  <Modal title="Profile" url="/admin/profile">Save</Modal>
+                  <Modal title="Profile" url="/admin/profile" function={this.handleSubmit}>Save</Modal> 
+                  {/* <Button color='success' onClick={this.handleSubmit}>Save</Button> */}
                   
                 </FormGroup>
               </Form>

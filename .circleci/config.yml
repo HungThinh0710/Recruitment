@@ -11,7 +11,7 @@ jobs:
           fingerprints:
             - "84:f6:98:9e:c2:b1:3c:0d:39:ff:96:df:a1:6f:e4:80"
       - run:
-            name: fix host authenticity for production server
+            name: fix host authenticity for dev server
             command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
       
      
@@ -22,7 +22,7 @@ jobs:
           # fallback to using the latest cache if no exact match is found
          # - v1-dependencies-
       - run:
-          name: Install npm
+          name: Yarn install
           #command: npm install
           command: yarn install
           
@@ -81,3 +81,4 @@ workflows:
               only: 
               - master
               - dev
+

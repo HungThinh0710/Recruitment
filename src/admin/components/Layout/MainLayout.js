@@ -31,7 +31,7 @@ class MainLayout extends React.Component {
 
       this.notificationSystem.addNotification({
         title: <MdImportantDevices />,
-        message: 'Welome to EnclaveAdmin!',
+        message: 'Welcome to Dashboard, Admin!',
         level: 'info',
       });
     }, 1500);
@@ -44,7 +44,7 @@ class MainLayout extends React.Component {
       this.notificationSystem.addNotification({
         title: <MdLoyalty />,
         message:
-          'Enclaveis carefully designed template powered by React and Bootstrap4!',
+          'Have a nice day !!!',
         level: 'info',
       });
     }, 2500);

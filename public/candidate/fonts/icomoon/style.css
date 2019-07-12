@@ -3860,12 +3860,16 @@
   content: "\e322";
 }
 .icon-menu:before {
+<<<<<<< HEAD
   height: 24;
   width: 28px;
   /* position: absolute; */
   text-indent: 0;
   right: 15px;
   top: 18px;
+=======
+  padding-left: 130%;
+>>>>>>> 40ffd9e0a44f555e0a700c05dfc531f0048ff608
   content: "\e5d2";
 }
 .icon-message:before {

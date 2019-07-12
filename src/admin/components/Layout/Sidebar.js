@@ -4,26 +4,7 @@ import SourceLink from '../../components/SourceLink';
 import React from 'react';
 import {
   MdAccountCircle,
-  MdArrowDropDownCircle,
-  MdBorderAll,
-  MdBrush,
-  MdChromeReaderMode,
-  MdDashboard,
-  MdExtension,
-  MdGroupWork,
-  MdInsertChart,
-  MdKeyboardArrowDown,
-  MdNotificationsActive,
-  MdPages,
-  MdRadioButtonChecked,
-  MdSend,
-  MdStar,
-  MdTextFields,
-  MdViewCarousel,
-  MdViewDay,
-  MdViewList,
-  MdWeb,
-  MdWidgets,
+  MdDashboard
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -82,7 +63,8 @@ const sidebarBackground = {
 
 const navItems = [
   { to: '/admin/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
-  { to: '/admin/roles', name: 'roles', exact: false, Icon: MdAccountCircle },
+  { to: '/admin/role', name: 'roles', exact: true, Icon: MdAccountCircle },
+  { to: '/admin/user', name: 'users', exact: true, Icon: MdAccountCircle}
   // { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
   // { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
   // { to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
@@ -116,14 +98,10 @@ class Sidebar extends React.Component {
             <SourceLink className="navbar-brand d-flex">
               <img
                 src={logo200Image}
-                width="40"
-                height="30"
+                width='100%'
                 className="pr-2"
                 alt=""
               />
-              <span className="text-white">
-                Enclave
-              </span>
             </SourceLink>
           </Navbar>
           <Nav vertical>

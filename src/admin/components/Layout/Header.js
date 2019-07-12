@@ -1,7 +1,6 @@
 import Avatar from '../../components/Avatar';
 import { UserCard } from '../../components/Card';
 import Notifications from '../../components/Notifications';
-import SearchInput from '../../components/SearchInput';
 import { notificationsData } from '../../demos/header';
 import withBadge from '../../hocs/withBadge';
 import React from 'react';
@@ -53,10 +52,28 @@ class Header extends React.Component {
       isOpenNotificationPopover: false,
       isNotificationConfirmed: false,
       isOpenUserCardPopover: false,
-      redirect: false
+      redirect: false,
+        name: '',
+        email: '' ,
+        image: ''
     };
   }
-  
+  async componentWillMount(){
+    //const {firstName, lastName, email} = this.state;
+    var url = 'http://api.enclavei3dev.tk/api/current-profile';
+    const data = await fetch(url, {
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+      }
+    }).then(res => res.json())   
+    this.setState({
+      name : data.name,
+      email: data.email,
+      image: data.image
+    })       
+  }
 
   toggleNotificationPopover = () => {
     this.setState({
@@ -98,16 +115,12 @@ class Header extends React.Component {
     const { isNotificationConfirmed } = this.state;
 
     return (
-      <Navbar light expand className={bem.b('bg-white')}>
+      <Navbar light expand className={bem.b('bg-white')}> 
         <Nav navbar className="mr-2">
           <Button outline onClick={this.handleSidebarControlButton}>
             <MdClearAll size={25} />
           </Button>
         </Nav>
-        <Nav navbar>
-          <SearchInput />
-        </Nav>
-
         <Nav navbar className={bem.e('nav-right')}>
           <NavItem className="d-inline-flex">
             <NavLink id="Popover1" className="position-relative">
@@ -154,9 +167,9 @@ class Header extends React.Component {
             >
               <PopoverBody className="p-0 border-light">
                 <UserCard
-                  title="Jane"
-                  subtitle="jane@jane.com"
-                  text="Last updated 3 mins ago"
+                  title={this.state.name}
+                  subtitle={this.state.email}
+                  // text="Last updated 3 mins ago"
                   className="border-light"
                 >
                   <ListGroup flush>
