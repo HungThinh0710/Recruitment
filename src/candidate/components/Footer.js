@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import RouterURL from './RouterURL';
+import {NavLink} from 'react-router-dom';
+import '../components/Footer/footer.css';
 export default class Footer extends Component {
   render() {
     return (
+      <div>
         <footer className="page-footer font-small grey darken-3 py-1">
             <div className="container">
               <div class="row">
                 <div class="col-md-12 py-1">
-                  <div class="mb-5 flex-center footer-social">
+                  <div class="mb-5 flex-center footer-social" id="fixa">
                     <h5>Contact us: &nbsp;</h5>
-                    <a href="#"><span className="icon-facebook" /></a>
-                    <a href="#"><span className="icon-twitter" /></a>
-                    <a href="#"><span className="icon-instagram" /></a>
-                    <a href="#"><span className="icon-skype" /></a>
+                    <NavLink to={"#"}><span className="icon-facebook" /></NavLink>
+                    <NavLink to={"#"}><span className="icon-twitter" /></NavLink>
+                    <NavLink to={"#"}><span className="icon-instagram" /></NavLink>
+                    <NavLink to={"#"}><span className="icon-skype" /></NavLink>
                   </div>
                 </div>
               </div>
@@ -21,6 +23,7 @@ export default class Footer extends Component {
             </div>
             </div>
           </footer>
+          </div>
     )
   }
 }

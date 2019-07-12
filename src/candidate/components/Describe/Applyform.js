@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Container, Button, Alert, Modal, ModalBody, ModalFooter, Form} from 'react-bootstrap';
-import ModalHeader from 'react-bootstrap/Modal';
+import { ModalBody, Form} from 'react-bootstrap';
 import './applyform.css';
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -35,6 +34,9 @@ class Applyform extends Component{
       modalisOpen: false,
       description: null,
       technical: null,
+      Nodejs: false,
+      dotnet: false,
+      java: false,
       formErrors: {
         fullName: "",
         address: "",
@@ -42,7 +44,9 @@ class Applyform extends Component{
         phone: "",
         file: "",
         description: "",
-        technical: ""
+        technical: "",
+        Nodejs: "",
+
       }
     };
   }
@@ -67,9 +71,11 @@ class Applyform extends Component{
   handleChange = e => {
     e.preventDefault();
     
-    const { name, value } = e.target;
+    const { name } = e.target;
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     let formErrors = { ...this.state.formErrors };
- 
+    
     switch (name) {
       case "fullName":
         formErrors.fullName =
@@ -222,7 +228,25 @@ class Applyform extends Component{
                 <span className="errorMessage">{formErrors.technical}</span>
               )}
             </Form.Group>
+            <Form.Group>
+              <div className="checkbox">
+                <label>
+                  <input checked={this.state.Nodejs} onChange={this.handleChange} name="Nodejs" type="checkbox" /> Node JS
+                </label>
+              </div>
             
+              <div className="checkbox">
+                <label>
+                  <input checked={this.state.dotnet} onChange={this.handleChange} name="dotnet" type="checkbox" /> Node JS
+                </label>
+              </div>
+            
+              <div className="checkbox">
+                <label>
+                  <input checked={this.state.java} onChange={this.handleChange} name="java" type="checkbox" /> Node JS
+                </label>
+              </div>
+            </Form.Group>
             
           </Form>
           </ModalBody>

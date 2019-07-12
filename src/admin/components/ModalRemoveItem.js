@@ -23,14 +23,14 @@ export default class ModalRemoveItem extends Component {
   render() {
     return (
       <div>
-       <Button color="danger" className='button-first' onClick={this.toggle}>{this.props.buttonLabel}</Button>
+       <Button className='button-delete' onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Are you sure to delete this role ?</ModalHeader>
           <ModalBody>
-           Role : {this.props.item.role} 
+           Id : {this.props.item.id} 
           </ModalBody>
           <ModalBody>
-           Permission : {this.props.item.permission}
+           Role : {this.props.item.name}
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.wrapperFunction}>Yes, I'm sure</Button>{' '}

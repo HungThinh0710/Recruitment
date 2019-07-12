@@ -1,4 +1,4 @@
-ul#nav li {
+ul#nav li Navlink {
 
     /* 8px padding top + 8px padding bottom + 32px line-height = 48px */
     position: relative;
@@ -25,3 +25,45 @@ ul#nav li .smoothscroll:focus { color: #fff;
     -o-transform: scale(1.5);
     /* IE 9 */
     -ms-transform: scale(1.5);}
+      @media only screen and (min-width: 768px) {
+        header.masthead .page-heading,
+        header.masthead .post-heading,
+        header.masthead .site-heading {
+          padding: 200px 0;
+        }
+      }
+      @media only screen and (min-width: 768px) {
+        header.masthead .page-heading h1,
+        header.masthead .site-heading h1 {
+          font-size: 80px;
+        }
+      }
+      @media only screen and (min-width: 768px) {
+        .post-preview > a > .post-title {
+          font-size: 36px;
+        }
+      }
+      
+      @media only screen and (max-width: 767px) {
+        header.masthead .page-heading,
+        header.masthead .post-heading,
+        header#myTopnav {
+          padding: 80px 0;
+        }
+      }
+      @media only screen and (max-width: 767px) {
+        header.masthead .page-heading h1,
+        header#myTopnav li {
+          font-size: 30px;
+        }
+      }
+      @media only screen and (max-width: 767px) {
+        .post-preview > a > .post-title {
+          font-size: 15px;
+        }
+      }
+      .nav-brand {
+        margin: 0;
+      }
+      
+  

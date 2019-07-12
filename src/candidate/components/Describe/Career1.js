@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import RouterURL from './RouterURL';
+
+import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalFooter } from 'reactstrap';
 import './Career1.css';
-import Footer from './Footer';
+import Footer from '../Footer';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +44,7 @@ export default class Careers extends Component {
           <RouterURL />
         </header>
         <div>
-          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }} id="home-section">
+          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/back2.png")' }} id="career1">
             <div className="container">
               <div className="row">
                 <div className="col-md-7">
@@ -87,19 +87,20 @@ export default class Careers extends Component {
                       <Modal isOpen={this.state.modalisOpen}
                         toggle={this.toggleModal.bind(this)} className={this.props.className} external={externalCloseBtn}
                       >
+                        <p></p>
                         <h3 className="modal-title" id="myModallabel">Application form</h3>
                         <Applyform />
                         <ModalFooter>
-                          <Button type="submit" color="info" className="primary" onClick={this.toggleModal.bind(this)}>Apply for job</Button>{' '}
-                          <Button type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
-                          <small>Ready have a new job?</small>
+                          <Button id="abc" type="submit" color="info" className="primary ml-auto" onClick={this.toggleModal.bind(this)}>Apply</Button>{' '}
+                          <Button id="abc" type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
                         </ModalFooter>
                       </Modal>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="row">
+              
+                 <div className="row">
                 <div className="col-lg-8">
                   <div className="mb-5">
                     <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded" /></figure>
@@ -187,6 +188,8 @@ export default class Careers extends Component {
                   </div>
                 </div>
               </div>
+             
+              
             </div>
           </section>
           <Footer/>

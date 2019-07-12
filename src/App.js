@@ -3,7 +3,10 @@ import GAListener from './admin/components/GAListener';
 import { EmptyLayout, LayoutRoute, MainLayout } from './admin/components/Layout';
 
 // page
-import RolesPage from './admin/pages/RolesPage';
+import TestPage from './admin/pages/TestPage';
+import UsersPage from './admin/pages/UsersPage';
+import RoleDetail from './admin/pages/RoleDetail';
+import Roles from './admin/pages/Roles';
 import LoginPage from './admin/pages/LoginPage'
 import DashboardPage from './admin/pages/DashboardPage';
 import ProfilePage from './admin/pages/ProfilePage';
@@ -12,12 +15,12 @@ import ChangeProfilePage from './admin/pages/ChangeProfilePage';
 import ChangeAccountPage from './admin/pages/ChangeAccountPage';
 import React from 'react';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Redirect, Switch,Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './admin/styles/reduction.scss';
-import Homepage from './candidate/components/Hompage';
-import Careers from './candidate//components/Careers';
-import About from './candidate//components/About';
-import Career1 from './candidate//components/Career1'; 
+import Homepage from './candidate/components/Home/Hompage';
+import Careers from './candidate/components/Career/Careers';
+import About from './candidate/components/About/About';
+import Career1 from './candidate/components/Describe/Career1';
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
 };
@@ -25,7 +28,7 @@ const getBasename = () => {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       hasToken: false,
       path: '/login'
     }
@@ -41,12 +44,42 @@ class App extends React.Component {
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
+          {/* <LayoutRoute 
+
+            exact
+            path={"/admin/test"}
+            layout={MainLayout}
+            component={TestPage}
+
+            /> */}
+            <LayoutRoute 
+
+              exact
+              path={"/admin/role/:id"}
+              layout={MainLayout}
+              component={RoleDetail}
+              
+            />
+            <LayoutRoute 
+              exact
+              path={"/admin/role"}
+              layout={MainLayout}
+              component={Roles}
+              
+            />
+            <LayoutRoute 
+              exact
+              path={"/admin/user"}
+              layout={MainLayout}
+              component={UsersPage}
+              
+            />
             <LayoutRoute 
               exact
               path={"/admin"}
               layout={EmptyLayout}
               component={LoginPage}
-              
+
             />
             <LayoutRoute
               exact
@@ -78,19 +111,13 @@ class App extends React.Component {
               layout={MainLayout}
               component={ChangeAccountPage}
             />
-            <LayoutRoute
-              exact
-              path="/admin/roles"
-              layout={MainLayout}
-              component={RolesPage}
-            />
-        
+
             {/* <Redirect to="/" /> */}
-            <Route path="/" component={Homepage} exact/>
-            <Route path="/home" component={Homepage} exact/>
-        <Route path="/careers" component={Careers} exact />
-        <Route path="/about" component={About} exact/>
-        <Route path="/describe" component={Career1} exact />
+            <Route path="/" component={Homepage} exact />
+            <Route path="/home" component={Homepage} />
+            <Route path="/careers" component={Careers} />
+            <Route path="/about" component={About} />
+            <Route path="/describe/:id" component={Career1} />
           </Switch>
         </GAListener>
       </BrowserRouter>

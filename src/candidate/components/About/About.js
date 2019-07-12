@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import RouterURL from './RouterURL';
+import RouterURL from '../RouterURL';
 import './about.css';
-import Footer from './Footer';
+import Footer from '../Footer';
+import {Link} from 'react-router-dom';
 export default class About extends Component {
   render() {
     return (
@@ -21,7 +22,7 @@ export default class About extends Component {
               <RouterURL />
             </div>
           </header>
-          <section className="home-section section-hero inner-page overlay bg-image" style={{ backgroundImage: 'url("/candidate/images/hero_1.jpg")' }} id="about">
+          <section className="home-section section-hero inner-page overlay bg-image" style={{ backgroundImage: 'url("/candidate/images/back2.png")' }} id="about">
             <div className="container">
               <div className="row align-items-center justify-content-center">
                 <div className="col-md-12">
@@ -68,10 +69,10 @@ export default class About extends Component {
                     dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae voluptatibus ut? Ex vel ad
             explicabo iure ipsa possimus consectetur neque rem molestiae eligendi velit?.</p>
                   <div className="social mt-4">
-                    <a href="#"><span className="icon-facebook" /></a>
-                    <a href="#"><span className="icon-twitter" /></a>
-                    <a href="#"><span className="icon-instagram" /></a>
-                    <a href="#"><span className="icon-linkedin" /></a>
+                    <Link to={"#"}><span className="icon-facebook" /></Link>
+                    <Link to={"#"}><span className="icon-twitter" /></Link>
+                    <Link to={"#"}><span className="icon-instagram" /></Link>
+                    <Link to={"#"}><span className="icon-linkedin" /></Link>
                   </div>
                 </div>
                 <div className="col-md-6 order-md-2">
@@ -82,10 +83,10 @@ export default class About extends Component {
                     dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae voluptatibus ut? Ex vel ad
             explicabo iure ipsa possimus consectetur neque rem molestiae eligendi velit?.</p>
                   <div className="social mt-4">
-                    <a href="#"><span className="icon-facebook" /></a>
-                    <a href="#"><span className="icon-twitter" /></a>
-                    <a href="#"><span className="icon-instagram" /></a>
-                    <a href="#"><span className="icon-linkedin" /></a>
+                    <Link to={"#"}><span className="icon-facebook" /></Link>
+                    <Link to={"#"}><span className="icon-twitter" /></Link>
+                    <Link to={"#"}><span className="icon-instagram" /></Link>
+                    <Link to={"#"}><span className="icon-linkedin" /></Link>
                   </div>
                 </div>
               </div>
@@ -93,7 +94,6 @@ export default class About extends Component {
           <Footer />
         </div>
       </section>
-
     )
   }
 }

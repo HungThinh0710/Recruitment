@@ -4,6 +4,7 @@
   "private": false,
   "homepage": "/",
   "dependencies": {
+    "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "chart.js": "2.7.2",
     "classnames": "^2.2.6",
@@ -23,16 +24,20 @@
     "react-icons": "^3.5.0",
     "react-infinite-calendar": "^2.3.1",
     "react-jquery-datatables": "^1.0.0",
+    "react-js-pagination": "^3.0.2",
     "react-notification-system": "^0.2.17",
+    "react-paginate": "^6.3.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "3.0.1",
     "react-simple-maps": "^0.12.1",
     "react-sizeme": "^2.5.2",
+    "react-table": "^6.10.0",
     "reactstrap": "^7.1.0",
     "victory": "^32.0.0"
   },
   "devDependencies": {
+    "babel-plugin-react-html-attrs": "^2.1.0",
     "gh-pages": "^1.2.0",
     "node-sass": "^4.11.0",
     "react-scripts": "^3.0.1",
@@ -56,5 +61,21 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "plugins": [
+    "react-html-attrs"
+  ],
+  "rules": {
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": [
+          "Link"
+        ],
+        "specialLink": [
+          "to"
+        ]
+      }
+    ]
+  }
 }

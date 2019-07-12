@@ -67,7 +67,7 @@ export default class ChangeProfilePage extends Component {
   render() {
     
     return (
-      <Card className="change-profile-card">
+      <Card className="change-profile-card" style={{marginBottom:'18%'}}>
             <HeaderForm url='/admin/profile'>Change Profile Information</HeaderForm>
             <CardBody>
               <Form id="profile-form" onSubmit={this.handleSubmit}>
@@ -76,7 +76,6 @@ export default class ChangeProfilePage extends Component {
                   <Input
                     type="text"
                     name='fullname'
-                    placeholder="Elva"
                     value={this.state.fullname}
                     onChange={this.handleChange}
                   />
@@ -86,7 +85,6 @@ export default class ChangeProfilePage extends Component {
                   <Input
                     type="email"
                     name='email'
-                    placeholder="Briana.Stiedemann44@gmail.com"
                     value={this.state.email}
                     onChange={this.handleChange}
                     
@@ -98,7 +96,6 @@ export default class ChangeProfilePage extends Component {
                   <Input
                     type="text"
                     name='address'
-                    placeholder="25 Hill Street"
                     value={this.state.address}
                     onChange={this.handleChange}
                   />
@@ -108,12 +105,11 @@ export default class ChangeProfilePage extends Component {
                   <Input
                     type="text"
                     name='phone'
-                    placeholder="89049594"
                     value={this.state.phone}
                     onChange={this.handleChange}
                   />
                 </FormGroup>
-
+{/* 
                 {/* <FormGroup>
                   <Label for="exampleJob">Job : Recruitment Manage</Label>
                 </FormGroup>

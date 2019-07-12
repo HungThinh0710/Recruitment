@@ -19,3 +19,15 @@ h3 {
  justify-content: center;
  align-items: center;
  }
+ #career1 {
+   background-position: 0px 0px;
+ }
+ #myModallabel {
+  z-index: auto;
+  font-size: 45px;
+ }
+ #abc {
+    text-align:center;
+    width: 100%;
+ } 
+ 
