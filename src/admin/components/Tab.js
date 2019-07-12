@@ -47,7 +47,11 @@ export default class Tab extends Component {
         'Accept' : 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
-    }).then(res => res.json())
+    }).then(res => {
+      res.json().then(data => {
+        this.props.function(fullname,email,phone,address);
+      })
+    })
     .catch(error => console.error('Error:', error))
     }
 

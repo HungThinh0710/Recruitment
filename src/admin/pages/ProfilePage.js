@@ -38,6 +38,14 @@ export default class ProfilePage extends Component {
     })       
   }
   
+  changeProfile(fullName,email,phone,address) {
+    this.setState({
+      fullName:fullName,
+      email: email,
+      phone: phone,
+      address: address
+    })
+  }
     // fetch('https://cool-demo-api.herokuapp.com/api/v1/engineers/1').then(response => {
     //   response.json().then(data => {
     //     const {firstName, lastName, email} = data;
@@ -106,7 +114,7 @@ export default class ProfilePage extends Component {
             <Col xs="6">
               <Container>
                 <Row>
-                  <Tab name={name} fullName={fullName} phone={phone} email={email} address={address} />
+                  <Tab name={name} fullName={fullName} phone={phone} email={email} address={address} function={this.changeProfile.bind(this)} />
                 </Row>
               </Container>    
             </Col>
