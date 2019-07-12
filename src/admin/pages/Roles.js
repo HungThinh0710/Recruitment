@@ -122,8 +122,7 @@ export default class Roles extends Component {
       })
     }
    })
-    
-   }
+  }
   render() {
     const {totalPage} = this.state;
     console.log(totalPage);
