@@ -26,7 +26,7 @@ export default class Homepage extends Component {
           </header>
 
           {/* HOME */}
-          <section className="home-section section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("candidate/images/back2.png")' }} id="home-section">
+          <section className="home-section section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("candidate/images/back5.jpg")' }} id="home-section">
             <div className="container">
               <div className="row align-items-center justify-content-center">
                 <div className="col-md-12">
@@ -55,7 +55,7 @@ export default class Homepage extends Component {
                         </select>
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                        <button type="submit" className="btn btn-primary btn-lg btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search Job</button>
+                        <button type="submit" className="btn btn-success btn-lg btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search Job</button>
                       </div>
                     </div>
                   </form>
