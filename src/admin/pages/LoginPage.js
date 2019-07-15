@@ -78,7 +78,7 @@ export default class LoginPage extends React.Component {
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to='/admin/dashboard' />
+      return <Redirect to='/admin/role' />
     }
   }
 
