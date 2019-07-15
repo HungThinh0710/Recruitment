@@ -19,7 +19,7 @@
   border-radius: 3%;
   align-self: center;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1024px) {
   .form-login {
     width: 70%;
   }
