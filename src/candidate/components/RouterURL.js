@@ -10,7 +10,7 @@ class RouterURL extends Component {
               <div className="site-logo col-6"><NavLink to="/"><img src="/candidate/images/EnclaveLogo.png" className="icon-image" width="200px" style={{marginTop: -40}}/></NavLink></div>
               <nav role="full-horizontal" className="mx-auto site-navigation" id="myTopnav">
                 <ul className="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-                  <li className="navbar-item"><NavLink to={"/home"} exact className="smoothscroll">Home</NavLink></li>
+                  <li className="navbar-item"><NavLink to={"/"} exact className="smoothscroll">Home</NavLink></li>
                   <li className="navbar-item"><NavLink to={"/careers"} className="smoothscroll">Job Opening</NavLink></li>
                   <li className="navbar-item"><NavLink to={"/about"} className="smoothscroll">About</NavLink></li>
                   <li><a href="#jobjob">Services</a></li>
