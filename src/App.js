@@ -114,7 +114,6 @@ class App extends React.Component {
 
             {/* <Redirect to="/" /> */}
             <Route path="/" component={Homepage} exact />
-            <Route path="/home" component={Homepage} />
             <Route path="/careers" component={Careers} />
             <Route path="/about" component={About} />
             <Route path="/describe/:id" component={Career1} />
