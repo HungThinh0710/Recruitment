@@ -228,25 +228,6 @@ class Applyform extends Component{
                 <span className="errorMessage">{formErrors.technical}</span>
               )}
             </Form.Group>
-            <Form.Group>
-              <div className="checkbox">
-                <label>
-                  <input checked={this.state.Nodejs} onChange={this.handleChange} name="Nodejs" type="checkbox" /> Node JS
-                </label>
-              </div>
-            
-              <div className="checkbox">
-                <label>
-                  <input checked={this.state.dotnet} onChange={this.handleChange} name="dotnet" type="checkbox" /> Node JS
-                </label>
-              </div>
-            
-              <div className="checkbox">
-                <label>
-                  <input checked={this.state.java} onChange={this.handleChange} name="java" type="checkbox" /> Node JS
-                </label>
-              </div>
-            </Form.Group>
             
           </Form>
           </ModalBody>
