@@ -20,7 +20,7 @@ export default class Careers extends Component {
   render() {
     axios({
       method: 'GET',
-      url: 'http://api.enclavei3dev.tk/api/job',
+      url: 'http://api.enclavei3.tk/api/job',
       data: null
     }).then(res => {
       console.log(res);

@@ -6,7 +6,6 @@ import {Redirect} from 'react-router-dom';
 import './LoginPage.css';
 const style = {
     width: '30%',
-    height: '57%',
     backgroundColor: 'white',
     padding: '2%',
     borderRadius: '3%',
