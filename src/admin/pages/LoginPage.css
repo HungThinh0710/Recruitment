@@ -12,3 +12,15 @@
 .btn-login:hover {
   background: rgb(1, 194, 1) !important;
 }
+.form-login {
+  width: 30%;
+  background-color: white;
+  padding: 2%;
+  border-radius: 3%;
+  align-self: center;
+}
+@media screen and (max-width: 800px) {
+  .form-login {
+    width: 70%;
+  }
+}
