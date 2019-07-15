@@ -9,7 +9,7 @@ const Footer = () => {
     <Navbar>
       <Nav navbar>
         <NavItem>
-          {/* 2018 Enclavetheme, source on <SourceLink>Github</SourceLink> */}
+          2019 Summer Internship Program, designed by Team 3
         </NavItem>
       </Nav>
     </Navbar>

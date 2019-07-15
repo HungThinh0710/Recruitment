@@ -1,9 +1,8 @@
 
 import React, { Component } from 'react'
-import { Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button,Row,Col,Container } from 'reactstrap';
-  import { IconWidget, NumberWidget } from '../components/Widget';
-import {Redirect, Link } from 'react-router-dom';
+import { Card,CardBody,
+  CardTitle, Row,Col,Container } from 'reactstrap';
+  import {  NumberWidget } from '../components/Widget';
 import './ProfilePage.css';
 import Tab from '../components/Tab';
 export default class ProfilePage extends Component {
@@ -68,7 +67,7 @@ export default class ProfilePage extends Component {
           <Container style={{marginTop:'5%'}}>
           <Row>
             <Col xs="4">
-            <img className="avatar" src="https://loremflickr.com/320/240" alt="Card image cap" />
+            <img className="avatar" src="/static/media/100_3.6e25d86d.jpg" alt="Card image cap" />
             </Col>
             <Col xs="auto">
             </Col>
