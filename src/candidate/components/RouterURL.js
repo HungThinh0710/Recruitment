@@ -11,10 +11,6 @@ class RouterURL extends Component {
               <nav role="full-horizontal" className="mx-auto site-navigation" id="myTopnav">
                 <ul className="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
                   <li className="navbar-item"><NavLink to={"/"} exact className="smoothscroll">Home</NavLink></li>
-                  <li className="navbar-item"><NavLink to={"/careers"} className="smoothscroll">Job Opening</NavLink></li>
-                  <li className="navbar-item"><NavLink to={"/about"} className="smoothscroll">About</NavLink></li>
-                  <li><a href="#jobjob">Services</a></li>
-                  <li><Link to={"#"}>Apply</Link></li>
                   <li className="d-lg-none"><Link to={"#"}>Contact Us</Link></li>
                 </ul>
               </nav>
