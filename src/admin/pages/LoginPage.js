@@ -4,13 +4,7 @@ import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import {Redirect} from 'react-router-dom';
 import './LoginPage.css';
-const style = {
-    width: '30%',
-    backgroundColor: 'white',
-    padding: '2%',
-    borderRadius: '3%',
-    alignSelf: 'center'
-}
+
 const stl = {
   color :'red'
 }
@@ -92,7 +86,7 @@ export default class LoginPage extends React.Component {
     } = this.props;
 
     return (
-      <Form style={style} onSubmit={this.handleSubmit}>
+      <Form className='form-login' onSubmit={this.handleSubmit}>
         {showLogo && (
           <div className="text-center pb-4" style={{marginBottom:'5%'}}>
             <img
