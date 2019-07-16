@@ -46,7 +46,7 @@ export default class Careers extends Component {
           </div>
         </header>
         {/* HOME */}
-        <section className="home-section section-hero inner-page overlay bg-image" style={{ backgroundImage: 'url("/candidate/images/back5.jpg")' }} id="career">
+        <section className="home-section section-hero inner-page overlay bg-image" style={{ backgroundImage: 'url("/candidate/images/back6.jpg")' }} id="career">
           <div className="container">
             <div className="row align-items-center justify-content-center">
               <div className="col-md-12">

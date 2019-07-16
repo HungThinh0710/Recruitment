@@ -26,7 +26,7 @@ export default class Homepage extends Component {
           </header>
 
           {/* HOME */}
-          <section className="home-section section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("candidate/images/back5.jpg")' }} id="home-section">
+          <section className="home-section section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("candidate/images/back6.jpg")' }} id="home-section">
             <div className="container">
               <div className="row align-items-center justify-content-center">
                 <div className="col-md-12">
