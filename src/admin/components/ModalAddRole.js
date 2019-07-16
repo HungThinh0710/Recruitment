@@ -87,13 +87,12 @@ export default class ModalAddRole extends Component {
 
   addItem(){
     const {itemName,listChecked} = this.state;
-    const list = listChecked.toString();
     var url = 'http://api.enclavei3dev.tk/api/role'; 
     fetch(url, {
       method: 'POST', 
       body: JSON.stringify({
         name: itemName,
-        permissions: list
+        permissions: listChecked
       }), 
       headers:{
         'Content-Type': 'application/json',
