@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Card, CardBody, CardHeader , Button} from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalAddRole from '../components/ModalAddRole';
+import ModalEditItem from '../components/ModalEditItem';
 import {Link} from 'react-router-dom';
 import './RolesPage.css';
-import {MdPageview} from 'react-icons/md';
+import {MdPageview, MdEdit} from 'react-icons/md';
 import $ from 'jquery';
-import Pagination from '../components/Pagination.js'
+import PaginationComponent from '../components/Pagination.js';
 const styleFont = {
   fontSize: '200%',
 };
@@ -23,6 +24,7 @@ export default class Roles extends Component {
     super(props);
     this.state={
       listId:[],
+      itemName:'',
       activePage: 1,
       totalItems:0,
       columns: [
@@ -38,6 +40,7 @@ export default class Roles extends Component {
       ],
       rows: []
     };
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
   async componentWillMount(){
     const {activePage} = this.state;
@@ -67,12 +70,12 @@ export default class Roles extends Component {
     const {rows,listId} = this.state;
     rows.map(e => {
       let url = '/admin/role/'+e.id;
-
       listId.push(e.id);
       var index=listId.indexOf(e.id);
       return  e.action = <div  className="action">
+              <ModalEditItem  id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
               <Link to={url} >
-              <Button color='primary'>View</Button>
+              <Button color='primary'><MdPageview /></Button>
               </Link>
               <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(e,listId[index])}/>
     </div>})
@@ -89,38 +92,38 @@ export default class Roles extends Component {
       let url = '/admin/role/'+e.id;
 
       listId.push(e.id);
-      const index=listId.indexOf(e.id);
+      var index=listId.indexOf(e.id);
       return  e.action = <div  className="action">
+              <ModalEditItem  id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
               <Link to={url} >
               <Button color='primary'><MdPageview /></Button>
               </Link>
-              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(e,listId[index])}/>
+              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
     </div>})
      $(".dataTables_paginate").remove();
      rows.forEach(function(e){
-     
       delete e.id;
     });
 
   }
 
-    addRole(data) {
+  addRole(data) {
       this.setState({
-        rows: data.data
+        rows: data.data,
+        totalItems: data.total
       })
-    }
+  }
 
     
-    
-    removeItem(element,id){
-      
-     let {rows} = this.state;
-     const index = rows.indexOf(element);
+  removeItem(id){
+     const {activePage} = this.state;
+     var array=[];
+     array.push(id);
      var url = 'http://api.enclavei3dev.tk/api/role'; 
      fetch(url, {
       method: 'DELETE', 
       body: JSON.stringify({
-        roles: id
+        roleId: array
       }), 
       headers:{
         'Content-Type': 'application/json',
@@ -128,16 +131,37 @@ export default class Roles extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res =>{
-      rows.splice(index,1);
-      this.setState({
-        rows:rows,
-      })
+      fetch('http://api.enclavei3dev.tk/api/role?page='+activePage, {
+        headers:{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(data =>{
+          data.data.forEach(function(e){
+            delete e.created_at;
+            delete e.updated_at;
+          })
+          
+          this.setState({
+            rows:data.data,
+            totalItems:data.total
+          })
+        })
+      }) 
     })
-     
-    }
+  }
+
+  editRole(rows,name){
+    this.setState({
+      name: name,
+      rows: rows
+    })
+  }
   
-    handlePageChange(pageNumber) {
-      // this.setState({activePage: pageNumber});
+  handlePageChange(pageNumber) {
+      this.setState({activePage: pageNumber});
       var url = 'http://api.enclavei3dev.tk/api/role?page='+pageNumber;
       fetch(url, {
       headers:{
@@ -161,10 +185,7 @@ export default class Roles extends Component {
         })
       })
     }) 
-    
-    
-    $(".dataTables_paginate").remove();
-    }
+  }
 
 
   render() {
@@ -173,7 +194,7 @@ export default class Roles extends Component {
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
       <CardBody>
-      <ModalAddRole  color='success' buttonLabel='Creat a new role' nameButtonAccept='Add' function={this.addRole.bind(this)} />
+      <ModalAddRole  color='warning' buttonLabel='Creat a new role' nameButtonAccept='Add' function={this.addRole.bind(this)} />
       <MDBDataTable id="table"
       striped
       bordered
@@ -182,12 +203,12 @@ export default class Roles extends Component {
       pagination='false'
       
     />
-      <Pagination
+      <PaginationComponent
           activePage={this.state.activePage}
           itemsCountPerPage={10}
           totalItemsCount={totalItems}
           pageRangeDisplayed={5}
-          onChange={this.handlePageChange.bind(this)}
+          onChange={this.handlePageChange}
         />
     </CardBody>
         </Card> 

@@ -141,7 +141,7 @@ export default class ModalAddRole extends Component {
   render() {
     return (
       <div >
-        <MDBBtn style={{marginBottom:'5%',border:'none',color:'white'}} onClick={this.toggle} rounded color='success'>{this.props.buttonLabel}</MDBBtn>
+        <MDBBtn style={{marginBottom:'5%',border:'none'}} onClick={this.toggle} rounded color={this.props.color}>{this.props.buttonLabel}</MDBBtn>
           {/* <Button style={{marginLeft:'6.2%',marginBottom:'5%'}} color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
         <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} >
           <ModalHeader toggle={this.toggle} >Create A New Role</ModalHeader>

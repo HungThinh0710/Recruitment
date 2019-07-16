@@ -92,13 +92,12 @@ export default class ModalEditItem extends Component {
   editItem(){
     const {itemName,listChecked} = this.state;
     const {id} = this.props;
-    const list = listChecked.toString();
     var url = 'http://api.enclavei3dev.tk/api/role/'+id; 
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
         name: itemName,
-        permissions: list
+        permissions: listChecked
       }), 
       headers:{
         'Content-Type': 'application/json',
@@ -162,6 +161,7 @@ export default class ModalEditItem extends Component {
                     name="role"
                     placeholder={this.props.name}
                     onChange = {this.handleChange}
+                    
                   />
                   </FormGroup>
                   <FormGroup >

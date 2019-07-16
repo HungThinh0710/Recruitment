@@ -71,13 +71,11 @@ export default class UsersPage extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
     }).then(res => res.json()) 
-    console.log(data);
     data.data.forEach(function(e) {
       delete e.created_at;
       delete e.updated_at;
       delete e.image;
     })
-    console.log(data);
     this.setState({
       rows: data.data,
       totalItems: data.total
@@ -238,7 +236,7 @@ export default class UsersPage extends Component {
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
       <CardBody>
-      <ModalAddRole  color='success' buttonLabel='Create a new user' nameButtonAccept='Add' function={this.addRole.bind(this)} />
+      <ModalAddRole  color='warning' buttonLabel='Create a new user' nameButtonAccept='Add' function={this.addRole.bind(this)} />
 
       <MDBDataTable id="table"
       striped

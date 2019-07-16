@@ -54,15 +54,6 @@ export default class ChangeProfilePage extends Component {
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     }
-    // console.log(data);  
-    // this.setState({
-    //   name : data.name,
-    //   fullName: data.fullname,
-    //   email: data.email,
-    //   phone: data.phone,
-    //   address: data.address,
-    //   image: data.image
-    // })       
 
   render() {
     
