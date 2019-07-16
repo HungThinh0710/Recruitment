@@ -32,7 +32,7 @@ export default class Homepage extends Component {
                 <div className="col-md-12">
                   <div className="mb-5 text-center">
                     <h1 className="text-white font-weight-bold">Enclave Recruitment</h1>
-                    <p>Find your dream jobs in my company</p>
+                    <p>Find your dream jobs in our company</p>
                   </div>
                   <form method="post" className="search-jobs-form">
                     <div className="row mb-5">
@@ -55,7 +55,7 @@ export default class Homepage extends Component {
                         </select>
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                        <button type="submit" className="btn btn-success btn-lg btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search Job</button>
+                        <button type="submit" className="btn btn-success btn-lg btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search </button>
                       </div>
                     </div>
                   </form>
@@ -88,7 +88,7 @@ export default class Homepage extends Component {
 
               </p>
               {careerdata.map((p, index)=> { 
-                return <div pid={p.id} className="mb-1">
+                return <div pid={p.id} className="mb-1" id="movecenter">
                     <div className="row align-items-start job-item border pb-1 mb-1 pt-1">
                   <div className="col-md-2">
                   <NavLink to={"/describe"} key={index}><img src={p.img} alt="Image" className="img-fluid" /></NavLink>
@@ -103,7 +103,7 @@ export default class Homepage extends Component {
                     <h3>{p.namelocal}</h3>
                     <span className="meta">{p.local}</span>
                   </div>
-                  <div className="col-md-3 text-md-right justify-content-center">
+                  <div className="col-md-3 text-md-center justify-content-center">
                     <strong className="text-black">{p.salary}</strong>
                   </div>
                 </div>
