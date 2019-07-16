@@ -91,6 +91,7 @@ export default class ModalEditItem extends Component {
 
   editItem(){
     const {itemName,listChecked} = this.state;
+    console.log(listChecked);
     const {id} = this.props;
     var url = 'http://api.enclavei3dev.tk/api/role/'+id; 
     fetch(url, {
