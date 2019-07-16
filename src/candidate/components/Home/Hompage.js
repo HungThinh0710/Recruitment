@@ -44,7 +44,6 @@ export default class Homepage extends Component {
                           <option>Anywhere</option>
                           <option>Office 1(453-455 Hoang Dieu)</option>
                           <option>Office 2(117 Nguyen Huu Tho)</option>
-
                         </select>
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
@@ -55,7 +54,7 @@ export default class Homepage extends Component {
                         </select>
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                        <button type="submit" className="btn btn-success btn-lg btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search Job</button>
+                        <button type="submit" className="btn btn-success btn-lg btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search job</button>
                       </div>
                     </div>
                   </form>
