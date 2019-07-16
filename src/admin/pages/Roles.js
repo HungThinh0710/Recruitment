@@ -73,7 +73,7 @@ export default class Roles extends Component {
       listId.push(e.id);
       var index=listId.indexOf(e.id);
       return  e.action = <div  className="action">
-              <ModalEditItem  id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
+              <ModalEditItem  icon id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
               <Link to={url} >
               <Button color='primary'><MdPageview /></Button>
               </Link>
@@ -94,7 +94,7 @@ export default class Roles extends Component {
       listId.push(e.id);
       var index=listId.indexOf(e.id);
       return  e.action = <div  className="action">
-              <ModalEditItem  id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
+              <ModalEditItem icon id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
               <Link to={url} >
               <Button color='primary'><MdPageview /></Button>
               </Link>
@@ -194,7 +194,7 @@ export default class Roles extends Component {
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
       <CardBody>
-      <ModalAddRole  color='warning' buttonLabel='Creat a new role' nameButtonAccept='Add' function={this.addRole.bind(this)} />
+      <ModalAddRole  color='warning' buttonLabel='Create a new role' nameButtonAccept='Add' function={this.addRole.bind(this)} />
       <MDBDataTable id="table"
       striped
       bordered
