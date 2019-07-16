@@ -46,7 +46,7 @@ export default class ModalAddRole extends Component {
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.permissions.columns;
     let list = this.state.listChecked;
-    var url = 'http://api.enclavei3.tk/api/permission';
+    var url = 'http://api.enclavei3dev.tk/api/permission';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export default class ModalAddRole extends Component {
   addItem(){
     const {itemName,listChecked} = this.state;
     const list = listChecked.toString();
-    var url = 'http://api.enclavei3.tk/api/role'; 
+    var url = 'http://api.enclavei3dev.tk/api/role'; 
     fetch(url, {
       method: 'POST', 
       body: JSON.stringify({
@@ -110,7 +110,7 @@ export default class ModalAddRole extends Component {
       }
       if (res.status === 200) {
         res.json().then(data =>{
-          fetch('http://api.enclavei3.tk/api/role?page=1', {
+          fetch('http://api.enclavei3dev.tk/api/role?page=1', {
             headers:{
               'Content-Type': 'application/json',
               'Accept' : 'application/json',
@@ -124,7 +124,6 @@ export default class ModalAddRole extends Component {
                 delete e.updated_at;
                 // delete e.id;
               })
-              console.log(data)
               this.props.function(data);
             })
           }) 
@@ -143,10 +142,10 @@ export default class ModalAddRole extends Component {
   render() {
     return (
       <div >
-        <MDBBtn style={{marginLeft:'6.2%',marginBottom:'5%',border:'none',color:'white'}} onClick={this.toggle} rounded color='success'>{this.props.buttonLabel}</MDBBtn>
+        <MDBBtn style={{marginBottom:'5%',border:'none',color:'white'}} onClick={this.toggle} rounded color='success'>{this.props.buttonLabel}</MDBBtn>
           {/* <Button style={{marginLeft:'6.2%',marginBottom:'5%'}} color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
         <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} >
-          <ModalHeader toggle={this.toggle} >Add A New</ModalHeader>
+          <ModalHeader toggle={this.toggle} >Create A New Role</ModalHeader>
           <ModalBody>
           <Card>
               <CardBody>

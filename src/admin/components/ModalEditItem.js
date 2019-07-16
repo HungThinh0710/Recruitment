@@ -4,7 +4,9 @@ import { Button, Modal, ModalHeader, ModalBody,
 import './ModalConfirmPassword.css';
 import '../pages/RolesPage.css'
 import CollapsePermission from '../components/CollapsePermission';
-
+import {
+  MdEdit
+} from 'react-icons/md';
 export default class ModalEditItem extends Component {
   constructor(props) {
     super(props);
@@ -47,7 +49,7 @@ export default class ModalEditItem extends Component {
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.permissions.columns;
     let list = this.state.listChecked;
-    var url = 'http://api.enclavei3.tk/api/permission';
+    var url = 'http://api.enclavei3dev.tk/api/permission';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -91,7 +93,7 @@ export default class ModalEditItem extends Component {
     const {itemName,listChecked} = this.state;
     const {id} = this.props;
     const list = listChecked.toString();
-    var url = 'http://api.enclavei3.tk/api/role/'+id; 
+    var url = 'http://api.enclavei3dev.tk/api/role/'+id; 
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -145,7 +147,7 @@ export default class ModalEditItem extends Component {
   render() {
     return (
       <div>
-        <Button className='button-first' color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        <Button className='button-first' color={this.props.color} onClick={this.toggle}><MdEdit /></Button>
         <Modal  size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}> Edit Role </ModalHeader>
           <ModalBody>

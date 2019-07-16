@@ -7,6 +7,8 @@
 background: -webkit-linear-gradient(to left,#f12711 #f5af19, #f12711) !important;  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to left, #f5af19, #f12711) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 border: none !important;
+width: 42px;
+height: 38px;
 
 }
 .button-view {
@@ -23,3 +25,4 @@ border: none !important;
     font-size: 50% !important;
   }
 }
+

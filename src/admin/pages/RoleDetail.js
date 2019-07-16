@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ModalEditItem from '../components/ModalEditItem';
+import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
 };
@@ -29,7 +30,7 @@ export default class RoleDetail extends Component {
   }
   async componentWillMount(){
     const {id} = this.props.match.params;
-    var url = 'http://api.enclavei3.tk/api/role/'+id;
+    var url = 'http://api.enclavei3dev.tk/api/role/'+id;
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -48,6 +49,7 @@ export default class RoleDetail extends Component {
       name: data.name,
       rows: data.permissions
     })
+    $(".dataTables_paginate").remove();
   }
 
   editRole(rows,name){

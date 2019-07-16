@@ -44,14 +44,14 @@ class App extends React.Component {
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
-          {/* <LayoutRoute 
+          <LayoutRoute 
 
             exact
             path={"/admin/test"}
             layout={MainLayout}
             component={TestPage}
 
-            /> */}
+            />
             <LayoutRoute 
 
               exact

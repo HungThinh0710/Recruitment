@@ -1,19 +1,18 @@
 import React, { Component } from "react";
 
-
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import {MdPageview} from 'react-icons/md';
 import { Card, CardBody, CardHeader , Button} from 'reactstrap';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import {Link} from 'react-router-dom';
-import { Container, Row, Col } from 'reactstrap';
-import './Roles.css'
+import Pagination from '../components/Pagination.js'
+import { MDBDataTable } from 'mdbreact';
+// import './Roles.css'
 import ModalAddRole from '../components/ModalAddRole';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
 };
 const styleCard = {
-  background:'#eeeeee',
   width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
@@ -23,14 +22,48 @@ export default class UsersPage extends Component {
   constructor(props){
     super(props);
     this.state={
-      data: [],
+      columns: [
+        {
+          label: 'Name',
+          field: 'name',
+          sort: 'asc'
+        },
+        {
+          label: 'Fullname',
+          field: 'fullname',
+          sort: 'asc'
+        },
+        {
+          label: 'Email',
+          field: 'email',
+          sort: 'asc'
+        },
+        {
+          label: 'Phone',
+          field: 'phone',
+          sort: 'asc'
+        },
+        {
+          label: 'Address',
+          field: 'address',
+          sort: 'asc'
+        },
+
+        {
+          label: 'Action',
+          field: 'action',
+        }
+      ],
+      rows: [],
       currentPage : 0,
-      totalPage: 0
+      activePage: 1,
+      totalItems:0,
+      listId: []
     };
   }
   
   async componentWillMount(){
-    var url = 'http://api.enclavei3.tk/api/user?page=1';
+    var url = 'http://api.enclavei3dev.tk/api/user?page=1';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -42,16 +75,89 @@ export default class UsersPage extends Component {
     data.data.forEach(function(e) {
       delete e.created_at;
       delete e.updated_at;
+      delete e.image;
     })
+    console.log(data);
     this.setState({
-      data: data.data,
-      totalPage: Math.ceil(data.total/10)
+      rows: data.data,
+      totalItems: data.total
     })
+    $(".dataTables_paginate").remove();
   }
+
+  componentDidMount(){
+    
+    const {rows,listId} = this.state;
+    rows.map(e => {
+      let url = '/admin/role/'+e.id;
+
+      listId.push(e.id);
+      var index=listId.indexOf(e.id);
+      return  e.action = <div  className="action">
+              <Link to={url} >
+              <Button color='primary'>View</Button>
+              </Link>
+              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(e,listId[index])}/>
+    </div>})
+     $(".dataTables_paginate").remove();
+     rows.forEach(function(e){
+     
+      delete e.id;
+    });
+  }
+
+  componentDidUpdate(){
+    const {rows,listId} = this.state;
+    rows.map(e => {
+      let url = '/admin/role/'+e.id;
+
+      listId.push(e.id);
+      const index=listId.indexOf(e.id);
+      return  e.action = <div  className="action">
+              <Link to={url} >
+              <Button color='primary'><MdPageview /></Button>
+              </Link>
+              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(e,listId[index])}/>
+    </div>})
+     $(".dataTables_paginate").remove();
+     rows.forEach(function(e){
+     
+      delete e.id;
+    });
+
+  }
+
+  handlePageChange(pageNumber) {
+    // this.setState({activePage: pageNumber});
+    var url = 'http://api.enclavei3dev.tk/api/user?page='+pageNumber;
+    fetch(url, {
+    headers:{
+      'Content-Type': 'application/json',
+      'Accept' : 'application/json',
+      'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
+    }
+  }).then(res => {
+    res.json().then(data => {
+  
+      data.data.forEach(function(e) {
+        delete e.created_at;
+        delete e.updated_at;
+      })
+
+      this.setState({
+        currentPage: data.currentPage,
+        totalItems: data.total,
+        rows: data.data,
+        activePage: pageNumber
+      })
+    })
+  }) 
+}
+
   edit(index){
     $('.item').removeClass('item-active');
     $('#'+index).addClass('item-active');
-    var url = 'http://api.enclavei3.tk/api/user?page='+index;
+    var url = 'http://api.enclavei3dev.tk/api/user?page='+index;
     fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -62,7 +168,7 @@ export default class UsersPage extends Component {
       res.json().then(data =>{
           this.setState({
             data: data.data,
-            totalPage: Math.ceil(data.total/10)
+             totalItems: Math.ceil(data.total/10)
           })
       })
     }) 
@@ -71,15 +177,15 @@ export default class UsersPage extends Component {
   addRole(data) {
     this.setState({
       data: data.data,
-      totalPage: Math.ceil(data.total/10)
+       totalItems: Math.ceil(data.total/10)
     })
   }
 
   removeItem(element,id){
       
-    let {data,totalPage} = this.state;
+    let {data, totalItem} = this.state;
     const index = data.indexOf(element);
-    var url = 'http://api.enclavei3.tk/api/user'; 
+    var url = 'http://api.enclavei3dev.tk/api/user'; 
     fetch(url, {
      method: 'DELETE', 
      body: JSON.stringify({
@@ -93,15 +199,15 @@ export default class UsersPage extends Component {
    }).then(res =>{
 
     //  data.splice(index,1);
-    //  if(data.length%10==0) totalPage=totalPage-1;
-    //  else totalPage=totalPage;
+    //  if(data.length%10==0)  totalItem= totalItem-1;
+    //  else  totalItem= totalItem;
     //  this.setState({
     //    data:data,
-    //    totalPage: totalPage
+    //     totalItem:  totalItem
     //  })
     if (res.status === 200) {
       res.json().then(data =>{
-        fetch('http://api.enclavei3.tk/api/user?page=1', {
+        fetch('http://api.enclavei3dev.tk/api/user?page=1', {
           headers:{
             'Content-Type': 'application/json',
             'Accept' : 'application/json',
@@ -115,11 +221,11 @@ export default class UsersPage extends Component {
               delete e.updated_at;
               // delete e.id;
             })
-            if(data.data.length%10==0) totalPage=totalPage-1;
-             else totalPage=totalPage;
+            if(data.data.length%10==0)  totalItem= totalItem-1;
+             else  totalItem= totalItem;
             this.setState({
               data : data.data,
-              totalPage: totalPage
+               totalItem:  totalItem
             })
           })
         }) 
@@ -127,69 +233,27 @@ export default class UsersPage extends Component {
     }
    })
   }
-  render() {
-    const {totalPage} = this.state;
-    console.log(totalPage);
-    var array=[];
-    if(totalPage>1){
-      for (var i=2;i<=totalPage;i++) array.push(i);
-    }
-    
+  render() { 
     return (
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
       <CardBody>
-        <ModalAddRole  color='success' buttonLabel='Add New User' nameButtonAccept='Add' function={this.addRole.bind(this)} />
-        
-        <Container>
-          <Row style={{marginBottom:'3%'}}>
-          <Col xs="4">Name</Col>
-          <Col xs="3">Email</Col>
-          <Col xs="2">Phone</Col>
-          </Row>
-          {this.state.data.map(e=>{
-            let url = '/admin/user/'+e.id;
-             return (<Row className='row-item' key={e.id}>
-              <Col xs="4" style={{display:'flex',flexDirection:'column',justifyContent:'center',fontSize:'100%'}}>{e.name}</Col>
-              <Col xs="3" style={{display:'flex',flexDirection:'column',justifyContent:'center',fontSize:'100%'}}>{e.email}</Col>
-              <Col xs="2" style={{display:'flex',flexDirection:'column',justifyContent:'center',fontSize:'100%'}}>{e.phone}</Col>
-              <Col xs="1" style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
-              <Link to={url} >
-                <Button  className="button-view">View</Button>
-              </Link>
-              </Col>
-              <Col xs="1" style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
-              <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
-              </Col>
-            </Row>)
-          })}
-        </Container>
-       
-        <div style={{marginLeft:'70%'}}>
-            <Pagination   size="lg" aria-label="Page navigation example">
-            <PaginationItem className='item' style={{background:'white'}} >
-              <PaginationLink previous href="#" />
-            </PaginationItem>
-            <PaginationItem  className='item item-active' style={{background:'white'}} key='1' id='1' >
-              <PaginationLink  onClick={()=>this.edit(1)}>
-                1
-              </PaginationLink>
-            </PaginationItem>
-            {(totalPage>1)&&array.map(e => {
-              return (
-                <PaginationItem  className='item' style={{background:'white'}} key={e} id={e} >
-              <PaginationLink  onClick={()=>this.edit(e)}>
-                {e}
-              </PaginationLink>
-            </PaginationItem>
-              )
-            })}
-            <PaginationItem className='item' style={{background:'white'}}>
-              <PaginationLink next href="#" />
-            </PaginationItem>
-            </Pagination>
-        </div>
+      <ModalAddRole  color='success' buttonLabel='Create a new user' nameButtonAccept='Add' function={this.addRole.bind(this)} />
 
+      <MDBDataTable id="table"
+      striped
+      bordered
+      hover
+      data={this.state}
+      
+    />
+        <Pagination
+          activePage={this.state.activePage}
+          itemsCountPerPage={10}
+          totalItemsCount={this.state.totalItems}
+          pageRangeDisplayed={5}
+          onChange={this.handlePageChange.bind(this)}
+        />
         </CardBody>
         </Card> 
     );
