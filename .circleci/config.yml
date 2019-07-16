@@ -63,8 +63,7 @@ jobs:
             command: |
               if [ "${CIRCLE_BRANCH}" == "dev" ]; then
                 ssh -tt hungthinh@13.76.3.251
-                sudo su
-                cd enclavei3dev.tk/public_html/
+                cd ../enclavei3dev.tk/public_html/
                 sudo rm -rf *
                 mv ../../hungthinh/frontend.tar.gz /home/enclavei3dev.tk/public_html
                 tar xf frontend.tar.gz
