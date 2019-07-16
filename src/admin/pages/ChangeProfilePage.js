@@ -37,7 +37,7 @@ export default class ChangeProfilePage extends Component {
   handleSubmit = () => {
 
     const {fullname,email,phone,address} = this.state;
-    var url = 'http://api.enclavei3.tk/api/profile';
+    var url = 'http://api.enclavei3dev.tk/api/profile';
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -54,15 +54,6 @@ export default class ChangeProfilePage extends Component {
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     }
-    // console.log(data);  
-    // this.setState({
-    //   name : data.name,
-    //   fullName: data.fullname,
-    //   email: data.email,
-    //   phone: data.phone,
-    //   address: data.address,
-    //   image: data.image
-    // })       
 
   render() {
     
