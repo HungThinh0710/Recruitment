@@ -62,7 +62,7 @@ jobs:
             name: test deploy to dev server
             command: |
               if [ "${CIRCLE_BRANCH}" == "dev" ]; then
-                ssh -tt hungthinh@13.76.3.251 <<EOF
+                ssh -tt hungthinh@13.76.3.251
                 sudo su
                 cd enclavei3dev.tk/public_html/
                 sudo rm -rf *
