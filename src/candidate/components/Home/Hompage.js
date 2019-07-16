@@ -32,7 +32,7 @@ export default class Homepage extends Component {
                 <div className="col-md-12">
                   <div className="mb-5 text-center">
                     <h1 className="text-white font-weight-bold">Enclave Recruitment</h1>
-                    <p>Find your dream jobs in my company</p>
+                    <p>Find your dream jobs in our company</p>
                   </div>
                   <form method="post" className="search-jobs-form">
                     <div className="row mb-5">
@@ -41,7 +41,7 @@ export default class Homepage extends Component {
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                         <select className="form-control">
-                          <option>Anywhere</option>
+                          <option>All</option>
                           <option>Office 1(453-455 Hoang Dieu)</option>
                           <option>Office 2(117 Nguyen Huu Tho)</option>
 
@@ -49,13 +49,14 @@ export default class Homepage extends Component {
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                         <select className="form-control">
+                          <option>All</option>
                           <option>Part Time</option>
                           <option>Full Time</option>
                           <option>Freelancer</option>
                         </select>
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                        <button type="submit" className="btn btn-success btn-lg btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search Job</button>
+                        <button type="submit" className="btn btn-success btn-lg btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search</button>
                       </div>
                     </div>
                   </form>
