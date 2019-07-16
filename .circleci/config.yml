@@ -9,20 +9,24 @@ jobs:
       
       - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
           fingerprints:
+            - "84:f6:98:9e:c2:b1:3c:0d:39:ff:96:df:a1:6f:e4:80"
+      - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
+          fingerprints:
             - "72:14:ea:79:61:df:a6:51:07:e3:2c:88:27:eb:b4:3f"
       - run:
             name: fix host authenticity for production server
             command: ssh-keyscan 168.63.251.210 >> ~/.ssh/known_hosts
+      - run:
+            name: fix host authenticity for dev server
+            command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
       
      
-        # Download and cache dependencies
-     # - restore_cache:
-       #   keys:
-        #  - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-         # - v1-dependencies-
+          #Download and cache dependencies
+      - restore_cache:
+         keys:
+          - v1-dependencies-{{ checksum "package.json" }}
       - run:
-          name: Install npm
+          name: Yarn install
           #command: npm install
           command: yarn install
           
@@ -36,11 +40,11 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       # run tests!
       - run:
-          name: Build Reactjs with npm
+          name: Build Reactjs with yarn
           #command: CI=false npm test
           command: CI=false yarn build
       - run:
-          name: Find build folder
+          name: List build folder
           #command: CI=false npm test
           command: ls -al
       - run:
@@ -54,23 +58,24 @@ jobs:
           #command: CI=false npm test
           command: ls -al
           
+#       - run:
+#             #Update for config server-dev-02072019
+#             name: SCP code to server
+#             command: scp -r frontend.tar.gz hungthinh@13.76.3.251:~/
       - run:
-            #Update for config server-dev-02072019
-            name: SCP code to server
-            command: scp -r frontend.tar.gz hungthinh@168.63.251.210:~/
-      - run:
-            #Update for config server-dev-02072019
-            name: deploy to server
+            name: Deploy to product
             command: |
-              ssh -tt hungthinh@168.63.251.210 <<EOF
-                sudo su
-                cd enclavei3.tk/public_html/
-                sudo rm -rf *
-                mv ../../hungthinh/frontend.tar.gz /home/enclavei3.tk/public_html
-                tar xf frontend.tar.gz
-                rm -rf frontend.tar.gz
-                exit
-                exit
+              if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                scp -r frontend.tar.gz hungthinh@168.63.251.210:~/
+                ssh -tt hungthinh@168.63.251.210 'cd ../enclavei3.tk/public_html/ && sudo rm -rf * && sudo mv ../../hungthinh/frontend.tar.gz /home/enclavei3.tk/public_html && sudo tar xf frontend.tar.gz && sudo rm -rf frontend.tar.gz && exit && exit'
+              fi
+      - run:
+            name: test deploy to dev server
+            command: |
+              if [ "${CIRCLE_BRANCH}" == "dev" ]; then
+                scp -r frontend.tar.gz hungthinh@13.76.3.251:~/
+                ssh -tt hungthinh@13.76.3.251 'cd ../enclavei3dev.tk/public_html/ && sudo rm -rf * && sudo mv ../../hungthinh/frontend.tar.gz /home/enclavei3dev.tk/public_html && sudo tar xf frontend.tar.gz && sudo rm -rf frontend.tar.gz && exit && exit'
+              fi    
 workflows:
   version: 2
   build:
