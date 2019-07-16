@@ -41,13 +41,14 @@ export default class Homepage extends Component {
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                         <select className="form-control">
-                          <option>Anywhere</option>
+                          <option>All</option>
                           <option>Office 1(453-455 Hoang Dieu)</option>
                           <option>Office 2(117 Nguyen Huu Tho)</option>
                         </select>
                       </div>
                       <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                         <select className="form-control">
+                          <option> All </option>
                           <option>Part Time</option>
                           <option>Full Time</option>
                           <option>Freelancer</option>
