@@ -1,0 +1,84 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:11.10.1
+      #working_directory: ~/repo
+    steps:
+      - checkout
+      
+      - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
+          fingerprints:
+            - "84:f6:98:9e:c2:b1:3c:0d:39:ff:96:df:a1:6f:e4:80"
+      - run:
+            name: fix host authenticity for dev server
+            command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
+      
+     
+        # Download and cache dependencies
+     # - restore_cache:
+       #   keys:
+        #  - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+         # - v1-dependencies-
+      - run:
+          name: Install npm
+          #command: npm install
+          command: yarn install
+          
+      #- run:
+         # name: Fix audi
+        #  command: npm audit fix
+          
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      # run tests!
+      - run:
+          name: Build Reactjs with npm
+          #command: CI=false npm test
+          command: CI=false yarn build
+      - run:
+          name: Find build folder
+          #command: CI=false npm test
+          command: ls -al
+      - run:
+          name: Archive tar folder build
+          #command: CI=false npm test
+          #-C directory/contents/to/be/compressed .
+          #tar -czvf frontend.tar.gz build
+          command: tar -czvf frontend.tar.gz -C build .
+      - run:
+          name: View all folder
+          #command: CI=false npm test
+          command: ls -al
+          
+      - run:
+            #Update for config server-dev-02072019
+            name: SCP code to server
+            command: scp -r frontend.tar.gz hungthinh@13.76.3.251:~/
+      - run:
+            name: test deploy to dev server
+            command: |
+              if [ "${CIRCLE_BRANCH}" == "dev" ]; then
+                ssh -tt hungthinh@13.76.3.251 <<EOF
+                sudo su
+                cd enclavei3dev.tk/public_html/
+                sudo rm -rf *
+                mv ../../hungthinh/frontend.tar.gz /home/enclavei3dev.tk/public_html
+                tar xf frontend.tar.gz
+                rm -rf frontend.tar.gz
+                exit
+                exit
+              fi       
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: 
+              - master
+              - dev
