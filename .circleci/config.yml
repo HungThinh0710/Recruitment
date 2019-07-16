@@ -62,7 +62,7 @@ jobs:
             name: test deploy to dev server
             commands: |
               if [ "${CIRCLE_BRANCH}" == "dev" ]; then
-                ssh -tt hungthinh@13.76.3.251 'cd ../enclavei3dev.tk/public_html/ && sudo rm -rf * && mv ../../hungthinh/frontend.tar.gz /home/enclavei3dev.tk/public_html && tar xf frontend.tar.gz && rm -rf frontend.tar.gz && exit && exit'```
+                ssh -tt hungthinh@13.76.3.251 'cd ../enclavei3dev.tk/public_html/ && sudo rm -rf * && mv ../../hungthinh/frontend.tar.gz /home/enclavei3dev.tk/public_html && tar xf frontend.tar.gz && rm -rf frontend.tar.gz && exit && exit'
               fi       
 workflows:
   version: 2
