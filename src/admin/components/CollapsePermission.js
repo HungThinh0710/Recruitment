@@ -32,10 +32,10 @@ export default class CollapsePermission extends Component {
             hover
             data={this.props.data}
           />
-            <Pagination 
+            {/* <Pagination 
             
             
-            />
+            /> */}
 
             </CardBody>
           </Card>
