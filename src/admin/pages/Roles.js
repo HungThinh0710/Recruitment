@@ -66,7 +66,6 @@ export default class Roles extends Component {
     $(".dataTables_paginate").remove();
   }
   componentDidMount(){
-    
     const {rows,listId} = this.state;
     rows.map(e => {
       let url = '/admin/role/'+e.id;
@@ -85,7 +84,6 @@ export default class Roles extends Component {
       delete e.id;
     });
   }
-
   componentDidUpdate(){
     const {rows,listId} = this.state;
     rows.map(e => {

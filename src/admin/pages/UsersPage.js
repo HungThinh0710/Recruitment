@@ -87,7 +87,7 @@ export default class UsersPage extends Component {
     
     const {rows,listId} = this.state;
     rows.map(e => {
-      let url = '/admin/role/'+e.id;
+      let url = '/admin/user/'+e.id;
 
       listId.push(e.id);
       var index=listId.indexOf(e.id);
@@ -107,7 +107,7 @@ export default class UsersPage extends Component {
   componentDidUpdate(){
     const {rows,listId} = this.state;
     rows.map(e => {
-      let url = '/admin/role/'+e.id;
+      let url = '/admin/user/'+e.id;
 
       listId.push(e.id);
       const index=listId.indexOf(e.id);
