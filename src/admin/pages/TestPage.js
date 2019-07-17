@@ -38,6 +38,9 @@ export default class Roles extends Component {
       ],
       rows: []
     };
+    this.toggle = this.toggle.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   async componentWillMount(){
     const {activePage} = this.state;

@@ -19,3 +19,11 @@
   widows: 80%;
   height: 85%;
 }
+.tabactive {
+  background:green !important;
+  color: white !important;
+}
+.tab-edit{
+  display: flex !important;
+  justify-content: center !important;
+}
