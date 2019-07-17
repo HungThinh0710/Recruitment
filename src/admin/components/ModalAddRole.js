@@ -61,7 +61,6 @@ export default class ModalAddRole extends Component {
       return e.action = <input type='checkbox' onChange={() => handleCheck(e)} />
     })
     function handleCheck(e){
-      String(e.id);
       list.push(e.id);  
     }
     this.setState({
@@ -141,7 +140,7 @@ export default class ModalAddRole extends Component {
   render() {
     return (
       <div >
-        <MDBBtn style={{marginBottom:'5%',border:'none'}} onClick={this.toggle} rounded color={this.props.color}>{this.props.buttonLabel}</MDBBtn>
+        <MDBBtn  onClick={this.toggle} rounded color={this.props.color}>{this.props.buttonLabel}</MDBBtn>
           {/* <Button style={{marginLeft:'6.2%',marginBottom:'5%'}} color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
         <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} >
           <ModalHeader toggle={this.toggle} >Create A New Role</ModalHeader>
@@ -161,7 +160,7 @@ export default class ModalAddRole extends Component {
                   />
                   </FormGroup>
                   <FormGroup >
-                  <CollapsePermission data={this.state.permissions}/>
+                  <CollapsePermission style={{ marginBottom: '1rem', paddingLeft:'42%',paddingRight:'42%' }} name='Permission' data={this.state.permissions}/>
                   </FormGroup>
                 </Form>
               </CardBody>
