@@ -146,7 +146,12 @@ export default class ModalEditItem extends Component {
   render() {
     return (
       <div>
-        <Button className='button-first' color={this.props.color} onClick={this.toggle}><MdEdit /></Button>
+        {this.props.icon ? (
+            <Button className='button-first' color={this.props.color} onClick={this.toggle}><MdEdit /></Button>
+        ):(
+          <Button className='button-first' color={this.props.color} onClick={this.toggle}>Edit</Button>
+        )}
+        
         <Modal  size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}> Edit Role </ModalHeader>
           <ModalBody>
@@ -172,7 +177,7 @@ export default class ModalEditItem extends Component {
             </Card>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.wrapperFunction}>Edit</Button>{' '}
+            <Button color="success" onClick={this.wrapperFunction}>Update</Button>{' '}
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
