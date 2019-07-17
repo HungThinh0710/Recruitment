@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 import Pagination from '../components/Pagination.js'
 import { MDBDataTable } from 'mdbreact';
 // import './Roles.css'
-import ModalAddRole from '../components/ModalAddRole';
+import ModalAddUser from '../components/ModalAddUser';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
@@ -165,8 +165,8 @@ export default class UsersPage extends Component {
     }).then(res => {
       res.json().then(data =>{
           this.setState({
-            data: data.data,
-             totalItems: Math.ceil(data.total/10)
+            rows: data.data,
+            totalItems: data.total
           })
       })
     }) 
@@ -174,8 +174,8 @@ export default class UsersPage extends Component {
 
   addRole(data) {
     this.setState({
-      data: data.data,
-       totalItems: Math.ceil(data.total/10)
+      rows: data.data,
+      totalItems: data.total
     })
   }
 
@@ -236,8 +236,8 @@ export default class UsersPage extends Component {
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
       <CardBody>
-      <ModalAddRole  color='warning' buttonLabel='Create a new user' nameButtonAccept='Add' function={this.addRole.bind(this)} />
-
+      <ModalAddUser  color='success' buttonLabel='Create a new user' nameButtonAccept='Add' function={this.addRole.bind(this)} />
+      <br />
       <MDBDataTable id="table"
       striped
       bordered

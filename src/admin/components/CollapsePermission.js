@@ -22,7 +22,7 @@ export default class CollapsePermission extends Component {
   render() {
     return (
       <div>
-        <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem', paddingLeft:'42%',paddingRight:'42%' }}>Permissions</Button>
+        <Button color="primary" onClick={this.toggle} style={this.props.style}>{this.props.name}</Button>
         <Collapse isOpen={this.state.collapse} >
           <Card>
             <CardBody>

@@ -192,7 +192,8 @@ export default class Roles extends Component {
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
       <CardBody>
-      <ModalAddRole  color='warning' buttonLabel='Create a new role' nameButtonAccept='Add' function={this.addRole.bind(this)} />
+      <ModalAddRole  color='success' buttonLabel='Create a new role' nameButtonAccept='Submit' function={this.addRole.bind(this)} />
+      <br />
       <MDBDataTable id="table"
       striped
       bordered
