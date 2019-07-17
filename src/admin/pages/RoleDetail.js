@@ -67,7 +67,7 @@ export default class RoleDetail extends Component {
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>{this.state.name}'s Permissions</CardHeader>
       <CardBody>
-      <ModalEditItem  id={id} name={this.state.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
+      <ModalEditItem  icon id={id} name={this.state.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
       <MDBDataTable
       striped
       bordered

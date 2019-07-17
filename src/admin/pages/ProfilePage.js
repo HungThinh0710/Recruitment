@@ -45,17 +45,7 @@ export default class ProfilePage extends Component {
       address: address
     })
   }
-    // fetch('https://cool-demo-api.herokuapp.com/api/v1/engineers/1').then(response => {
-    //   response.json().then(data => {
-    //     const {firstName, lastName, email} = data;
-    //     this.setState({
-    //       firstName,
-    //       lastName,
-    //       email
-    //     });
-    //   })
-    // });
-//}
+
 
   render() {
     const {name,fullName,email,phone,address} = this.state;
@@ -74,7 +64,7 @@ export default class ProfilePage extends Component {
             <Col xs="6">
             <div className="persional-title">
               <h4 style={{fontSize:'250%'}}>{this.state.fullName}</h4>
-              <h6 style={{color:'green'}}>Admin Of Enclave Recruitment System</h6>
+              <h6 style={{color:'green'}}>Admin </h6>
             </div>
             </Col>
           </Row>
@@ -120,58 +110,6 @@ export default class ProfilePage extends Component {
 
           </Row>
           </Container>
-          {/* <Container style={{marginTop:'5%'}}>
-          <Row>
-            <Col></Col>
-            <Col-2>
-            <div className="job-profile"> 
-            <img className="avatar" src="https://loremflickr.com/320/240" alt="Card image cap" />
-            <div className="job-profile-information">
-              <div className="job-item">
-              <span>Emai: {this.state.email}</span>
-              </div>
-              <div className="job-item">
-              <span>Job : Recruitment Manage</span>
-              </div>
-              <div className="job-item">
-              <span>Role: Admin</span>
-              </div>
-            </div>
-            </div>
-            </Col-2>
-            <Col></Col>
-            
-            <Col >
-            <div className="persional-title">
-              <h5>Name:</h5>
-              <h5>Fullname:</h5>
-              <h5>Address:</h5>
-              <br/>
-              <h5>Phone:</h5>
-              <h5>Image:</h5>
-            </div>
-            </Col>
-            <Col>
-            <div className="persional-information">
-              <h5>{this.state.name}</h5>
-              <h5>{this.state.fullName}</h5>
-              <h5>{this.state.address}</h5>
-              <h5>{this.state.phone}</h5>
-              <h5>{this.state.image}</h5>
-            </div>
-              
-            </Col>
-            <Col></Col>
-          </Row>
-          <Row>
-            
-            <Link to='/admin/changeprofile' className="change-profile">
-            <Button className="button-change" color="success" >Change</Button>
-            </Link>
-            
-          
-          </Row>
-          </Container> */}
           
         </CardBody>
       </Card>

@@ -6,6 +6,7 @@ import { EmptyLayout, LayoutRoute, MainLayout } from './admin/components/Layout'
 import TestPage from './admin/pages/TestPage';
 import UsersPage from './admin/pages/UsersPage';
 import RoleDetail from './admin/pages/RoleDetail';
+import UserDetail from './admin/pages/UserDetail';
 import Roles from './admin/pages/Roles';
 import LoginPage from './admin/pages/LoginPage'
 import DashboardPage from './admin/pages/DashboardPage';
@@ -67,6 +68,14 @@ class App extends React.Component {
               component={Roles}
               
             />
+            <LayoutRoute 
+
+              exact
+              path={"/admin/user/:id"}
+              layout={MainLayout}
+              component={UserDetail}
+
+              />
             <LayoutRoute 
               exact
               path={"/admin/user"}
