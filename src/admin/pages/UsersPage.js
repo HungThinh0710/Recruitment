@@ -115,7 +115,7 @@ export default class UsersPage extends Component {
               <Link to={url} >
               <Button color='primary'><MdPageview /></Button>
               </Link>
-              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(e,listId[index])}/>
+              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
     </div>})
      $(".dataTables_paginate").remove();
      rows.forEach(function(e){
@@ -140,6 +140,7 @@ export default class UsersPage extends Component {
       data.data.forEach(function(e) {
         delete e.created_at;
         delete e.updated_at;
+        delete e.image;
       })
 
       this.setState({
@@ -179,15 +180,15 @@ export default class UsersPage extends Component {
     })
   }
 
-  removeItem(element,id){
-      
-    let {data, totalItem} = this.state;
-    const index = data.indexOf(element);
+  removeItem(id){
+    const {activePage} = this.state;
+    var array=[];
+    array.push(id);
     var url = 'http://api.enclavei3dev.tk/api/user'; 
     fetch(url, {
      method: 'DELETE', 
      body: JSON.stringify({
-       roles: id
+       userId: array
      }), 
      headers:{
        'Content-Type': 'application/json',
@@ -195,42 +196,29 @@ export default class UsersPage extends Component {
        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
      }
    }).then(res =>{
-
-    //  data.splice(index,1);
-    //  if(data.length%10==0)  totalItem= totalItem-1;
-    //  else  totalItem= totalItem;
-    //  this.setState({
-    //    data:data,
-    //     totalItem:  totalItem
-    //  })
-    if (res.status === 200) {
-      res.json().then(data =>{
-        fetch('http://api.enclavei3dev.tk/api/user?page=1', {
-          headers:{
-            'Content-Type': 'application/json',
-            'Accept' : 'application/json',
-            'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
-          }
-        }).then(res => {
-          res.json().then(data => {
-             
-            data.data.forEach(function(e) {
-              delete e.created_at;
-              delete e.updated_at;
-              // delete e.id;
-            })
-            if(data.data.length%10==0)  totalItem= totalItem-1;
-             else  totalItem= totalItem;
-            this.setState({
-              data : data.data,
-               totalItem:  totalItem
-            })
-          })
-        }) 
-      })
-    }
+     fetch('http://api.enclavei3dev.tk/api/user?page='+activePage, {
+       headers:{
+         'Content-Type': 'application/json',
+         'Accept' : 'application/json',
+         'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
+       }
+     }).then(res => {
+       res.json().then(data =>{
+         data.data.forEach(function(e){
+           delete e.created_at;
+           delete e.updated_at;
+           delete e.image;
+         })
+         
+         this.setState({
+           rows:data.data,
+           totalItems:data.total
+         })
+       })
+     }) 
    })
-  }
+ }
+
   render() { 
     return (
       <Card  style={styleCard}>
