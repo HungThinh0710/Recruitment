@@ -244,7 +244,7 @@ export default class UsersPage extends Component {
   render() { 
     return (
       <Card  style={styleCard}>
-      <CardHeader style={styleFont}>Roles Management</CardHeader>
+      <CardHeader style={styleFont}>Users Management</CardHeader>
       <CardBody>
       <ModalAddUser  color='success' buttonLabel='Create a new user' nameButtonAccept='Add' function={this.addRole.bind(this)} />
       <br />
