@@ -13,7 +13,7 @@ export default class ModalAddRole extends Component {
       permissions : {
           columns: [
           {
-            label: 'Id',
+            label: '#',
             field: 'id',
             sort: 'asc',
             width: 100
@@ -46,7 +46,8 @@ export default class ModalAddRole extends Component {
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.permissions.columns;
     let list = this.state.listChecked;
-    var url = 'http://api.enclavei3dev.tk/api/permission';
+    var url = 'https://api.enclavei3dev.tk/api/permission';
+ 
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -86,7 +87,9 @@ export default class ModalAddRole extends Component {
 
   addItem(){
     const {itemName,listChecked} = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/role'; 
+    var i=0;
+    var listRoles = [];
+    var url = 'https://api.enclavei3dev.tk/api/role'; 
     fetch(url, {
       method: 'POST', 
       body: JSON.stringify({
@@ -108,7 +111,8 @@ export default class ModalAddRole extends Component {
       }
       if (res.status === 200) {
         res.json().then(data =>{
-          fetch('http://api.enclavei3dev.tk/api/role?page=1', {
+          fetch('https://api.enclavei3dev.tk/api/list-role?page=1', {
+            method: 'POST',
             headers:{
               'Content-Type': 'application/json',
               'Accept' : 'application/json',
@@ -121,8 +125,11 @@ export default class ModalAddRole extends Component {
                 delete e.created_at;
                 delete e.updated_at;
                 // delete e.id;
+                i++;
+                e = Object.assign({index:i}, e);
+                listRoles.push(e);
               })
-              this.props.function(data);
+              this.props.function(listRoles,data);
             })
           }) 
         })

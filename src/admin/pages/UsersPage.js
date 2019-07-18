@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import {MdPageview} from 'react-icons/md';
 import { Card, CardBody, CardHeader , Button} from 'reactstrap';
-import ModalRemoveItem from '../components/ModalRemoveItem';
+import ModalRemoveUser from '../components/ModalRemoveUser';
 import {Link} from 'react-router-dom';
 import Pagination from '../components/Pagination.js'
 import { MDBDataTable } from 'mdbreact';
@@ -24,8 +24,8 @@ export default class UsersPage extends Component {
     this.state={
       columns: [
         {
-          label: 'Name',
-          field: 'name',
+          label: '#',
+          field: 'index',
           sort: 'asc'
         },
         {
@@ -44,12 +44,6 @@ export default class UsersPage extends Component {
           sort: 'asc'
         },
         {
-          label: 'Address',
-          field: 'address',
-          sort: 'asc'
-        },
-
-        {
           label: 'Action',
           field: 'action',
         }
@@ -63,8 +57,11 @@ export default class UsersPage extends Component {
   }
   
   async componentWillMount(){
-    var url = 'http://api.enclavei3dev.tk/api/user?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/list-user?page=1';
+    var i=0;
+    var listUsers = [];
     const data = await fetch(url, {
+      method: 'POST',
       headers:{
         'Content-Type': 'application/json',
         'Accept' : 'application/json',
@@ -72,12 +69,18 @@ export default class UsersPage extends Component {
       }
     }).then(res => res.json()) 
     data.data.forEach(function(e) {
+      delete e.name;
+      delete e.address;
       delete e.created_at;
       delete e.updated_at;
       delete e.image;
+      delete e.roles;
+      i++;
+      e = Object.assign({index:i}, e);
+      listUsers.push(e);
     })
     this.setState({
-      rows: data.data,
+      rows: listUsers,
       totalItems: data.total
     })
     $(".dataTables_paginate").remove();
@@ -95,7 +98,7 @@ export default class UsersPage extends Component {
               <Link to={url} >
               <Button color='primary'>View</Button>
               </Link>
-              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(e,listId[index])}/>
+              <ModalRemoveUser  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
     </div>})
      $(".dataTables_paginate").remove();
      rows.forEach(function(e){
@@ -115,7 +118,7 @@ export default class UsersPage extends Component {
               <Link to={url} >
               <Button color='primary'><MdPageview /></Button>
               </Link>
-              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
+              <ModalRemoveUser  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
     </div>})
      $(".dataTables_paginate").remove();
      rows.forEach(function(e){
@@ -127,8 +130,11 @@ export default class UsersPage extends Component {
 
   handlePageChange(pageNumber) {
     // this.setState({activePage: pageNumber});
-    var url = 'http://api.enclavei3dev.tk/api/user?page='+pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/list-user?page='+pageNumber;
+    var i=0;
+    var listUsers = [];
     fetch(url, {
+    method: 'POST',
     headers:{
       'Content-Type': 'application/json',
       'Accept' : 'application/json',
@@ -138,15 +144,21 @@ export default class UsersPage extends Component {
     res.json().then(data => {
   
       data.data.forEach(function(e) {
+        delete e.name;
+        delete e.address;
         delete e.created_at;
         delete e.updated_at;
         delete e.image;
+        delete e.roles;
+        i++;
+        e = Object.assign({index:i}, e);
+        listUsers.push(e);
       })
 
       this.setState({
         currentPage: data.currentPage,
         totalItems: data.total,
-        rows: data.data,
+        rows: listUsers,
         activePage: pageNumber
       })
     })
@@ -156,8 +168,9 @@ export default class UsersPage extends Component {
   edit(index){
     $('.item').removeClass('item-active');
     $('#'+index).addClass('item-active');
-    var url = 'http://api.enclavei3dev.tk/api/user?page='+index;
+    var url = 'https://api.enclavei3dev.tk/api/user?page='+index;
     fetch(url, {
+      method: 'POST',
       headers:{
         'Content-Type': 'application/json',
         'Accept' : 'application/json',
@@ -173,9 +186,9 @@ export default class UsersPage extends Component {
     }) 
   }
 
-  addRole(data) {
+  addRole(listUsers,data) {
     this.setState({
-      rows: data.data,
+      rows: listUsers,
       totalItems: data.total
     })
   }
@@ -183,8 +196,10 @@ export default class UsersPage extends Component {
   removeItem(id){
     const {activePage} = this.state;
     var array=[];
+    var i=0;
+    var listUsers = [];
     array.push(id);
-    var url = 'http://api.enclavei3dev.tk/api/user'; 
+    var url = 'https://api.enclavei3dev.tk/api/user'; 
     fetch(url, {
      method: 'DELETE', 
      body: JSON.stringify({
@@ -196,7 +211,8 @@ export default class UsersPage extends Component {
        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
      }
    }).then(res =>{
-     fetch('http://api.enclavei3dev.tk/api/user?page='+activePage, {
+     fetch('https://api.enclavei3dev.tk/api/list-user?page='+activePage, {
+        method: 'POST',
        headers:{
          'Content-Type': 'application/json',
          'Accept' : 'application/json',
@@ -205,13 +221,19 @@ export default class UsersPage extends Component {
      }).then(res => {
        res.json().then(data =>{
          data.data.forEach(function(e){
-           delete e.created_at;
-           delete e.updated_at;
-           delete e.image;
+          delete e.name;
+          delete e.address;
+          delete e.created_at;
+          delete e.updated_at;
+          delete e.image;
+          delete e.roles;
+          i++;
+          e = Object.assign({index:i}, e);
+          listUsers.push(e);
          })
          
          this.setState({
-           rows:data.data,
+           rows:listUsers,
            totalItems:data.total
          })
        })
