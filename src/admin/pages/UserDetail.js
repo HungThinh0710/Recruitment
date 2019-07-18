@@ -90,16 +90,10 @@ export default class UserDetail extends Component {
       editImage: data.image,
     })
     const columns = this.state.listRoles.columns;
-<<<<<<< HEAD
     let {editRoles,editRolesName} = this.state;
     var url2 = 'https://api.enclavei3dev.tk/api/list-role?page=1';
     const data2 = await fetch(url2, {
       method:'POST',
-=======
-    let {editRoles} = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/role';
-    const data = await fetch(url, {
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
       headers:{
         'Content-Type': 'application/json',
         'Accept' : 'application/json',
@@ -154,7 +148,6 @@ export default class UserDetail extends Component {
     const {id} = this.props.match.params;
     const {editFullName,editEmail,editPhone,
       editAddress,editRoles} = this.state;
-<<<<<<< HEAD
     var listEditRoles =[];
     //Fix the editRoles array => 2: remove 1: select
     var array1 = [... new Set(editRoles)];
@@ -166,8 +159,6 @@ export default class UserDetail extends Component {
         array2.push(element);
       } 
       });
-=======
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
     var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     fetch(url, {
       method: 'PUT', 

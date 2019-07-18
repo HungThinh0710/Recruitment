@@ -57,13 +57,9 @@ export default class UsersPage extends Component {
   }
   
   async componentWillMount(){
-<<<<<<< HEAD
     var url = 'https://api.enclavei3dev.tk/api/list-user?page=1';
     var i=0;
     var listUsers = [];
-=======
-    var url = 'https://api.enclavei3dev.tk/api/user?page=1';
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
     const data = await fetch(url, {
       method: 'POST',
       headers:{
@@ -134,13 +130,9 @@ export default class UsersPage extends Component {
 
   handlePageChange(pageNumber) {
     // this.setState({activePage: pageNumber});
-<<<<<<< HEAD
     var url = 'https://api.enclavei3dev.tk/api/list-user?page='+pageNumber;
     var i=0;
     var listUsers = [];
-=======
-    var url = 'https://api.enclavei3dev.tk/api/user?page='+pageNumber;
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
     fetch(url, {
     method: 'POST',
     headers:{
@@ -219,12 +211,8 @@ export default class UsersPage extends Component {
        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
      }
    }).then(res =>{
-<<<<<<< HEAD
      fetch('https://api.enclavei3dev.tk/api/list-user?page='+activePage, {
         method: 'POST',
-=======
-     fetch('https://api.enclavei3dev.tk/api/user?page='+activePage, {
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
        headers:{
          'Content-Type': 'application/json',
          'Accept' : 'application/json',

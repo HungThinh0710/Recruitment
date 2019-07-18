@@ -47,10 +47,7 @@ export default class ModalAddRole extends Component {
     const columns = this.state.permissions.columns;
     let list = this.state.listChecked;
     var url = 'https://api.enclavei3dev.tk/api/permission';
-<<<<<<< HEAD
  
-=======
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -90,11 +87,8 @@ export default class ModalAddRole extends Component {
 
   addItem(){
     const {itemName,listChecked} = this.state;
-<<<<<<< HEAD
     var i=0;
     var listRoles = [];
-=======
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
     var url = 'https://api.enclavei3dev.tk/api/role'; 
     fetch(url, {
       method: 'POST', 
@@ -117,12 +111,8 @@ export default class ModalAddRole extends Component {
       }
       if (res.status === 200) {
         res.json().then(data =>{
-<<<<<<< HEAD
           fetch('https://api.enclavei3dev.tk/api/list-role?page=1', {
             method: 'POST',
-=======
-          fetch('https://api.enclavei3dev.tk/api/role?page=1', {
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
             headers:{
               'Content-Type': 'application/json',
               'Accept' : 'application/json',

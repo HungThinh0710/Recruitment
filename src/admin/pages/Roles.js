@@ -54,13 +54,9 @@ export default class Roles extends Component {
   }
   async componentWillMount(){
     const {activePage} = this.state;
-<<<<<<< HEAD
     var url = 'https://api.enclavei3dev.tk/api/list-role?page='+activePage;
     var i=0;
     var listRoles = [];
-=======
-    var url = 'https://api.enclavei3dev.tk/api/role?page='+activePage;
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
     const data = await fetch(url, {
       method: 'POST', 
       headers:{
@@ -136,13 +132,9 @@ export default class Roles extends Component {
      const {activePage} = this.state;
      var array=[];
      array.push(id);
-<<<<<<< HEAD
      var url = 'https://api.enclavei3dev.tk/api/role';
      var i=0;
      var listRoles = []; 
-=======
-     var url = 'https://api.enclavei3dev.tk/api/role'; 
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
      fetch(url, {
       method: 'DELETE', 
       body: JSON.stringify({
@@ -154,12 +146,8 @@ export default class Roles extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res =>{
-<<<<<<< HEAD
       fetch('https://api.enclavei3dev.tk/api/list-role?page='+activePage, {
         method: 'POST',
-=======
-      fetch('https://api.enclavei3dev.tk/api/role?page='+activePage, {
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
         headers:{
           'Content-Type': 'application/json',
           'Accept' : 'application/json',
@@ -193,13 +181,9 @@ export default class Roles extends Component {
   
   handlePageChange(pageNumber) {
       this.setState({activePage: pageNumber});
-<<<<<<< HEAD
       var url = 'https://api.enclavei3dev.tk/api/list-role?page='+pageNumber;
       var i=0;
       var listRoles = [];
-=======
-      var url = 'https://api.enclavei3dev.tk/api/role?page='+pageNumber;
->>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
       fetch(url, {
       method:'POST',
       headers:{
