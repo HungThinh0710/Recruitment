@@ -51,3 +51,7 @@
   background:green !important;
   color: white !important;
 }
+
+.form-change-profile input {
+  width: 50% !important;
+}
