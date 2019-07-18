@@ -15,7 +15,7 @@ export default class ModalEditItem extends Component {
       permissions : {
         columns: [
         {
-          label: 'Id',
+          label: '#',
           field: 'id',
           sort: 'asc',
           width: 100
@@ -147,9 +147,9 @@ export default class ModalEditItem extends Component {
     return (
       <div>
         {this.props.icon ? (
-            <Button className='button-first' color={this.props.color} onClick={this.toggle}><MdEdit /></Button>
+            <Button className='button-edit' color={this.props.color} onClick={this.toggle}><MdEdit /></Button>
         ):(
-          <Button className='button-first' color={this.props.color} onClick={this.toggle}>Edit</Button>
+          <Button className='button-edit' color={this.props.color} onClick={this.toggle}>Edit</Button>
         )}
         
         <Modal  size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
@@ -170,7 +170,7 @@ export default class ModalEditItem extends Component {
                   />
                   </FormGroup>
                   <FormGroup >
-                  <CollapsePermission data={this.state.permissions}/>
+                  <CollapsePermission name='Permissions' data={this.state.permissions}/>
                   </FormGroup>
                 </Form>
               </CardBody>

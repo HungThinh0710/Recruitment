@@ -4,7 +4,7 @@ import { Card,CardBody,
   CardTitle, Row,Col,Container } from 'reactstrap';
   import {  NumberWidget } from '../components/Widget';
 import './ProfilePage.css';
-import Tab from '../components/Tab';
+import Tab from '../components/TabInformation';
 export default class ProfilePage extends Component {
   constructor(props) {
     super(props);

@@ -29,13 +29,23 @@ export default class Roles extends Component {
       totalItems:0,
       columns: [
         {
+          label: '#',
+          field: 'index',
+          sort: 'asc'
+        },
+        {
           label: 'Role',
           field: 'role',
           sort: 'asc'
         },
         {
+          label: 'Description',
+          field: 'description',
+          sort: 'asc'
+        },
+        {
           label: 'Action',
-          field: 'action',
+          field: 'action'
         }
       ],
       rows: []
@@ -44,24 +54,29 @@ export default class Roles extends Component {
   }
   async componentWillMount(){
     const {activePage} = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/role?page='+activePage;
+    var url = 'https://api.enclavei3dev.tk/api/list-role?page='+activePage;
+    var i=0;
+    var listRoles = [];
     const data = await fetch(url, {
+      method: 'POST', 
       headers:{
         'Content-Type': 'application/json',
         'Accept' : 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json()) 
-    
     data.data.forEach(function(e) {
       delete e.created_at;
       delete e.updated_at;
+      i++;
+      e = Object.assign({index:i}, e);
+      listRoles.push(e);
     })
     
     this.setState({
       currentPage: data.currentPage,
       totalItems: data.total,
-      rows: data.data
+      rows: listRoles
     })
     $(".dataTables_paginate").remove();
   }
@@ -74,7 +89,7 @@ export default class Roles extends Component {
       return  e.action = <div  className="action">
               <ModalEditItem  icon id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
               <Link to={url} >
-              <Button color='primary'><MdPageview /></Button>
+              <Button className='button-view' color='primary'><MdPageview /></Button>
               </Link>
               <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(e,listId[index])}/>
     </div>})
@@ -94,7 +109,7 @@ export default class Roles extends Component {
       return  e.action = <div  className="action">
               <ModalEditItem icon id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
               <Link to={url} >
-              <Button color='primary'><MdPageview /></Button>
+              <Button className='view-button' color='primary'><MdPageview /></Button>
               </Link>
               <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
     </div>})
@@ -105,9 +120,9 @@ export default class Roles extends Component {
 
   }
 
-  addRole(data) {
+  addRole(listRoles,data) {
       this.setState({
-        rows: data.data,
+        rows: listRoles,
         totalItems: data.total
       })
   }
@@ -117,7 +132,9 @@ export default class Roles extends Component {
      const {activePage} = this.state;
      var array=[];
      array.push(id);
-     var url = 'https://api.enclavei3dev.tk/api/role'; 
+     var url = 'https://api.enclavei3dev.tk/api/role';
+     var i=0;
+     var listRoles = []; 
      fetch(url, {
       method: 'DELETE', 
       body: JSON.stringify({
@@ -129,7 +146,8 @@ export default class Roles extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res =>{
-      fetch('https://api.enclavei3dev.tk/api/role?page='+activePage, {
+      fetch('https://api.enclavei3dev.tk/api/list-role?page='+activePage, {
+        method: 'POST',
         headers:{
           'Content-Type': 'application/json',
           'Accept' : 'application/json',
@@ -140,10 +158,13 @@ export default class Roles extends Component {
           data.data.forEach(function(e){
             delete e.created_at;
             delete e.updated_at;
+            i++;
+            e = Object.assign({index:i}, e);
+            listRoles.push(e);
           })
           
           this.setState({
-            rows:data.data,
+            rows:listRoles,
             totalItems:data.total
           })
         })
@@ -160,8 +181,11 @@ export default class Roles extends Component {
   
   handlePageChange(pageNumber) {
       this.setState({activePage: pageNumber});
-      var url = 'https://api.enclavei3dev.tk/api/role?page='+pageNumber;
+      var url = 'https://api.enclavei3dev.tk/api/list-role?page='+pageNumber;
+      var i=0;
+      var listRoles = [];
       fetch(url, {
+      method:'POST',
       headers:{
         'Content-Type': 'application/json',
         'Accept' : 'application/json',
@@ -173,12 +197,15 @@ export default class Roles extends Component {
         data.data.forEach(function(e) {
           delete e.created_at;
           delete e.updated_at;
+          i++;
+          e = Object.assign({index:i}, e);
+          listRoles.push(e);
         })
 
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
-          rows: data.data,
+          rows: listRoles,
           activePage: pageNumber
         })
       })
