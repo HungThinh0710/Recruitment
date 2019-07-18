@@ -4,7 +4,9 @@ import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText,
   Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input } from 'reactstrap';
   import classnames from 'classnames';
   import TabInformation from '../components/TabInformation'
-  import CollapsePermission from '../components/CollapsePermission'
+  import {
+    MdSettings,MdMap,MdBook
+  } from 'react-icons/md';
   import {  NumberWidget } from '../components/Widget';
   import { MDBDataTable } from 'mdbreact';
   import $ from 'jquery';
@@ -284,7 +286,7 @@ export default class UserDetail extends Component {
                     <NavLink
                       className={classnames({ tabactiveFirst: this.state.activeTab === '1' })}
                       onClick={() => { this.toggle('1'); }}
-                    >
+                    ><MdBook style={{marginRight:'5px'}}/>
                       Articles
                     </NavLink>
                   </NavItem>
@@ -292,7 +294,7 @@ export default class UserDetail extends Component {
                     <NavLink
                       className={classnames({ tabactiveSecond: this.state.activeTab === '2' })}
                       onClick={() => { this.toggle('2'); }}
-                    >
+                    ><MdMap style={{marginRight:'5px'}}/>
                       Interviews
                     </NavLink>
                   </NavItem>
@@ -300,8 +302,8 @@ export default class UserDetail extends Component {
                     <NavLink
                       className={classnames({ tabactive: this.state.activeTab === '3' })}
                       onClick={() => { this.toggle('3'); }}
-                    >
-                      Update
+                    ><MdSettings style={{marginRight:'5px'}}/>
+                      Update Profile
                     </NavLink>
                   </NavItem>
                 </Nav>
