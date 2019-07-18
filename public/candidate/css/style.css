@@ -431,7 +431,7 @@ h1, h2, h3, h4 {
   color: #000; }
 
 .site-section {
-  padding-top: 7rem;
+  /* padding-top: 7rem; */
   padding-bottom: 7rem;
   position: relative;
   z-index: 2; }

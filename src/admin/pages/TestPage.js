@@ -54,8 +54,13 @@ export default class TestPage extends Component {
     }
   }
   async componentWillMount(){
+<<<<<<< HEAD
     const {id} = this.props.match.params;
     var url = 'https://api.enclavei3dev.tk/api/user/'+id;
+=======
+    const {activePage} = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/role?page='+activePage;
+>>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -121,6 +126,7 @@ export default class TestPage extends Component {
     });
   }
 
+<<<<<<< HEAD
   handleSubmit = () => {
     const {id} = this.props.match.params;
     const {editFullName,editEmail,editPhone,
@@ -128,6 +134,23 @@ export default class TestPage extends Component {
     var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     fetch(url, {
       method: 'PUT', 
+=======
+    addRole(data) {
+      this.setState({
+        rows: data.data
+      })
+    }
+
+    
+    
+    removeItem(element,id){
+      
+     let {rows} = this.state;
+     const index = rows.indexOf(element);
+     var url = 'https://api.enclavei3dev.tk/api/role'; 
+     fetch(url, {
+      method: 'DELETE', 
+>>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
       body: JSON.stringify({
         fullname: editFullName,
         email: editEmail,
@@ -138,7 +161,29 @@ export default class TestPage extends Component {
       headers:{
         'Content-Type': 'application/json',
         'Accept' : 'application/json',
+<<<<<<< HEAD
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+=======
+        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res =>{
+      rows.splice(index,1);
+      this.setState({
+        rows:rows,
+      })
+    })
+     
+    }
+  
+    handlePageChange(pageNumber) {
+      // this.setState({activePage: pageNumber});
+      var url = 'https://api.enclavei3dev.tk/api/role?page='+pageNumber;
+      fetch(url, {
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
+>>>>>>> af937bda31ab06b0bd633641c573cd76f42dfaa9
       }
     }).then(res => {
       if (res.status ===401) {

@@ -394,7 +394,8 @@ mark,
 
 .img-fluid {
   max-width: 100%;
-  height: auto; }
+  height: auto;
+  padding-left: 20px }
 
 .img-thumbnail {
   padding: 0.25rem;
@@ -1561,7 +1562,13 @@ pre {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch; }
     .table-responsive-md > .table-bordered {
-      border: 0; } }
+      border: 0; }
+    .icon-image{
+      margin-top: -40px;
+    }
+    .right-cta-menu{
+      margin-top: -40px !important;
+    } }
 
 @media (max-width: 991.98px) {
   .table-responsive-lg {
@@ -1592,9 +1599,9 @@ pre {
 .form-control {
   display: block;
   width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
+  height: 40px;
+  padding: 15px 20px; 
+  font-size: 14px !important;
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
@@ -4358,8 +4365,7 @@ input[type="button"].btn-block {
   .list-group-item.active {
     z-index: 2;
     color: #fff;
-    background-color: #1644ba;
-    border-color: #1644ba; }
+     }
 
 .list-group-horizontal {
   -webkit-box-orient: horizontal;
