@@ -157,20 +157,20 @@
 .rwd-table td div {
     display: table-cell;
 }
-.table {
+.article-table {
   width: 100%;
   max-width: 100%;
   margin-bottom: 20px;
 }
-.table thead {
+.article-table thead {
   display: none;
 }
-.table .tbody tr {
+.article-table .tbody tr {
   display: table-row;
   vertical-align: inherit;
   border-color: inherit;
 }
-tbody {
+.transistion {
   display: table-row-group;
   vertical-align: middle;
   border-color: inherit;
@@ -183,10 +183,10 @@ tbody {
 }
 }
 
-.table > thead {
+.article-table > thead {
   overflow: hidden;
 }
-.table > tbody {
+.article-table > tbody {
   border-left: 1px solid #e1e1e1;
   border-right: 1px solid #e1e1e1;
   border-bottom: 1px solid #e1e1e1;
@@ -196,18 +196,18 @@ tbody {
   text-transform: uppercase;
   font-weight: bold;
 }
-.table > tbody > tr:nth-of-type(even) {
+.article-table > tbody > tr:nth-of-type(even) {
   background-color: #f8f8f8;
 }
-.table {
+.article-table {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   border-radius: 3px;
 }
-.table td, .table th {
+.article-table td, .article-table th {
   border: 1px solid #ddd;
 }
-.pagination {
+.article-pagination .pagination {
   text-align: right !important;
   padding-left: 20px;
   padding-bottom: 5px; 
@@ -215,6 +215,9 @@ tbody {
   border-radius: 4px;
   display: fixed;
   right: 10px;
+}
+.article-pagination .pagination .active {
+  background-color:rgba(75, 184, 79, 1) !important;
 }
 .job-list-panel .table-pagination-nav .pagination-nav {
   text-align: right !important;

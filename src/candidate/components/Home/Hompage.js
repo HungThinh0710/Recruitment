@@ -178,14 +178,14 @@ export default class Homepage extends Component {
                         <h2 class="panel-title">
                           Job Opening
                         </h2>
-                        <table class="table rwd-table border">
+                        <table class="table rwd-table border article-table">
                           <thead>
                             <th>Position</th>
                             <th>Catelogy</th>
                             <th>Location</th>
                             <th>Day expired</th>
                           </thead>
-                          <tbody>
+                          <tbody class="transistion">
                             {careerdata.map((p, index) => {
                               return <tr class="transfer">
                                 <td data-th="Position">
@@ -250,10 +250,10 @@ export default class Homepage extends Component {
                             })}
                             <tr class="table-pagination-nav">
                               <td colspan="5">
-                                <div class="pagination-nav float-right">
+                                <div class="pagination-nav float-right article-pagination">
                                 <ul class="pagination">
                                   <ul id="paginator" data-current="1" data-total="3" class="pagination">
-                                    <li class="active btn-success">
+                                    <li class="active">
                                       <a title="current is page 1">1</a>
                                       
                                     </li>
