@@ -63,7 +63,7 @@ export default class UsersPage extends Component {
   }
   
   async componentWillMount(){
-    var url = 'http://api.enclavei3dev.tk/api/user?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/user?page=1';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ export default class UsersPage extends Component {
 
   handlePageChange(pageNumber) {
     // this.setState({activePage: pageNumber});
-    var url = 'http://api.enclavei3dev.tk/api/user?page='+pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/user?page='+pageNumber;
     fetch(url, {
     headers:{
       'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export default class UsersPage extends Component {
   edit(index){
     $('.item').removeClass('item-active');
     $('#'+index).addClass('item-active');
-    var url = 'http://api.enclavei3dev.tk/api/user?page='+index;
+    var url = 'https://api.enclavei3dev.tk/api/user?page='+index;
     fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ export default class UsersPage extends Component {
     const {activePage} = this.state;
     var array=[];
     array.push(id);
-    var url = 'http://api.enclavei3dev.tk/api/user'; 
+    var url = 'https://api.enclavei3dev.tk/api/user'; 
     fetch(url, {
      method: 'DELETE', 
      body: JSON.stringify({
@@ -196,7 +196,7 @@ export default class UsersPage extends Component {
        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
      }
    }).then(res =>{
-     fetch('http://api.enclavei3dev.tk/api/user?page='+activePage, {
+     fetch('https://api.enclavei3dev.tk/api/user?page='+activePage, {
        headers:{
          'Content-Type': 'application/json',
          'Accept' : 'application/json',
