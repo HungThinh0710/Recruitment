@@ -14,7 +14,7 @@ export default class Homepage extends Component {
   // }
   // componentDidMount()
   // {
-  //   fetch('http://api.enclavei3dev.tk/api/article').then
+  //   fetch('https://api.enclavei3dev.tk/api/article').then
   //   ((Response) => Response.json()).then
   //   ((findresponse) =>
   //   {

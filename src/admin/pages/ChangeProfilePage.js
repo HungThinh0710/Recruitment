@@ -37,7 +37,7 @@ export default class ChangeProfilePage extends Component {
   handleSubmit = () => {
 
     const {fullname,email,phone,address} = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/profile';
+    var url = 'https://api.enclavei3dev.tk/api/profile';
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({

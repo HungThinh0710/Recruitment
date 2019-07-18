@@ -44,7 +44,7 @@ export default class Roles extends Component {
   }
   async componentWillMount(){
     const {activePage} = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/role?page='+activePage;
+    var url = 'https://api.enclavei3dev.tk/api/role?page='+activePage;
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export default class Roles extends Component {
       
      let {rows} = this.state;
      const index = rows.indexOf(element);
-     var url = 'http://api.enclavei3dev.tk/api/role'; 
+     var url = 'https://api.enclavei3dev.tk/api/role'; 
      fetch(url, {
       method: 'DELETE', 
       body: JSON.stringify({
@@ -141,7 +141,7 @@ export default class Roles extends Component {
   
     handlePageChange(pageNumber) {
       // this.setState({activePage: pageNumber});
-      var url = 'http://api.enclavei3dev.tk/api/role?page='+pageNumber;
+      var url = 'https://api.enclavei3dev.tk/api/role?page='+pageNumber;
       fetch(url, {
       headers:{
         'Content-Type': 'application/json',

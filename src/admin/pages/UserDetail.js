@@ -54,7 +54,7 @@ export default class UserDetail extends Component {
   }
   async componentWillMount(){
     const {id} = this.props.match.params;
-    var url = 'http://api.enclavei3dev.tk/api/user/'+id;
+    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default class UserDetail extends Component {
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.listRoles.columns;
     let {editRoles} = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/role';
+    var url = 'https://api.enclavei3dev.tk/api/role';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ export default class UserDetail extends Component {
     const {id} = this.props.match.params;
     const {editFullName,editEmail,editPhone,
       editAddress,editRoles} = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/user/'+id;
+    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
