@@ -4,13 +4,16 @@ import './Pagination.css';
 export default class PaginationComponent extends Component {
   render() {
     return (
-      <Pagination
+      <div className='pagination-area'>
+        <Pagination
           activePage={this.props.activePage}
           itemsCountPerPage={this.props.itemCountPerPage}
           totalItemsCount={this.props.totalItemsCount}
           pageRangeDisplayed={this.props.pageRangeDisplayed}
           onChange={this.props.onChange}
         />
+      </div>
+      
     )
   }
 }

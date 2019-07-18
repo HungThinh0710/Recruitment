@@ -5,7 +5,7 @@ import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText,
   import classnames from 'classnames';
   import TabInformation from '../components/TabInformation'
   import {
-    MdSettings,MdMap,MdBook
+    MdSettings,MdMap,MdBook,MdPermDataSetting
   } from 'react-icons/md';
   import {  NumberWidget } from '../components/Widget';
   import { MDBDataTable } from 'mdbreact';
@@ -57,6 +57,7 @@ export default class UserDetail extends Component {
       this.toggle = this.toggle.bind(this);
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleChangePassword = this.handleChangePassword.bind(this);
   }
   toggle(tab) {
     
@@ -212,7 +213,9 @@ export default class UserDetail extends Component {
     .catch(error => console.error('Error:', error))
     
   }
-
+  handleChangePassword(){
+    console.log('abcde');
+  }
 
   render() {
     const {name,fullName,email,phone,address,roles} = this.state;
@@ -302,8 +305,17 @@ export default class UserDetail extends Component {
                     <NavLink
                       className={classnames({ tabactive: this.state.activeTab === '3' })}
                       onClick={() => { this.toggle('3'); }}
-                    ><MdSettings style={{marginRight:'5px'}}/>
+                    >
+                     <MdPermDataSetting style={{marginRight:'5px'}}/>
                       Update Profile
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={classnames({ tabactive: this.state.activeTab === '4' })}
+                      onClick={() => { this.toggle('4'); }}
+                    ><MdSettings style={{marginRight:'5px'}}/>
+                      Update Password
                     </NavLink>
                   </NavItem>
                 </Nav>
@@ -426,6 +438,33 @@ export default class UserDetail extends Component {
                 
                   </Row>
                   </TabPane>
+                  <TabPane  tabId="4">
+                  <Row>
+                    <Col>
+                    <Card>
+                    <CardBody>
+                    <Form id="change-password-form" onSubmit={this.handleChangePassword}>
+                        <FormGroup>
+                          <Label for="Fullname">Current Password</Label>
+                          <Input type="password" name="old_password" value={this.state.old_password}  onChange={this.handleChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                          <Label for="Email">New Password</Label>
+                          <Input type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                          <Label for="Phone">Confirm New Password</Label>
+                          <Input type="password" name="password_confirmation" value={this.state.password_confirmation} onChange={this.handleChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                        <Button style={{marginLeft:'80%'}} color='success' onClick={this.handleChangePassword}>Submit</Button>
+                        </FormGroup>
+                        </Form>
+                    </CardBody>
+                    </Card>
+                    </Col>
+                    </Row>
+                    </TabPane>
                 </TabContent>
             
             </Container>
