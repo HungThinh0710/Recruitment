@@ -49,7 +49,6 @@ export default class RoleDetail extends Component {
       name: data.name,
       rows: data.permissions
     })
-    $(".dataTables_paginate").remove();
   }
 
   editRole(rows,name){

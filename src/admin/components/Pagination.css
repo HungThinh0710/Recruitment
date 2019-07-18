@@ -1,18 +1,19 @@
-.pagination {
+.pagination-area .pagination {
   margin-left: 70%;
 }
 
-.pagination li {
+.pagination-area  .pagination li {
   
-  border: 1px solid  !important;
-  border-collapse: collapse;
+  /* border: 1px solid  !important;
+  border-collapse: collapse; */
   padding: 2% 3.5% 2% 3.5%;
   margin-right: 5px;
 }
 
-.pagination .active {
+.pagination-area  .pagination .active {
   background-color: blue !important;
+  border-radius: 5px;
 }
-.pagination .active a{
+.pagination-area .pagination .active a{
   color: white;
 }
