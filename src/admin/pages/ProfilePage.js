@@ -4,8 +4,10 @@ import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText,
   Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input } from 'reactstrap';
   import classnames from 'classnames';
   import {  NumberWidget } from '../components/Widget';
+  import {
+    MdSettings,MdMap,MdBook
+  } from 'react-icons/md';
 import './ProfilePage.css';
-import Tab from '../components/Tab';
 import TabInformation from '../components/TabInformation';
 export default class ProfilePage extends Component {
   constructor(props) {
@@ -224,6 +226,7 @@ export default class ProfilePage extends Component {
                       className={classnames({ tabactiveFirst: this.state.activeTab === '1' })}
                       onClick={() => { this.toggle('1'); }}
                     >
+                    <MdBook style={{marginRight:'5px'}}/>
                       Articles
                     </NavLink>
                   </NavItem>
@@ -232,6 +235,7 @@ export default class ProfilePage extends Component {
                       className={classnames({ tabactiveSecond: this.state.activeTab === '2' })}
                       onClick={() => { this.toggle('2'); }}
                     >
+                      <MdMap style={{marginRight:'5px'}}/>
                       Interviews
                     </NavLink>
                   </NavItem>
@@ -240,6 +244,7 @@ export default class ProfilePage extends Component {
                       className={classnames({ tabactive: this.state.activeTab === '3' })}
                       onClick={() => { this.toggle('3'); }}
                     >
+                      <MdSettings style={{marginRight:'5px'}}/>
                       Update
                     </NavLink>
                   </NavItem>
