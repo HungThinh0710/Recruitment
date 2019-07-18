@@ -169,7 +169,7 @@ export default class Homepage extends Component {
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>&nbsp; </label>
-                              <button type="submit" className="btn btn-success btn-lg-2 btn-block text-white btn-search"><span className="icon-search icon mr-2" />Search</button>
+                              <button type="submit" className="btn btn-success btn-lg-2 btn-block text-white btn-search" style={{fontSize: 14}}><span className="icon-search icon mr-2" />Search</button>
                             </div>
                           </div>
                         </form>
@@ -181,7 +181,7 @@ export default class Homepage extends Component {
                         <table class="table rwd-table border article-table">
                           <thead>
                             <th>Position</th>
-                            <th>Catelogy</th>
+                            <th>Category</th>
                             <th>Location</th>
                             <th>Day expired</th>
                           </thead>
