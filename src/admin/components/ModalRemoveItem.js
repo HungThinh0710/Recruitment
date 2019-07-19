@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import '../pages/RolesPage.css'
+import {
+  MdDelete
+} from 'react-icons/md';
 export default class ModalRemoveItem extends Component {
   constructor(props) {
     super(props);
@@ -23,12 +26,9 @@ export default class ModalRemoveItem extends Component {
   render() {
     return (
       <div>
-       <Button color="danger" className='button-first' onClick={this.toggle}>{this.props.buttonLabel}</Button>
+       <Button className='button-delete' onClick={this.toggle} color='danger'><MdDelete /></Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Are you sure to delete this role ?</ModalHeader>
-          <ModalBody>
-           Id : {this.props.item.id} 
-          </ModalBody>
           <ModalBody>
            Role : {this.props.item.name}
           </ModalBody>

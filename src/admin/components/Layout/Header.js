@@ -6,18 +6,14 @@ import withBadge from '../../hocs/withBadge';
 import React from 'react';
 import { Redirect, Link } from "react-router-dom";
 import {
-  MdClearAll,
+  MdMenu,
   MdExitToApp,
-  MdHelp,
   MdInsertChart,
-  MdMessage,
   MdNotificationsActive,
   MdNotificationsNone,
-  MdPersonPin,
-  MdSettingsApplications,
+  MdPersonPin
 } from 'react-icons/md';
 import {
-  Button,
   ListGroup,
   ListGroupItem,
   // NavbarToggler,
@@ -29,7 +25,7 @@ import {
   PopoverBody,
 } from 'reactstrap';
 import bn from '../../utils/bemnames';
-
+import './Header.css';
 const bem = bn.create('header');
 
 const MdNotificationsActiveWithBadge = withBadge({
@@ -60,7 +56,7 @@ class Header extends React.Component {
   }
   async componentWillMount(){
     //const {firstName, lastName, email} = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/current-profile';
+    var url = 'https://api.enclavei3dev.tk/api/current-profile';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -117,9 +113,12 @@ class Header extends React.Component {
     return (
       <Navbar light expand className={bem.b('bg-white')}> 
         <Nav navbar className="mr-2">
-          <Button outline onClick={this.handleSidebarControlButton}>
+          {/* <Button outline onClick={this.handleSidebarControlButton}>
             <MdClearAll size={25} />
-          </Button>
+          </Button> */}
+          <button className='menu-button'onClick={this.handleSidebarControlButton}>
+            <MdMenu size={50} />
+          </button>
         </Nav>
         <Nav navbar className={bem.e('nav-right')}>
           <NavItem className="d-inline-flex">

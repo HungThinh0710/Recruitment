@@ -37,7 +37,7 @@ export default class ChangeProfilePage extends Component {
   handleSubmit = () => {
 
     const {fullname,email,phone,address} = this.state;
-    var url = 'http://api.enclavei3dev.tk/api/profile';
+    var url = 'https://api.enclavei3dev.tk/api/profile';
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -54,15 +54,6 @@ export default class ChangeProfilePage extends Component {
     }).then(res => res.json())
     .catch(error => console.error('Error:', error))
     }
-    // console.log(data);  
-    // this.setState({
-    //   name : data.name,
-    //   fullName: data.fullname,
-    //   email: data.email,
-    //   phone: data.phone,
-    //   address: data.address,
-    //   image: data.image
-    // })       
 
   render() {
     
@@ -76,7 +67,6 @@ export default class ChangeProfilePage extends Component {
                   <Input
                     type="text"
                     name='fullname'
-                    placeholder="Elva"
                     value={this.state.fullname}
                     onChange={this.handleChange}
                   />
@@ -86,7 +76,6 @@ export default class ChangeProfilePage extends Component {
                   <Input
                     type="email"
                     name='email'
-                    placeholder="Briana.Stiedemann44@gmail.com"
                     value={this.state.email}
                     onChange={this.handleChange}
                     
@@ -98,7 +87,6 @@ export default class ChangeProfilePage extends Component {
                   <Input
                     type="text"
                     name='address'
-                    placeholder="25 Hill Street"
                     value={this.state.address}
                     onChange={this.handleChange}
                   />
@@ -108,7 +96,6 @@ export default class ChangeProfilePage extends Component {
                   <Input
                     type="text"
                     name='phone'
-                    placeholder="89049594"
                     value={this.state.phone}
                     onChange={this.handleChange}
                   />

@@ -11,8 +11,11 @@ export default class ModalExample extends React.Component {
     this.toggle = this.toggle.bind(this);
   }
   wrapperFunction= () => {
-    this.props.function();
-    this.toggle();
+    if (this.props.function) {
+      this.props.function();
+      this.toggle();
+    }else this.toggle();
+    
   }
   toggle() {
     this.setState(prevState => ({

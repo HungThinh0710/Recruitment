@@ -44,3 +44,26 @@ ul#nav li .smoothscroll:focus { color: #fff;
         }
       }
       
+      @media only screen and (max-width: 767px) {
+        header.masthead .page-heading,
+        header.masthead .post-heading,
+        header#myTopnav {
+          padding: 80px 0;
+        }
+      }
+      @media only screen and (max-width: 767px) {
+        header.masthead .page-heading h1,
+        header#myTopnav li {
+          font-size: 30px;
+        }
+      }
+      @media only screen and (max-width: 767px) {
+        .post-preview > a > .post-title {
+          font-size: 15px;
+        }
+      }
+      .nav-brand {
+        margin: 0;
+      }
+      
+      

@@ -1,10 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Card, CardBody, CardHeader , Button} from 'reactstrap';
-import { MDBTable, MDBTableBody, MDBTableHead,MDBDataTable  } from 'mdbreact';
+import { MDBDataTable } from 'mdbreact';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalAddRole from '../components/ModalAddRole';
+import ModalEditItem from '../components/ModalEditItem';
 import {Link} from 'react-router-dom';
 import './RolesPage.css';
+import {MdPageview, MdEdit} from 'react-icons/md';
+import $ from 'jquery';
+import PaginationComponent from '../components/Pagination.js';
 const styleFont = {
   fontSize: '200%',
 };
@@ -19,97 +23,122 @@ export default class Roles extends Component {
   constructor(props){
     super(props);
     this.state={
+      listId:[],
+      itemName:'',
+      activePage: 1,
+      totalItems:0,
       columns: [
         {
-          label: 'Id',
-          field: 'id',
+          label: '#',
+          field: 'index',
           sort: 'asc'
         },
         {
           label: 'Role',
-          field: 'name',
+          field: 'role',
+          sort: 'asc'
+        },
+        {
+          label: 'Description',
+          field: 'description',
           sort: 'asc'
         },
         {
           label: 'Action',
-          field: 'action',
+          field: 'action'
         }
       ],
       rows: []
     };
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
   async componentWillMount(){
-    var url = 'http://api.enclavei3dev.tk/api/role';
+    const {activePage} = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/list-role?page='+activePage;
+    var i=0;
+    var listRoles = [];
     const data = await fetch(url, {
+      method: 'POST', 
       headers:{
         'Content-Type': 'application/json',
         'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json()) 
-    
     data.data.forEach(function(e) {
       delete e.created_at;
       delete e.updated_at;
+      i++;
+      e = Object.assign({index:i}, e);
+      listRoles.push(e);
     })
-    var rows = data.data;
-    rows.map(e => {
-      let url = '/admin/role/'+e.id;
-      return  e.action = <div  className="action">
-              <Link to={url} >
-              <Button color='primary'>View</Button>
-              </Link>
-              <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
-    </div>})
+    
     this.setState({
-      rows: rows
+      currentPage: data.currentPage,
+      totalItems: data.total,
+      rows: listRoles
     })
+    $(".dataTables_paginate").remove();
   }
-  // componentDidMount(){
-    
-  //   const {rows} = this.state;
-  //   rows.map(e => {
-  //     let url = '/admin/role/'+e.id;
-  //   //   return  e.action = <div  className="action">
-  //   //           <Link to={url} >
-  //   //           <Button color='primary'>View</Button>
-  //   //           </Link>
-  //   //           <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
-  //   // </div>})
-  //   return e.action ='abcd'
-  //   })
-  // }
-
-  componentDidUpdate(){
-    const {rows} = this.state;
+  componentDidMount(){
+    const {rows,listId} = this.state;
     rows.map(e => {
       let url = '/admin/role/'+e.id;
+      listId.push(e.id);
+      var index=listId.indexOf(e.id);
       return  e.action = <div  className="action">
+              <ModalEditItem  icon id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
               <Link to={url} >
-              <Button color='primary'>View</Button>
+              <Button className='button-view' color='primary'><MdPageview /></Button>
               </Link>
-              <ModalRemoveItem  item={e} id={e.id} buttonLabel='Delete' function={()=>this.removeItem(e,e.id)}/>
+              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(e,listId[index])}/>
     </div>})
+     $(".dataTables_paginate").remove();
+     rows.forEach(function(e){
+     
+      delete e.id;
+    });
+  }
+  componentDidUpdate(){
+    const {rows,listId} = this.state;
+    rows.map(e => {
+      let url = '/admin/role/'+e.id;
+
+      listId.push(e.id);
+      var index=listId.indexOf(e.id);
+      return  e.action = <div  className="action">
+              <ModalEditItem icon id={listId[index]} name={e.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
+              <Link to={url} >
+              <Button className='view-button' color='primary'><MdPageview /></Button>
+              </Link>
+              <ModalRemoveItem  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
+    </div>})
+     $(".dataTables_paginate").remove();
+     rows.forEach(function(e){
+      delete e.id;
+    });
 
   }
 
-    addRole(rows) {
+  addRole(listRoles,data) {
       this.setState({
-        rows: rows
+        rows: listRoles,
+        totalItems: data.total
       })
-    }
+  }
 
     
-    
-    removeItem(element,id){
-      
-     let {rows} = this.state;
-     const index = rows.indexOf(element);
-     var url = 'http://api.enclavei3dev.tk/api/role'; 
+  removeItem(id){
+     const {activePage} = this.state;
+     var array=[];
+     array.push(id);
+     var url = 'https://api.enclavei3dev.tk/api/role';
+     var i=0;
+     var listRoles = []; 
      fetch(url, {
       method: 'DELETE', 
       body: JSON.stringify({
-        roles: id
+        roleId: array
       }), 
       headers:{
         'Content-Type': 'application/json',
@@ -117,29 +146,96 @@ export default class Roles extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res =>{
-      rows.splice(index,1);
-      this.setState({
-        rows:rows,
-      })
+      fetch('https://api.enclavei3dev.tk/api/list-role?page='+activePage, {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(data =>{
+          data.data.forEach(function(e){
+            delete e.created_at;
+            delete e.updated_at;
+            i++;
+            e = Object.assign({index:i}, e);
+            listRoles.push(e);
+          })
+          
+          this.setState({
+            rows:listRoles,
+            totalItems:data.total
+          })
+        })
+      }) 
     })
-     
-    }
+  }
+
+  editRole(rows,name){
+    this.setState({
+      name: name,
+      rows: rows
+    })
+  }
   
+  handlePageChange(pageNumber) {
+      this.setState({activePage: pageNumber});
+      var url = 'https://api.enclavei3dev.tk/api/list-role?page='+pageNumber;
+      var i=0;
+      var listRoles = [];
+      fetch(url, {
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      res.json().then(data => {
+    
+        data.data.forEach(function(e) {
+          delete e.created_at;
+          delete e.updated_at;
+          i++;
+          e = Object.assign({index:i}, e);
+          listRoles.push(e);
+        })
+
+        this.setState({
+          currentPage: data.currentPage,
+          totalItems: data.total,
+          rows: listRoles,
+          activePage: pageNumber
+        })
+      })
+    }) 
+  }
+
+
   render() {
-    const {columns,rows} = this.state;
-    console.log(this.state)
+    const {totalItems} = this.state;
     return (
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>Roles Management</CardHeader>
       <CardBody>
-      <ModalAddRole  style={{marginBottom:'5%'}} color='warning' buttonLabel='Add New Role' nameButtonAccept='Add' function={this.addRole.bind(this)} />
-      <MDBTable responsive striped
+      <ModalAddRole  color='success' buttonLabel='Create a new role' nameButtonAccept='Submit' function={this.addRole.bind(this)} />
+      <br />
+      <MDBDataTable id="table"
+      striped
       bordered
-      hover>
-      <MDBTableHead style={{backgroundColor:'#1ec223',color:'white '}} columns={columns}/>
-      <MDBTableBody rows={rows} />
-      </MDBTable>
-
+      hover
+      data={this.state}
+      pagination='false'
+      
+    />
+      <PaginationComponent
+          activePage={this.state.activePage}
+          itemsCountPerPage={10}
+          totalItemsCount={totalItems}
+          pageRangeDisplayed={5}
+          onChange={this.handlePageChange}
+        />
     </CardBody>
         </Card> 
     )

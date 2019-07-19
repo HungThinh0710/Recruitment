@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
+import $ from 'jquery';
+import Pagination from '../components/Pagination.js';
 export default class CollapsePermission extends Component {
   constructor(props) {
     super(props);
@@ -13,12 +15,14 @@ export default class CollapsePermission extends Component {
    toggle() {
     this.setState(state => ({ collapse: !state.collapse }));
   }
-
+  componentDidMount(){
+    $(".dataTables_paginate").remove();
+  }
 
   render() {
     return (
       <div>
-        <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem', paddingLeft:'42%',paddingRight:'42%' }}>Permissions</Button>
+        <Button color="primary" onClick={this.toggle} style={this.props.style}>{this.props.name}</Button>
         <Collapse isOpen={this.state.collapse} >
           <Card>
             <CardBody>
@@ -28,6 +32,11 @@ export default class CollapsePermission extends Component {
             hover
             data={this.props.data}
           />
+            {/* <Pagination 
+            
+            
+            /> */}
+
             </CardBody>
           </Card>
         </Collapse>

@@ -34,7 +34,9 @@ class Applyform extends Component{
       modalisOpen: false,
       description: null,
       technical: null,
-      Nodejs: true,
+      Nodejs: false,
+      dotnet: false,
+      java: false,
       formErrors: {
         fullName: "",
         address: "",
@@ -42,7 +44,9 @@ class Applyform extends Component{
         phone: "",
         file: "",
         description: "",
-        technical: ""
+        technical: "",
+        Nodejs: "",
+
       }
     };
   }
@@ -67,9 +71,11 @@ class Applyform extends Component{
   handleChange = e => {
     e.preventDefault();
     
-    const { name, value } = e.target;
+    const { name } = e.target;
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     let formErrors = { ...this.state.formErrors };
- 
+    
     switch (name) {
       case "fullName":
         formErrors.fullName =
@@ -221,13 +227,6 @@ class Applyform extends Component{
               {formErrors.technical.length > 0 && (
                 <span className="errorMessage">{formErrors.technical}</span>
               )}
-            </Form.Group>
-            <Form.Group>
-              <div className="checkbox">
-                <label>
-                  <input checked={this.state.Nodejs} onChange={this.handleChange} name="Nodejs" type="checkbox" /> Node JS
-                </label>
-              </div>
             </Form.Group>
             
           </Form>
