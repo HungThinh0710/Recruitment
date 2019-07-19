@@ -109,7 +109,7 @@ export default class LoginPage extends React.Component {
           <Input {...passwordInputProps} value ={this.state.password} onChange={this.handleChange}/>
         </FormGroup>
         <FormGroup className='input-area' style={{marginBottom:'8%'}}>
-          <Link to='/admin'>
+          <Link to='/admin/forgotpassword'>
           <h6>Forgot Password</h6>
           </Link>
         </FormGroup>
