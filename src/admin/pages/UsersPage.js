@@ -213,7 +213,7 @@ export default class UsersPage extends Component {
    }).then(res =>{
      fetch('https://api.enclavei3dev.tk/api/list-user?page='+activePage, {
         method: 'POST',
-       headers:{
+        headers:{
          'Content-Type': 'application/json',
          'Accept' : 'application/json',
          'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
