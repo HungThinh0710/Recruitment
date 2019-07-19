@@ -6,10 +6,11 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, FormGroup,Form,In
 import classnames from 'classnames';
 import {
   MdAccountBox,
-  MdPermDataSetting
+  MdPermDataSetting,
+  MdSettings
 } from 'react-icons/md';
 import '../pages/ProfilePage.css';
-import '../pages/ChangeAccountPage';
+
 export default class Tab extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +34,7 @@ export default class Tab extends Component {
   handleSubmit = () => {
 
     const {fullname,email,phone,address} = this.state;
-    var url = 'http://api.enclavei3.tk/api/profile';
+    var url = 'https://api.enclavei3.tk/api/profile';
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -49,6 +50,7 @@ export default class Tab extends Component {
       }
     }).then(res => {
       res.json().then(data => {
+        alert('Change Successfully');
         this.props.function(fullname,email,phone,address);
       })
     })
@@ -81,6 +83,15 @@ export default class Tab extends Component {
               onClick={() => { this.toggle('2'); }}
             >
               <MdPermDataSetting style={{marginRight:'5'}}/>Change Profile
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ tabactive: this.state.activeTab === '3' })}
+              onClick={() => { this.toggle('3'); }}
+
+            >
+              <MdSettings style={{marginRight:'5'}}/>Change Password
             </NavLink>
           </NavItem>
         </Nav>
@@ -130,7 +141,7 @@ export default class Tab extends Component {
                 </Row>
           </TabPane>
           <TabPane tabId="2">
-          <Form id="my-profile" onSubmit={this.handleSubmit}>
+          <Form className="form-change-profile" onSubmit={this.handleSubmit}>
               <FormGroup>
                   <Label for="exampleName">Fullname</Label>
                   <Input
@@ -168,23 +179,41 @@ export default class Tab extends Component {
                     onChange={this.handleChange}
                   />
                 </FormGroup>
-{/* 
-                {/* <FormGroup>
-                  <Label for="exampleJob">Job : Recruitment Manage</Label>
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleJob">Role : Admin</Label>
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label for="exampleFile">Update My Avatar</Label>
-                  <Input type="file" name="file" />
-                </FormGroup> */}
                 <FormGroup className="change-profile-buttons">
-                  {/* <ButtonReset idForm='myprofile' /> */}
-                  <Modal title="Profile" url="/admin/profile" function={this.handleSubmit}>Save</Modal> 
-                  {/* <Button color='success' onClick={this.handleSubmit}>Save</Button> */}
-                  
+                  <Modal title="Profile" url="/admin/profile" function={this.handleSubmit}>Update</Modal> 
+                </FormGroup>
+              </Form>
+          </TabPane>
+          <TabPane tabId="3">
+          <Form className="form-change-profile" onSubmit={this.handleSubmitChangpassword}>
+              <FormGroup>
+                  <Label for="examplepassword">Current Passoword</Label>
+                  <Input
+                    type="password"
+                    name='oldpassword'
+                    onChange={this.handleChange}
+                  />
+              </FormGroup>
+              <FormGroup>
+                  <Label for="examplepassword">New Password</Label>
+                  <Input
+                    type="password"
+                    name='newpassword'
+                    onChange={this.handleChange} 
+                  />
+                </FormGroup>
+               
+                <FormGroup>
+                  <Label for="examplepassword">Confirm New Password</Label>
+                  <Input
+                    type="password"
+                    name='confpassword'
+                    value={this.state.address}
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+                <FormGroup className="change-profile-buttons">
+                  <Modal title="Profile" url="/admin/profile" function={this.handleSubmit}>Update</Modal> 
                 </FormGroup>
               </Form>
           </TabPane>

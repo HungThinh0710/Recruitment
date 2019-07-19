@@ -2,15 +2,9 @@ import logo200Image from '../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
-import {Redirect} from 'react-router-dom';
+import {Redirect,Link} from 'react-router-dom';
 import './LoginPage.css';
-const style = {
-    width: '30%',
-    backgroundColor: 'white',
-    padding: '2%',
-    borderRadius: '3%',
-    alignSelf: 'center'
-}
+
 const stl = {
   color :'red'
 }
@@ -35,7 +29,7 @@ export default class LoginPage extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const { username, password } = this.state;
-    var url = 'http://api.enclavei3.tk/api/login';
+    var url = 'https://api.enclavei3.tk/api/login';
   
     fetch(url, {
       method: 'POST', 
@@ -92,7 +86,7 @@ export default class LoginPage extends React.Component {
     } = this.props;
 
     return (
-      <Form style={style} onSubmit={this.handleSubmit}>
+      <Form className='form-login' onSubmit={this.handleSubmit}>
         {showLogo && (
           <div className="text-center pb-4" style={{marginBottom:'5%'}}>
             <img
@@ -106,16 +100,19 @@ export default class LoginPage extends React.Component {
           </div>
         )}
         <span style={stl}>{this.state.messenger}</span>
-        <FormGroup style={{marginBottom:'5%'}}>
+        <FormGroup className='input-area' style={{marginBottom:'5%'}}>
           <Label for={usernameLabel}>{usernameLabel}</Label>
           <Input {...usernameInputProps} value ={this.state.username} onChange={this.handleChange}/>
         </FormGroup>
-        <FormGroup style={{marginBottom:'8%'}}>
+        <FormGroup  className='input-area' style={{marginBottom:'8%'}}>
           <Label for={passwordLabel}>{passwordLabel}</Label>
           <Input {...passwordInputProps} value ={this.state.password} onChange={this.handleChange}/>
         </FormGroup>
-        <hr />
-        
+        <FormGroup className='input-area' style={{marginBottom:'8%'}}>
+          <Link to='/admin/forgotpassword'>
+          <h6>Forgot Password</h6>
+          </Link>
+        </FormGroup>
         {this.renderRedirect()}
         <Button
           size="lg"

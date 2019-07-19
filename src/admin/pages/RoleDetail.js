@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ModalEditItem from '../components/ModalEditItem';
+import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
 };
@@ -29,7 +30,7 @@ export default class RoleDetail extends Component {
   }
   async componentWillMount(){
     const {id} = this.props.match.params;
-    var url = 'http://api.enclavei3.tk/api/role/'+id;
+    var url = 'https://api.enclavei3.tk/api/role/'+id;
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ export default class RoleDetail extends Component {
       <Card  style={styleCard}>
       <CardHeader style={styleFont}>{this.state.name}'s Permissions</CardHeader>
       <CardBody>
-      <ModalEditItem  id={id} name={this.state.name} color='primary' buttonLabel='Edit' function={this.editRole.bind(this)} />
+      <ModalEditItem  icon id={id} name={this.state.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
       <MDBDataTable
       striped
       bordered

@@ -4,7 +4,9 @@ import { Button, Modal, ModalHeader, ModalBody,
 import './ModalConfirmPassword.css';
 import '../pages/RolesPage.css'
 import CollapsePermission from '../components/CollapsePermission';
-
+import {
+  MdEdit
+} from 'react-icons/md';
 export default class ModalEditItem extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,7 @@ export default class ModalEditItem extends Component {
       permissions : {
         columns: [
         {
-          label: 'Id',
+          label: '#',
           field: 'id',
           sort: 'asc',
           width: 100
@@ -47,7 +49,7 @@ export default class ModalEditItem extends Component {
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.permissions.columns;
     let list = this.state.listChecked;
-    var url = 'http://api.enclavei3.tk/api/permission';
+    var url = 'https://api.enclavei3.tk/api/permission';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -90,13 +92,12 @@ export default class ModalEditItem extends Component {
   editItem(){
     const {itemName,listChecked} = this.state;
     const {id} = this.props;
-    const list = listChecked.toString();
-    var url = 'http://api.enclavei3.tk/api/role/'+id; 
+    var url = 'https://api.enclavei3.tk/api/role/'+id; 
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
         name: itemName,
-        permissions: list
+        permissions: listChecked
       }), 
       headers:{
         'Content-Type': 'application/json',
@@ -145,7 +146,12 @@ export default class ModalEditItem extends Component {
   render() {
     return (
       <div>
-        <Button className='button-first' color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        {this.props.icon ? (
+            <Button className='button-edit' color={this.props.color} onClick={this.toggle}><MdEdit /></Button>
+        ):(
+          <Button className='button-edit' color={this.props.color} onClick={this.toggle}>Edit</Button>
+        )}
+        
         <Modal  size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}> Edit Role </ModalHeader>
           <ModalBody>
@@ -160,17 +166,18 @@ export default class ModalEditItem extends Component {
                     name="role"
                     placeholder={this.props.name}
                     onChange = {this.handleChange}
+                    
                   />
                   </FormGroup>
                   <FormGroup >
-                  <CollapsePermission data={this.state.permissions}/>
+                  <CollapsePermission name='Permissions' data={this.state.permissions}/>
                   </FormGroup>
                 </Form>
               </CardBody>
             </Card>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.wrapperFunction}>Edit</Button>{' '}
+            <Button color="success" onClick={this.wrapperFunction}>Update</Button>{' '}
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>

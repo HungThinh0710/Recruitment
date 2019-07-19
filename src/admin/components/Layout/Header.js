@@ -56,7 +56,7 @@ class Header extends React.Component {
   }
   async componentWillMount(){
     //const {firstName, lastName, email} = this.state;
-    var url = 'http://api.enclavei3.tk/api/current-profile';
+    var url = 'https://api.enclavei3.tk/api/current-profile';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',

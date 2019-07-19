@@ -13,7 +13,7 @@ export default class ModalAddRole extends Component {
       permissions : {
           columns: [
           {
-            label: 'Id',
+            label: '#',
             field: 'id',
             sort: 'asc',
             width: 100
@@ -46,7 +46,8 @@ export default class ModalAddRole extends Component {
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.permissions.columns;
     let list = this.state.listChecked;
-    var url = 'http://api.enclavei3.tk/api/permission';
+    var url = 'https://api.enclavei3.tk/api/permission';
+ 
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -61,7 +62,6 @@ export default class ModalAddRole extends Component {
       return e.action = <input type='checkbox' onChange={() => handleCheck(e)} />
     })
     function handleCheck(e){
-      String(e.id);
       list.push(e.id);  
     }
     this.setState({
@@ -87,13 +87,14 @@ export default class ModalAddRole extends Component {
 
   addItem(){
     const {itemName,listChecked} = this.state;
-    const list = listChecked.toString();
-    var url = 'http://api.enclavei3.tk/api/role'; 
+    var i=0;
+    var listRoles = [];
+    var url = 'https://api.enclavei3.tk/api/role'; 
     fetch(url, {
       method: 'POST', 
       body: JSON.stringify({
         name: itemName,
-        permissions: list
+        permissions: listChecked
       }), 
       headers:{
         'Content-Type': 'application/json',
@@ -110,7 +111,8 @@ export default class ModalAddRole extends Component {
       }
       if (res.status === 200) {
         res.json().then(data =>{
-          fetch('http://api.enclavei3.tk/api/role?page=1', {
+          fetch('https://api.enclavei3.tk/api/list-role?page=1', {
+            method: 'POST',
             headers:{
               'Content-Type': 'application/json',
               'Accept' : 'application/json',
@@ -123,9 +125,11 @@ export default class ModalAddRole extends Component {
                 delete e.created_at;
                 delete e.updated_at;
                 // delete e.id;
+                i++;
+                e = Object.assign({index:i}, e);
+                listRoles.push(e);
               })
-              console.log(data)
-              this.props.function(data);
+              this.props.function(listRoles,data);
             })
           }) 
         })
@@ -143,10 +147,10 @@ export default class ModalAddRole extends Component {
   render() {
     return (
       <div >
-        <MDBBtn style={{marginLeft:'6.2%',marginBottom:'5%',border:'none',color:'white'}} onClick={this.toggle} rounded color='success'>{this.props.buttonLabel}</MDBBtn>
+        <MDBBtn  onClick={this.toggle} rounded color={this.props.color}>{this.props.buttonLabel}</MDBBtn>
           {/* <Button style={{marginLeft:'6.2%',marginBottom:'5%'}} color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
         <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} >
-          <ModalHeader toggle={this.toggle} >Add A New</ModalHeader>
+          <ModalHeader toggle={this.toggle} >Create A New Role</ModalHeader>
           <ModalBody>
           <Card>
               <CardBody>
@@ -163,7 +167,7 @@ export default class ModalAddRole extends Component {
                   />
                   </FormGroup>
                   <FormGroup >
-                  <CollapsePermission data={this.state.permissions}/>
+                  <CollapsePermission style={{ marginBottom: '1rem', paddingLeft:'42%',paddingRight:'42%' }} name='Permission' data={this.state.permissions}/>
                   </FormGroup>
                 </Form>
               </CardBody>

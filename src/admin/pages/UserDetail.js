@@ -3,59 +3,61 @@ import React, { Component } from 'react'
 import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText, 
   Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input } from 'reactstrap';
   import classnames from 'classnames';
-  import {  NumberWidget } from '../components/Widget';
+  import TabInformation from '../components/TabInformation'
   import {
-    MdSettings,MdMap,MdBook
+    MdSettings,MdMap,MdBook,MdPermDataSetting
   } from 'react-icons/md';
-import './ProfilePage.css';
-import TabInformation from '../components/TabInformation';
-export default class ProfilePage extends Component {
+  import {  NumberWidget } from '../components/Widget';
+  import { MDBDataTable } from 'mdbreact';
+  import $ from 'jquery';
+import './UserDetail.css';
+export default class UserDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        activeTab: '1',
+      checkedRole:false,
+      activeRole: false,
+      activeTab: '1',
         name: '',
         fullName: '',
         email: '' ,
         phone: '' ,
         address: '',
+        editFullName: '',
+        editEmail: '' ,
+        editPhone: '' ,
+        editAddress: '',
         image: '',
-        editFullName:'',
-        editEmail:'',
-        editPhone:'',
-        editAddress:'',
         editImage:'',
-        old_password:'',
-        password:'',
-        password_confirmation:''
+        roles:[],
+        editRoles:[],
+        editRolesName:[],
+        listRoles: {
+          columns:[{
+            label: 'Name',
+            field: 'name',
+            sort: 'asc',
+            width: 300
+          },
+          {
+            label: 'Description',
+            field: 'description',
+            sort: 'asc'
+          },
+          {
+            label: 'Action',
+            field: 'action',
+            sort: 'asc',
+            width: 100
+          }],
+          rows:[]
+        },
+        listId:[]
       };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.handleChangeProfile = this.handleChangeProfile.bind(this);
-  }
-  async componentWillMount(){
-    //const {firstName, lastName, email} = this.state;
-    var url = 'https://api.enclavei3.tk/api/current-profile';
-    const data = await fetch(url, {
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
-      }
-    }).then(res => res.json())  
-    this.setState({
-      name : data.name,
-      fullName: data.fullname,
-      email: data.email,
-      phone: data.phone,
-      address: data.address,
-      image: data.image,
-      editFullName: data.fullname,
-      editEmail: data.email,
-      editPhone: data.phone,
-      editAddress: data.address,
-      editImage: data.image,
-    })       
+      this.toggle = this.toggle.bind(this);
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleChangePassword = this.handleChangePassword.bind(this);
   }
   toggle(tab) {
     
@@ -65,25 +67,102 @@ export default class ProfilePage extends Component {
       });
     }
   }
-
-  changeProfile(fullName,email,phone,address) {
-    this.setState({
-      fullName:fullName,
-      email: email,
-      phone: phone,
-      address: address
+  async componentWillMount(){
+    
+    const {id} = this.props.match.params;
+    var url = 'https://api.enclavei3.tk/api/user/'+id;
+    const data = await fetch(url, {
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+      }
+    }).then(res => res.json()) 
+    await this.setState({
+      name : data.name,
+      fullName: data.fullname,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
+      image: data.image,
+      roles: data.roles,
+      editFullName: data.fullname,
+      editEmail: data.email,
+      editPhone: data.phone,
+      editAddress: data.address,
+      editImage: data.image,
     })
+    const columns = this.state.listRoles.columns;
+    let {editRoles,editRolesName} = this.state;
+    var url2 = 'https://api.enclavei3.tk/api/list-role?page=1';
+    const data2 = await fetch(url2, {
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+      }
+    }).then(res => res.json()) 
+    await data2.data.map((e)=>{
+      delete e.created_at;
+      delete e.updated_at;
+      var {listId} = this.state;
+      listId.push(e.id);
+      var index=listId.indexOf(e.id);
+      delete e.id;
+      const {roles} = this.state;
+      var found = roles.find(currentRole => {
+        return currentRole.name===e.name;
+      })
+      if (found) {
+        editRoles.push(listId[index]);
+         return e.action= <input type='checkbox' defaultChecked={true} 
+        onChange={() => handleCheck(e.name,listId[index])} />
+      }
+      
+      else { return e.action = <input type='checkbox'  
+      onChange={() => handleCheck(e.name,listId[index])} />}
+      
+    })
+    
+    function handleCheck(name,id){
+      editRoles.push(id); 
+      editRolesName.push({id:id,name:name});   
+    }
+    this.setState({
+      listRoles : {
+        columns: columns,
+        rows: data2.data
+      },
+      editRoles: editRoles,
+      editRolesName: editRolesName
+    })
+    $(".dataTables_paginate").remove();     
   }
+  
 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
-  
-  handleChangeProfile(){
-    const {editFullName,editEmail,editAddress,editPhone} = this.state;
-    var url = 'https://api.enclavei3.tk/api/profile'
+
+  handleSubmit = () => {
+    const {id} = this.props.match.params;
+    const {editFullName,editEmail,editPhone,
+      editAddress,editRoles} = this.state;
+    var listEditRoles =[];
+    //Fix the editRoles array => 2: remove 1: select
+    var array1 = [... new Set(editRoles)];
+    var array2 =[];
+    array1.map(element=>{
+      var count = editRoles.filter(e => e===element);
+      var length = count.length;
+      if (length%2!=0) {
+        array2.push(element);
+      } 
+      });
+    var url = 'https://api.enclavei3.tk/api/user/'+id;
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -91,6 +170,7 @@ export default class ProfilePage extends Component {
         email: editEmail,
         phone: editPhone,
         address: editAddress,
+        roles: array2
       }), 
       headers:{
         'Content-Type': 'application/json',
@@ -107,59 +187,43 @@ export default class ProfilePage extends Component {
       if (res.status === 200) {
         res.json().then(data =>{
           alert('Update Success');
+           array2.map(e =>{
+            var url2 = 'https://api.enclavei3.tk/api/role/'+e;
+            fetch(url2, {
+              headers:{
+                'Content-Type': 'application/json',
+                'Accept' : 'application/json',
+                'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+              }
+            }).then(res => {
+              res.json().then(data => {
+                listEditRoles.push(data);
+              })
+            })
+          })
           this.setState({
             fullName: editFullName,
             email: editEmail,
             phone: editPhone,
-            address: editAddress
+            address: editAddress,
+            roles: listEditRoles
           })
         })
     }})
     .catch(error => console.error('Error:', error))
+    
   }
-
   handleChangePassword(){
-    const {old_password,password,password_confirmation} = this.state;
-    var url = 'https://api.enclavei3.tk/api/change-password'
-    fetch(url, {
-      method: 'PUT', 
-      body: JSON.stringify({
-        old_password: old_password,
-        password: password,
-        password_confirmation: password_confirmation
-      }), 
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
-      }
-    }).then(res => {
-      if (res.status ===401) {
-        alert('Update Failed')
-      }
-      if (res.status === 422) {
-        alert('Update Failed')
-      }
-      if (res.status === 200) {
-        res.json().then(data =>{
-          alert('Update Success');
-          this.setState({
-            old_password: '',
-            password: '',
-            password_confirmation: ''
-          })
-          // document.getElementById('change-password-form').remove();
-        })
-    }})
-    .catch(error => console.error('Error:', error))
+    console.log('abcde');
   }
 
   render() {
-    const {name,fullName,email,phone,address} = this.state;
+    const {name,fullName,email,phone,address,roles} = this.state;
+  
     return (
-      <div className="profile-card">
+        <div className="profile-card">
          <Card className="card-body">
-          <CardTitle className="title">My Profile</CardTitle>
+          <CardTitle className="title">User Profile</CardTitle>
           <CardBody >
             <Container style={{marginTop:'5%'}}>
             <Row>
@@ -225,8 +289,7 @@ export default class ProfilePage extends Component {
                     <NavLink
                       className={classnames({ tabactiveFirst: this.state.activeTab === '1' })}
                       onClick={() => { this.toggle('1'); }}
-                    >
-                    <MdBook style={{marginRight:'5px'}}/>
+                    ><MdBook style={{marginRight:'5px'}}/>
                       Articles
                     </NavLink>
                   </NavItem>
@@ -234,8 +297,7 @@ export default class ProfilePage extends Component {
                     <NavLink
                       className={classnames({ tabactiveSecond: this.state.activeTab === '2' })}
                       onClick={() => { this.toggle('2'); }}
-                    >
-                      <MdMap style={{marginRight:'5px'}}/>
+                    ><MdMap style={{marginRight:'5px'}}/>
                       Interviews
                     </NavLink>
                   </NavItem>
@@ -244,8 +306,16 @@ export default class ProfilePage extends Component {
                       className={classnames({ tabactive: this.state.activeTab === '3' })}
                       onClick={() => { this.toggle('3'); }}
                     >
-                      <MdSettings style={{marginRight:'5px'}}/>
-                      Update
+                     <MdPermDataSetting style={{marginRight:'5px'}}/>
+                      Update Profile
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={classnames({ tabactive: this.state.activeTab === '4' })}
+                      onClick={() => { this.toggle('4'); }}
+                    ><MdSettings style={{marginRight:'5px'}}/>
+                      Update Password
                     </NavLink>
                   </NavItem>
                 </Nav>
@@ -327,10 +397,7 @@ export default class ProfilePage extends Component {
                     <Col>
                     <Card>
                     <CardBody>
-                    <Form onSubmit={this.handleChangeProfile}>
-                    <FormGroup>
-                      <h4>Profile</h4>
-                    </FormGroup>
+                    <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                       <Label for="Fullname">Fullname</Label>
                       <Input type="text" name="editFullName"  value={this.state.editFullName} onChange={this.handleChange}/>
@@ -349,7 +416,7 @@ export default class ProfilePage extends Component {
                     </FormGroup>
                     <FormGroup>
                     {/* <CollapsePermission name='roles' data={this.state.listRoles}/> */}
-                    <Button style={{marginLeft:'80%'}} color='success' onClick={this.handleChangeProfile}>Submit</Button>
+                    <Button style={{marginLeft:'80%'}}color='success' onClick={this.handleSubmit}>Submit</Button>
                     </FormGroup>
                     </Form>
                     </CardBody>
@@ -359,10 +426,24 @@ export default class ProfilePage extends Component {
                     <Col>
                       <Card>
                         <CardBody>
-                        <Form id="change-password-form" onSubmit={this.handleChangePassword}>
-                        <FormGroup>
-                          <h4>Password</h4>
-                        </FormGroup>
+                          <MDBDataTable
+                          striped
+                          bordered
+                          hover
+                          data={this.state.listRoles}
+                          />
+                        </CardBody>
+                      </Card>
+                    </Col>
+                
+                  </Row>
+                  </TabPane>
+                  <TabPane  tabId="4">
+                  <Row>
+                    <Col>
+                    <Card>
+                    <CardBody>
+                    <Form id="change-password-form" onSubmit={this.handleChangePassword}>
                         <FormGroup>
                           <Label for="Fullname">Current Password</Label>
                           <Input type="password" name="old_password" value={this.state.old_password}  onChange={this.handleChange}/>
@@ -379,18 +460,18 @@ export default class ProfilePage extends Component {
                         <Button style={{marginLeft:'80%'}} color='success' onClick={this.handleChangePassword}>Submit</Button>
                         </FormGroup>
                         </Form>
-                        </CardBody>
-                      </Card>
+                    </CardBody>
+                    </Card>
                     </Col>
-                
-                  </Row>
-                  </TabPane>
+                    </Row>
+                    </TabPane>
                 </TabContent>
             
             </Container>
           </CardBody>
         </Card>
         </div>
+      
     )
   }
 }

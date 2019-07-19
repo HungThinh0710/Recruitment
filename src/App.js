@@ -6,8 +6,11 @@ import { EmptyLayout, LayoutRoute, MainLayout } from './admin/components/Layout'
 import TestPage from './admin/pages/TestPage';
 import UsersPage from './admin/pages/UsersPage';
 import RoleDetail from './admin/pages/RoleDetail';
+import UserDetail from './admin/pages/UserDetail';
 import Roles from './admin/pages/Roles';
 import LoginPage from './admin/pages/LoginPage'
+import ForgotPasswordPage from './admin/pages/ForgotPasswordPage'
+import ResetPassword from './admin/pages/ResetPassword'
 import DashboardPage from './admin/pages/DashboardPage';
 import ProfilePage from './admin/pages/ProfilePage';
 import AccountPage from './admin/pages/AccountPage';
@@ -44,14 +47,14 @@ class App extends React.Component {
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
-          {/* <LayoutRoute 
+          <LayoutRoute 
 
             exact
             path={"/admin/test"}
             layout={MainLayout}
             component={TestPage}
 
-            /> */}
+            />
             <LayoutRoute 
 
               exact
@@ -68,6 +71,14 @@ class App extends React.Component {
               
             />
             <LayoutRoute 
+
+              exact
+              path={"/admin/user/:id"}
+              layout={MainLayout}
+              component={UserDetail}
+
+              />
+            <LayoutRoute 
               exact
               path={"/admin/user"}
               layout={MainLayout}
@@ -79,6 +90,19 @@ class App extends React.Component {
               path={"/admin"}
               layout={EmptyLayout}
               component={LoginPage}
+
+            />
+            <LayoutRoute 
+              exact
+              path={"/admin/forgotpassword"}
+              layout={EmptyLayout}
+              component={ForgotPasswordPage}
+
+            />
+            <LayoutRoute 
+              path={"/admin/reset-password"}
+              layout={EmptyLayout}
+              component={ResetPassword}
 
             />
             <LayoutRoute
