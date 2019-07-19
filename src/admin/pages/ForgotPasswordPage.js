@@ -5,15 +5,14 @@ import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import {Redirect,Link} from 'react-router-dom';
 import './LoginPage.css';
 
-const stl = {
-  color :'red'
-}
+
 export default class ForgotPasswordPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email:'',
-      redirect:false
+      redirect:false,
+      checked: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,54 +24,7 @@ export default class ForgotPasswordPage extends React.Component {
     });
   }
 
-  // handleSubmit = event => {
-  //   event.preventDefault();
-  //   const { username, password } = this.state;
-  //   var url = 'https://api.enclavei3dev.tk/api/login';
-  
-  //   fetch(url, {
-  //     method: 'POST', 
-  //     body: JSON.stringify({
-  //       name: username,
-  //       password: password
-  //     }), 
-  //     headers:{
-  //       'Content-Type': 'application/json',
-  //       'Accept' : 'application/json',
-  //       'X-Requested-With': 'XMLHttpRequest'
-  //     }
-  //   })            
-  //   .then(response => {
-  //     if(response.status === 401) {
-  //       this.setState({
-  //         messenger:'Error Password/Username'
-  //       })
-  //     }
-  //     if(response.status === 422) {
-  //       this.setState({
-  //         messenger:'Invalid Password/Username'
-  //       })
-  //     }
-  //     if(response.status === 200) {
-  //       response.json().then(data => {
-          
-  //         localStorage.setItem('access_token',  data.access_token);
-  //         localStorage.setItem('token_type', data.token_type);
-  //         localStorage.setItem('expires_at', data.expires_at);
-  //         this.setState({
-  //           redirect:true
-  //         });
-  //       })
-  //     }
-  //   })
-  //   .catch(error => console.error('Error:', error));
-  // };
 
-  // renderRedirect = () => {
-  //   if (this.state.redirect) {
-  //     return <Redirect to='/admin/role' />
-  //   }
-  // }
   handleSubmit(){
     const {email} = this.state;
     var url ='https://api.enclavei3dev.tk/api/password/forgot';
@@ -100,9 +52,9 @@ export default class ForgotPasswordPage extends React.Component {
           }
           if(response.status === 200) {
             response.json().then(data => {
-              console.log(data);
               this.setState({
-                messenger:data.message
+                messenger:data.message,
+                checked: true
               })
             })
           }
@@ -135,7 +87,11 @@ export default class ForgotPasswordPage extends React.Component {
           <h5>Please enter the email to reset password</h5>
         </FormGroup>
         <FormGroup className='input-area'  >
-        <span style={stl}>{this.state.messenger}</span>
+        {this.state.checked ? (
+          <span style={{color:'green'}}>{this.state.messenger}</span>
+        ):(
+          <span style={{color:'red'}}>{this.state.messenger}</span>
+        )}
         </FormGroup>
         
         <FormGroup className='input-area' style={{marginBottom:'5%'}}>
