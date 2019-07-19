@@ -14,7 +14,7 @@ export default class Homepage extends Component {
   }
   componentDidMount()
   {
-    fetch('https://api.enclavei3dev.tk/api/article-web').then
+    fetch('https://api.enclavei3.tk/api/article-web').then
     ((Response) => Response.json()).then
     ((findresponse) =>
     {

@@ -49,7 +49,7 @@ export default class ModalAddUser extends Component {
     //const {firstName, lastName, email} = this.state;
     const columns = this.state.listRoles.columns;
     let {roles} = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=1';
+    var url = 'https://api.enclavei3.tk/api/list-role?page=1';
     const data = await fetch(url, {
       method: 'POST',
       headers:{
@@ -96,7 +96,7 @@ export default class ModalAddUser extends Component {
     const {name,fullname,email,phone,
       address,password,passwordConfirm,roles} = this.state;
       console.log(this.state);
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3.tk/api/user';
     var i=0;
     var listUsers = [];
     fetch(url, {
@@ -125,7 +125,7 @@ export default class ModalAddUser extends Component {
       }
       if (res.status === 200) {
         res.json().then(data =>{
-          fetch('https://api.enclavei3dev.tk/api/list-user?page=1', {
+          fetch('https://api.enclavei3.tk/api/list-user?page=1', {
             method: 'POST',
             headers:{
               'Content-Type': 'application/json',

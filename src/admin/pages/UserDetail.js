@@ -70,7 +70,7 @@ export default class UserDetail extends Component {
   async componentWillMount(){
     
     const {id} = this.props.match.params;
-    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
+    var url = 'https://api.enclavei3.tk/api/user/'+id;
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export default class UserDetail extends Component {
     })
     const columns = this.state.listRoles.columns;
     let {editRoles,editRolesName} = this.state;
-    var url2 = 'https://api.enclavei3dev.tk/api/list-role?page=1';
+    var url2 = 'https://api.enclavei3.tk/api/list-role?page=1';
     const data2 = await fetch(url2, {
       method:'POST',
       headers:{
@@ -162,7 +162,7 @@ export default class UserDetail extends Component {
         array2.push(element);
       } 
       });
-    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
+    var url = 'https://api.enclavei3.tk/api/user/'+id;
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -188,7 +188,7 @@ export default class UserDetail extends Component {
         res.json().then(data =>{
           alert('Update Success');
            array2.map(e =>{
-            var url2 = 'https://api.enclavei3dev.tk/api/role/'+e;
+            var url2 = 'https://api.enclavei3.tk/api/role/'+e;
             fetch(url2, {
               headers:{
                 'Content-Type': 'application/json',

@@ -35,7 +35,7 @@ export default class ProfilePage extends Component {
   }
   async componentWillMount(){
     //const {firstName, lastName, email} = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/current-profile';
+    var url = 'https://api.enclavei3.tk/api/current-profile';
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export default class ProfilePage extends Component {
   
   handleChangeProfile(){
     const {editFullName,editEmail,editAddress,editPhone} = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/profile'
+    var url = 'https://api.enclavei3.tk/api/profile'
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -120,7 +120,7 @@ export default class ProfilePage extends Component {
 
   handleChangePassword(){
     const {old_password,password,password_confirmation} = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/change-password'
+    var url = 'https://api.enclavei3.tk/api/change-password'
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
