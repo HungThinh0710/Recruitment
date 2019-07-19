@@ -9,6 +9,7 @@ import RoleDetail from './admin/pages/RoleDetail';
 import UserDetail from './admin/pages/UserDetail';
 import Roles from './admin/pages/Roles';
 import LoginPage from './admin/pages/LoginPage'
+import ForgotPasswordPage from './admin/pages/ForgotPasswordPage'
 import DashboardPage from './admin/pages/DashboardPage';
 import ProfilePage from './admin/pages/ProfilePage';
 import AccountPage from './admin/pages/AccountPage';
@@ -88,6 +89,13 @@ class App extends React.Component {
               path={"/admin"}
               layout={EmptyLayout}
               component={LoginPage}
+
+            />
+            <LayoutRoute 
+              exact
+              path={"/admin/forgotpassword"}
+              layout={EmptyLayout}
+              component={ForgotPasswordPage}
 
             />
             <LayoutRoute
