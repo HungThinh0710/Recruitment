@@ -4,6 +4,7 @@ import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
 import { Button, Modal, ModalFooter } from 'reactstrap';
 import './Career1.css';
+import {NavLink} from 'react-router-dom';
 import Footer from '../Footer';
 export default class Careers extends Component {
   constructor(props) {
@@ -39,9 +40,10 @@ export default class Careers extends Component {
         {/* NAVBAR */}
 
         <header className="site-navbar mt-3">
-          <div className="container-fluid"></div>
+          <div className="container-fluid">
 
           <RouterURL />
+          </div>
         </header>
         <div>
           <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/back5.jpg")' }} id="career1">
@@ -53,21 +55,27 @@ export default class Careers extends Component {
               </div>
             </div>
           </section>
-          <section className="site-section">
+          <section className="site-section" id="section-describe">
             <div className="container">
               <div className="row align-items-center mb-5">
-                <div className="col-lg-8 mb-4 mb-lg-0">
+                <div className="col-lg-8 mb-4 mb-lg-0" id="view-mobile">
                   <div className="d-flex align-items-center">
                     <div className="border p-2 d-inline-block mr-3 rounded">
                       <img src="/candidate/images/featured-listing-5.jpg" alt="Free Website Template By Free-Template.co" />
                     </div>
                     <div>
                       <h2>Game Audio Headset Engineer</h2>
-                      <div>
+                      <div class="show-line">
                         <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />Senior</span>
                         <span className="m-2"><span className="icon-room mr-2" />453-455 Hoang Dieu</span>
-                        <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text-primary">Full
+                        <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text">Full
                     Time</span></span>
+                      </div>
+                      <div class="show-line-2">
+                        <p className="m-2"><span className="icon-briefcase mr-2" />Senior</p>
+                        <p className="m-2"><span className="icon-room mr-2" />453-455 Hoang Dieu</p>
+                        <p className="m-2"><span className="icon-clock-o mr-2" /><span className="text">Full
+                    Time</span></p>
                       </div>
                     </div>
                   </div>
@@ -75,10 +83,9 @@ export default class Careers extends Component {
                 <div className="col-lg-4">
                   <div className="row">
                     <div className="col-6">
-                      <a href="#" className="btn btn-block btn-light btn-md"><span className="icon-heart-o mr-2 text-danger" />Save
-                Job</a>
+                     
                     </div>
-                    <div className="col-6">
+                    <div className="col-sm-6">
 
                       <Button block={true} color="info" onClick={this.toggleModal.bind(this)} >Apply Now</Button>
                       <Button color="danger" className="close"
@@ -165,25 +172,25 @@ export default class Careers extends Component {
                 </div>
                 <div className="col-lg-4">
                   <div className="bg-light p-3 border rounded mb-4">
-                    <h3 className="text-primary  mt-3 h5 pl-3 mb-3 ">Job Summary</h3>
+                    <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
                     <ul className="list-unstyled pl-3 mb-0">
                       <li className="mb-2"><strong className="text-black">Published on:</strong> July 14, 2019</li>
                       <li className="mb-2"><strong className="text-black">Vacancy:</strong> 20</li>
-                      <li className="mb-2"><strong className="text-black">Employment Status:</strong> Full-time</li>
-                      <li className="mb-2"><strong className="text-black">Experience:</strong> 2 to 3 year(s)</li>
-                      <li className="mb-2"><strong className="text-black">Job Location:</strong> 453-455 Hoang Dieu</li>
+                      <li className="mb-2"><strong className="text-black">Status:</strong> Full-time</li>
+                      <li className="mb-2"><strong className="text-black">Experience:</strong> 2 to 3 years</li>
+                      <li className="mb-2"><strong className="text-black">Location:</strong> 453-455 Hoang Dieu</li>
                       <li className="mb-2"><strong className="text-black">Salary:</strong> 800$ - 1000$</li>
-                      <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li>
-                      <li className="mb-2"><strong className="text-black">Application Deadline:</strong> July 28, 2019</li>
+                      {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
+                      <li className="mb-2"><strong className="text-black">Deadline:</strong> July 28, 2019</li>
                     </ul>
                   </div>
                   <div className="bg-light p-3 border rounded">
-                    <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center">Share &nbsp; &nbsp; &nbsp; </h3>
+                    {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                     <div className="px-3 text-center">
-                      <a href="#" className="pt-3 pb-3 pr-3 pl-0"><span className="icon-facebook" /></a>
-                      <a href="#" className="pt-3 pb-3 pr-3 pl-0"><span className="icon-twitter" /></a>
-                      <a href="#" className="pt-3 pb-3 pr-3 pl-0"><span className="icon-linkedin" /></a>
-                      <a href="#" className="pt-3 pb-3 pr-3 pl-0"><span className="icon-pinterest" /></a>
+                      <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-facebook" /></NavLink>
+                      <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-twitter" /></NavLink>
+                      <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-instagram" /></NavLink>
+                      <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-skype" /></NavLink>
                     </div>
                   </div>
                 </div>

@@ -98,7 +98,13 @@
   padding-right: 0;
   font-size: 14px;
   text-transform: uppercase;
+  color:rgba(24, 70, 2, 1);
 }
+.list-group-item.active {
+  border-color: green;
+  font-weight: bold !important;
+}
+
 .sidebar-nav .list-group-item a {
   width: 100%;
   /* padding: 15px 0 15px 20px; */
@@ -109,7 +115,7 @@
 }
 .sidebar-nav .list-group-title {
   border: 0;
-  color: #005ca1;
+  color: rgba(2, 29, 1, 0.89);
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
@@ -214,7 +220,13 @@
   margin: 0;
   border-radius: 4px;
   display: fixed;
-  right: 10px;
+}
+.article-pagination .pagination li {
+  border: 1px solid !important;
+  border-collapse: collapse;
+  margin-right: 5px;
+  padding: 3px 5px 3px 5px;
+  
 }
 .article-pagination .pagination .active {
   background-color:rgba(75, 184, 79, 1) !important;

@@ -6,27 +6,27 @@ import Footer from '../Footer';
 import axios from 'axios';
 import careerdata from '../data/careerdata.json';
 export default class Homepage extends Component {
-  // constructor(props){
-  //   super(props);
-  //   this.state ={
-  //     product: [],
-  //   }
-  // }
-  // componentDidMount()
-  // {
-  //   fetch('https://api.enclavei3dev.tk/api/article').then
-  //   ((Response) => Response.json()).then
-  //   ((findresponse) =>
-  //   {
-  //     console.log(findresponse.data)
-  //     this.setState
-  //     {
-  //       productfindresponse.data
-  //     }
-  //   })
-  // }
+  constructor(props){
+    super(props);
+    this.state ={
+      product:[],
+    }
+  }
+  componentDidMount()
+  {
+    fetch('https://api.enclavei3dev.tk/api/article-web').then
+    ((Response) => Response.json()).then
+    ((findresponse) =>
+    {
+      console.log(findresponse.data)
+      this.setState({
+        product:findresponse.data
+      })
+     
+    })
+  }
   render() {
-
+    console.log(this.props.match.params.id)
 
     return (
       <section id="Home">
@@ -97,7 +97,7 @@ export default class Homepage extends Component {
                           <NavLink to={"#"}>All</NavLink>
                         </li>
                         <li class="list-group-item">
-                          <NavLink to={"#"}>Intership</NavLink>
+                          <NavLink to={"#"}>Internship</NavLink>
                         </li>
                         <li class="list-group-item">
                           <NavLink to={"#"}>Bootcamp</NavLink>
@@ -114,17 +114,17 @@ export default class Homepage extends Component {
                     <div class="panel career-search-form">
                       <div class="panel-title">Search & apply</div>
                       <div class="panel-body wrap-form border">
-                        <form id="job-apply-result" method="get">
+                        {/* <form id="job-apply-result" method="get">
                           <div class="radio-row">
                             <div class="radio-inline">
                               <label>
-                                <input checked name="jt" type="radio" value></input>
+                                <input name="jt" type="radio" value></input>
                                 <span> All</span>
                               </label>
                             </div>
                             <div class="radio-inline">
                               <label>
-                                <input name="jt" type="radio" value />
+                                <input name="jt" type="radio" value/>
                                 <span> Manager/Supervisor</span>
                               </label>
                             </div>
@@ -141,7 +141,7 @@ export default class Homepage extends Component {
                               </label>
                             </div>
                           </div>
-                        </form>
+                        </form> */}
                         <form method="post" className="search-jobs-form">
                           <div className="row mb-5">
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
@@ -186,7 +186,7 @@ export default class Homepage extends Component {
                             <th>Day expired</th>
                           </thead>
                           <tbody class="transistion">
-                            {careerdata.map((p, index) => {
+                            {/* {careerdata.map((p, index) => {
                               return <tr class="transfer">
                                 <td data-th="Position">
                                   <div>
@@ -226,27 +226,49 @@ export default class Homepage extends Component {
                                     </p>
                                   </div>
                                 </td>
-
                               </tr>
-
-                              // return <div pid={p.id} class="col-12" id="jobjob">
-                              //   <div className="row align-items-start job-item border pb-1 mb-1 pt-1">
-                              //     <div className="col-md-2">
-                              //       <NavLink to={"/describe"} key={index}><img src={p.img} alt="Image" className="img-fluid" /></NavLink>
-                              //     </div>
-                              //     <div className="col-md-4">
-                              //       <span className={p.color}>{p.position}</span>
-                              //       <h2><Link to={"/describe/" + this.props.match.params.pid} key={index}>{p.name}</Link></h2>
-                              //     </div>
-                              //     <div className="col-md-3 text-center justify-content-center align-items-center">
-                              //       <h3>{p.namelocal}</h3>
-                              //       <span className="meta">{p.local}</span>
-                              //     </div>
-                              //     <div className="col-md-3 text-md-right justify-content-center text-center">
-                              //       <strong className="text-black">{p.salary}</strong>
-                              //     </div>
-                              //   </div>
-                              // </div>
+                            })} */}
+                            {this.state.product.map((p, index) => {
+                              return <tr class="transfer">
+                                <td data-th="Position">
+                                  <div>
+                                    <NavLink to={"/describe/"+ this.props.match.params.pid}>
+                                      <p class="position-id">
+                                        <p class="position-title">
+                                          {p.title}
+                                        </p>
+                                      </p>
+                                    </NavLink>
+                                  </div>
+                                </td>
+                                <td data-th="Category">
+                                  <div>
+                                    <p class="category-id">
+                                      <p class="category-title">
+                                        {p.job.position}
+                                      </p>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td data-th="Location">
+                                  <div>
+                                    <p class="location-id">
+                                      <p class="location-title">
+                                        {p.job.address}
+                                      </p>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td data-th="Day expired">
+                                  <div>
+                                    <p class="Dayexpired-id">
+                                      <p class="Dayexpired-title">
+                                        {p.job.deadline}
+                                      </p>
+                                    </p>
+                                  </div>
+                                </td>
+                              </tr>
                             })}
                             <tr class="table-pagination-nav">
                               <td colspan="5">
@@ -254,20 +276,20 @@ export default class Homepage extends Component {
                                 <ul class="pagination">
                                   <ul id="paginator" data-current="1" data-total="3" class="pagination">
                                     <li class="active">
-                                      <a title="current is page 1">1</a>
+                                      <a title="current is page 1"> 1 </a>
                                       
                                     </li>
                                     <li>
-                                    <a title="go to page 2">2</a>
+                                    <a title="go to page 2"> 2 </a>
                                     </li>
                                     <li>
-                                    <a title="go to page 3">3</a>
+                                    <a title="go to page 3"> 3 </a>
                                     </li>
                                     <li>
-                                    <a title="go to next page">></a>
+                                    <a title="go to next page"> > </a>
                                     </li>
                                     <li>
-                                    <a title="go to last page">>></a>
+                                    <a title="go to last page"> >> </a>
                                     </li>
                                   </ul>
                                 </ul>
