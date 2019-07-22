@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import ModalRemoveArticle from '../components/ModalRemoveArticle';
-import ModalRemoveJobs from '../components/ModalRemoveJobs';
+import ModalRemoveArticles from '../components/ModalRemoveArticles';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
-// import './Roles.css'
-import ModalAddJob from '../components/ModalAddJob';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
+import './ArticlesPage.css';
+import ModalAddArticle from '../components/ModalAddArticle';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%'
@@ -22,6 +24,7 @@ const styleCard = {
 export default class ArticlesPage extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       listDeleteName: [],
       listDeleteId: [],
@@ -46,7 +49,6 @@ export default class ArticlesPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
     this.setState({
       rows: data.data,
       totalItems: data.total
@@ -173,7 +175,7 @@ export default class ArticlesPage extends Component {
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        jobId: listDeleteId
+        articleId: listDeleteId
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -182,6 +184,7 @@ export default class ArticlesPage extends Component {
       }
     }).then(res => {
       fetch('https://api.enclavei3dev.tk/api/list-article?page=' + activePage, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -206,16 +209,16 @@ export default class ArticlesPage extends Component {
       <Card style={styleCard}>
         <CardHeader style={styleFont}>Articles Management</CardHeader>
         <CardBody>
-          <ModalAddJob
+          <ModalAddArticle
             color="success"
             page={this.state.activePage}
-            buttonLabel="Create a new article"
+            buttonLabel="Create an new article"
             nameButtonAccept="Add"
             function={this.addJob.bind(this)}
           />
           <br />
           {this.state.listDeleteId.length != 0 && (
-            <ModalRemoveJobs
+            <ModalRemoveArticles
               arrayName={this.state.listDeleteName}
               buttonLabel="Delete"
               function={() => this.removeManyItems()}

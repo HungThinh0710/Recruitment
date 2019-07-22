@@ -74,7 +74,6 @@ export default class ArticleDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
     data.isPublic === 1 ? (status = 'Public') : (status = 'Not public');
     // const i = data.publishedOn.indexOf(' ');
     // const j = data.deadline.indexOf(' ');

@@ -36,7 +36,7 @@ export default class JobsPage extends Component {
     // this.removeManyItems = this.removeManyItems.bind(this);
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     var url = 'https://api.enclavei3dev.tk/api/list-job?page=1';
     const data = await fetch(url, {
       headers: {
