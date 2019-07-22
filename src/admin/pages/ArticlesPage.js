@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveJob from '../components/ModalRemoveJob';
+import ModalRemoveArticle from '../components/ModalRemoveArticle';
 import ModalRemoveJobs from '../components/ModalRemoveJobs';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
@@ -57,6 +57,7 @@ export default class ArticlesPage extends Component {
     // this.setState({activePage: pageNumber});
     var url = 'https://api.enclavei3dev.tk/api/list-article?page=' + pageNumber;
     fetch(url, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -110,7 +111,7 @@ export default class ArticlesPage extends Component {
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        jobId: array
+        articleId: array
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -119,6 +120,7 @@ export default class ArticlesPage extends Component {
       }
     }).then(res => {
       fetch('https://api.enclavei3dev.tk/api/list-article?page=' + activePage, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -270,7 +272,7 @@ export default class ArticlesPage extends Component {
                               <MdPageview />
                             </Button>
                           </Link>
-                          <ModalRemoveJob
+                          <ModalRemoveArticle
                             item={e}
                             buttonLabel="Delete"
                             function={() => this.removeItem(e.id)}
