@@ -10,57 +10,30 @@ import {
   Label,
   Input
 } from 'reactstrap';
-import CollapsePermission from '../components/CollapsePermission';
 export default class ModalAddUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
       name: '',
-      fullname: '',
-      email: '',
-      phone: '',
+      description: '',
       address: '',
-      password: '',
-      passwordConfirm: '',
-      rows: [],
-      listChecked: [],
-      activePage: 1,
-      currentPage: 1,
-      totalItems: ''
+      position: '',
+      salary: '',
+      status: '',
+      experience: '',
+      amount: 0,
+      datePublishedOn: '',
+      timePublishedOn: '',
+      publishedOn: '',
+      dateDeadline: '',
+      timeDeadline: '',
+      deadline: ''
     };
 
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
-  }
-
-  async componentWillMount() {
-    var { listChecked } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=1';
-    const data = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
-    data.data.map(e => {
-      return (e.action = (
-        <input type="checkbox" onChange={() => handleCheck(e)} />
-      ));
-    });
-    function handleCheck(e) {
-      listChecked.push(e.id);
-    }
-    this.setState({
-      rows: data.data,
-      listChecked: listChecked,
-      totalItems: data.total,
-      currentPage: data.current_page
-    });
   }
 
   wrapperFunction = () => {
@@ -77,26 +50,35 @@ export default class ModalAddUser extends Component {
   handleSubmit = () => {
     const {
       name,
-      fullname,
-      email,
-      phone,
+      description,
       address,
-      password,
-      passwordConfirm,
-      listChecked
+      position,
+      salary,
+      status,
+      experience,
+      amount,
+      publishedOn,
+      deadline
     } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    const i = publishedOn.indexOf('T');
+    const j = deadline.indexOf('T');
+    const newDateString = (s, i) => {
+      return s.substr(0, i) + ' ' + s.substr(i + 1);
+    };
+    var url = 'https://api.enclavei3dev.tk/api/job';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         name: name,
-        fullname: fullname,
-        email: email,
-        phone: phone,
+        description: description,
         address: address,
-        password: password,
-        password_confirmation: passwordConfirm,
-        roles: listChecked
+        position: position,
+        salary: salary,
+        status: status,
+        experience: experience,
+        amount: amount,
+        publishedOn: newDateString(publishedOn, i),
+        deadline: newDateString(deadline, j)
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -115,10 +97,9 @@ export default class ModalAddUser extends Component {
           alert('Add Successfully');
           res.json().then(data => {
             var url2 =
-              'https://api.enclavei3dev.tk/api/list-user?page=' +
+              'https://api.enclavei3dev.tk/api/list-job?page=' +
               this.props.page;
             fetch(url2, {
-              method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -141,37 +122,6 @@ export default class ModalAddUser extends Component {
     });
   }
 
-  handlePageChange(pageNumber) {
-    this.setState({ activePage: pageNumber, currentPage: pageNumber });
-    let list = this.state.listChecked;
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + pageNumber;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        data.data.map(e => {
-          return (e.action = (
-            <input type="checkbox" onChange={() => handleCheck(e)} />
-          ));
-        });
-        function handleCheck(e) {
-          list.push(e.id);
-        }
-        this.setState({
-          rows: data.data,
-          listChecked: list,
-          totalItems: data.total,
-          currentPage: data.current_page
-        });
-      });
-    });
-  }
-
   render() {
     return (
       <div>
@@ -184,7 +134,7 @@ export default class ModalAddUser extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggle}>Create A New User</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Create A New Job</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup>
@@ -192,23 +142,15 @@ export default class ModalAddUser extends Component {
                 <Input type="text" name="name" onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Label for="Fullname">Fullname</Label>
+                <Label for="Description">Description</Label>
                 <Input
                   type="text"
-                  name="fullname"
+                  name="description"
                   onChange={this.handleChange}
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="Email">Email</Label>
-                <Input type="email" name="email" onChange={this.handleChange} />
-              </FormGroup>
-              <FormGroup>
-                <Label for="Phone">Phone</Label>
-                <Input type="text" name="phone" onChange={this.handleChange} />
-              </FormGroup>
-              <FormGroup>
-                <Label for="Fullname">Address</Label>
+                <Label for="Address">Address</Label>
                 <Input
                   type="text"
                   name="address"
@@ -216,30 +158,51 @@ export default class ModalAddUser extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="Password">Password</Label>
+                <Label for="Position">Position</Label>
                 <Input
-                  type="password"
-                  name="password"
+                  type="text"
+                  name="position"
                   onChange={this.handleChange}
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="ConfirmPassword">Confirm Password</Label>
+                <Label for="Salary">Salary</Label>
+                <Input type="text" name="salary" onChange={this.handleChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="Status">Status</Label>
+                <Input type="text" name="status" onChange={this.handleChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="Experience">Experience</Label>
                 <Input
-                  type="password"
-                  name="passwordConfirm"
+                  type="text"
+                  name="experience"
                   onChange={this.handleChange}
                 />
               </FormGroup>
               <FormGroup>
-                <CollapsePermission
-                  name="Roles"
-                  data={this.state.rows}
-                  activePage={this.state.activePage}
-                  itemsCountPerPage={10}
-                  totalItemsCount={this.state.totalItems}
-                  pageRangeDisplayed={5}
-                  onChange={this.handlePageChange}
+                <Label for="Amount">Amount</Label>
+                <Input
+                  type="number"
+                  name="amount"
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="Published">Published On</Label>
+                <Input
+                  type="datetime-local"
+                  name="publishedOn"
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="Deadline">Deadline</Label>
+                <Input
+                  type="datetime-local"
+                  name="deadline"
+                  onChange={this.handleChange}
                 />
               </FormGroup>
             </Form>

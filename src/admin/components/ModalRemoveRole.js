@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import '../pages/RolesPage.css';
 import { MdDelete } from 'react-icons/md';
-export default class ModalRemoveUser extends Component {
+export default class ModalRemoveItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,11 +33,9 @@ export default class ModalRemoveUser extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggle}>
-            Are you sure to delete this user ?
+            Are you sure to delete this role ?
           </ModalHeader>
-          <ModalBody>Fullname : {this.props.item.fullname}</ModalBody>
-          <ModalBody>Email : {this.props.item.email}</ModalBody>
-          <ModalBody>Phone : {this.props.item.phone}</ModalBody>
+          <ModalBody>Role : {this.props.item.name}</ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.wrapperFunction}>
               Yes, I'm sure

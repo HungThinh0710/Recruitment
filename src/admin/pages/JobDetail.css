@@ -1,0 +1,23 @@
+.job-title {
+  background: green !important;
+  color: white;
+  width: 150px !important;
+  font-weight: bold;
+}
+
+.jobtabactive {
+  background: green !important;
+  color: white !important;
+  display: flex;
+  justify-content: center;
+}
+
+.job-tab {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.job-tabs .nav-link {
+  display: flex;
+  justify-content: center;
+}

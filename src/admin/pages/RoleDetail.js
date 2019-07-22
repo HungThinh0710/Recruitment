@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ModalEditItem from '../components/ModalEditItem';
-import $ from 'jquery';
+import './RoleDetail.css';
 const styleFont = {
-  fontSize: '200%',
+  fontSize: '200%'
 };
 const styleCard = {
   width: '80%',
@@ -15,66 +15,85 @@ const styleCard = {
 export default class RoleDetail extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      name:'',
+    this.state = {
+      name: '',
       columns: [
+        {
+          label: '#',
+          field: 'index',
+          sort: 'asc',
+          width: 50
+        },
         {
           label: 'Name',
           field: 'name',
           sort: 'asc',
           width: 300
+        },
+        {
+          label: 'Description',
+          field: 'description',
+          sort: 'asc',
+          width: 300
         }
-        ],
-      rows : []
-    }
+      ],
+      rows: []
+    };
   }
-  async componentWillMount(){
-    const {id} = this.props.match.params;
-    var url = 'https://api.enclavei3.tk/api/role/'+id;
+  async componentWillMount() {
+    var i = 0;
+    const { id } = this.props.match.params;
+    var listRoles = [];
+    var url = 'https://api.enclavei3dev.tk/api/role/' + id;
     const data = await fetch(url, {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json()) 
-    data.permissions.forEach(function(e){
+    }).then(res => res.json());
+    data.permissions.forEach(function(e) {
       delete e.id;
       delete e.created_at;
       delete e.updated_at;
       delete e.pivot;
-      
-    })
+      i++;
+      e = Object.assign({ index: i }, e, { description: 'abc' });
+      listRoles.push(e);
+    });
     this.setState({
       name: data.name,
-      rows: data.permissions
-    })
+      rows: listRoles
+    });
   }
 
-  editRole(rows,name){
+  editRole(rows, name) {
     this.setState({
       name: name,
       rows: rows
-    })
+    });
   }
 
-
-
-  render() {  
-    const {id} = this.props.match.params;
+  render() {
+    const { id } = this.props.match.params;
     return (
-      <Card  style={styleCard}>
-      <CardHeader style={styleFont}>{this.state.name}'s Permissions</CardHeader>
-      <CardBody>
-      <ModalEditItem  icon id={id} name={this.state.name} color='success' buttonLabel='Edit' function={this.editRole.bind(this)} />
-      <MDBDataTable
-      striped
-      bordered
-      hover
-      data={this.state}
-      />
-    </CardBody>
-    </Card> 
-    )
+      <Card style={styleCard}>
+        <CardHeader style={styleFont}>
+          {this.state.name}'s Permissions
+        </CardHeader>
+        <CardBody>
+          <ModalEditItem
+            icon
+            id={id}
+            name={this.state.name}
+            color="success"
+            buttonLabel="Edit"
+            function={this.editRole.bind(this)}
+          />
+          <br />
+          <MDBDataTable striped bordered hover data={this.state} />
+        </CardBody>
+      </Card>
+    );
   }
 }

@@ -1,15 +1,15 @@
 
 import React, { Component } from 'react'
 import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText, 
-  Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input } from 'reactstrap';
-  import classnames from 'classnames';
-  import TabInformation from '../components/TabInformation'
-  import {
-    MdSettings,MdMap,MdBook,MdPermDataSetting
-  } from 'react-icons/md';
-  import {  NumberWidget } from '../components/Widget';
-  import { MDBDataTable } from 'mdbreact';
-  import $ from 'jquery';
+Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input } from 'reactstrap';
+import classnames from 'classnames';
+import TabInformation from '../components/TabInformation'
+import {
+  MdSettings,MdMap,MdBook,MdPermDataSetting
+} from 'react-icons/md';
+import {  NumberWidget } from '../components/Widget';
+import { MDBDataTable } from 'mdbreact';
+import $ from 'jquery';
 import './UserDetail.css';
 export default class UserDetail extends Component {
   constructor(props) {
@@ -70,7 +70,7 @@ export default class UserDetail extends Component {
   async componentWillMount(){
     
     const {id} = this.props.match.params;
-    var url = 'https://api.enclavei3.tk/api/user/'+id;
+    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export default class UserDetail extends Component {
     })
     const columns = this.state.listRoles.columns;
     let {editRoles,editRolesName} = this.state;
-    var url2 = 'https://api.enclavei3.tk/api/list-role?page=1';
+    var url2 = 'https://api.enclavei3dev.tk/api/list-role?page=1';
     const data2 = await fetch(url2, {
       method:'POST',
       headers:{
@@ -116,7 +116,7 @@ export default class UserDetail extends Component {
       })
       if (found) {
         editRoles.push(listId[index]);
-         return e.action= <input type='checkbox' defaultChecked={true} 
+        return e.action= <input type='checkbox' defaultChecked={true} 
         onChange={() => handleCheck(e.name,listId[index])} />
       }
       
@@ -158,11 +158,12 @@ export default class UserDetail extends Component {
     array1.map(element=>{
       var count = editRoles.filter(e => e===element);
       var length = count.length;
-      if (length%2!=0) {
+      if (length%2!==0) {
         array2.push(element);
       } 
+      return array2;
       });
-    var url = 'https://api.enclavei3.tk/api/user/'+id;
+    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -187,8 +188,8 @@ export default class UserDetail extends Component {
       if (res.status === 200) {
         res.json().then(data =>{
           alert('Update Success');
-           array2.map(e =>{
-            var url2 = 'https://api.enclavei3.tk/api/role/'+e;
+          array2.map(e =>{
+            var url2 = 'https://api.enclavei3dev.tk/api/role/'+e;
             fetch(url2, {
               headers:{
                 'Content-Type': 'application/json',
@@ -222,7 +223,7 @@ export default class UserDetail extends Component {
   
     return (
         <div className="profile-card">
-         <Card className="card-body">
+        <Card className="card-body">
           <CardTitle className="title">User Profile</CardTitle>
           <CardBody >
             <Container style={{marginTop:'5%'}}>
@@ -306,7 +307,7 @@ export default class UserDetail extends Component {
                       className={classnames({ tabactive: this.state.activeTab === '3' })}
                       onClick={() => { this.toggle('3'); }}
                     >
-                     <MdPermDataSetting style={{marginRight:'5px'}}/>
+                    <MdPermDataSetting style={{marginRight:'5px'}}/>
                       Update Profile
                     </NavLink>
                   </NavItem>

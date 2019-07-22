@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveUser from '../components/ModalRemoveUser';
-import ModalRemoveUsers from '../components/ModalRemoveUsers';
+import ModalRemoveJob from '../components/ModalRemoveJob';
+import ModalRemoveJobs from '../components/ModalRemoveJobs';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
 // import './Roles.css'
-import ModalAddUser from '../components/ModalAddUser';
+import ModalAddJob from '../components/ModalAddJob';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%'
@@ -19,7 +19,7 @@ const styleCard = {
   alignSelf: 'center',
   marginBottom: '8%'
 };
-export default class UsersPage extends Component {
+export default class JobsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,9 +37,8 @@ export default class UsersPage extends Component {
   }
 
   async componentWillMount() {
-    var url = 'https://api.enclavei3dev.tk/api/list-user?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/list-job?page=1';
     const data = await fetch(url, {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -54,9 +53,8 @@ export default class UsersPage extends Component {
 
   handlePageChange(pageNumber) {
     // this.setState({activePage: pageNumber});
-    var url = 'https://api.enclavei3dev.tk/api/list-user?page=' + pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/list-job?page=' + pageNumber;
     fetch(url, {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -95,7 +93,7 @@ export default class UsersPage extends Component {
     });
   }
 
-  addUser(data) {
+  addJob(data) {
     this.setState({
       rows: data.data,
       totalItems: data.total
@@ -106,11 +104,11 @@ export default class UsersPage extends Component {
     const { activePage } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/job';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        userId: array
+        jobId: array
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -118,8 +116,7 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-user?page=' + activePage, {
-        method: 'POST',
+      fetch('https://api.enclavei3dev.tk/api/list-job?page=' + activePage, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -168,11 +165,11 @@ export default class UsersPage extends Component {
 
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/job';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        userId: listDeleteId
+        jobId: listDeleteId
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -180,8 +177,7 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-user?page=' + activePage, {
-        method: 'POST',
+      fetch('https://api.enclavei3dev.tk/api/list-job?page=' + activePage, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -204,18 +200,18 @@ export default class UsersPage extends Component {
     var i = 0;
     return (
       <Card style={styleCard}>
-        <CardHeader style={styleFont}>Users Management</CardHeader>
+        <CardHeader style={styleFont}>Jobs Management</CardHeader>
         <CardBody>
-          <ModalAddUser
+          <ModalAddJob
             color="success"
-            buttonLabel="Create a new user"
             page={this.state.activePage}
+            buttonLabel="Create a new job"
             nameButtonAccept="Add"
-            function={this.addUser.bind(this)}
+            function={this.addJob.bind(this)}
           />
           <br />
-          {this.state.listDeleteId.length != 0 && (
-            <ModalRemoveUsers
+          {this.state.listDeleteId.length !== 0 && (
+            <ModalRemoveJobs
               arrayName={this.state.listDeleteName}
               buttonLabel="Delete"
               function={() => this.removeManyItems()}
@@ -229,9 +225,10 @@ export default class UsersPage extends Component {
                     <input type="checkbox" />
                   </th>
                   <th>#</th>
-                  <th>Fullname</th>
-                  <th>Email</th>
-                  <th>Phone</th>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Salary</th>
+                  <th>Deadline</th>
                   <th style={{ width: '180px' }}>
                     <div className="action">Action</div>
                   </th>
@@ -240,7 +237,7 @@ export default class UsersPage extends Component {
               <tbody>
                 {this.state.rows.map(e => {
                   i++;
-                  let url = '/admin/user/' + e.id;
+                  let url = '/admin/job/' + e.id;
                   return (
                     <tr key={e.id}>
                       <td>
@@ -250,9 +247,10 @@ export default class UsersPage extends Component {
                         />
                       </td>
                       <td>{i}</td>
-                      <td>{e.fullname}</td>
-                      <td>{e.email}</td>
-                      <td>{e.phone}</td>
+                      <td>{e.name}</td>
+                      <td>{e.position}</td>
+                      <td>{e.salary}</td>
+                      <td>{e.deadline}</td>
                       <td>
                         <div className="action">
                           <ModalEditItem
@@ -268,7 +266,7 @@ export default class UsersPage extends Component {
                               <MdPageview />
                             </Button>
                           </Link>
-                          <ModalRemoveUser
+                          <ModalRemoveJob
                             item={e}
                             buttonLabel="Delete"
                             function={() => this.removeItem(e.id)}

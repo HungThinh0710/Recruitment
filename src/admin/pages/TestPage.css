@@ -1,0 +1,28 @@
+.table-test {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+
+
+.table-test table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-test td,
+th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 15px;
+}
+
+.table-test tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.action-column {
+  display: flex;
+  justify-content: center;
+}
