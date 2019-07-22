@@ -212,7 +212,7 @@ export default class ArticlesPage extends Component {
           <ModalAddArticle
             color="success"
             page={this.state.activePage}
-            buttonLabel="Create an new article"
+            buttonLabel="Create a new article"
             nameButtonAccept="Add"
             function={this.addJob.bind(this)}
           />

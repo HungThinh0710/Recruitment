@@ -272,7 +272,7 @@ export default class ModalAddArticle extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggle}>Create An New Article</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Create A New Article</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup>
