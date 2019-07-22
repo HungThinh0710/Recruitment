@@ -1,19 +1,29 @@
-
 import GAListener from './admin/components/GAListener';
-import { EmptyLayout, LayoutRoute, MainLayout } from './admin/components/Layout';
+import {
+  EmptyLayout,
+  LayoutRoute,
+  MainLayout
+} from './admin/components/Layout';
 
 // page
+/*------Sidebar----*/
 import TestPage from './admin/pages/TestPage';
-import UsersPage from './admin/pages/UsersPage';
-import RoleDetail from './admin/pages/RoleDetail';
-import UserDetail from './admin/pages/UserDetail';
 import Roles from './admin/pages/Roles';
-import LoginPage from './admin/pages/LoginPage'
-import ForgotPasswordPage from './admin/pages/ForgotPasswordPage'
-import ResetPassword from './admin/pages/ResetPassword'
+import RoleDetail from './admin/pages/RoleDetail';
+import UsersPage from './admin/pages/UsersPage';
+import UserDetail from './admin/pages/UserDetail';
+import JobsPage from './admin/pages/JobsPage';
+import JobDetail from './admin/pages/JobDetail';
+import ArticlesPage from './admin/pages/ArticlesPage';
+import ArticleDetail from './admin/pages/ArticleDetail';
+import InterviewsPage from './admin/pages/InterviewsPage';
+import InterviewDetail from './admin/pages/InterviewDetail';
+/*------Sidebar----*/
+import LoginPage from './admin/pages/LoginPage';
+import ForgotPasswordPage from './admin/pages/ForgotPasswordPage';
+import ResetPassword from './admin/pages/ResetPassword';
 import DashboardPage from './admin/pages/DashboardPage';
 import ProfilePage from './admin/pages/ProfilePage';
-import AccountPage from './admin/pages/AccountPage';
 import ChangeProfilePage from './admin/pages/ChangeProfilePage';
 import ChangeAccountPage from './admin/pages/ChangeAccountPage';
 import React from 'react';
@@ -34,7 +44,7 @@ class App extends React.Component {
     this.state = {
       hasToken: false,
       path: '/login'
-    }
+    };
   }
   // componentWillMount(){
   //   if (localStorage.getItem('loginToken')!=null){
@@ -42,86 +52,32 @@ class App extends React.Component {
   //   }
   // }
   render() {
-
     return (
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
-          <LayoutRoute 
-
-            exact
-            path={"/admin/test"}
-            layout={MainLayout}
-            component={TestPage}
-
-            />
-            <LayoutRoute 
-
+            <LayoutRoute
               exact
-              path={"/admin/role/:id"}
-              layout={MainLayout}
-              component={RoleDetail}
-              
-            />
-            <LayoutRoute 
-              exact
-              path={"/admin/role"}
-              layout={MainLayout}
-              component={Roles}
-              
-            />
-            <LayoutRoute 
-
-              exact
-              path={"/admin/user/:id"}
-              layout={MainLayout}
-              component={UserDetail}
-
-              />
-            <LayoutRoute 
-              exact
-              path={"/admin/user"}
-              layout={MainLayout}
-              component={UsersPage}
-              
-            />
-            <LayoutRoute 
-              exact
-              path={"/admin"}
+              path={'/admin'}
               layout={EmptyLayout}
               component={LoginPage}
-
-            />
-            <LayoutRoute 
-              exact
-              path={"/admin/forgotpassword"}
-              layout={EmptyLayout}
-              component={ForgotPasswordPage}
-
-            />
-            <LayoutRoute 
-              path={"/admin/reset-password"}
-              layout={EmptyLayout}
-              component={ResetPassword}
-
             />
             <LayoutRoute
               exact
-              path="/admin/dashboard"
-              layout={MainLayout}
-              component={DashboardPage}
+              path={'/admin/forgotpassword'}
+              layout={EmptyLayout}
+              component={ForgotPasswordPage}
+            />
+            <LayoutRoute
+              path={'/admin/reset-password'}
+              layout={EmptyLayout}
+              component={ResetPassword}
             />
             <LayoutRoute
               exact
               path="/admin/profile"
               layout={MainLayout}
               component={ProfilePage}
-            />
-            <LayoutRoute
-              exact
-              path="/admin/account"
-              layout={MainLayout}
-              component={AccountPage}
             />
             <LayoutRoute
               exact
@@ -135,7 +91,78 @@ class App extends React.Component {
               layout={MainLayout}
               component={ChangeAccountPage}
             />
-
+            <LayoutRoute
+              exact
+              path={'/admin/role'}
+              layout={MainLayout}
+              component={Roles}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/role/:id'}
+              layout={MainLayout}
+              component={RoleDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/user'}
+              layout={MainLayout}
+              component={UsersPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/user/:id'}
+              layout={MainLayout}
+              component={UserDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/job'}
+              layout={MainLayout}
+              component={JobsPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/job/:id'}
+              layout={MainLayout}
+              component={JobDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/article'}
+              layout={MainLayout}
+              component={ArticlesPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/article/:id'}
+              layout={MainLayout}
+              component={ArticleDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/interview'}
+              layout={MainLayout}
+              component={InterviewsPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/interview/:id'}
+              layout={MainLayout}
+              component={InterviewDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/test'}
+              layout={MainLayout}
+              component={TestPage}
+            />
+            <LayoutRoute
+              exact
+              path="/admin/dashboard"
+              layout={MainLayout}
+              component={DashboardPage}
+            />
             {/* <Redirect to="/" /> */}
             <Route path="/" component={Homepage} exact />
             <Route path="/careers" component={Careers} />
@@ -171,6 +198,5 @@ const query = ({ width }) => {
 
   return { breakpoint: 'xs' };
 };
-
 
 export default componentQueries(query)(App);
