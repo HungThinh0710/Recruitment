@@ -85,6 +85,16 @@ export default class ModalAddUser extends Component {
       passwordConfirm,
       listChecked
     } = this.state;
+    var array1 = [...new Set(listChecked)];
+    var array2 = [];
+    array1.map(element => {
+      var count = listChecked.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
     var url = 'https://api.enclavei3dev.tk/api/user';
     fetch(url, {
       method: 'POST',
@@ -96,7 +106,7 @@ export default class ModalAddUser extends Component {
         address: address,
         password: password,
         password_confirmation: passwordConfirm,
-        roles: listChecked
+        roles: array2
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -188,11 +198,11 @@ export default class ModalAddUser extends Component {
           <ModalBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup>
-                <Label for="Name">Name</Label>
+                <Label for="Name">Username</Label>
                 <Input type="text" name="name" onChange={this.handleChange} />
               </FormGroup>
               <FormGroup>
-                <Label for="Fullname">Fullname</Label>
+                <Label for="Fullname">Full Name</Label>
                 <Input
                   type="text"
                   name="fullname"
