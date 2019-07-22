@@ -18,6 +18,12 @@ export default class LoginPage extends React.Component {
       redirect: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+  }
+  componentWillMount() {
+    if (localStorage.getItem('access_token')) {
+      window.location.href = '/admin/role';
+    }
   }
 
   handleChange(event) {
@@ -74,6 +80,10 @@ export default class LoginPage extends React.Component {
     }
   };
 
+  handleKeyUp = event => {
+    if (event.keyCode === 13) return this.handleSubmit(event);
+  };
+
   render() {
     const {
       showLogo,
@@ -85,7 +95,7 @@ export default class LoginPage extends React.Component {
     } = this.props;
 
     return (
-      <Form className="form-login" onSubmit={this.handleSubmit}>
+      <Form className="form-login" onKeyUp={this.handleKeyUp}>
         {showLogo && (
           <div className="text-center pb-4" style={{ marginBottom: '5%' }}>
             <img
