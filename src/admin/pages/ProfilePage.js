@@ -5,9 +5,10 @@ import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText,
   import classnames from 'classnames';
   import {  NumberWidget } from '../components/Widget';
   import {
-    MdSettings,MdMap,MdBook
+    MdSettings,MdMap,MdBook,MdCancel
   } from 'react-icons/md';
 import './ProfilePage.css';
+import {Link} from 'react-router-dom';
 import TabInformation from '../components/TabInformation';
 import { ClipLoader } from 'react-spinners';
 export default class ProfilePage extends Component {
@@ -70,6 +71,9 @@ export default class ProfilePage extends Component {
       });
     }
   }
+  backToPreviousPage = () => {
+    this.props.history.push('/admin/role');
+  };
 
   changeProfile(fullName,email,phone,address) {
     this.setState({
@@ -164,7 +168,13 @@ export default class ProfilePage extends Component {
     return (
       <div className="profile-card">
         <Card className="card-body">
-          <CardTitle className="title">My Profile</CardTitle>
+        <CardTitle className="title">
+            <MdCancel className="first" />
+            Job Information
+            <Link to="/admin/role">
+              <MdCancel />
+            </Link>
+          </CardTitle>
           {this.state.loading ? (
           <div
             style={{
@@ -410,6 +420,20 @@ export default class ProfilePage extends Component {
                 </TabContent>
             
             </Container>
+            <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: '20px'
+                }}
+              >
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
+                >
+                  Back
+                </Button>
+              </div>
           </CardBody>)}
         </Card>
         </div>

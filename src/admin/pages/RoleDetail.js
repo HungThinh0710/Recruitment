@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ModalEditItem from '../components/ModalEditItem';
+import { MdCancel } from 'react-icons/md';
 import './RoleDetail.css';
 import { ClipLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  display: 'flex',
+  justifyContent: 'space-between'
 };
 const styleCard = {
   width: '80%',
@@ -72,6 +76,10 @@ export default class RoleDetail extends Component {
     }, 500);
   }
 
+  backToPreviousPage = () => {
+    this.props.history.push('/admin/role');
+  };
+
   editRole(rows, name) {
     this.setState({
       name: name,
@@ -84,7 +92,12 @@ export default class RoleDetail extends Component {
     return (
       <Card style={styleCard}>
         <CardHeader style={styleFont}>
-          {this.state.name}'s Permissions
+          Role Information
+          <div className="button-exit">
+            <Link to="/admin/role">
+              <MdCancel />
+            </Link>
+          </div>
         </CardHeader>
         {this.state.loading ? (
           <div
@@ -115,6 +128,14 @@ export default class RoleDetail extends Component {
             />
             <br />
             <MDBDataTable striped bordered hover data={this.state} />
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button
+                onClick={() => this.backToPreviousPage()}
+                color="secondary"
+              >
+                Back
+              </Button>
+            </div>
           </CardBody>
         )}
       </Card>
