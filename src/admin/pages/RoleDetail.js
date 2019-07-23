@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import ModalEditItem from '../components/ModalEditItem';
 import './RoleDetail.css';
+import { ClipLoader } from 'react-spinners';
 const styleFont = {
   fontSize: '200%'
 };
@@ -17,6 +18,7 @@ export default class RoleDetail extends Component {
     super(props);
     this.state = {
       name: '',
+      loading: true,
       columns: [
         {
           label: '#',
@@ -61,10 +63,13 @@ export default class RoleDetail extends Component {
       e = Object.assign({ index: i }, e, { description: 'abc' });
       listRoles.push(e);
     });
-    this.setState({
-      name: data.name,
-      rows: listRoles
-    });
+    setTimeout(() => {
+      this.setState({
+        name: data.name,
+        rows: listRoles,
+        loading: false
+      });
+    }, 500);
   }
 
   editRole(rows, name) {
@@ -81,18 +86,37 @@ export default class RoleDetail extends Component {
         <CardHeader style={styleFont}>
           {this.state.name}'s Permissions
         </CardHeader>
-        <CardBody>
-          <ModalEditItem
-            icon
-            id={id}
-            name={this.state.name}
-            color="success"
-            buttonLabel="Edit"
-            function={this.editRole.bind(this)}
-          />
-          <br />
-          <MDBDataTable striped bordered hover data={this.state} />
-        </CardBody>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'green'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
+          <CardBody>
+            <ModalEditItem
+              icon
+              id={id}
+              name={this.state.name}
+              color="success"
+              buttonLabel="Edit"
+              function={this.editRole.bind(this)}
+            />
+            <br />
+            <MDBDataTable striped bordered hover data={this.state} />
+          </CardBody>
+        )}
       </Card>
     );
   }

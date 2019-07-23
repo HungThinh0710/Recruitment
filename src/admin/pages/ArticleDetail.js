@@ -22,6 +22,7 @@ import {
 } from 'reactstrap';
 import { MdSettings, MdMap, MdBook } from 'react-icons/md';
 import classnames from 'classnames';
+import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import './JobDetail.css';
 export default class ArticleDetail extends Component {
@@ -56,7 +57,8 @@ export default class ArticleDetail extends Component {
       editRoles: [],
       editRolesName: [],
       rows: [],
-      listId: []
+      listId: [],
+      loading: true
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -80,29 +82,32 @@ export default class ArticleDetail extends Component {
     // const newDateString = (s, i) => {
     //   return s.substr(0, i) + 'T' + s.substr(i + 1);
     // };
-    this.setState({
-      title: data.title,
-      content: data.content,
-      status: status,
-      jobId: data.jobId,
-      jobName: data.job.name,
-      catId: data.catId,
-      catName: data.category.name,
-      userId: data.userId,
-      userName: data.user.fullname,
-      created_at: data.created_at,
-      updated_at: data.updated_at
-      // editname: data.name,
-      // editdescription: data.description,
-      // editaddress: data.address,
-      // editposition: data.position,
-      // editsalary: data.salary,
-      // editstatus: data.status,
-      // editexperience: data.experience,
-      // editamount: data.amount,
-      // editpublishedOn: newDateString(data.publishedOn, i),
-      // editdeadline: newDateString(data.deadline, j)
-    });
+    setTimeout(() => {
+      this.setState({
+        title: data.title,
+        content: data.content,
+        status: status,
+        jobId: data.jobId,
+        jobName: data.job.name,
+        catId: data.catId,
+        catName: data.category.name,
+        userId: data.userId,
+        userName: data.user.fullname,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+        loading: false
+        // editname: data.name,
+        // editdescription: data.description,
+        // editaddress: data.address,
+        // editposition: data.position,
+        // editsalary: data.salary,
+        // editstatus: data.status,
+        // editexperience: data.experience,
+        // editamount: data.amount,
+        // editpublishedOn: newDateString(data.publishedOn, i),
+        // editdeadline: newDateString(data.deadline, j)
+      });
+    }, 500);
   }
 
   toggle(tab) {
@@ -195,54 +200,73 @@ export default class ArticleDetail extends Component {
       <div className="profile-card">
         <Card className="card-body">
           <CardTitle className="title">Article Information</CardTitle>
-          <CardBody>
-            <Container>
-              <Row style={{ justifyContent: 'center' }}>
-                <div className="table-test" style={{ width: '100%' }}>
-                  <table>
-                    <tbody>
-                      <tr key={1}>
-                        <td className="job-title">Title</td>
-                        <td>{this.state.title}</td>
-                      </tr>
-                      <tr key={2}>
-                        <td className="job-title">Content</td>
-                        <td>{this.state.content}</td>
-                      </tr>
-                      <tr key={3}>
-                        <td className="job-title">Status</td>
-                        <td>{this.state.status}</td>
-                      </tr>
-                      <tr key={4}>
-                        <td className="job-title">Job</td>
-                        <td>
-                          <Link to={url1}>{this.state.jobName}</Link>
-                        </td>
-                      </tr>
-                      <tr key={5}>
-                        <td className="job-title">Category</td>
-                        <td>{this.state.catName}</td>
-                      </tr>
-                      <tr key={6}>
-                        <td className="job-title">Created By</td>
-                        <td>
-                          <Link to={url2}>{this.state.userName}</Link>
-                        </td>
-                      </tr>
-                      <tr key={7}>
-                        <td className="job-title">Created At</td>
-                        <td>{this.state.created_at}</td>
-                      </tr>
-                      <tr key={8}>
-                        <td className="job-title">Updated At</td>
-                        <td>{this.state.updated_at}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </Row>
-            </Container>
-          </CardBody>
+          {this.state.loading ? (
+            <div
+              style={{
+                marginTop: '100px',
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: '100px'
+              }}
+              className="sweet-loading"
+            >
+              <ClipLoader
+                sizeUnit={'px'}
+                size={200}
+                color={'green'}
+                loading={this.state.loading}
+              />
+            </div>
+          ) : (
+            <CardBody>
+              <Container>
+                <Row style={{ justifyContent: 'center' }}>
+                  <div className="table-test" style={{ width: '100%' }}>
+                    <table>
+                      <tbody>
+                        <tr key={1}>
+                          <td className="job-title">Title</td>
+                          <td>{this.state.title}</td>
+                        </tr>
+                        <tr key={2}>
+                          <td className="job-title">Content</td>
+                          <td>{this.state.content}</td>
+                        </tr>
+                        <tr key={3}>
+                          <td className="job-title">Status</td>
+                          <td>{this.state.status}</td>
+                        </tr>
+                        <tr key={4}>
+                          <td className="job-title">Job</td>
+                          <td>
+                            <Link to={url1}>{this.state.jobName}</Link>
+                          </td>
+                        </tr>
+                        <tr key={5}>
+                          <td className="job-title">Category</td>
+                          <td>{this.state.catName}</td>
+                        </tr>
+                        <tr key={6}>
+                          <td className="job-title">Created By</td>
+                          <td>
+                            <Link to={url2}>{this.state.userName}</Link>
+                          </td>
+                        </tr>
+                        <tr key={7}>
+                          <td className="job-title">Created At</td>
+                          <td>{this.state.created_at}</td>
+                        </tr>
+                        <tr key={8}>
+                          <td className="job-title">Updated At</td>
+                          <td>{this.state.updated_at}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </Row>
+              </Container>
+            </CardBody>
+          )}
         </Card>
       </div>
     );

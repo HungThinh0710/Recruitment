@@ -18,3 +18,7 @@
 .action button {
   padding: 3px 8px !important;
 }
+
+.table-test th {
+  font-weight: bold;
+}

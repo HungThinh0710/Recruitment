@@ -47,6 +47,7 @@ export default class ModalAddArticle extends Component {
     var url1 = 'https://api.enclavei3dev.tk/api/list-job?page=1';
     var url2 = 'https://api.enclavei3dev.tk/api/category?page=1';
     const data1 = await fetch(url1, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -200,6 +201,7 @@ export default class ModalAddArticle extends Component {
     var { jobId } = this.state;
     var url = 'https://api.enclavei3dev.tk/api/list-job?page=' + pageNumber;
     fetch(url, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

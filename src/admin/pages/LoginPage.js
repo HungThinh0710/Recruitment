@@ -4,7 +4,7 @@ import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { Redirect, Link } from 'react-router-dom';
 import './LoginPage.css';
-
+import { ClipLoader, FadeLoader } from 'react-spinners';
 const stl = {
   color: 'red'
 };
@@ -15,14 +15,16 @@ export default class LoginPage extends React.Component {
       username: '',
       password: '',
       messenger: '',
-      redirect: false
+      redirect: false,
+      showLoadingLogin: false,
+      loadingLogin: true
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
   }
   componentWillMount() {
     if (localStorage.getItem('access_token')) {
-      window.location.href = '/admin/role';
+      this.props.history.push('/admin/role');
     }
   }
 
@@ -34,6 +36,7 @@ export default class LoginPage extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({ showLoadingLogin: true });
     const { username, password } = this.state;
     var url = 'https://api.enclavei3dev.tk/api/login';
 
@@ -65,9 +68,12 @@ export default class LoginPage extends React.Component {
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('token_type', data.token_type);
             localStorage.setItem('expires_at', data.expires_at);
-            this.setState({
-              redirect: true
-            });
+            setTimeout(() => {
+              this.setState({
+                redirect: true,
+                loadingLogin: false
+              });
+            }, 500);
           });
         }
       })
@@ -130,6 +136,22 @@ export default class LoginPage extends React.Component {
             <h6>Forgot Password</h6>
           </Link>
         </FormGroup>
+        {this.state.showLoadingLogin && this.state.loadingLogin ? (
+          <FormGroup className="input-area" style={{ marginBottom: '8%' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}
+              className="sweet-loading"
+            >
+              <FadeLoader color={'green'} loading={this.state.loadingLogin} />
+            </div>
+          </FormGroup>
+        ) : (
+          <div />
+        )}
+
         {this.renderRedirect()}
         <Button
           size="lg"

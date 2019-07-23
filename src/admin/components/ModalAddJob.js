@@ -100,6 +100,7 @@ export default class ModalAddUser extends Component {
               'https://api.enclavei3dev.tk/api/list-job?page=' +
               this.props.page;
             fetch(url2, {
+              method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',

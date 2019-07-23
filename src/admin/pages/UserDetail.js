@@ -9,6 +9,7 @@ import {
 } from 'react-icons/md';
 import {  NumberWidget } from '../components/Widget';
 import { MDBDataTable } from 'mdbreact';
+import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 import './UserDetail.css';
 export default class UserDetail extends Component {
@@ -52,7 +53,8 @@ export default class UserDetail extends Component {
           }],
           rows:[]
         },
-        listId:[]
+        listId:[],
+        loading: true
       };
       this.toggle = this.toggle.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -129,15 +131,16 @@ export default class UserDetail extends Component {
       editRoles.push(id); 
       editRolesName.push({id:id,name:name});   
     }
+    setTimeout(() => {
     this.setState({
       listRoles : {
         columns: columns,
-        rows: data2.data
+        rows: data2.data,
       },
+      loading: false,
       editRoles: editRoles,
-      editRolesName: editRolesName
-    })
-    $(".dataTables_paginate").remove();     
+      editRolesName: editRolesName,
+    })}, 500);   
   }
   
 
@@ -225,6 +228,24 @@ export default class UserDetail extends Component {
         <div className="profile-card">
         <Card className="card-body">
           <CardTitle className="title">User Profile</CardTitle>
+          {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'green'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
           <CardBody >
             <Container style={{marginTop:'5%'}}>
             <Row>
@@ -427,7 +448,7 @@ export default class UserDetail extends Component {
                     <Col>
                       <Card>
                         <CardBody>
-                          <MDBDataTable
+                        <MDBDataTable
                           striped
                           bordered
                           hover
@@ -469,7 +490,7 @@ export default class UserDetail extends Component {
                 </TabContent>
             
             </Container>
-          </CardBody>
+          </CardBody>)}
         </Card>
         </div>
       
