@@ -11,6 +11,7 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import './ArticlesPage.css';
 import ModalAddArticle from '../components/ModalAddArticle';
+import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%'
@@ -32,7 +33,8 @@ export default class ArticlesPage extends Component {
       currentPage: 0,
       activePage: 1,
       totalItems: 0,
-      listId: []
+      listId: [],
+      loading: true
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -49,10 +51,13 @@ export default class ArticlesPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    this.setState({
-      rows: data.data,
-      totalItems: data.total
-    });
+    setTimeout(() => {
+      this.setState({
+        rows: data.data,
+        totalItems: data.total,
+        loading: false
+      });
+    }, 500);
   }
 
   handlePageChange(pageNumber) {
@@ -208,94 +213,112 @@ export default class ArticlesPage extends Component {
     return (
       <Card style={styleCard}>
         <CardHeader style={styleFont}>Articles Management</CardHeader>
-        <CardBody>
-          <ModalAddArticle
-            color="success"
-            page={this.state.activePage}
-            buttonLabel="Create a new article"
-            nameButtonAccept="Add"
-            function={this.addJob.bind(this)}
-          />
-          <br />
-          {this.state.listDeleteId.length != 0 && (
-            <ModalRemoveArticles
-              arrayName={this.state.listDeleteName}
-              buttonLabel="Delete"
-              function={() => this.removeManyItems()}
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'green'}
+              loading={this.state.loading}
             />
-          )}
-          <div className="table-test">
-            <table>
-              <thead>
-                <tr style={{ background: 'green', color: 'white' }}>
-                  <th>
-                    <input type="checkbox" />
-                  </th>
-                  <th>#</th>
-                  <th>Title</th>
-                  <th>Job</th>
-                  <th>Created By</th>
-                  {/* <th>Created At</th>
-                  <th>Updated At</th> */}
-                  <th style={{ width: '180px' }}>
-                    <div className="action">Action</div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.rows.map(e => {
-                  i++;
-                  let url = '/admin/article/' + e.id;
-                  return (
-                    <tr key={e.id}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          onChange={() => this.handleCheckChange(e)}
-                        />
-                      </td>
-                      <td>{i}</td>
-                      <td>{e.title}</td>
-                      <td>{e.job.name}</td>
-                      <td>{e.user.fullname}</td>
-                      {/* <td>{e.created_at}</td>
-                      <td>{e.updated_at}</td> */}
-                      <td>
-                        <div className="action">
-                          <ModalEditItem
-                            icon
-                            // id={listId[index]}
-                            name={e.name}
-                            color="success"
-                            buttonLabel="Edit"
-                            // function={this.editRole.bind(this)}
-                          />
-                          <Link style={{ width: 'auto' }} to={url}>
-                            <Button className="view-button" color="primary">
-                              <MdPageview />
-                            </Button>
-                          </Link>
-                          <ModalRemoveArticle
-                            item={e}
-                            buttonLabel="Delete"
-                            function={() => this.removeItem(e.id)}
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
           </div>
-          <Pagination
-            activePage={this.state.activePage}
-            itemsCountPerPage={10}
-            totalItemsCount={this.state.totalItems}
-            pageRangeDisplayed={5}
-            onChange={this.handlePageChange.bind(this)}
-          />
-        </CardBody>
+        ) : (
+          <CardBody>
+            <ModalAddArticle
+              color="success"
+              page={this.state.activePage}
+              buttonLabel="Create a new article"
+              nameButtonAccept="Add"
+              function={this.addJob.bind(this)}
+            />
+            {this.state.listDeleteId.length != 0 && (
+              <ModalRemoveArticles
+                arrayName={this.state.listDeleteName}
+                buttonLabel="Delete"
+                function={() => this.removeManyItems()}
+              />
+            )}
+            <div className="table-test">
+              <table>
+                <thead>
+                  <tr style={{ background: 'green', color: 'white' }}>
+                    <th>
+                      <input type="checkbox" />
+                    </th>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Job</th>
+                    <th>Created By</th>
+                    {/* <th>Created At</th>
+                  <th>Updated At</th> */}
+                    <th style={{ width: '180px' }}>
+                      <div className="action">Action</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.rows.map(e => {
+                    i++;
+                    let url = '/admin/article/' + e.id;
+                    return (
+                      <tr key={e.id}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            onChange={() => this.handleCheckChange(e)}
+                          />
+                        </td>
+                        <td>{i}</td>
+                        <td>{e.title}</td>
+                        <td>{e.job.name}</td>
+                        <td>{e.user.fullname}</td>
+                        {/* <td>{e.created_at}</td>
+                      <td>{e.updated_at}</td> */}
+                        <td>
+                          <div className="action">
+                            <ModalEditItem
+                              icon
+                              // id={listId[index]}
+                              name={e.name}
+                              color="success"
+                              buttonLabel="Edit"
+                              // function={this.editRole.bind(this)}
+                            />
+                            <Link style={{ width: 'auto' }} to={url}>
+                              <Button className="view-button" color="primary">
+                                <MdPageview />
+                              </Button>
+                            </Link>
+                            <ModalRemoveArticle
+                              item={e}
+                              buttonLabel="Delete"
+                              function={() => this.removeItem(e.id)}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <Pagination
+              activePage={this.state.activePage}
+              itemsCountPerPage={10}
+              totalItemsCount={this.state.totalItems}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange.bind(this)}
+            />
+          </CardBody>
+        )}
       </Card>
     );
   }

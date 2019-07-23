@@ -9,6 +9,8 @@ import './RolesPage.css';
 import { MdPageview, MdEdit } from 'react-icons/md';
 import PaginationComponent from '../components/Pagination.js';
 import './TestPage.css';
+
+import { ClipLoader } from 'react-spinners';
 const styleFont = {
   fontSize: '200%'
 };
@@ -27,7 +29,8 @@ export default class Roles extends Component {
       listDeleteId: [],
       activePage: 1,
       totalItems: 0,
-      rows: []
+      rows: [],
+      loading: true
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -46,11 +49,14 @@ export default class Roles extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    this.setState({
-      currentPage: data.currentPage,
-      totalItems: data.total,
-      rows: data.data
-    });
+    setTimeout(() => {
+      this.setState({
+        currentPage: data.currentPage,
+        totalItems: data.total,
+        rows: data.data,
+        loading: false
+      });
+    }, 500);
   }
 
   removeItem(id) {
@@ -198,88 +204,111 @@ export default class Roles extends Component {
     return (
       <Card style={styleCard}>
         <CardHeader style={styleFont}>Roles Management</CardHeader>
-        <CardBody>
-          <ModalAddRole
-            color="success"
-            buttonLabel="Create a new role"
-            page={this.state.activePage}
-            nameButtonAccept="Submit"
-            function={this.addRole.bind(this)}
-          />
-          <br />
-          {this.state.listDeleteId.length != 0 && (
-            <ModalRemoveRoles
-              arrayName={this.state.listDeleteName}
-              buttonLabel="Delete"
-              function={() => this.removeManyItems()}
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'green'}
+              loading={this.state.loading}
             />
-          )}
-          <div className="table-test">
-            <table>
-              <thead>
-                <tr style={{ background: 'green', color: 'white' }}>
-                  <th>
-                    <input type="checkbox" />
-                  </th>
-                  <th>#</th>
-                  <th>Role</th>
-                  <th>Description</th>
-                  <th style={{ width: '180px' }}>
-                    <div className="action">Action</div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.rows.map(e => {
-                  i++;
-                  let url = '/admin/role/' + e.id;
-                  return (
-                    <tr key={e.id}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          onChange={() => this.handleCheckChange(e.name, e.id)}
-                        />
-                      </td>
-                      <td>{i}</td>
-                      <td>{e.name}</td>
-                      <td>{e.description}</td>
-                      <td>
-                        <div className="action">
-                          <ModalEditItem
-                            icon
-                            // id={listId[index]}
-                            name={e.name}
-                            color="success"
-                            buttonLabel="Edit"
-                            // function={this.editRole.bind(this)}
-                          />
-                          <Link style={{ width: 'auto' }} to={url}>
-                            <Button className="view-button" color="primary">
-                              <MdPageview />
-                            </Button>
-                          </Link>
-                          <ModalRemoveRole
-                            item={e}
-                            buttonLabel="Delete"
-                            function={() => this.removeItem(e.id)}
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
           </div>
-          <PaginationComponent
-            activePage={this.state.activePage}
-            itemsCountPerPage={10}
-            totalItemsCount={totalItems}
-            pageRangeDisplayed={5}
-            onChange={this.handlePageChange}
-          />
-        </CardBody>
+        ) : (
+          <CardBody>
+            <ModalAddRole
+              color="success"
+              buttonLabel="Create a new role"
+              page={this.state.activePage}
+              nameButtonAccept="Submit"
+              function={this.addRole.bind(this)}
+            />
+            {this.state.listDeleteId.length != 0 && (
+              <ModalRemoveRoles
+                arrayName={this.state.listDeleteName}
+                buttonLabel="Delete"
+                function={() => this.removeManyItems()}
+              />
+            )}
+
+            <div className="table-test">
+              <table>
+                <thead>
+                  <tr style={{ background: 'green', color: 'white' }}>
+                    <th>
+                      <input type="checkbox" />
+                    </th>
+                    <th>#</th>
+                    <th>Role</th>
+                    <th>Description</th>
+                    <th style={{ width: '180px' }}>
+                      <div className="action">Action</div>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {this.state.rows.map(e => {
+                    i++;
+                    let url = '/admin/role/' + e.id;
+                    return (
+                      <tr key={e.id}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            onChange={() =>
+                              this.handleCheckChange(e.name, e.id)
+                            }
+                          />
+                        </td>
+                        <td>{i}</td>
+                        <td>{e.name}</td>
+                        <td>{e.description}</td>
+                        <td>
+                          <div className="action">
+                            <ModalEditItem
+                              icon
+                              // id={listId[index]}
+                              name={e.name}
+                              color="success"
+                              buttonLabel="Edit"
+                              // function={this.editRole.bind(this)}
+                            />
+                            <Link style={{ width: 'auto' }} to={url}>
+                              <Button className="view-button" color="primary">
+                                <MdPageview />
+                              </Button>
+                            </Link>
+                            <ModalRemoveRole
+                              item={e}
+                              buttonLabel="Delete"
+                              function={() => this.removeItem(e.id)}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <br />
+              <PaginationComponent
+                activePage={this.state.activePage}
+                itemsCountPerPage={10}
+                totalItemsCount={totalItems}
+                pageRangeDisplayed={5}
+                onChange={this.handlePageChange}
+              />
+            </div>
+          </CardBody>
+        )}
       </Card>
     );
   }
