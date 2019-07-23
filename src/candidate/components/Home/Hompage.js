@@ -12,21 +12,70 @@ export default class Homepage extends Component {
       product:[],
     }
   }
+to_slug = (str) =>
+{
+    // Chuyển hết sang chữ thường
+    str = str.toLowerCase();     
+ 
+    // xóa dấu
+    str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a');
+    str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, 'e');
+    str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, 'i');
+    str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, 'o');
+    str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, 'u');
+    str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, 'y');
+    str = str.replace(/(đ)/g, 'd');
+ 
+    // Xóa ký tự đặc biệt
+    str = str.replace(/([^0-9a-z-\s])/g, '');
+ 
+    // Xóa khoảng trắng thay bằng ký tự -
+    str = str.replace(/(\s+)/g, '-');
+ 
+    // xóa phần dự - ở đầu
+    str = str.replace(/^-+/g, '');
+ 
+    // xóa phần dư - ở cuối
+    str = str.replace(/-+$/g, '');
+ 
+    // return
+    return str;
+}
   componentDidMount()
   {
-    fetch('https://api.enclavei3dev.tk/api/article-web').then
-    ((Response) => Response.json()).then
-    ((findresponse) =>
+    let headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+  }
+  
+  let body = {
+      "keyword": "",
+      "position": "",
+      "location": "",
+      "experience": "",
+      "orderby": "asc"
+  }
+  
+    fetch('https://api.enclavei3dev.tk/api/article-web', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body)
+    }).then
+    ((response) => response.json()).then
+    ((json) =>
     {
-      console.log(findresponse.data)
-      this.setState({
-        product:findresponse.data
-      })
+      console.log(json)
+       this.setState({
+        product:json.data
+       })
      
     })
   }
   render() {
-    console.log(this.props.match.params.id)
+    console.log(this.props.match.params)
+    const {id} = this.props.match.params;
+    console.log(id);
+    console.log(this.state.product);
 
     return (
       <section id="Home">
@@ -99,9 +148,9 @@ export default class Homepage extends Component {
                         <li class="list-group-item">
                           <NavLink to={"#"}>Internship</NavLink>
                         </li>
-                        <li class="list-group-item">
+                        {/* <li class="list-group-item">
                           <NavLink to={"#"}>Bootcamp</NavLink>
-                        </li>
+                        </li> */}
                         <li class="list-group-item">
                           <NavLink to={"#"}>engineer</NavLink>
                         </li>
@@ -186,59 +235,18 @@ export default class Homepage extends Component {
                             <th>Day expired</th>
                           </thead>
                           <tbody class="transistion">
-                            {/* {careerdata.map((p, index) => {
-                              return <tr class="transfer">
-                                <td data-th="Position">
-                                  <div>
-                                    <NavLink to={"/describe/"+ this.props.match.params.id}>
-                                      <p class="position-id">
-                                        <p class="position-title">
-                                          {p.name}
-                                        </p>
-                                      </p>
-                                    </NavLink>
-                                  </div>
-                                </td>
-                                <td data-th="Category">
-                                  <div>
-                                    <p class="category-id">
-                                      <p class="category-title">
-                                        {p.position}
-                                      </p>
-                                    </p>
-                                  </div>
-                                </td>
-                                <td data-th="Location">
-                                  <div>
-                                    <p class="location-id">
-                                      <p class="location-title">
-                                        {p.local}
-                                      </p>
-                                    </p>
-                                  </div>
-                                </td>
-                                <td data-th="Day expired">
-                                  <div>
-                                    <p class="Dayexpired-id">
-                                      <p class="Dayexpired-title">
-                                        {p.outdate}
-                                      </p>
-                                    </p>
-                                  </div>
-                                </td>
-                              </tr>
-                            })} */}
+                            
                             {this.state.product.map((p, index) => {
                               return <tr class="transfer">
                                 <td data-th="Position">
                                   <div>
-                                    <NavLink to={"/describe/"+ this.props.match.params.pid}>
+                                    <Link to={"/describe/" + this.props.match.params.id}>
                                       <p class="position-id">
                                         <p class="position-title">
                                           {p.title}
                                         </p>
                                       </p>
-                                    </NavLink>
+                                    </Link>
                                   </div>
                                 </td>
                                 <td data-th="Category">

@@ -37,6 +37,8 @@ class Applyform extends Component{
       Nodejs: false,
       dotnet: false,
       java: false,
+      Reactjs: false,
+      
       formErrors: {
         fullName: "",
         address: "",
