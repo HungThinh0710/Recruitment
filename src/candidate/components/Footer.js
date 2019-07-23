@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import '../components/Footer/footer.css';
+import { FacebookShareButton, FacebookIcon} from 'react-share';
 export default class Footer extends Component {
   render() {
     return (
@@ -11,7 +12,7 @@ export default class Footer extends Component {
                 <div class="col-md-12 py-1">
                   <div class="mb-5 flex-center footer-social" id="fixa">
                     <h5>Contact us: &nbsp;</h5>
-                    <NavLink to={"#"}><span className="icon-facebook" /></NavLink>
+                    <NavLink to={"https://www.facebook.com/enclaveit"}><span className="icon-facebook" /></NavLink>
                     <NavLink to={"#"}><span className="icon-twitter" /></NavLink>
                     <NavLink to={"#"}><span className="icon-instagram" /></NavLink>
                     <NavLink to={"#"}><span className="icon-skype" /></NavLink>
