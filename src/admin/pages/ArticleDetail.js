@@ -20,7 +20,7 @@ import {
   Label,
   Input
 } from 'reactstrap';
-import { MdSettings, MdMap, MdBook } from 'react-icons/md';
+import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
 import classnames from 'classnames';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
@@ -118,6 +118,10 @@ export default class ArticleDetail extends Component {
     }
   }
 
+  backToPreviousPage = () => {
+    this.props.history.push('/admin/article');
+  };
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -199,7 +203,13 @@ export default class ArticleDetail extends Component {
     return (
       <div className="profile-card">
         <Card className="card-body">
-          <CardTitle className="title">Article Information</CardTitle>
+          <CardTitle className="title">
+            <MdCancel className="first" />
+            Article Information
+            <Link to="/admin/article">
+              <MdCancel />
+            </Link>
+          </CardTitle>
           {this.state.loading ? (
             <div
               style={{
@@ -265,6 +275,20 @@ export default class ArticleDetail extends Component {
                   </div>
                 </Row>
               </Container>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: '20px'
+                }}
+              >
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
+                >
+                  Back
+                </Button>
+              </div>
             </CardBody>
           )}
         </Card>

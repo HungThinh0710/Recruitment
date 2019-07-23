@@ -304,14 +304,15 @@ export default class JobsPage extends Component {
                   })}
                 </tbody>
               </table>
+              <br />
+              <Pagination
+                activePage={this.state.activePage}
+                itemsCountPerPage={10}
+                totalItemsCount={this.state.totalItems}
+                pageRangeDisplayed={5}
+                onChange={this.handlePageChange.bind(this)}
+              />
             </div>
-            <Pagination
-              activePage={this.state.activePage}
-              itemsCountPerPage={10}
-              totalItemsCount={this.state.totalItems}
-              pageRangeDisplayed={5}
-              onChange={this.handlePageChange.bind(this)}
-            />
           </CardBody>
         )}
       </Card>

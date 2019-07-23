@@ -230,6 +230,7 @@ export default class Roles extends Component {
               nameButtonAccept="Submit"
               function={this.addRole.bind(this)}
             />
+
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveRoles
                 arrayName={this.state.listDeleteName}

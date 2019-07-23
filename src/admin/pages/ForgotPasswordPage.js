@@ -29,7 +29,6 @@ export default class ForgotPasswordPage extends React.Component {
   }
 
   handleBackToLogin = () => {
-    console.log('backkkk');
     this.props.history.push('/admin');
   };
 

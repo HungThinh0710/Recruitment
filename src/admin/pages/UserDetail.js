@@ -5,12 +5,12 @@ Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Labe
 import classnames from 'classnames';
 import TabInformation from '../components/TabInformation'
 import {
-  MdSettings,MdMap,MdBook,MdPermDataSetting
+  MdSettings,MdMap,MdBook,MdPermDataSetting,MdCancel
 } from 'react-icons/md';
 import {  NumberWidget } from '../components/Widget';
 import { MDBDataTable } from 'mdbreact';
 import { ClipLoader } from 'react-spinners';
-import $ from 'jquery';
+import {Link} from 'react-router-dom';
 import './UserDetail.css';
 export default class UserDetail extends Component {
   constructor(props) {
@@ -143,6 +143,9 @@ export default class UserDetail extends Component {
     })}, 500);   
   }
   
+  backToPreviousPage = () => {
+    this.props.history.push('/admin/user');
+  };
 
   handleChange(event) {
     this.setState({
@@ -227,7 +230,13 @@ export default class UserDetail extends Component {
     return (
         <div className="profile-card">
         <Card className="card-body">
-          <CardTitle className="title">User Profile</CardTitle>
+          <CardTitle className="title">
+              <MdCancel className='first'/>
+            User Profile
+            <Link to="/admin/user">
+              <MdCancel />
+            </Link>
+          </CardTitle>
           {this.state.loading ? (
           <div
             style={{
@@ -488,8 +497,16 @@ export default class UserDetail extends Component {
                     </Row>
                     </TabPane>
                 </TabContent>
-            
+                
             </Container>
+            <div style={{ display: 'flex', justifyContent: 'flex-end',marginTop:'20px' }}>
+              <Button
+                onClick={() => this.backToPreviousPage()}
+                color="secondary"
+              >
+                Back
+              </Button>
+            </div>
           </CardBody>)}
         </Card>
         </div>
