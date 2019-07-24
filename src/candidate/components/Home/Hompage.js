@@ -6,6 +6,7 @@ import Footer from '../Footer';
 import axios from 'axios';
 import careerdata from '../data/careerdata.json';
 import Pagination from '../Pagination.js';
+import { IntlProvider, FormattedDate } from 'react-intl';
 // function searchingFor(term) {
 //   return
 // }
@@ -107,6 +108,7 @@ export default class Homepage extends Component {
       });
     });
   }
+
   render() {
     return (
       <section id="Home">
@@ -270,7 +272,13 @@ export default class Homepage extends Component {
                                   <div>
                                     <p class="Dayexpired-id">
                                       <p class="Dayexpired-title">
-                                        {p.job.deadline}
+                                        <IntlProvider locale="fr">
+                                          <FormattedDate
+                                            value={p.job.deadline}
+                                            day="numeric"
+                                            month="long"
+                                            year="numeric" />
+                                        </IntlProvider>
                                       </p>
                                     </p>
                                   </div>
