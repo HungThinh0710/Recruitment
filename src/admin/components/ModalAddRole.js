@@ -175,7 +175,8 @@ export default class ModalAddRole extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="success" onClick={this.wrapperFunction}>{this.props.nameButtonAccept}</Button>{' '}
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+            <button className="btn btn-primary" onClick={this.toggle}>Cancel </button>
+            {/* <Button color="secondary" onClick={this.toggle}>Cancel</Button> */}
           </ModalFooter>
         </Modal>
       </div>

@@ -1,0 +1,19 @@
+.pagination-area-web .pagination {
+  margin-left: 70%;
+}
+
+.pagination-area-web .pagination li {
+  
+  /* border: 1px solid  !important;
+  border-collapse: collapse; */
+  padding: 2% 3.5% 2% 3.5%;
+  margin-right: 5px;
+}
+
+.pagination-area-web  .pagination .active {
+  background-color: green !important;
+  border-radius: 5px;
+}
+.pagination-area-web .pagination .active a{
+  color: white;
+}

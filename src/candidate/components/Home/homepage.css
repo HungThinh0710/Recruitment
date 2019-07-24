@@ -98,7 +98,7 @@
   padding-right: 0;
   font-size: 14px;
   text-transform: uppercase;
-  color:rgba(24, 70, 2, 1);
+  color:rgba(22, 138, 25, 1);
 }
 .list-group-item.active {
   border-color: green;
@@ -235,5 +235,7 @@
   text-align: right !important;
 
 }
-
+.text-green {
+  color: green !important;
+}
 
