@@ -4,11 +4,10 @@ import Notifications from '../../components/Notifications';
 import { notificationsData } from '../../demos/header';
 import withBadge from '../../hocs/withBadge';
 import React from 'react';
-import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link } from 'react-router-dom';
 import {
   MdMenu,
   MdExitToApp,
-  MdInsertChart,
   MdNotificationsActive,
   MdNotificationsNone,
   MdPersonPin
@@ -16,13 +15,12 @@ import {
 import {
   ListGroup,
   ListGroupItem,
-  // NavbarToggler,
   Nav,
   Navbar,
   NavItem,
   NavLink,
   Popover,
-  PopoverBody,
+  PopoverBody
 } from 'reactstrap';
 import bn from '../../utils/bemnames';
 import './Header.css';
@@ -36,9 +34,9 @@ const MdNotificationsActiveWithBadge = withBadge({
     right: -10,
     display: 'inline-flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  children: <small>5</small>,
+  children: <small>5</small>
 })(MdNotificationsActive);
 
 class Header extends React.Component {
@@ -49,31 +47,31 @@ class Header extends React.Component {
       isNotificationConfirmed: false,
       isOpenUserCardPopover: false,
       redirect: false,
-        name: '',
-        email: '' ,
-        image: ''
+      name: '',
+      email: '',
+      image: ''
     };
   }
-  async componentWillMount(){
+  async componentWillMount() {
     //const {firstName, lastName, email} = this.state;
     var url = 'https://api.enclavei3dev.tk/api/current-profile';
     const data = await fetch(url, {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json())   
+    }).then(res => res.json());
     this.setState({
-      name : data.name,
+      name: data.name,
       email: data.email,
       image: data.image
-    })       
+    });
   }
 
   toggleNotificationPopover = () => {
     this.setState({
-      isOpenNotificationPopover: !this.state.isOpenNotificationPopover,
+      isOpenNotificationPopover: !this.state.isOpenNotificationPopover
     });
 
     if (!this.state.isNotificationConfirmed) {
@@ -83,7 +81,7 @@ class Header extends React.Component {
 
   toggleUserCardPopover = () => {
     this.setState({
-      isOpenUserCardPopover: !this.state.isOpenUserCardPopover,
+      isOpenUserCardPopover: !this.state.isOpenUserCardPopover
     });
   };
 
@@ -96,27 +94,27 @@ class Header extends React.Component {
   setRedirect = () => {
     this.setState({
       redirect: true
-    })
-  }
+    });
+  };
   renderRedirect = () => {
     if (this.state.redirect) {
-       localStorage.removeItem('access_token');
-       localStorage.removeItem('token_type');
-       localStorage.removeItem('expires_at');
-       return <Redirect to='/admin' />
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('token_type');
+      localStorage.removeItem('expires_at');
+      return <Redirect to="/admin" />;
     }
-  }
+  };
 
   render() {
     const { isNotificationConfirmed } = this.state;
 
     return (
-      <Navbar light expand className={bem.b('bg-white')}> 
+      <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2">
-          {/* <Button outline onClick={this.handleSidebarControlButton}>
-            <MdClearAll size={25} />
-          </Button> */}
-          <button className='menu-button'onClick={this.handleSidebarControlButton}>
+          <button
+            className="menu-button"
+            onClick={this.handleSidebarControlButton}
+          >
             <MdMenu size={50} />
           </button>
         </Nav>
@@ -172,28 +170,22 @@ class Header extends React.Component {
                   className="border-light"
                 >
                   <ListGroup flush>
-                    <Link to='/admin/profile'>
-                    <ListGroupItem tag="button"  action className="border-light"  >
-                      <MdPersonPin /> My Profile
-                    </ListGroupItem>
+                    <Link to="/admin/profile">
+                      <ListGroupItem
+                        tag="button"
+                        action
+                        className="border-light"
+                      >
+                        <MdPersonPin /> My Profile
+                      </ListGroupItem>
                     </Link>
-
-                    <Link to='/admin/account'>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdInsertChart /> My Account
-                    </ListGroupItem>
-                    </Link>
-                    {/* <ListGroupItem tag="button" action className="border-light">
-                      <MdMessage /> Messages
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdSettingsApplications /> Settings
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
-                      <MdHelp /> Help
-                    </ListGroupItem> */}
                     {this.renderRedirect()}
-                    <ListGroupItem tag="button" action className="border-light" onClick={this.setRedirect}>
+                    <ListGroupItem
+                      tag="button"
+                      action
+                      className="border-light"
+                      onClick={this.setRedirect}
+                    >
                       <MdExitToApp /> Logout
                     </ListGroupItem>
                   </ListGroup>

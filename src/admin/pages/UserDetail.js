@@ -1,15 +1,16 @@
 
 import React, { Component } from 'react'
 import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText, 
-  Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input } from 'reactstrap';
-  import classnames from 'classnames';
-  import TabInformation from '../components/TabInformation'
-  import {
-    MdSettings,MdMap,MdBook,MdPermDataSetting
-  } from 'react-icons/md';
-  import {  NumberWidget } from '../components/Widget';
-  import { MDBDataTable } from 'mdbreact';
-  import $ from 'jquery';
+Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input } from 'reactstrap';
+import classnames from 'classnames';
+import TabInformation from '../components/TabInformation'
+import {
+  MdSettings,MdMap,MdBook,MdPermDataSetting,MdCancel
+} from 'react-icons/md';
+import {  NumberWidget } from '../components/Widget';
+import { MDBDataTable } from 'mdbreact';
+import { ClipLoader } from 'react-spinners';
+import {Link} from 'react-router-dom';
 import './UserDetail.css';
 export default class UserDetail extends Component {
   constructor(props) {
@@ -52,7 +53,8 @@ export default class UserDetail extends Component {
           }],
           rows:[]
         },
-        listId:[]
+        listId:[],
+        loading: true
       };
       this.toggle = this.toggle.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -116,7 +118,7 @@ export default class UserDetail extends Component {
       })
       if (found) {
         editRoles.push(listId[index]);
-         return e.action= <input type='checkbox' defaultChecked={true} 
+        return e.action= <input type='checkbox' defaultChecked={true} 
         onChange={() => handleCheck(e.name,listId[index])} />
       }
       
@@ -129,17 +131,21 @@ export default class UserDetail extends Component {
       editRoles.push(id); 
       editRolesName.push({id:id,name:name});   
     }
+    setTimeout(() => {
     this.setState({
       listRoles : {
         columns: columns,
-        rows: data2.data
+        rows: data2.data,
       },
+      loading: false,
       editRoles: editRoles,
-      editRolesName: editRolesName
-    })
-    $(".dataTables_paginate").remove();     
+      editRolesName: editRolesName,
+    })}, 500);   
   }
   
+  backToPreviousPage = () => {
+    this.props.history.push('/admin/user');
+  };
 
   handleChange(event) {
     this.setState({
@@ -158,9 +164,10 @@ export default class UserDetail extends Component {
     array1.map(element=>{
       var count = editRoles.filter(e => e===element);
       var length = count.length;
-      if (length%2!=0) {
+      if (length%2!==0) {
         array2.push(element);
       } 
+      return array2;
       });
     var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     fetch(url, {
@@ -187,7 +194,7 @@ export default class UserDetail extends Component {
       if (res.status === 200) {
         res.json().then(data =>{
           alert('Update Success');
-           array2.map(e =>{
+          array2.map(e =>{
             var url2 = 'https://api.enclavei3dev.tk/api/role/'+e;
             fetch(url2, {
               headers:{
@@ -222,8 +229,32 @@ export default class UserDetail extends Component {
   
     return (
         <div className="profile-card">
-         <Card className="card-body">
-          <CardTitle className="title">User Profile</CardTitle>
+        <Card className="card-body">
+          <CardTitle className="title">
+              <MdCancel className='first'/>
+            User Profile
+            <Link to="/admin/user">
+              <MdCancel />
+            </Link>
+          </CardTitle>
+          {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'green'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
           <CardBody >
             <Container style={{marginTop:'5%'}}>
             <Row>
@@ -306,7 +337,7 @@ export default class UserDetail extends Component {
                       className={classnames({ tabactive: this.state.activeTab === '3' })}
                       onClick={() => { this.toggle('3'); }}
                     >
-                     <MdPermDataSetting style={{marginRight:'5px'}}/>
+                    <MdPermDataSetting style={{marginRight:'5px'}}/>
                       Update Profile
                     </NavLink>
                   </NavItem>
@@ -426,7 +457,7 @@ export default class UserDetail extends Component {
                     <Col>
                       <Card>
                         <CardBody>
-                          <MDBDataTable
+                        <MDBDataTable
                           striped
                           bordered
                           hover
@@ -466,9 +497,17 @@ export default class UserDetail extends Component {
                     </Row>
                     </TabPane>
                 </TabContent>
-            
+                
             </Container>
-          </CardBody>
+            <div style={{ display: 'flex', justifyContent: 'flex-end',marginTop:'20px' }}>
+              <Button
+                onClick={() => this.backToPreviousPage()}
+                color="secondary"
+              >
+                Back
+              </Button>
+            </div>
+          </CardBody>)}
         </Card>
         </div>
       

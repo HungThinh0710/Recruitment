@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
+
+import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveRole from '../components/ModalRemoveRole';
-import ModalRemoveRoles from '../components/ModalRemoveRoles';
-import ModalAddRole from '../components/ModalAddRole';
+import ModalRemoveJob from '../components/ModalRemoveJob';
+import ModalRemoveJobs from '../components/ModalRemoveJobs';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
-import './RolesPage.css';
-import { MdPageview, MdEdit } from 'react-icons/md';
-import PaginationComponent from '../components/Pagination.js';
-import './TestPage.css';
-
+import Pagination from '../components/Pagination.js';
+// import './Roles.css'
+import ModalAddJob from '../components/ModalAddJob';
 import { ClipLoader } from 'react-spinners';
+import $ from 'jquery';
 const styleFont = {
   fontSize: '200%'
 };
@@ -20,27 +20,26 @@ const styleCard = {
   alignSelf: 'center',
   marginBottom: '8%'
 };
-
-export default class Roles extends Component {
+export default class JobsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       listDeleteName: [],
       listDeleteId: [],
+      rows: [],
+      currentPage: 0,
       activePage: 1,
       totalItems: 0,
-      rows: [],
+      listId: [],
       loading: true
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.removeManyItems = this.removeManyItems.bind(this);
+    // this.removeManyItems = this.removeManyItems.bind(this);
   }
-  async componentWillMount() {
-    const { activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
-    // var i = 0;
-    // var listRoles = [];
+
+  async componentDidMount() {
+    var url = 'https://api.enclavei3dev.tk/api/list-job?page=1';
     const data = await fetch(url, {
       method: 'POST',
       headers: {
@@ -51,66 +50,16 @@ export default class Roles extends Component {
     }).then(res => res.json());
     setTimeout(() => {
       this.setState({
-        currentPage: data.currentPage,
-        totalItems: data.total,
         rows: data.data,
+        totalItems: data.total,
         loading: false
       });
     }, 500);
   }
 
-  removeItem(id) {
-    const { activePage, listDeleteId } = this.state;
-    var array = [];
-    array.push(id);
-    var index = listDeleteId.indexOf(id);
-    listDeleteId.splice(index, 1);
-    var url = 'https://api.enclavei3dev.tk/api/role';
-    fetch(url, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        roleId: array
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-role?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => {
-        res.json().then(data => {
-          data.data.forEach(function(e) {
-            delete e.created_at;
-            delete e.updated_at;
-          });
-          this.setState({
-            rows: data.data,
-            totalItems: data.total,
-            listDeleteId: listDeleteId,
-            listDeleteName: []
-          });
-        });
-      });
-    });
-  }
-
-  addRole(data) {
-    this.setState({
-      rows: data.data,
-      totalItems: data.total
-    });
-  }
-
   handlePageChange(pageNumber) {
-    this.setState({ activePage: pageNumber });
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + pageNumber;
+    // this.setState({activePage: pageNumber});
+    var url = 'https://api.enclavei3dev.tk/api/list-job?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -120,10 +69,6 @@ export default class Roles extends Component {
       }
     }).then(res => {
       res.json().then(data => {
-        data.data.forEach(function(e) {
-          delete e.created_at;
-          delete e.updated_at;
-        });
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
@@ -134,10 +79,72 @@ export default class Roles extends Component {
     });
   }
 
-  handleCheckChange(name, id) {
+  edit(index) {
+    $('.item').removeClass('item-active');
+    $('#' + index).addClass('item-active');
+    var url = 'https://api.enclavei3dev.tk/api/user?page=' + index;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      res.json().then(data => {
+        this.setState({
+          rows: data.data,
+          totalItems: data.total
+        });
+      });
+    });
+  }
+
+  addJob(data) {
+    this.setState({
+      rows: data.data,
+      totalItems: data.total
+    });
+  }
+
+  removeItem(id) {
+    const { activePage } = this.state;
+    var array = [];
+    array.push(id);
+    var url = 'https://api.enclavei3dev.tk/api/job';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        jobId: array
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch('https://api.enclavei3dev.tk/api/list-job?page=' + activePage, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(data => {
+          this.setState({
+            rows: data.data,
+            totalItems: data.total
+          });
+        });
+      });
+    });
+  }
+
+  handleCheckChange(e) {
     const { listDeleteId, listDeleteName } = this.state;
-    listDeleteId.push(id);
-    listDeleteName.push(name);
+    listDeleteId.push(e.id);
+    listDeleteName.push(e);
     var array1 = [...new Set(listDeleteId)];
     var array3 = [...new Set(listDeleteName)];
     var array2 = [];
@@ -151,7 +158,7 @@ export default class Roles extends Component {
       return array2;
     });
     array3.map(element => {
-      var count = listDeleteName.filter(e => e === element);
+      var count = listDeleteName.filter(e => e.id === element.id);
       var length = count.length;
       if (length % 2 !== 0) {
         array4.push(element);
@@ -166,11 +173,11 @@ export default class Roles extends Component {
 
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/role';
+    var url = 'https://api.enclavei3dev.tk/api/job';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        roleId: listDeleteId
+        jobId: listDeleteId
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -178,7 +185,7 @@ export default class Roles extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-role?page=' + activePage, {
+      fetch('https://api.enclavei3dev.tk/api/list-job?page=' + activePage, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,11 +206,10 @@ export default class Roles extends Component {
   }
 
   render() {
-    const { totalItems } = this.state;
     var i = 0;
     return (
       <Card style={styleCard}>
-        <CardHeader style={styleFont}>Roles Management</CardHeader>
+        <CardHeader style={styleFont}>Jobs Management</CardHeader>
         {this.state.loading ? (
           <div
             style={{
@@ -223,22 +229,20 @@ export default class Roles extends Component {
           </div>
         ) : (
           <CardBody>
-            <ModalAddRole
+            <ModalAddJob
               color="success"
-              buttonLabel="Create a new role"
               page={this.state.activePage}
-              nameButtonAccept="Submit"
-              function={this.addRole.bind(this)}
+              buttonLabel="Create a new job"
+              nameButtonAccept="Add"
+              function={this.addJob.bind(this)}
             />
-
-            {this.state.listDeleteId.length != 0 && (
-              <ModalRemoveRoles
+            {this.state.listDeleteId.length !== 0 && (
+              <ModalRemoveJobs
                 arrayName={this.state.listDeleteName}
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
             )}
-
             <div className="table-test">
               <table>
                 <thead>
@@ -247,31 +251,32 @@ export default class Roles extends Component {
                       <input type="checkbox" />
                     </th>
                     <th>#</th>
-                    <th>Role</th>
-                    <th>Description</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Deadline</th>
                     <th style={{ width: '180px' }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/admin/role/' + e.id;
+                    let url = '/admin/job/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
                           <input
                             type="checkbox"
-                            onChange={() =>
-                              this.handleCheckChange(e.name, e.id)
-                            }
+                            onChange={() => this.handleCheckChange(e)}
                           />
                         </td>
                         <td>{i}</td>
                         <td>{e.name}</td>
-                        <td>{e.description}</td>
+                        <td>{e.position}</td>
+                        <td>{e.salary}</td>
+                        <td>{e.deadline}</td>
                         <td>
                           <div className="action">
                             <ModalEditItem
@@ -287,7 +292,7 @@ export default class Roles extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveRole
+                            <ModalRemoveJob
                               item={e}
                               buttonLabel="Delete"
                               function={() => this.removeItem(e.id)}
@@ -300,12 +305,12 @@ export default class Roles extends Component {
                 </tbody>
               </table>
               <br />
-              <PaginationComponent
+              <Pagination
                 activePage={this.state.activePage}
                 itemsCountPerPage={10}
-                totalItemsCount={totalItems}
+                totalItemsCount={this.state.totalItems}
                 pageRangeDisplayed={5}
-                onChange={this.handlePageChange}
+                onChange={this.handlePageChange.bind(this)}
               />
             </div>
           </CardBody>

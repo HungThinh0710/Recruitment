@@ -5,10 +5,12 @@ import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText,
   import classnames from 'classnames';
   import {  NumberWidget } from '../components/Widget';
   import {
-    MdSettings,MdMap,MdBook
+    MdSettings,MdMap,MdBook,MdCancel
   } from 'react-icons/md';
 import './ProfilePage.css';
+import {Link} from 'react-router-dom';
 import TabInformation from '../components/TabInformation';
+import { ClipLoader } from 'react-spinners';
 export default class ProfilePage extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,8 @@ export default class ProfilePage extends Component {
         editImage:'',
         old_password:'',
         password:'',
-        password_confirmation:''
+        password_confirmation:'',
+        loading: true
       };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -42,7 +45,8 @@ export default class ProfilePage extends Component {
         'Accept' : 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
-    }).then(res => res.json())  
+    }).then(res => res.json()) 
+    setTimeout(() => {
     this.setState({
       name : data.name,
       fullName: data.fullname,
@@ -55,7 +59,9 @@ export default class ProfilePage extends Component {
       editPhone: data.phone,
       editAddress: data.address,
       editImage: data.image,
-    })       
+      loading: false
+    })
+    }, 500);      
   }
   toggle(tab) {
     
@@ -65,6 +71,9 @@ export default class ProfilePage extends Component {
       });
     }
   }
+  backToPreviousPage = () => {
+    this.props.history.push('/admin/role');
+  };
 
   changeProfile(fullName,email,phone,address) {
     this.setState({
@@ -158,8 +167,32 @@ export default class ProfilePage extends Component {
     const {name,fullName,email,phone,address} = this.state;
     return (
       <div className="profile-card">
-         <Card className="card-body">
-          <CardTitle className="title">My Profile</CardTitle>
+        <Card className="card-body">
+        <CardTitle className="title">
+            <MdCancel className="first" />
+            Job Information
+            <Link to="/admin/role">
+              <MdCancel />
+            </Link>
+          </CardTitle>
+          {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'green'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
           <CardBody >
             <Container style={{marginTop:'5%'}}>
             <Row>
@@ -381,14 +414,27 @@ export default class ProfilePage extends Component {
                         </Form>
                         </CardBody>
                       </Card>
-                    </Col>
-                
+                    </Col>              
                   </Row>
                   </TabPane>
                 </TabContent>
             
             </Container>
-          </CardBody>
+            <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: '20px'
+                }}
+              >
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
+                >
+                  Back
+                </Button>
+              </div>
+          </CardBody>)}
         </Card>
         </div>
     )

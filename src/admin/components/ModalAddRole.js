@@ -1,173 +1,241 @@
-import React, { Component } from 'react'
-import { Button,Modal, ModalHeader, ModalBody, 
-  ModalFooter,Card,CardBody,FormGroup,Form,Label,Input } from 'reactstrap';
-  import './ModalConfirmPassword.css';
-  import '../pages/RolesPage.css'
+import React, { Component } from 'react';
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Card,
+  CardBody,
+  FormGroup,
+  Form,
+  Label,
+  Input
+} from 'reactstrap';
+import './ModalConfirmPassword.css';
+import '../pages/RolesPage.css';
 import CollapsePermission from '../components/CollapsePermission';
-import { MDBBtn } from "mdbreact";
+import { MDBBtn } from 'mdbreact';
 export default class ModalAddRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
-      permissions : {
-          columns: [
-          {
-            label: '#',
-            field: 'id',
-            sort: 'asc',
-            width: 100
-          },
-          {
-            label: 'Name',
-            field: 'name',
-            sort: 'asc',
-            width: 300
-          },
-          {
-            label: 'Action',
-            field: 'action',
-            sort: 'asc',
-            width: 100
-          }
-          ],
-        rows : []
-        },
-        itemId:'',
-      itemName: '',
-      listChecked : []
+      activePage: 1,
+      currentPage: 1,
+      totalItems: '',
+      rows: [],
+      itemId: '',
+      role: '',
+      description: '',
+      listChecked: []
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
     this.addItem = this.addItem.bind(this);
     this.toggle = this.toggle.bind(this);
   }
 
-  async componentWillMount(){
-    //const {firstName, lastName, email} = this.state;
-    const columns = this.state.permissions.columns;
+  async componentWillMount() {
     let list = this.state.listChecked;
-    var url = 'https://api.enclavei3dev.tk/api/permission';
- 
+    var url = 'https://api.enclavei3dev.tk/api/permission?page=1';
+
     const data = await fetch(url, {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json()) 
-    
-    data.data.map((e)=>{
-      delete e.created_at;
-      delete e.updated_at;
-      return e.action = <input type='checkbox' onChange={() => handleCheck(e)} />
-    })
-    function handleCheck(e){
-      list.push(e.id);  
+    }).then(res => res.json());
+
+    data.data.map(e => {
+      return (e.action = (
+        <input type="checkbox" onChange={() => handleCheck(e)} />
+      ));
+    });
+    function handleCheck(e) {
+      list.push(e.id);
     }
+
     this.setState({
-      permissions : {
-        columns: columns,
-        rows: data.data
-      },
-      listChecked: list
-    })
+      rows: data.data,
+      listChecked: list,
+      totalItems: data.total,
+      currentPage: data.current_page
+    });
   }
   handleChange(event) {
     this.setState({
-      itemName: event.target.value
+      [event.target.name]: event.target.value
     });
   }
 
-
-
-  wrapperFunction= () => {  
-      this.addItem();
-      this.toggle();
+  handlePageChange(pageNumber) {
+    this.setState({ activePage: pageNumber, currentPage: pageNumber });
+    let list = this.state.listChecked;
+    var url = 'https://api.enclavei3dev.tk/api/permission?page=' + pageNumber;
+    fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      res.json().then(data => {
+        data.data.map(e => {
+          return (e.action = (
+            <input type="checkbox" onChange={() => handleCheck(e)} />
+          ));
+        });
+        function handleCheck(e) {
+          list.push(e.id);
+        }
+        this.setState({
+          rows: data.data,
+          listChecked: list,
+          totalItems: data.total,
+          currentPage: data.current_page
+        });
+      });
+    });
   }
 
-  addItem(){
-    const {itemName,listChecked} = this.state;
-    var i=0;
-    var listRoles = [];
-    var url = 'https://api.enclavei3dev.tk/api/role'; 
+  wrapperFunction = () => {
+    this.addItem();
+    this.toggle();
+  };
+
+  addItem() {
+    const { role, listChecked, description } = this.state;
+    var array1 = [...new Set(listChecked)];
+    var array2 = [];
+    array1.map(element => {
+      var count = listChecked.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    var url = 'https://api.enclavei3dev.tk/api/role';
     fetch(url, {
-      method: 'POST', 
+      method: 'POST',
       body: JSON.stringify({
-        name: itemName,
-        permissions: listChecked
-      }), 
-      headers:{
+        name: role,
+        description: description,
+        permissions: array2
+      }),
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
-      }
-    })            
-    .then(res => {
-      if (res.status ===401) {
-        alert('Add Failed')
-      }
-      if (res.status === 422) {
-        alert('Add Failed')
-      }
-      if (res.status === 200) {
-        res.json().then(data =>{
-          fetch('https://api.enclavei3dev.tk/api/list-role?page=1', {
-            method: 'POST',
-            headers:{
-              'Content-Type': 'application/json',
-              'Accept' : 'application/json',
-              'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
-            }
-          }).then(res => {
-            res.json().then(data => {
-               
-              data.data.forEach(function(e) {
-                delete e.created_at;
-                delete e.updated_at;
-                // delete e.id;
-                i++;
-                e = Object.assign({index:i}, e);
-                listRoles.push(e);
-              })
-              this.props.function(listRoles,data);
-            })
-          }) 
-        })
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     })
-    .catch(error => console.error('Error:', error)); 
+      .then(res => {
+        if (res.status === 401) {
+          alert('Add Failed');
+        }
+        if (res.status === 422) {
+          alert('Add Failed');
+        }
+        if (res.status === 200) {
+          alert('Add Successfully');
+          var url2 =
+            'https://api.enclavei3dev.tk/api/list-role?page=' + this.props.page;
+          res.json().then(data => {
+            fetch(url2, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization: 'Bearer ' + localStorage.getItem('access_token')
+              }
+            }).then(res => {
+              res.json().then(data => {
+                this.props.function(data);
+              });
+            });
+          });
+        }
+      })
+      .catch(error => console.error('Error:', error));
   }
-  
+
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
   }
-  
+
   render() {
     return (
-      <div >
-        <MDBBtn  onClick={this.toggle} rounded color={this.props.color}>{this.props.buttonLabel}</MDBBtn>
-          {/* <Button style={{marginLeft:'6.2%',marginBottom:'5%'}} color={this.props.color} onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
-        <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} >
-          <ModalHeader toggle={this.toggle} >Create A New Role</ModalHeader>
+      <div>
+        <MDBBtn onClick={this.toggle} rounded color={this.props.color}>
+          {this.props.buttonLabel}
+        </MDBBtn>
+        <Modal
+          size="lg"
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggle}>Create A New Role</ModalHeader>
           <ModalBody>
-          <Card>
+            <Card>
               <CardBody>
                 <Form>
                   <FormGroup className="password-input">
-                  <Label for="exampleName" style={{marginTop:'1%',marginLeft:'1%'}}>Role:</Label>
-                  <Input
-                    style={{marginRight:'1%'}}
-                    className="input-first"
-                    type="text"
-                    name="role"
-                    placeholder='Enter New Role'
-                    onChange = {this.handleChange}
-                  />
+                    <Label
+                      for="exampleName"
+                      style={{
+                        marginTop: '1%',
+                        marginLeft: '1%',
+                        marginRight: '6.7%'
+                      }}
+                    >
+                      Role:
+                    </Label>
+                    <Input
+                      style={{ marginRight: '1%' }}
+                      className="input-first"
+                      type="text"
+                      name="role"
+                      onChange={this.handleChange}
+                    />
                   </FormGroup>
-                  <FormGroup >
-                  <CollapsePermission style={{ marginBottom: '1rem', paddingLeft:'42%',paddingRight:'42%' }} name='Permission' data={this.state.permissions}/>
+                  <FormGroup className="password-input">
+                    <Label
+                      for="exampleDescription"
+                      style={{
+                        marginTop: '1%',
+                        marginLeft: '1%'
+                      }}
+                    >
+                      Description:
+                    </Label>
+                    <Input
+                      style={{ marginRight: '1%' }}
+                      className="input-first"
+                      type="text"
+                      name="description"
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <CollapsePermission
+                      style={{
+                        marginBottom: '1rem',
+                        paddingLeft: '42%',
+                        paddingRight: '42%'
+                      }}
+                      name="Permission"
+                      data={this.state.rows}
+                      activePage={this.state.activePage}
+                      itemsCountPerPage={10}
+                      totalItemsCount={this.state.totalItems}
+                      pageRangeDisplayed={5}
+                      onChange={this.handlePageChange}
+                    />
                   </FormGroup>
                 </Form>
               </CardBody>
@@ -175,11 +243,10 @@ export default class ModalAddRole extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="success" onClick={this.wrapperFunction}>{this.props.nameButtonAccept}</Button>{' '}
-            <button className="btn btn-primary" onClick={this.toggle}>Cancel </button>
-            {/* <Button color="secondary" onClick={this.toggle}>Cancel</Button> */}
+            <Button color="secondary" onClick={this.toggle}>Cancel</Button> 
           </ModalFooter>
         </Modal>
       </div>
-    )
+    );
   }
 }

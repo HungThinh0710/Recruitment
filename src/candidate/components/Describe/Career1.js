@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
 import { Button, Modal, ModalFooter } from 'reactstrap';
@@ -52,7 +51,6 @@ export default class Careers extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-md-7">
-                  <h1 className="text-white font-weight-bold">Game Audio Headset Engineer</h1>
                 </div>
               </div>
             </div>
