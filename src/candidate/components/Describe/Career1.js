@@ -3,27 +3,14 @@ import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
 import { Button, Modal, ModalFooter } from 'reactstrap';
 import './Career1.css';
-import { NavLink, Link } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import Footer from '../Footer';
-import $ from 'jquery';
-import { IntlProvider, FormattedDate } from 'react-intl';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: true,
-      modalisOpen: false,
-      jobID: [],
-      loading: true,
-      title: '',
-      position: '',
-      amount: '',
-      publishedOn: '',
-      deadline: '',
-      experience: '',
-      salary: '',
-      status: '',
-      address: '',
+      modalisOpen: false
     };
   }
   toggleAlert() {
@@ -36,38 +23,8 @@ export default class Careers extends Component {
       modalisOpen: !this.state.modalisOpen
     })
   }
-
-  async componentDidMount() {
-    let headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-    }
-
-
-    const { id } = this.props.match.params;
-    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
-      method: 'GET',
-      headers: headers,
-
-    }).then(response => response.json())
-    await this.setState({
-        jobID: data,
-        title: data.title,
-        position: data.job.position,
-        amount: data.job.amount,
-        publishedOn: data.job.publishedOn,
-        deadline: data.job.deadline,
-        experience: data.job.experience,
-        salary: data.job.salary,
-        status: data.job.status,
-        address: data.job.address
-      
-      });
-      console.log(this.state.jobID);
-      console.log(this.state.title);
-  }
   render() {
-    const {jobID} = this.state;
+    const {id} = this.props.match.params;
     const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggleModal.bind(this)}>&times;</button>;
     return (
 
@@ -85,7 +42,7 @@ export default class Careers extends Component {
         <header className="site-navbar mt-3">
           <div className="container-fluid">
 
-            <RouterURL />
+          <RouterURL />
           </div>
         </header>
         <div>
@@ -105,20 +62,19 @@ export default class Careers extends Component {
                     <div className="border p-2 d-inline-block mr-3 rounded">
                       <img src="/candidate/images/featured-listing-5.jpg" alt="Free Website Template By Free-Template.co" />
                     </div>
-              
                     <div>
-                      
-                      <h2>{this.state.title}</h2>
+                      <h2>Game Audio Headset Engineer</h2>
                       <div class="show-line">
-                        <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />{this.state.position}</span>
-                        <span className="m-2"><span className="icon-room mr-2" />{this.state.address}</span>
-                        <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status}
-                    </span></span>
+                        <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />Senior</span>
+                        <span className="m-2"><span className="icon-room mr-2" />453-455 Hoang Dieu</span>
+                        <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text">Full
+                    Time</span></span>
                       </div>
                       <div class="show-line-2">
-                        <p className="m-2"><span className="icon-briefcase mr-2" />{this.state.position}</p>
-                        <p className="m-2"><span className="icon-room mr-2" />{this.state.address}</p>
-                        <p className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status}</span></p>
+                        <p className="m-2"><span className="icon-briefcase mr-2" />Senior</p>
+                        <p className="m-2"><span className="icon-room mr-2" />453-455 Hoang Dieu</p>
+                        <p className="m-2"><span className="icon-clock-o mr-2" /><span className="text">Full
+                    Time</span></p>
                       </div>
                     </div>
                   </div>
@@ -126,7 +82,7 @@ export default class Careers extends Component {
                 <div className="col-lg-4">
                   <div className="row">
                     <div className="col-6">
-
+                     
                     </div>
                     <div className="col-sm-6">
 
@@ -149,8 +105,8 @@ export default class Careers extends Component {
                   </div>
                 </div>
               </div>
-
-              <div className="row">
+              
+                 <div className="row">
                 <div className="col-lg-8">
                   <div className="mb-5">
                     <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded" /></figure>
@@ -217,32 +173,20 @@ export default class Careers extends Component {
                   <div className="bg-light p-3 border rounded mb-4">
                     <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
                     <ul className="list-unstyled pl-3 mb-0">
-                      <li className="mb-2"><strong className="text-black">Published on:</strong> <IntlProvider locale="fr">
-                                          <FormattedDate
-                                            value={this.state.publishedOn}
-                                            day="numeric"
-                                            month="long"
-                                            year="numeric" />
-                                        </IntlProvider></li>
-                      <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
-                      <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
-                      <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-                      <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
-                      <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
+                      <li className="mb-2"><strong className="text-black">Published on:</strong> July 14, 2019</li>
+                      <li className="mb-2"><strong className="text-black">Vacancy:</strong> 20</li>
+                      <li className="mb-2"><strong className="text-black">Status:</strong> Full-time</li>
+                      <li className="mb-2"><strong className="text-black">Experience:</strong> 2 to 3 years</li>
+                      <li className="mb-2"><strong className="text-black">Location:</strong> 453-455 Hoang Dieu</li>
+                      <li className="mb-2"><strong className="text-black">Salary:</strong> 800$ - 1000$</li>
                       {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
-                      <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
-                                          <FormattedDate
-                                            value={this.state.deadline}
-                                            day="numeric"
-                                            month="long"
-                                            year="numeric" />
-                                        </IntlProvider></li>
+                      <li className="mb-2"><strong className="text-black">Deadline:</strong> July 28, 2019</li>
                     </ul>
                   </div>
                   <div className="bg-light p-3 border rounded">
                     {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                     <div className="px-3 text-center">
-                      <Link to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-facebook" /></Link>
+                      <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-facebook" /></NavLink>
                       <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-twitter" /></NavLink>
                       <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-instagram" /></NavLink>
                       <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-skype" /></NavLink>
@@ -250,11 +194,11 @@ export default class Careers extends Component {
                   </div>
                 </div>
               </div>
-
-
+             
+              
             </div>
           </section>
-          <Footer />
+          <Footer/>
         </div>
       </div>
     )

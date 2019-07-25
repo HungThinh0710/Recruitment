@@ -110,7 +110,6 @@ export default class Homepage extends Component {
   }
 
   render() {
-    console.log(this.state.listjob);
     return (
       <section id="Home">
         <div className="site-wrap" >
@@ -238,7 +237,7 @@ export default class Homepage extends Component {
                             <th>Day expired</th>
                           </thead>
                           <tbody class="transistion">
-                            {this.state.listjob.map((p, index) => {
+                            {this.state.listjob.map(p => {
 
                               return <tr class="transfer">
                                 <td data-th="Position">
