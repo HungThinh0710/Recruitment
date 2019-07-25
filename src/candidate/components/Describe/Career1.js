@@ -25,7 +25,6 @@ export default class Careers extends Component {
   }
   render() {
     const {id} = this.props.match.params;
-    console.log(id);
     const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggleModal.bind(this)}>&times;</button>;
     return (
 

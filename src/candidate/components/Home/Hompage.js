@@ -14,7 +14,7 @@ export default class Homepage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: [],
+      listjob: [],
       currentPage: 0,
       activePage: 1,
       totalItems: 0,
@@ -71,7 +71,7 @@ export default class Homepage extends Component {
     }).then(res => res.json());
     setTimeout(() => {
       this.setState({
-        todos: data.data,
+        listjob: data.data,
         totalItems: data.total,
         loading: false
       });
@@ -91,8 +91,6 @@ export default class Homepage extends Component {
     }
     // this.setState({activePage: pageNumber});
     var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber;
-    var i = 0;
-    var listJob = [];
     fetch(url, {
       method: 'POST',
       headers: headers,
@@ -102,10 +100,12 @@ export default class Homepage extends Component {
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
-          todos: data.data,
+          listjob: data.data,
           activePage: pageNumber
         });
+       
       });
+      
     });
   }
 
@@ -237,11 +237,12 @@ export default class Homepage extends Component {
                             <th>Day expired</th>
                           </thead>
                           <tbody class="transistion">
-                            {this.state.todos.map((p, index) => {
+                            {this.state.listjob.map(p => {
+
                               return <tr class="transfer">
                                 <td data-th="Position">
                                   <div>
-                                    <Link to={"/describe/" + this.props.match.params.id}>
+                                    <Link to={"/describe/" + p.id}>
                                       <p class="position-id">
                                         <p class="position-title">
                                           {p.title}
