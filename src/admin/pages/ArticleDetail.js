@@ -64,7 +64,11 @@ export default class ArticleDetail extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     // this.handleChangePassword = this.handleChangePassword.bind(this);
   }
-
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/admin');
+    }
+  }
   async componentDidMount() {
     const { id } = this.props.match.params;
     var status = '';
@@ -76,38 +80,40 @@ export default class ArticleDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    data.isPublic === 1 ? (status = 'Public') : (status = 'Not public');
-    // const i = data.publishedOn.indexOf(' ');
-    // const j = data.deadline.indexOf(' ');
-    // const newDateString = (s, i) => {
-    //   return s.substr(0, i) + 'T' + s.substr(i + 1);
-    // };
-    setTimeout(() => {
-      this.setState({
-        title: data.title,
-        content: data.content,
-        status: status,
-        jobId: data.jobId,
-        jobName: data.job.name,
-        catId: data.catId,
-        catName: data.category.name,
-        userId: data.userId,
-        userName: data.user.fullname,
-        created_at: data.created_at,
-        updated_at: data.updated_at,
-        loading: false
-        // editname: data.name,
-        // editdescription: data.description,
-        // editaddress: data.address,
-        // editposition: data.position,
-        // editsalary: data.salary,
-        // editstatus: data.status,
-        // editexperience: data.experience,
-        // editamount: data.amount,
-        // editpublishedOn: newDateString(data.publishedOn, i),
-        // editdeadline: newDateString(data.deadline, j)
-      });
-    }, 500);
+    if (data.message !== 'Unauthenticated.') {
+      data.isPublic === 1 ? (status = 'Public') : (status = 'Not public');
+      // const i = data.publishedOn.indexOf(' ');
+      // const j = data.deadline.indexOf(' ');
+      // const newDateString = (s, i) => {
+      //   return s.substr(0, i) + 'T' + s.substr(i + 1);
+      // };
+      setTimeout(() => {
+        this.setState({
+          title: data.title,
+          content: data.content,
+          status: status,
+          jobId: data.jobId,
+          jobName: data.job.name,
+          catId: data.catId,
+          catName: data.category.name,
+          userId: data.userId,
+          userName: data.user.fullname,
+          created_at: data.created_at,
+          updated_at: data.updated_at,
+          loading: false
+          // editname: data.name,
+          // editdescription: data.description,
+          // editaddress: data.address,
+          // editposition: data.position,
+          // editsalary: data.salary,
+          // editstatus: data.status,
+          // editexperience: data.experience,
+          // editamount: data.amount,
+          // editpublishedOn: newDateString(data.publishedOn, i),
+          // editdeadline: newDateString(data.deadline, j)
+        });
+      }, 500);
+    }
   }
 
   toggle(tab) {

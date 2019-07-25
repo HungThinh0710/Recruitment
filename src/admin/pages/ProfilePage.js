@@ -58,6 +58,11 @@ export default class ProfilePage extends Component {
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
     this.toggleModalErrorPassword = this.toggleModalErrorPassword.bind(this);
   }
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/admin');
+    }
+  }
   async componentDidMount(){
     //const {firstName, lastName, email} = this.state;
     var url = 'https://api.enclavei3dev.tk/api/current-profile';
@@ -68,6 +73,7 @@ export default class ProfilePage extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
     }).then(res => res.json()) 
+    if (data.message !== 'Unauthenticated.'){
     setTimeout(() => {
     this.setState({
       name : data.name,
@@ -84,7 +90,8 @@ export default class ProfilePage extends Component {
       loading: false,
 
     })
-    }, 500);      
+    }, 500);    
+  }  
   }
   toggle(tab) {
     
