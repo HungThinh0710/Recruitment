@@ -86,6 +86,11 @@ export default class UserDetail extends Component {
       });
     }
   }
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/admin');
+    }
+  }
   async componentDidMount(){
     
     const {id} = this.props.match.params;
@@ -121,39 +126,42 @@ export default class UserDetail extends Component {
         'Accept' : 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
-    }).then(res => res.json()) 
-    await data2.data.map((e)=>{
-      delete e.created_at;
-      delete e.updated_at;
-      var {listId} = this.state;
-      listId.push(e.id);
-      var index=listId.indexOf(e.id);
-      delete e.id;
-      const {roles} = this.state;
-      var found = roles.find(currentRole => {
-        return currentRole.name===e.name;
+    }).then(res => res.json()) ;
+    if (data2.message !== 'Unauthenticated.'){
+      data2.data.map((e)=>{
+        delete e.created_at;
+        delete e.updated_at;
+        var {listId} = this.state;
+        listId.push(e.id);
+        var index=listId.indexOf(e.id);
+        delete e.id;
+        const {roles} = this.state;
+        var found = roles.find(currentRole => {
+          return currentRole.name===e.name;
+        })
+        if (found) {
+          editRoles.push(listId[index]);
+          return e.action= <input type='checkbox' defaultChecked={true} 
+          onChange={() => this.handleCheck(listId[index],editRoles)} />
+        }
+        
+        else { return e.action = <input type='checkbox'  
+        onChange={() => this.handleCheck(listId[index],editRoles)} />}
+        
       })
-      if (found) {
-        editRoles.push(listId[index]);
-        return e.action= <input type='checkbox' defaultChecked={true} 
-        onChange={() => this.handleCheck(listId[index],editRoles)} />
-      }
       
-      else { return e.action = <input type='checkbox'  
-      onChange={() => this.handleCheck(listId[index],editRoles)} />}
       
-    })
+      setTimeout(() => {
+      this.setState({
+        listRoles : {
+          columns: columns,
+          rows: data2.data,
+        },
+        loading: false,
+        editRoles: editRoles
+      })}, 500);   
+    }
     
-    
-    setTimeout(() => {
-    this.setState({
-      listRoles : {
-        columns: columns,
-        rows: data2.data,
-      },
-      loading: false,
-      editRoles: editRoles
-    })}, 500);   
   }
   
   handleCheck(id,editRoles){

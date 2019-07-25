@@ -63,7 +63,11 @@ export default class JobDetail extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     // this.handleChangePassword = this.handleChangePassword.bind(this);
   }
-
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/admin');
+    }
+  }
   async componentDidMount() {
     const { id } = this.props.match.params;
     var url = 'https://api.enclavei3dev.tk/api/job/' + id;
@@ -74,36 +78,38 @@ export default class JobDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    const i = data.publishedOn.indexOf(' ');
-    const j = data.deadline.indexOf(' ');
-    const newDateString = (s, i) => {
-      return s.substr(0, i) + 'T' + s.substr(i + 1);
-    };
-    setTimeout(() => {
-      this.setState({
-        name: data.name,
-        description: data.description,
-        address: data.address,
-        position: data.position,
-        salary: data.salary,
-        status: data.status,
-        experience: data.experience,
-        amount: data.amount,
-        publishedOn: data.publishedOn,
-        deadline: data.deadline,
-        editname: data.name,
-        editdescription: data.description,
-        editaddress: data.address,
-        editposition: data.position,
-        editsalary: data.salary,
-        editstatus: data.status,
-        editexperience: data.experience,
-        editamount: data.amount,
-        editpublishedOn: newDateString(data.publishedOn, i),
-        editdeadline: newDateString(data.deadline, j),
-        loading: false
-      });
-    }, 500);
+    if (data.message !== 'Unauthenticated.') {
+      const i = data.publishedOn.indexOf(' ');
+      const j = data.deadline.indexOf(' ');
+      const newDateString = (s, i) => {
+        return s.substr(0, i) + 'T' + s.substr(i + 1);
+      };
+      setTimeout(() => {
+        this.setState({
+          name: data.name,
+          description: data.description,
+          address: data.address,
+          position: data.position,
+          salary: data.salary,
+          status: data.status,
+          experience: data.experience,
+          amount: data.amount,
+          publishedOn: data.publishedOn,
+          deadline: data.deadline,
+          editname: data.name,
+          editdescription: data.description,
+          editaddress: data.address,
+          editposition: data.position,
+          editsalary: data.salary,
+          editstatus: data.status,
+          editexperience: data.experience,
+          editamount: data.amount,
+          editpublishedOn: newDateString(data.publishedOn, i),
+          editdeadline: newDateString(data.deadline, j),
+          loading: false
+        });
+      }, 500);
+    }
   }
 
   toggle(tab) {

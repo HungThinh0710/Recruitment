@@ -36,6 +36,11 @@ export default class Roles extends Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.removeManyItems = this.removeManyItems.bind(this);
   }
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/admin');
+    }
+  }
   async componentDidMount() {
     const { activePage } = this.state;
     var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;

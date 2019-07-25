@@ -64,7 +64,11 @@ export default class ArticleDetail extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     // this.handleChangePassword = this.handleChangePassword.bind(this);
   }
-
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/admin');
+    }
+  }
   async componentDidMount() {
     const { id } = this.props.match.params;
     var status = '';

@@ -46,6 +46,11 @@ export default class RoleDetail extends Component {
       rows: []
     };
   }
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/admin');
+    }
+  }
   async componentDidMount() {
     var i = 0;
     const { id } = this.props.match.params;
@@ -58,22 +63,24 @@ export default class RoleDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    data.permissions.forEach(function(e) {
-      delete e.id;
-      delete e.created_at;
-      delete e.updated_at;
-      delete e.pivot;
-      i++;
-      e = Object.assign({ index: i }, e, { description: 'abc' });
-      listRoles.push(e);
-    });
-    setTimeout(() => {
-      this.setState({
-        name: data.name,
-        rows: listRoles,
-        loading: false
+    if (data.message !== 'Unauthenticated.') {
+      data.permissions.forEach(function(e) {
+        delete e.id;
+        delete e.created_at;
+        delete e.updated_at;
+        delete e.pivot;
+        i++;
+        e = Object.assign({ index: i }, e, { description: 'abc' });
+        listRoles.push(e);
       });
-    }, 500);
+      setTimeout(() => {
+        this.setState({
+          name: data.name,
+          rows: listRoles,
+          loading: false
+        });
+      }, 500);
+    }
   }
 
   backToPreviousPage = () => {
