@@ -13,7 +13,6 @@
 .pagination-area-web  .pagination .active {
     border-radius: 0px;
     z-index: 3;
-    color: white;
     font-weight: bold;
     background-color: rgb(76, 186, 79);;
     border-color: black;
