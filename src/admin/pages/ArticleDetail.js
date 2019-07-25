@@ -65,7 +65,7 @@ export default class ArticleDetail extends Component {
     // this.handleChangePassword = this.handleChangePassword.bind(this);
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { id } = this.props.match.params;
     var status = '';
     var url = 'https://api.enclavei3dev.tk/api/article/' + id;

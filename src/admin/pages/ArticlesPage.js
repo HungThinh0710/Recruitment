@@ -41,7 +41,7 @@ export default class ArticlesPage extends Component {
     // this.removeManyItems = this.removeManyItems.bind(this);
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     var url = 'https://api.enclavei3dev.tk/api/list-article?page=1';
     const data = await fetch(url, {
       method: 'POST',
@@ -51,6 +51,7 @@ export default class ArticlesPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    console.log(data);
     setTimeout(() => {
       this.setState({
         rows: data.data,
@@ -249,7 +250,13 @@ export default class ArticlesPage extends Component {
             <div className="table-test">
               <table>
                 <thead>
-                  <tr style={{ background: 'green', color: 'white' }}>
+                  <tr
+                    style={{
+                      background:
+                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                      color: 'white'
+                    }}
+                  >
                     <th>
                       <input type="checkbox" />
                     </th>

@@ -12,7 +12,7 @@
 }
 
 .pagination-area .pagination .active {
-  background-color: blue !important;
+  background: #6a82fb linear-gradient(180deg, #8095fc, #6a82fb) repeat-x !important;
   border-radius: 5px;
 }
 

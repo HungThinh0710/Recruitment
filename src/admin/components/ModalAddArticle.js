@@ -42,7 +42,7 @@ export default class ModalAddArticle extends Component {
     this.handlePageCatChange = this.handlePageCatChange.bind(this);
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     let { jobId, catId } = this.state;
     var url1 = 'https://api.enclavei3dev.tk/api/list-job?page=1';
     var url2 = 'https://api.enclavei3dev.tk/api/category?page=1';

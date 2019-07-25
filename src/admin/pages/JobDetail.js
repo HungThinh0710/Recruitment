@@ -64,7 +64,7 @@ export default class JobDetail extends Component {
     // this.handleChangePassword = this.handleChangePassword.bind(this);
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { id } = this.props.match.params;
     var url = 'https://api.enclavei3dev.tk/api/job/' + id;
     const data = await fetch(url, {
@@ -542,10 +542,14 @@ export default class JobDetail extends Component {
                                     value={this.state.editdeadline}
                                   />
                                 </FormGroup>
-                                <FormGroup>
+                                <FormGroup
+                                  style={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end'
+                                  }}
+                                >
                                   {/* <CollapsePermission name='roles' data={this.state.listRoles}/> */}
                                   <Button
-                                    style={{ marginLeft: '80%' }}
                                     color="success"
                                     onClick={this.handleSubmit}
                                   >

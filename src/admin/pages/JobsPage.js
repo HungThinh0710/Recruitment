@@ -246,7 +246,13 @@ export default class JobsPage extends Component {
             <div className="table-test">
               <table>
                 <thead>
-                  <tr style={{ background: 'green', color: 'white' }}>
+                  <tr
+                    style={{
+                      background:
+                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                      color: 'white'
+                    }}
+                  >
                     <th>
                       <input type="checkbox" />
                     </th>

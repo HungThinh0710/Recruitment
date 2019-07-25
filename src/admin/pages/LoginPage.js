@@ -35,11 +35,10 @@ export default class LoginPage extends React.Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
-    this.setState({ showLoadingLogin: true });
+    this.setState({ showLoadingLogin: true, loadingLogin: true });
     const { username, password } = this.state;
     var url = 'https://api.enclavei3dev.tk/api/login';
-
+    var messenger = '';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -55,12 +54,20 @@ export default class LoginPage extends React.Component {
       .then(response => {
         if (response.status === 401) {
           this.setState({
-            messenger: 'Error Password/Username'
+            messenger: 'Username or password is incorrect.',
+            loadingLogin: false,
+            showLoadingLogin: true
           });
         }
         if (response.status === 422) {
+          if (username == '' && password == '')
+            messenger = 'Invalid username and password.';
+          else if (password == '') messenger = 'Invalid password.';
+          else if (username == '') messenger = 'Invalid username.';
           this.setState({
-            messenger: 'Invalid Password/Username'
+            messenger: messenger,
+            loadingLogin: false,
+            showLoadingLogin: true
           });
         }
         if (response.status === 200) {
@@ -71,7 +78,8 @@ export default class LoginPage extends React.Component {
             setTimeout(() => {
               this.setState({
                 redirect: true,
-                loadingLogin: false
+                loadingLogin: false,
+                showLoadingLogin: true
               });
             }, 500);
           });
@@ -99,7 +107,6 @@ export default class LoginPage extends React.Component {
       passwordInputProps,
       onLogoClick
     } = this.props;
-
     return (
       <Form className="form-login" onKeyUp={this.handleKeyUp}>
         {showLogo && (
@@ -114,7 +121,10 @@ export default class LoginPage extends React.Component {
             <span />
           </div>
         )}
-        <span style={stl}>{this.state.messenger}</span>
+        <div style={{ width: '100%', marginBottom: '4%' }}>
+          <span style={stl}>{this.state.messenger}</span>
+        </div>
+
         <FormGroup className="input-area" style={{ marginBottom: '5%' }}>
           <Label for={usernameLabel}>{usernameLabel}</Label>
           <Input
