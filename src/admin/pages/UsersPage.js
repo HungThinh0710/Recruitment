@@ -39,7 +39,7 @@ export default class UsersPage extends Component {
     // this.removeManyItems = this.removeManyItems.bind(this);
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     var url = 'https://api.enclavei3dev.tk/api/list-user?page=1';
     const data = await fetch(url, {
       method: 'POST',
@@ -59,7 +59,6 @@ export default class UsersPage extends Component {
   }
 
   handlePageChange(pageNumber) {
-    // this.setState({activePage: pageNumber});
     var url = 'https://api.enclavei3dev.tk/api/list-user?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
@@ -247,7 +246,13 @@ export default class UsersPage extends Component {
             <div className="table-test">
               <table>
                 <thead>
-                  <tr style={{ background: 'green', color: 'white' }}>
+                  <tr
+                    style={{
+                      background:
+                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                      color: 'white'
+                    }}
+                  >
                     <th>
                       <input type="checkbox" />
                     </th>

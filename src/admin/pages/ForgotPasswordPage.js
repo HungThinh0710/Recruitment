@@ -6,6 +6,11 @@ import { Redirect, Link } from 'react-router-dom';
 import './LoginPage.css';
 import { FadeLoader } from 'react-spinners';
 import './ForgotPasswordPage.css';
+
+const emailRegex = RegExp(
+  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+);
+
 export default class ForgotPasswordPage extends React.Component {
   constructor(props) {
     super(props);
@@ -15,16 +20,32 @@ export default class ForgotPasswordPage extends React.Component {
       checked: false,
       status: false,
       showLoading: false,
-      loading: true
+      loading: true,
+      errorEmailMessage: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     // this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
-  handleChange(event) {
+  componentDidUpdate() {
+    if (this.state.showLoading) {
+      setTimeout(() => {
+        this.setState({
+          showLoading: false
+        });
+      }, 3000);
+    }
+  }
+
+  handleChange(e) {
+    const { value } = e.target;
+    var message = '';
+    emailRegex.test(value) ? (message = '') : (message = 'Invalid Email');
+
     this.setState({
-      [event.target.name]: event.target.value
+      [e.target.name]: e.target.value,
+      errorEmailMessage: message
     });
   }
 
@@ -32,9 +53,9 @@ export default class ForgotPasswordPage extends React.Component {
     this.props.history.push('/admin');
   };
 
-  handleKeyUp = event => {
-    if (event.keyCode === 13) return this.handleSubmit(event);
-  };
+  // handleKeyUp = event => {
+  //   if (event.keyCode === 13) return this.handleSubmit(event);
+  // };
 
   handleSubmit() {
     const { email } = this.state;
@@ -57,14 +78,13 @@ export default class ForgotPasswordPage extends React.Component {
       .then(response => {
         if (response.status === 404) {
           this.setState({
-            messenger: 'Error Email',
+            messenger: "The email you entered doesn't match any account.",
             showLoading: false,
             checked: false
           });
         }
         if (response.status === 422) {
           this.setState({
-            messenger: 'Invalid Email',
             showLoading: false,
             checked: false
           });
@@ -84,15 +104,7 @@ export default class ForgotPasswordPage extends React.Component {
       })
       .catch(error => console.error('Error:', error));
   }
-  componentDidUpdate() {
-    if (this.state.showLoading) {
-      setTimeout(() => {
-        this.setState({
-          showLoading: false
-        });
-      }, 3000);
-    }
-  }
+
   render() {
     const { showLogo, emailLabel, emailInputProps, onLogoClick } = this.props;
 
@@ -130,6 +142,8 @@ export default class ForgotPasswordPage extends React.Component {
             value={this.state.username}
             onChange={this.handleChange}
           />
+          <br />
+          <span style={{ color: 'red' }}>{this.state.errorEmailMessage}</span>
         </FormGroup>
         {/* {this.renderRedirect()} */}
         {this.state.showLoading && this.state.loading ? (

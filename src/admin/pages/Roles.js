@@ -36,7 +36,7 @@ export default class Roles extends Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.removeManyItems = this.removeManyItems.bind(this);
   }
-  async componentWillMount() {
+  async componentDidMount() {
     const { activePage } = this.state;
     var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
     // var i = 0;
@@ -109,7 +109,6 @@ export default class Roles extends Component {
   }
 
   handlePageChange(pageNumber) {
-    this.setState({ activePage: pageNumber });
     var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
@@ -242,7 +241,13 @@ export default class Roles extends Component {
             <div className="table-test">
               <table>
                 <thead>
-                  <tr style={{ background: 'green', color: 'white' }}>
+                  <tr
+                    style={{
+                      background:
+                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                      color: 'white'
+                    }}
+                  >
                     <th>
                       <input type="checkbox" />
                     </th>

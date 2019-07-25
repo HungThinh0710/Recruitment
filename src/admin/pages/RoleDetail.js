@@ -46,7 +46,7 @@ export default class RoleDetail extends Component {
       rows: []
     };
   }
-  async componentWillMount() {
+  async componentDidMount() {
     var i = 0;
     const { id } = this.props.match.params;
     var listRoles = [];

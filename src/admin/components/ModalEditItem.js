@@ -24,7 +24,7 @@ export default class ModalEditItem extends Component {
       permissions: {
         columns: [
           {
-            label: '#',
+            label: 'Id',
             field: 'id',
             sort: 'asc',
             width: 100
@@ -51,6 +51,39 @@ export default class ModalEditItem extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.editItem = this.editItem.bind(this);
     this.toggle = this.toggle.bind(this);
+  }
+
+  async componentDidMount() {
+    //const {firstName, lastName, email} = this.state;
+    const columns = this.state.permissions.columns;
+    let list = this.state.listChecked;
+    var url = 'https://api.enclavei3dev.tk/api/permission?page=1';
+    const data = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+
+    data.data.map(e => {
+      delete e.created_at;
+      delete e.updated_at;
+      return (e.action = (
+        <input type="checkbox" onChange={() => handleCheck(e)} />
+      ));
+    });
+    function handleCheck(e) {
+      String(e.id);
+      list.push(e.id);
+    }
+    this.setState({
+      permissions: {
+        columns: columns,
+        rows: data.data
+      },
+      listChecked: list
+    });
   }
 
   handleChange(event) {
@@ -119,10 +152,10 @@ export default class ModalEditItem extends Component {
   }
   render() {
     return (
-      <div style={{ width: 'auto' }}>
+      <div>
         {this.props.icon ? (
           <Button
-            className="button-edit"
+            className="button-first"
             color={this.props.color}
             onClick={this.toggle}
           >
@@ -130,7 +163,7 @@ export default class ModalEditItem extends Component {
           </Button>
         ) : (
           <Button
-            className="button-edit"
+            className="button-first"
             color={this.props.color}
             onClick={this.toggle}
           >
@@ -163,8 +196,8 @@ export default class ModalEditItem extends Component {
                   </FormGroup>
                   <FormGroup>
                     <CollapsePermission
-                      name="Permissions"
-                      data={this.state.permissions}
+                      data={this.state.permissions.rows}
+                      name="Permission"
                     />
                   </FormGroup>
                 </Form>
