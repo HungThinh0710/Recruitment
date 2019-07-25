@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
 import { Button, Modal, ModalFooter } from 'reactstrap';
@@ -26,7 +25,6 @@ export default class Careers extends Component {
   }
   render() {
     const {id} = this.props.match.params;
-    console.log(id);
     const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggleModal.bind(this)}>&times;</button>;
     return (
 
@@ -52,7 +50,6 @@ export default class Careers extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-md-7">
-                  <h1 className="text-white font-weight-bold">Game Audio Headset Engineer</h1>
                 </div>
               </div>
             </div>

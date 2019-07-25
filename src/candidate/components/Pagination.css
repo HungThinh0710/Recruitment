@@ -1,0 +1,36 @@
+.pagination-area-web .pagination {
+  margin-left: 70%;
+}
+
+.pagination-area-web .pagination li {
+  /* border: 1px solid  !important;
+  border-collapse: collapse; */
+  padding: 2% 3.5% 2% 3.5%;
+  margin-right: 5px;
+  border-bottom-width: 2px;
+}
+
+.pagination-area-web  .pagination .active {
+    border-radius: 0px;
+    z-index: 3;
+    font-weight: bold;
+    background-color: rgb(76, 186, 79);;
+    border-color: black;
+}
+.pagination-area-web .pagination .active a{
+  color: white;
+}
+.pagination-area-web .pagination {
+  text-align: right !important;
+  padding-left: 20px;
+  padding-bottom: 5px; 
+  border-radius: 0px;
+  display: fixed;
+}
+.pagination-area-web .pagination li {
+  border: 1px solid !important;
+  border-collapse: collapse;
+  margin-right: 5px;
+  padding: 3px 5px 3px 5px;
+  
+}
