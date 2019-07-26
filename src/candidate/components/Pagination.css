@@ -36,3 +36,6 @@
   padding: 3px 5px 3px 5px;
   
 }
+.pagination-area-web .pagination > li > a{
+  color: #3a3735;
+}

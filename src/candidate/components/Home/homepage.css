@@ -201,6 +201,7 @@
 .position-title {
   text-transform: uppercase;
   font-weight: 500;
+  font-size: 14.2px;
   color: black;
 
 }
@@ -233,3 +234,4 @@
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif !important;
   padding-left: 4px;
 }
+

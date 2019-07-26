@@ -432,13 +432,13 @@ h1, h2, h3, h4 {
 
 .site-section {
   /* padding-top: 7rem; */
-  padding-bottom: 7rem;
+  padding-bottom: 15rem;
   position: relative;
   z-index: 2; }
   @media (max-width: 991.98px) {
     .site-section {
       padding-top: 3rem;
-      padding-bottom: 3rem; } }
+      padding-bottom: 12rem; } }
 
 .text-black {
   color: #000 !important; }

@@ -1,3 +1,21 @@
-#fixa {
-    /* margin-top: none; */
+.footer-web {
+    background: #222;
+    border-top: 5px solid #333;
+    color: #ccc;
+    
+    height: 120px;
+    line-height: 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    }
+.footer-web .container .row .footer-social h6 {
+    padding-top: 15px;
+    color: gray;
 }
+.footer-social a:hover {
+    background: #fff;
+}
+    
