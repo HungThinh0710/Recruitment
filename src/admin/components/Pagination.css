@@ -1,19 +1,21 @@
-.pagination-area .pagination {
-  margin-left: 70%;
+.pagination-area {
+  display: flex;
+  justify-content: flex-end;
 }
 
-.pagination-area  .pagination li {
-  
+.pagination-area .pagination li {
+
   /* border: 1px solid  !important;
   border-collapse: collapse; */
-  padding: 2% 3.5% 2% 3.5%;
-  margin-right: 5px;
+  padding: 5px 15px 5px 15px;
+
 }
 
-.pagination-area  .pagination .active {
-  background-color: blue !important;
+.pagination-area .pagination .active {
+  background: #6a82fb linear-gradient(180deg, #8095fc, #6a82fb) repeat-x !important;
   border-radius: 5px;
 }
-.pagination-area .pagination .active a{
+
+.pagination-area .pagination .active a {
   color: white;
 }

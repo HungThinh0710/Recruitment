@@ -831,7 +831,7 @@ h1, h2, h3, h4 {
   box-shadow: 0 5px 30px -5px rgba(0, 0, 0, 0.4); }
 
 .text-muted {
-  color: #d5d5d5 !important; }
+  color: #2d3134 !important; }
 
 .section-title {
   font-size: 2rem;
@@ -861,7 +861,7 @@ h1, h2, h3, h4 {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5); }
+    background: rgba(0, 0, 0, 0.06); }
 
 .section-hero.overlay-2:before {
   background: rgba(125, 131, 132, 0.95); }

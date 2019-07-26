@@ -22,6 +22,7 @@
  .show-line-2 {
    display: absolute;
  }
+ 
  }
  .icon-facebook, .icon-twitter, .icon-instagram, .icon-skype{
   font-size: 23px;
@@ -30,8 +31,12 @@
  .show-line-2 {
    display: none;
  }
+ 
 }
 #view-mobile {
   margin-bottom: 0.5rem !important;
 }
- 
+#career1 {
+  height: 96px !important;
+  padding-top: 0px !important;
+}

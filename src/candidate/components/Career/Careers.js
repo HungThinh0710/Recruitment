@@ -17,10 +17,11 @@ export default class Careers extends Component {
   componentDidMount(){
     
   }
+
   render() {
     axios({
       method: 'GET',
-      url: 'https://api.enclavei3.tk/api/job',
+      url: 'https://api.enclavei3dev.tk/api/job',
       data: null
     }).then(res => {
       console.log(res);
@@ -28,6 +29,7 @@ export default class Careers extends Component {
     }).catch(err => {
       console.log(err);
     })
+    
     const {jobOpening} =this.state;
     return ( 
     <div className="site-wrap">
@@ -96,7 +98,7 @@ export default class Careers extends Component {
                   </div>
                   <div className="col-md-4">
                     <span className={p.color}>{p.position}</span>
-                    <h2><Link to={"/describe/" + this.props.match.params.pid} key={index}>{p.name}</Link></h2>
+                    <h2><Link to={"/describe/" + this.props.pid + "/" + this.to_slug(this.props.children) + ".html"} key={index}>{p.name}</Link></h2>
 
                     <p className="meta">Publisher: <strong>John Stewart</strong> In: <strong>Design</strong></p>
                   </div>

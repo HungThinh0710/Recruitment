@@ -1,36 +1,61 @@
-.card-detail{
+.card-detail {
   background: green !important;
   background-size: cover;
   align-items: center;
 }
-.information-form{
+
+.information-form {
   background: rgba(12, 12, 12, 0.52) !important;
   width: 70%;
   color: white;
-  margin: 5% 0 5% 0 ;
+  margin: 5% 0 5% 0;
 }
-.information-form span{
+
+.information-form span {
   color: white;
 }
-.information-form hr{
+
+.information-form hr {
   background: white;
 }
+
 .profile-avatar {
   width: 80%;
 }
+
 .tabactive {
-  background:green !important;
+  background: green !important;
   color: white !important;
 }
+
 .tabactiveFirst {
   background: #6a82fb !important;
   color: white !important;
 }
+
 .tabactiveSecond {
-  background:#f85032 !important;
+  background: #f85032 !important;
   color: white !important;
 }
-.tab-edit{
+
+.tab-edit {
   display: flex !important;
   justify-content: center !important;
+}
+
+.title a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  margin-right: 10px;
+}
+
+.title a:hover {
+  color: white !important;
+}
+
+.first {
+  color: green !important;
+  margin-left: 10px;
 }

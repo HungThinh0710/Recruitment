@@ -65,5 +65,9 @@ ul#nav li .smoothscroll:focus { color: #fff;
       .nav-brand {
         margin: 0;
       }
-      
-      
+      .icon-menu {
+       
+      }
+      .site-menu-toggle {
+        font-family: none !important;
+      }
