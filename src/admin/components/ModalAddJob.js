@@ -65,7 +65,7 @@ export default class ModalAddUser extends Component {
     const newDateString = (s, i) => {
       return s.substr(0, i) + ' ' + s.substr(i + 1);
     };
-    var url = 'https://api.enclavei3dev.tk/api/job';
+    var url = 'https://api.enclavei3.tk/api/job';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -97,7 +97,7 @@ export default class ModalAddUser extends Component {
           alert('Add Successfully');
           res.json().then(data => {
             var url2 =
-              'https://api.enclavei3dev.tk/api/list-job?page=' +
+              'https://api.enclavei3.tk/api/list-job?page=' +
               this.props.page;
             fetch(url2, {
               method: 'POST',
