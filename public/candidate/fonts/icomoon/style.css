@@ -2845,6 +2845,7 @@
 }
 .icon-check_circle:before {
   content: "\e86c";
+  color: grey;
 }
 .icon-navigate_before:before {
   content: "\e408";
