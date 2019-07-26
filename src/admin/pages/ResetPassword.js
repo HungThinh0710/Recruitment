@@ -35,7 +35,7 @@ export default class ResetPassword extends React.Component {
   }
 
   verifyToken(token){
-    var url = 'https://api.enclavei3dev.tk/api/password/verify/'+token;
+    var url = 'https://api.enclavei3.tk/api/password/verify/'+token;
     fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export default class ResetPassword extends React.Component {
   }
   handleSubmit(){
     const {token,password,password_confirmation} = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/password/reset'
+    var url = 'https://api.enclavei3.tk/api/password/reset'
     fetch(url, {
       method: 'POST', 
       body: JSON.stringify({

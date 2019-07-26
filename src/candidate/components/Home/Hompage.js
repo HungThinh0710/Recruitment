@@ -64,7 +64,7 @@ export default class Homepage extends Component {
       "experience": "",
       "orderby": "asc"
     }
-    const data = await fetch('https://api.enclavei3dev.tk/api/article-web?page=1', {
+    const data = await fetch('https://api.enclavei3.tk/api/article-web?page=1', {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(body)
@@ -90,7 +90,7 @@ export default class Homepage extends Component {
       "orderby": "asc"
     }
     // this.setState({activePage: pageNumber});
-    var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber;
+    var url = 'https://api.enclavei3.tk/api/article-web?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: headers,

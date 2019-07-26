@@ -15,7 +15,6 @@ td,
 button,
 .h1,
 .h2,
-.h3,
 .h4,
 .h5,
 .h6,
@@ -28,7 +27,7 @@ button,
 .alert {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif !important;
   font-weight: $font-weight-normal;
 }
 

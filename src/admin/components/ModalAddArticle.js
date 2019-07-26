@@ -44,8 +44,8 @@ export default class ModalAddArticle extends Component {
 
   async componentDidMount() {
     let { jobId, catId } = this.state;
-    var url1 = 'https://api.enclavei3dev.tk/api/list-job?page=1';
-    var url2 = 'https://api.enclavei3dev.tk/api/category?page=1';
+    var url1 = 'https://api.enclavei3.tk/api/list-job?page=1';
+    var url2 = 'https://api.enclavei3.tk/api/category?page=1';
     const data1 = await fetch(url1, {
       method: 'POST',
       headers: {
@@ -144,7 +144,7 @@ export default class ModalAddArticle extends Component {
 
   handleSubmit = () => {
     const { title, jobId, content, catId } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/article';
+    var url = 'https://api.enclavei3.tk/api/article';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -170,7 +170,7 @@ export default class ModalAddArticle extends Component {
           alert('Add Successfully');
           res.json().then(data => {
             var url2 =
-              'https://api.enclavei3dev.tk/api/list-article?page=' +
+              'https://api.enclavei3.tk/api/list-article?page=' +
               this.props.page;
             fetch(url2, {
               method: 'POST',
@@ -199,7 +199,7 @@ export default class ModalAddArticle extends Component {
   handlePageJobChange(pageNumber) {
     this.setState({ activePageJob: pageNumber, currentPageJob: pageNumber });
     var { jobId } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-job?page=' + pageNumber;
+    var url = 'https://api.enclavei3.tk/api/list-job?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -230,7 +230,7 @@ export default class ModalAddArticle extends Component {
   handlePageCatChange(pageNumber) {
     this.setState({ activePageCat: pageNumber, currentPageCat: pageNumber });
     var { catId } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/category?page=' + pageNumber;
+    var url = 'https://api.enclavei3.tk/api/category?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({

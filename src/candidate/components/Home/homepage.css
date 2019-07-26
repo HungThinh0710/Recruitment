@@ -200,7 +200,9 @@
 }
 .position-title {
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 500;
+  color: black;
+
 }
 .article-table > tbody > tr:nth-of-type(even) {
   background-color: #f8f8f8;
@@ -220,4 +222,14 @@
 /* .text-green {
   color: green !important;
 } */
-
+.transistion > a:hover {
+  color: black;
+  text-decoration: none;
+}
+.list-unstyled > li > span > span {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+.align-items-center > span > span{
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  padding-left: 4px;
+}
