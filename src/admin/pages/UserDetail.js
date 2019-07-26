@@ -68,7 +68,9 @@ export default class UserDetail extends Component {
         },
         modalError: false,
         modalSuccess: false,
-        errorData: ''
+        errorData: '',
+        showErrorMessage: false,
+        errorRoleMessage: "",
       };
       this.toggle = this.toggle.bind(this);
       this.handleChange = this.handleChange.bind(this);

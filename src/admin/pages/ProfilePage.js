@@ -45,11 +45,18 @@ export default class ProfilePage extends Component {
           email: '',
           phone: ''
         },
+        formErrorPassword :{
+          old_password: 'Current Password is required',
+          password: 'Password is required',
+          password_confirmation: 'Confirm password is required'
+        },
         modalError: false,
         modalErrorPassword: false,
         modalSuccess: false,
         errorData: '',
-        errorPassword:''
+        errorPassword:'',
+        showErrorProfileMessage: false,
+        showErrorPasswordMessage: false
       };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -57,6 +64,8 @@ export default class ProfilePage extends Component {
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
     this.toggleModalErrorPassword = this.toggleModalErrorPassword.bind(this);
+    this.handleErrorProfileMessage = this.handleErrorProfileMessage.bind(this);
+    this.handleErrorPasswordMessage = this.handleErrorPasswordMessage.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -147,16 +156,16 @@ export default class ProfilePage extends Component {
   }
 
   handleChange(event) {
-    var { formError } = this.state;
+    var { formError, formErrorPassword } = this.state;
     switch (event.target.name) {
       case 'editFullName':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Fullname is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Fullname cannot contain the number/special characters');
         }
         break;
       case 'editEmail':
@@ -185,18 +194,60 @@ export default class ProfilePage extends Component {
           }
         }
         break;
+      case 'old_password':
+        if (event.target.value.length === 0) {
+          formErrorPassword.old_password = 'Current Passowrd is required';
+        } else {
+          formErrorPassword.old_password = '';
+        }
+        break;
+      case 'password' :
+          if (event.target.value.length === 0) {
+            formErrorPassword.password = 'New Passowrd is required';
+          } else {
+            formErrorPassword.password = '';
+            if (event.target.value != this.state.password_confirmation){
+              formErrorPassword.password_confirmation = 'Password does not match';
+            }else{
+              formErrorPassword.password_confirmation = '';
+            }
+          }
+          break;
+      case 'password_confirmation' :
+          
+          if (event.target.value !== this.state.password) {
+            formErrorPassword.password_confirmation = 'Password does not match';
+          } else {
+            formErrorPassword.password_confirmation = '';
+          }
+          break;
     }
-
     this.setState({
       [event.target.name]: event.target.value,
       formError: {
         fullname: formError.fullname,
         email: formError.email,
         phone: formError.phone
+      },
+      formErrorPassword: {
+        old_password: formErrorPassword.old_password,
+        password: formErrorPassword.password,
+        password_confirmation: formErrorPassword.password_confirmation
       }
     });
   }
-  
+  handleErrorProfileMessage = () => {
+    this.setState({
+      showErrorProfileMessage: true,
+    });
+  };
+
+  handleErrorPasswordMessage = () => {
+    this.setState({
+      showErrorPasswordMessage: true,
+    });
+  };
+
   handleChangeProfile(){
     const {editFullName,editEmail,editAddress,editPhone} = this.state;
     this.setState({
@@ -291,7 +342,8 @@ export default class ProfilePage extends Component {
 
   render() {
     var i = 0;
-    const {name,fullName,email,phone,address,formError,password,password_confirmation,old_password} = this.state;
+    const {name,fullName,email,phone,address,formError,password,password_confirmation,old_password,formErrorPassword} = this.state;
+    console.log(formErrorPassword);
     return (
       <div className="profile-card">
         {/*--------Modal-Success-----*/}
@@ -564,28 +616,22 @@ export default class ProfilePage extends Component {
                     <FormGroup>
                       <Label for="Fullname">Fullname</Label>
                       <Input type="text" name="editFullName"  value={this.state.editFullName} onChange={this.handleChange}/>
-                      {this.state.formError.fullname !== '' && (                       
-                        <span style={{ color: 'red' }}>
-                          {this.state.formError.fullname}
-                        </span>
+                      {formError.fullname !== '' && this.state.showErrorProfileMessage && (
+                        <span style={{ color: 'red' }}>{formError.fullname}</span>
                       )}
                     </FormGroup>
                     <FormGroup>
                       <Label for="Email">Email</Label>
                       <Input type="email" name="editEmail" value={this.state.editEmail} onChange={this.handleChange}/>
-                      {this.state.formError.email !== '' && (                       
-                        <span style={{ color: 'red' }}>
-                          {this.state.formError.email}
-                        </span>
+                      {formError.email !== '' && this.state.showErrorProfileMessage && (
+                        <span style={{ color: 'red' }}>{formError.email}</span>
                       )}
                     </FormGroup>
                     <FormGroup>
                       <Label for="Phone">Phone</Label>
                       <Input type="text" name="editPhone" value={this.state.editPhone} onChange={this.handleChange}/>
-                      {this.state.formError.phone !== '' && (
-                        <span style={{ color: 'red' }}>
-                          {this.state.formError.phone}
-                        </span>
+                      {formError.phone !== '' && this.state.showErrorProfileMessage && (
+                        <span style={{ color: 'red' }}>{formError.phone}</span>
                       )}
                     </FormGroup>
                     <FormGroup>
@@ -598,19 +644,19 @@ export default class ProfilePage extends Component {
                         justifyContent: 'flex-end',
                         marginTop: '20px'
                       }}>
-                      {
-                      formError.fullname == '' &&
-                      formError.email == '' &&
-                      formError.phone == '' 
-                      ? (
-                        <Button color="success" onClick={this.handleChangeProfile}>
-                          Submit
-                        </Button>
-                      ) : (
-                        <Button color="success"  disabled>
-                          Submit
-                        </Button>
-                      )}
+                        { formError.fullname == '' &&
+                          formError.email == '' &&
+                          formError.phone == '' 
+                          ? (
+                            <Button color="success" onClick={this.handleChangeProfile}>
+                              Submit
+                            </Button>
+                          ) : (
+                            <Button color="success" onClick={this.handleErrorProfileMessage}>
+                              Submit
+                            </Button>
+                            
+                        )}
                       </div>
                     </FormGroup>
                     </Form>
@@ -628,17 +674,23 @@ export default class ProfilePage extends Component {
                         <FormGroup>
                           <Label for="Fullname">Current Password</Label>
                           <Input type="password" name="old_password" value={this.state.old_password}  onChange={this.handleChange}/>
-                          {old_password == '' && <span style={{color:'red'}}>Current password is required</span>}
+                          {formErrorPassword.old_password !== '' && this.state.showErrorPasswordMessage && (
+                            <span style={{ color: 'red' }}>{formErrorPassword.old_password}</span>
+                          )}
                         </FormGroup>
                         <FormGroup>
                           <Label for="Email">New Password</Label>
                           <Input type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
-                          {password == '' && <span style={{color:'red'}}>New password is required</span>}
+                          {formErrorPassword.password !== '' && this.state.showErrorPasswordMessage && (
+                            <span style={{ color: 'red' }}>{formErrorPassword.password}</span>
+                          )}
                         </FormGroup>                      
                         <FormGroup>
                           <Label for="Phone">Confirm New Password</Label>
                           <Input type="password" name="password_confirmation" value={this.state.password_confirmation} onChange={this.handleChange}/>
-                          {password !== password_confirmation && <span style={{color:'red'}}>Password does not matched!</span>}
+                          {formErrorPassword.password_confirmation !== '' && this.state.showErrorPasswordMessage && (
+                            <span style={{ color: 'red' }}>{formErrorPassword.password_confirmation}</span>
+                          )}
                         </FormGroup>
                         <FormGroup>
                         <div style={{
@@ -646,14 +698,15 @@ export default class ProfilePage extends Component {
                         justifyContent: 'flex-end',
                         marginTop: '20px'
                       }}>
-                        { old_password!== '' &&
-                          password_confirmation==password
-                          ? (
+                        {
+                          formErrorPassword.old_password == '' &&
+                          formErrorPassword.password == '' &&
+                          formErrorPassword.password_confirmation == '' ? (
                             <Button color="success" onClick={this.handleChangePassword}>
                               Submit
                             </Button>
                           ) : (
-                            <Button color="success"  disabled>
+                            <Button color="success" onClick={this.handleErrorPasswordMessage}>
                               Submit
                             </Button>
                           )}

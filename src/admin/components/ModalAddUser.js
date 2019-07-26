@@ -13,7 +13,7 @@ import {
 import CollapsePermission from '../components/CollapsePermission';
 
 /*-------Regex----------*/
-const nameRegex = /^[a-zA-Z0-9](_(?!(\.|_))|\.(?!(_|\.))|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$/;
+const nameRegex = /^[a-zA-Z0-9]+$/;
 const fullNameRegex = /^[a-zA-Z\s]+$/;
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -37,13 +37,18 @@ export default class ModalAddUser extends Component {
       currentPage: 1,
       totalItems: '',
       formError: {
-        fullname: '',
-        email: '',
-        phone: ''
+        name: 'Username is required',
+        fullname: 'Fullname is required',
+        email: 'Email is required',
+        phone: 'Phone is required',
+        password: 'Password is required',
+        passwordConfirm: 'Password does not match'
       },
       modalError: false,
       modalSuccess: false,
-      errorData: ''
+      errorData: '',
+      errorRoleMessage: "User's roles cannot be empty",
+      showErrorMessage: false
     };
 
     this.toggle = this.toggle.bind(this);
@@ -53,6 +58,7 @@ export default class ModalAddUser extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleErrorMessage = this.handleErrorMessage.bind(this);
   }
 
   async componentDidMount() {
@@ -84,13 +90,7 @@ export default class ModalAddUser extends Component {
 
   handleCheck(e, listChecked) {
     listChecked.push(e.id);
-    this.setState({
-      listChecked: listChecked
-    });
-  }
-
-  wrapperFunction = () => {
-    const { listChecked, formError } = this.state;
+    var { errorRoleMessage } = this.state;
     var array1 = [...new Set(listChecked)];
     var array2 = [];
     array1.map(element => {
@@ -101,22 +101,19 @@ export default class ModalAddUser extends Component {
       }
       return array2;
     });
-    if (
-      formError.name !== '' &&
-      formError.fullname !== '' &&
-      formError.email !== '' &&
-      formError.phone !== '' &&
-      this.state.password !== '' &&
-      this.state.passwordConfirm !== this.state.password &&
-      array2.length !== 0
-    ) {
-      this.handleSubmit();
-      this.toggle();
-      this.toggleModalSuccess();
-    } else {
-      this.handleSubmit();
-      this.toggleModalError();
-    }
+    array2.length === 0
+      ? (errorRoleMessage = "Role's permissions cannot be empty")
+      : (errorRoleMessage = '');
+
+    this.setState({
+      listChecked: listChecked,
+      errorRoleMessage: errorRoleMessage
+    });
+  }
+
+  wrapperFunction = () => {
+    this.handleSubmit();
+    this.toggle();
   };
   toggleModalSuccess() {
     this.setState(prevState => ({
@@ -129,25 +126,33 @@ export default class ModalAddUser extends Component {
     }));
   }
   toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-      name: '',
-      fullname: '',
-      phone: '',
-      email: '',
-      password: '',
-      passwordConfirm: '',
-      formError: {
+    if (this.state.modal == true) {
+      this.setState(prevState => ({
+        modal: !prevState.modal,
         name: '',
         fullname: '',
-        email: '',
         phone: '',
-        address: '',
+        email: '',
         password: '',
-        passwordConfirm: ''
-      },
-      errorData: ''
-    }));
+        passwordConfirm: '',
+        formError: {
+          name: 'Username is required',
+          fullname: 'Fullname is required',
+          email: 'Email is required',
+          phone: 'Phone is required',
+          address: '',
+          password: 'Password is required',
+          passwordConfirm: 'Password does not match'
+        },
+        errorData: '',
+        showErrorMessage: false,
+        errorRoleMessage: "User's permissions cannot be empty"
+      }));
+    } else {
+      this.setState(prevState => ({
+        modal: !prevState.modal
+      }));
+    }
   }
 
   handleSubmit = () => {
@@ -195,6 +200,7 @@ export default class ModalAddUser extends Component {
           alert('Add Failed');
         }
         if (res.status === 422) {
+          this.toggleModalError();
           res.json().then(data => {
             const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
             this.setState({
@@ -203,6 +209,8 @@ export default class ModalAddUser extends Component {
           });
         }
         if (res.status === 200) {
+          this.toggleModalSuccess();
+          this.toggle();
           this.setState(prevState => ({
             modal: !prevState.modal,
             modalError: false,
@@ -230,6 +238,27 @@ export default class ModalAddUser extends Component {
       .catch(error => console.error('Error:', error));
   };
 
+  handleErrorMessage = () => {
+    var { listChecked, errorRoleMessage } = this.state;
+    var array1 = [...new Set(listChecked)];
+    var array2 = [];
+    array1.map(element => {
+      var count = listChecked.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    array2.length === 0
+      ? (errorRoleMessage = "User's roles cannot be empty")
+      : (errorRoleMessage = '');
+    this.setState({
+      showErrorMessage: true,
+      errorRoleMessage: errorRoleMessage
+    });
+  };
+
   handleChange(event) {
     var { formError } = this.state;
     switch (event.target.name) {
@@ -240,7 +269,7 @@ export default class ModalAddUser extends Component {
           nameRegex.test(event.target.value)
             ? (formError.name = '')
             : (formError.name =
-                'Username have at least 6 characters and cannot contain special characters');
+                'Username cannot contain the blank/special characters');
         }
         break;
       case 'fullname':
@@ -279,6 +308,19 @@ export default class ModalAddUser extends Component {
           }
         }
         break;
+      case 'password':
+        if (event.target.value.length === 0) {
+          formError.password = 'Password is required';
+        } else {
+          formError.password = '';
+        }
+        break;
+      case 'passwordConfirm':
+        if (event.target.value !== this.state.password) {
+          formError.passwordConfirm = 'Password does not match';
+        } else {
+          formError.passwordConfirm = '';
+        }
     }
 
     this.setState({
@@ -287,7 +329,9 @@ export default class ModalAddUser extends Component {
         name: formError.name,
         fullname: formError.fullname,
         email: formError.email,
-        phone: formError.phone
+        phone: formError.phone,
+        password: formError.password,
+        passwordConfirm: formError.passwordConfirm
       }
     });
   }
@@ -332,19 +376,8 @@ export default class ModalAddUser extends Component {
       email,
       phone,
       password,
-      passwordConfirm,
-      listChecked
+      passwordConfirm
     } = this.state;
-    var array1 = [...new Set(listChecked)];
-    var array2 = [];
-    array1.map(element => {
-      var count = listChecked.filter(e => e === element);
-      var length = count.length;
-      if (length % 2 !== 0) {
-        array2.push(element);
-      }
-      return array2;
-    });
     return (
       <div>
         {/*--------Modal-Success-----*/}
@@ -412,12 +445,8 @@ export default class ModalAddUser extends Component {
               <FormGroup>
                 <Label for="Name">Username</Label>
                 <Input type="text" name="name" onChange={this.handleChange} />
-                {this.state.name == '' ? (
-                  <span style={{ color: 'red' }}>Username is required</span>
-                ) : (
-                  <span style={{ color: 'red' }}>
-                    {this.state.formError.name}
-                  </span>
+                {formError.name !== '' && this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>{formError.name}</span>
                 )}
               </FormGroup>
               <FormGroup>
@@ -427,39 +456,22 @@ export default class ModalAddUser extends Component {
                   name="fullname"
                   onChange={this.handleChange}
                 />
-                {/* {this.state.formError.fullname.length !== 0 && (
-                  <span style={{ color: 'red' }}>
-                    {this.state.formError.fullname}
-                  </span>
-                )} */}
-                {this.state.fullname == '' ? (
-                  <span style={{ color: 'red' }}>Full name is required</span>
-                ) : (
-                  <span style={{ color: 'red' }}>
-                    {this.state.formError.fullname}
-                  </span>
+                {formError.fullname !== '' && this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>{formError.fullname}</span>
                 )}
               </FormGroup>
               <FormGroup>
                 <Label for="Email">Email</Label>
                 <Input type="email" name="email" onChange={this.handleChange} />
-                {this.state.email == '' ? (
-                  <span style={{ color: 'red' }}>Email is required</span>
-                ) : (
-                  <span style={{ color: 'red' }}>
-                    {this.state.formError.email}
-                  </span>
+                {formError.email !== '' && this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>{formError.email}</span>
                 )}
               </FormGroup>
               <FormGroup>
                 <Label for="Phone">Phone</Label>
                 <Input type="text" name="phone" onChange={this.handleChange} />
-                {this.state.phone == '' ? (
-                  <span style={{ color: 'red' }}>Phone number is required</span>
-                ) : (
-                  <span style={{ color: 'red' }}>
-                    {this.state.formError.phone}
-                  </span>
+                {formError.phone !== '' && this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>{formError.phone}</span>
                 )}
               </FormGroup>
               <FormGroup>
@@ -477,8 +489,8 @@ export default class ModalAddUser extends Component {
                   name="password"
                   onChange={this.handleChange}
                 />
-                {this.state.password.length === 0 && (
-                  <span style={{ color: 'red' }}>Password is required</span>
+                {formError.password !== '' && this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>{formError.password}</span>
                 )}
               </FormGroup>
               <FormGroup>
@@ -488,9 +500,12 @@ export default class ModalAddUser extends Component {
                   name="passwordConfirm"
                   onChange={this.handleChange}
                 />
-                {this.state.password !== this.state.passwordConfirm && (
-                  <span style={{ color: 'red' }}>Password does not match!</span>
-                )}
+                {formError.passwordConfirm !== '' &&
+                  this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>
+                      {formError.passwordConfirm}
+                    </span>
+                  )}
               </FormGroup>
               <FormGroup>
                 <CollapsePermission
@@ -504,15 +519,16 @@ export default class ModalAddUser extends Component {
                   onChange={this.handlePageChange}
                 />
               </FormGroup>
-              {array2.length === 0 && (
-                <span style={{ color: 'red' }}>
-                  User's roles cannot be empty
-                </span>
-              )}
+              {this.state.errorRoleMessage !== '' &&
+                this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>
+                    User's roles cannot be empty
+                  </span>
+                )}
             </Form>
           </ModalBody>
           <ModalFooter>
-            {formError.name == '' &&
+            {/* {formError.name == '' &&
             formError.fullname == '' &&
             formError.email == '' &&
             formError.phone == '' &&
@@ -530,8 +546,22 @@ export default class ModalAddUser extends Component {
               <Button color="success" onClick={this.wrapperFunction} disabled>
                 Submit
               </Button>
+            )} */}
+            {formError.name == '' &&
+            formError.fullname == '' &&
+            formError.email == '' &&
+            formError.phone == '' &&
+            formError.password == '' &&
+            formError.passwordConfirm == '' &&
+            this.state.errorRoleMessage == '' ? (
+              <Button color="success" onClick={this.wrapperFunction}>
+                Submit
+              </Button>
+            ) : (
+              <Button color="success" onClick={this.handleErrorMessage}>
+                Submit
+              </Button>
             )}
-
             <Button color="secondary" onClick={this.toggle}>
               Cancel
             </Button>

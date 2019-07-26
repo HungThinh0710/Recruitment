@@ -57,7 +57,6 @@ export default class ArticlesPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
     setTimeout(() => {
       this.setState({
         rows: data.data,
