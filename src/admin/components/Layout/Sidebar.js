@@ -4,7 +4,10 @@ import SourceLink from '../../components/SourceLink';
 import React from 'react';
 import {
   MdAccountCircle,
-  MdDashboard
+  MdPeople,
+  MdBook,
+  MdMap,
+  MdWork
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -13,18 +16,17 @@ import {
   Nav,
   Navbar,
   NavItem,
-  NavLink as BSNavLink,
+  NavLink as BSNavLink
 } from 'reactstrap';
 import bn from '../../utils/bemnames';
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
   backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
+  backgroundRepeat: 'no-repeat'
 };
 
 // const navComponents = [
- 
 //   { to: '/buttons', name: 'buttons', exact: false, Icon: MdRadioButtonChecked },
 //   {
 //     to: '/button-groups',
@@ -64,7 +66,20 @@ const sidebarBackground = {
 const navItems = [
   // { to: '/admin/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
   { to: '/admin/role', name: 'roles', exact: true, Icon: MdAccountCircle },
-  { to: '/admin/user', name: 'users', exact: true, Icon: MdAccountCircle}
+  { to: '/admin/user', name: 'users', exact: true, Icon: MdPeople },
+  { to: '/admin/job', name: 'jobs', exact: true, Icon: MdWork },
+  {
+    to: '/admin/article',
+    name: 'articles',
+    exact: true,
+    Icon: MdBook
+  },
+  {
+    to: '/admin/interview',
+    name: 'interviews',
+    exact: true,
+    Icon: MdMap
+  }
   // { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
   // { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
   // { to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
@@ -76,7 +91,7 @@ class Sidebar extends React.Component {
   state = {
     isOpenComponents: true,
     isOpenContents: true,
-    isOpenPages: true,
+    isOpenPages: true
   };
 
   handleClick = name => () => {
@@ -84,7 +99,7 @@ class Sidebar extends React.Component {
       const isOpen = prevState[`isOpen${name}`];
 
       return {
-        [`isOpen${name}`]: !isOpen,
+        [`isOpen${name}`]: !isOpen
       };
     });
   };
@@ -96,12 +111,7 @@ class Sidebar extends React.Component {
         <div className={bem.e('content')}>
           <Navbar>
             <SourceLink className="navbar-brand d-flex">
-              <img
-                src={logo200Image}
-                width='100%'
-                className="pr-2"
-                alt=""
-              />
+              <img src={logo200Image} width="100%" className="pr-2" alt="" />
             </SourceLink>
           </Navbar>
           <Nav vertical>
@@ -143,7 +153,7 @@ class Sidebar extends React.Component {
                 />
               </BSNavLink>
             </NavItem>  */}
-               {/* <Collapse isOpen={this.state.isOpenComponents}>
+            {/* <Collapse isOpen={this.state.isOpenComponents}>
                 {navComponents.map(({ to, name, exact, Icon }, index) => (
                   <NavItem key={index} className={bem.e('nav-item')}>
                     <BSNavLink

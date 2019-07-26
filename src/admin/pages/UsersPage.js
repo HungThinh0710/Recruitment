@@ -1,269 +1,330 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import {MdPageview} from 'react-icons/md';
-import { Card, CardBody, CardHeader , Button} from 'reactstrap';
+import { MdPageview } from 'react-icons/md';
+import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import ModalRemoveUser from '../components/ModalRemoveUser';
-import {Link} from 'react-router-dom';
-import Pagination from '../components/Pagination.js'
-import { MDBDataTable } from 'mdbreact';
+import ModalRemoveUsers from '../components/ModalRemoveUsers';
+import ModalEditItem from '../components/ModalEditItem';
+import { Link } from 'react-router-dom';
+import Pagination from '../components/Pagination.js';
 // import './Roles.css'
 import ModalAddUser from '../components/ModalAddUser';
+import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
-  fontSize: '200%',
+  fontSize: '200%'
 };
 const styleCard = {
   width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
-  marginBottom: '8%'
+  marginBottom: '8%',
+  loading: true
 };
 export default class UsersPage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      columns: [
-        {
-          label: '#',
-          field: 'index',
-          sort: 'asc'
-        },
-        {
-          label: 'Fullname',
-          field: 'fullname',
-          sort: 'asc'
-        },
-        {
-          label: 'Email',
-          field: 'email',
-          sort: 'asc'
-        },
-        {
-          label: 'Phone',
-          field: 'phone',
-          sort: 'asc'
-        },
-        {
-          label: 'Action',
-          field: 'action',
-        }
-      ],
+    this.state = {
+      listDeleteName: [],
+      listDeleteId: [],
       rows: [],
-      currentPage : 0,
+      currentPage: 0,
       activePage: 1,
-      totalItems:0,
-      listId: []
+      totalItems: 0,
+      listId: [],
+      loading: true
     };
+    this.handleCheckChange = this.handleCheckChange.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+    // this.removeManyItems = this.removeManyItems.bind(this);
   }
-  
-  async componentWillMount(){
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/admin');
+    }
+  }
+
+  async componentDidMount() {
     var url = 'https://api.enclavei3.tk/api/list-user?page=1';
-    var i=0;
-    var listUsers = [];
     const data = await fetch(url, {
       method: 'POST',
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json()) 
-    data.data.forEach(function(e) {
-      delete e.name;
-      delete e.address;
-      delete e.created_at;
-      delete e.updated_at;
-      delete e.image;
-      delete e.roles;
-      i++;
-      e = Object.assign({index:i}, e);
-      listUsers.push(e);
-    })
-    this.setState({
-      rows: listUsers,
-      totalItems: data.total
-    })
-    $(".dataTables_paginate").remove();
-  }
-
-  componentDidMount(){
-    
-    const {rows,listId} = this.state;
-    rows.map(e => {
-      let url = '/admin/user/'+e.id;
-
-      listId.push(e.id);
-      var index=listId.indexOf(e.id);
-      return  e.action = <div  className="action">
-              <Link to={url} >
-              <Button color='primary'>View</Button>
-              </Link>
-              <ModalRemoveUser  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
-    </div>})
-     $(".dataTables_paginate").remove();
-     rows.forEach(function(e){
-     
-      delete e.id;
-    });
-  }
-
-  componentDidUpdate(){
-    const {rows,listId} = this.state;
-    rows.map(e => {
-      let url = '/admin/user/'+e.id;
-
-      listId.push(e.id);
-      const index=listId.indexOf(e.id);
-      return  e.action = <div  className="action">
-              <Link to={url} >
-              <Button color='primary'><MdPageview /></Button>
-              </Link>
-              <ModalRemoveUser  item={e} id={listId[index]} buttonLabel='Delete' function={()=>this.removeItem(listId[index])}/>
-    </div>})
-     $(".dataTables_paginate").remove();
-     rows.forEach(function(e){
-     
-      delete e.id;
-    });
-
+    }).then(res => res.json());
+    setTimeout(() => {
+      this.setState({
+        rows: data.data,
+        totalItems: data.total,
+        loading: false
+      });
+    }, 500);
   }
 
   handlePageChange(pageNumber) {
-    // this.setState({activePage: pageNumber});
-    var url = 'https://api.enclavei3.tk/api/list-user?page='+pageNumber;
-    var i=0;
-    var listUsers = [];
-    fetch(url, {
-    method: 'POST',
-    headers:{
-      'Content-Type': 'application/json',
-      'Accept' : 'application/json',
-      'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
-    }
-  }).then(res => {
-    res.json().then(data => {
-  
-      data.data.forEach(function(e) {
-        delete e.name;
-        delete e.address;
-        delete e.created_at;
-        delete e.updated_at;
-        delete e.image;
-        delete e.roles;
-        i++;
-        e = Object.assign({index:i}, e);
-        listUsers.push(e);
-      })
-
-      this.setState({
-        currentPage: data.currentPage,
-        totalItems: data.total,
-        rows: listUsers,
-        activePage: pageNumber
-      })
-    })
-  }) 
-}
-
-  edit(index){
-    $('.item').removeClass('item-active');
-    $('#'+index).addClass('item-active');
-    var url = 'https://api.enclavei3.tk/api/user?page='+index;
+    var url = 'https://api.enclavei3.tk/api/list-user?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      res.json().then(data =>{
+      res.json().then(data => {
+        this.setState({
+          currentPage: data.currentPage,
+          totalItems: data.total,
+          rows: data.data,
+          activePage: pageNumber
+        });
+      });
+    });
+  }
+
+  edit(index) {
+    $('.item').removeClass('item-active');
+    $('#' + index).addClass('item-active');
+    var url = 'https://api.enclavei3.tk/api/user?page=' + index;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      res.json().then(data => {
+        this.setState({
+          rows: data.data,
+          totalItems: data.total
+        });
+      });
+    });
+  }
+
+  addUser(data) {
+    this.setState({
+      rows: data.data,
+      totalItems: data.total
+    });
+  }
+
+  removeItem(id) {
+    const { activePage } = this.state;
+    var array = [];
+    array.push(id);
+    var url = 'https://api.enclavei3.tk/api/user';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        userId: array
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch('https://api.enclavei3.tk/api/list-user?page=' + activePage, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(data => {
           this.setState({
             rows: data.data,
             totalItems: data.total
-          })
-      })
-    }) 
+          });
+        });
+      });
+    });
   }
 
-  addRole(listUsers,data) {
+  handleCheckChange(e) {
+    const { listDeleteId, listDeleteName } = this.state;
+    listDeleteId.push(e.id);
+    listDeleteName.push(e);
+    var array1 = [...new Set(listDeleteId)];
+    var array3 = [...new Set(listDeleteName)];
+    var array2 = [];
+    var array4 = [];
+    array1.map(element => {
+      var count = listDeleteId.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    array3.map(element => {
+      var count = listDeleteName.filter(e => e.id === element.id);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array4.push(element);
+      }
+      return array4;
+    });
     this.setState({
-      rows: listUsers,
-      totalItems: data.total
-    })
+      listDeleteId: array2,
+      listDeleteName: array4
+    });
   }
 
-  removeItem(id){
-    const {activePage} = this.state;
-    var array=[];
-    var i=0;
-    var listUsers = [];
-    array.push(id);
-    var url = 'https://api.enclavei3.tk/api/user'; 
+  removeManyItems() {
+    const { listDeleteId, activePage } = this.state;
+    var url = 'https://api.enclavei3.tk/api/user';
     fetch(url, {
-     method: 'DELETE', 
-     body: JSON.stringify({
-       userId: array
-     }), 
-     headers:{
-       'Content-Type': 'application/json',
-       'Accept' : 'application/json',
-       'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
-     }
-   }).then(res =>{
-     fetch('https://api.enclavei3.tk/api/list-user?page='+activePage, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        userId: listDeleteId
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch('https://api.enclavei3.tk/api/list-user?page=' + activePage, {
         method: 'POST',
-           headers:{
-         'Content-Type': 'application/json',
-         'Accept' : 'application/json',
-         'Authorization' : 'Bearer ' + localStorage.getItem('access_token')
-       }
-     }).then(res => {
-       res.json().then(data =>{
-         data.data.forEach(function(e){
-          delete e.name;
-          delete e.address;
-          delete e.created_at;
-          delete e.updated_at;
-          delete e.image;
-          delete e.roles;
-          i++;
-          e = Object.assign({index:i}, e);
-          listUsers.push(e);
-         })
-         
-         this.setState({
-           rows:listUsers,
-           totalItems:data.total
-         })
-       })
-     }) 
-   })
- }
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(data => {
+          this.setState({
+            rows: data.data,
+            totalItems: data.total,
+            listDeleteId: [],
+            listDeleteName: []
+          });
+        });
+      });
+    });
+  }
 
-  render() { 
+  render() {
+    var i = 0;
     return (
-      <Card  style={styleCard}>
-      <CardHeader style={styleFont}>Users Management</CardHeader>
-      <CardBody>
-      <ModalAddUser  color='success' buttonLabel='Create a new user' nameButtonAccept='Add' function={this.addRole.bind(this)} />
-      <br />
-      <MDBDataTable id="table"
-      striped
-      bordered
-      hover
-      data={this.state}
-      
-    />
-        <Pagination
-          activePage={this.state.activePage}
-          itemsCountPerPage={10}
-          totalItemsCount={this.state.totalItems}
-          pageRangeDisplayed={5}
-          onChange={this.handlePageChange.bind(this)}
-        />
-        </CardBody>
-        </Card> 
+      <Card style={styleCard}>
+        <CardHeader style={styleFont}>Users Management</CardHeader>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'green'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
+          <CardBody>
+            <ModalAddUser
+              color="success"
+              buttonLabel="Create a new user"
+              page={this.state.activePage}
+              nameButtonAccept="Add"
+              function={this.addUser.bind(this)}
+            />
+            {this.state.listDeleteId.length != 0 && (
+              <ModalRemoveUsers
+                arrayName={this.state.listDeleteName}
+                buttonLabel="Delete"
+                function={() => this.removeManyItems()}
+              />
+            )}
+            <div className="table-test">
+              <table>
+                <thead>
+                  <tr
+                    style={{
+                      background:
+                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                      color: 'white'
+                    }}
+                  >
+                    <th>
+                      <input type="checkbox" />
+                    </th>
+                    <th>#</th>
+                    <th>Fullname</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th style={{ width: '180px' }}>
+                      <div className="action">Action</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.rows.map(e => {
+                    i++;
+                    let url = '/admin/user/' + e.id;
+                    return (
+                      <tr key={e.id}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            onChange={() => this.handleCheckChange(e)}
+                          />
+                        </td>
+                        <td>{i}</td>
+                        <td>{e.fullname}</td>
+                        <td>{e.email}</td>
+                        <td>{e.phone}</td>
+                        <td>
+                          <div className="action">
+                            <ModalEditItem
+                              icon
+                              // id={listId[index]}
+                              name={e.name}
+                              color="success"
+                              buttonLabel="Edit"
+                              // function={this.editRole.bind(this)}
+                            />
+                            <Link style={{ width: 'auto' }} to={url}>
+                              <Button className="view-button" color="primary">
+                                <MdPageview />
+                              </Button>
+                            </Link>
+                            <ModalRemoveUser
+                              item={e}
+                              buttonLabel="Delete"
+                              function={() => this.removeItem(e.id)}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <br />
+              <Pagination
+                activePage={this.state.activePage}
+                itemsCountPerPage={10}
+                totalItemsCount={this.state.totalItems}
+                pageRangeDisplayed={5}
+                onChange={this.handlePageChange.bind(this)}
+              />
+            </div>
+          </CardBody>
+        )}
+      </Card>
     );
   }
 }
