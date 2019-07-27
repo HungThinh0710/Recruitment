@@ -63,7 +63,7 @@ export default class ModalAddUser extends Component {
 
   async componentDidMount() {
     var { listChecked } = this.state;
-    var url = 'https://api.enclavei3.tk/api/list-role?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/list-role?page=1';
     const data = await fetch(url, {
       method: 'POST',
       headers: {
@@ -102,7 +102,7 @@ export default class ModalAddUser extends Component {
       return array2;
     });
     array2.length === 0
-      ? (errorRoleMessage = "Role's permissions cannot be empty")
+      ? (errorRoleMessage = "User's roles cannot be empty")
       : (errorRoleMessage = '');
 
     this.setState({
@@ -176,7 +176,7 @@ export default class ModalAddUser extends Component {
       }
       return array2;
     });
-    var url = 'https://api.enclavei3.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/user';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -218,7 +218,7 @@ export default class ModalAddUser extends Component {
           }));
           res.json().then(data => {
             var url2 =
-              'https://api.enclavei3.tk/api/list-user?page=' +
+              'https://api.enclavei3dev.tk/api/list-user?page=' +
               this.props.page;
             fetch(url2, {
               method: 'POST',
@@ -339,7 +339,7 @@ export default class ModalAddUser extends Component {
   handlePageChange(pageNumber) {
     this.setState({ activePage: pageNumber, currentPage: pageNumber });
     var { listChecked } = this.state;
-    var url = 'https://api.enclavei3.tk/api/list-role?page=' + pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -528,25 +528,6 @@ export default class ModalAddUser extends Component {
             </Form>
           </ModalBody>
           <ModalFooter>
-            {/* {formError.name == '' &&
-            formError.fullname == '' &&
-            formError.email == '' &&
-            formError.phone == '' &&
-            name !== '' &&
-            fullname !== '' &&
-            email !== '' &&
-            phone !== '' &&
-            password !== '' &&
-            array2.length !== 0 &&
-            passwordConfirm == password ? (
-              <Button color="success" onClick={this.wrapperFunction}>
-                Submit
-              </Button>
-            ) : (
-              <Button color="success" onClick={this.wrapperFunction} disabled>
-                Submit
-              </Button>
-            )} */}
             {formError.name == '' &&
             formError.fullname == '' &&
             formError.email == '' &&
