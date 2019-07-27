@@ -36,7 +36,7 @@ export default class TestPage extends Component {
   }
 
   async componentWillMount() {
-    var url = 'https://api.enclavei3.tk/api/list-user?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/list-user?page=1';
     const data = await fetch(url, {
       method: 'POST',
       headers: {
@@ -54,7 +54,7 @@ export default class TestPage extends Component {
 
   handlePageChange(pageNumber) {
     // this.setState({activePage: pageNumber});
-    var url = 'https://api.enclavei3.tk/api/list-user?page=' + pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/list-user?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -77,7 +77,7 @@ export default class TestPage extends Component {
   edit(index) {
     $('.item').removeClass('item-active');
     $('#' + index).addClass('item-active');
-    var url = 'https://api.enclavei3.tk/api/user?page=' + index;
+    var url = 'https://api.enclavei3dev.tk/api/user?page=' + index;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -106,7 +106,7 @@ export default class TestPage extends Component {
     const { activePage } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/user';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -118,7 +118,7 @@ export default class TestPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3.tk/api/list-user?page=' + activePage, {
+      fetch('https://api.enclavei3dev.tk/api/list-user?page=' + activePage, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ export default class TestPage extends Component {
 
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/user';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -180,7 +180,7 @@ export default class TestPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3.tk/api/list-user?page=' + activePage, {
+      fetch('https://api.enclavei3dev.tk/api/list-user?page=' + activePage, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

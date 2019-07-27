@@ -55,7 +55,7 @@ export default class RoleDetail extends Component {
     var i = 0;
     const { id } = this.props.match.params;
     var listRoles = [];
-    var url = 'https://api.enclavei3.tk/api/role/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/role/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

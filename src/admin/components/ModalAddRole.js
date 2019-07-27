@@ -18,7 +18,8 @@ import CollapsePermission from '../components/CollapsePermission';
 import { MDBBtn } from 'mdbreact';
 import { ClipLoader } from 'react-spinners';
 
-const roleNameRegex = /^[a-zA-Z\s]+$/;
+const roleNameRegex = /^[a-zA-Z0-9\s]+$/;
+
 export default class ModalAddRole extends Component {
   constructor(props) {
     super(props);
@@ -33,10 +34,12 @@ export default class ModalAddRole extends Component {
       description: '',
       listChecked: [],
       loading: true,
-      errorRoleMessage: '',
+      errorRoleMessage: "Role's name is required",
       errorData: '',
       modalError: false,
-      modalSuccess: false
+      modalSuccess: false,
+      showErrorMessage: false,
+      errorPermissionMessage: "Role's permissions cannot be empty"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -45,11 +48,12 @@ export default class ModalAddRole extends Component {
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleErrorMessage = this.handleErrorMessage.bind(this);
   }
 
   async componentDidMount() {
     var { listChecked } = this.state;
-    var url = 'https://api.enclavei3.tk/api/permission?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/permission?page=1';
 
     const data = await fetch(url, {
       headers: {
@@ -81,8 +85,24 @@ export default class ModalAddRole extends Component {
 
   handleCheck(e, listChecked) {
     listChecked.push(e.id);
+    var { errorPermissionMessage } = this.state;
+    var array1 = [...new Set(listChecked)];
+    var array2 = [];
+    array1.map(element => {
+      var count = listChecked.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    array2.length === 0
+      ? (errorPermissionMessage = "Role's permissions cannot be empty")
+      : (errorPermissionMessage = '');
+
     this.setState({
-      listChecked: listChecked
+      listChecked: listChecked,
+      errorPermissionMessage: errorPermissionMessage
     });
   }
 
@@ -95,7 +115,7 @@ export default class ModalAddRole extends Component {
         roleNameRegex.test(event.target.value)
           ? (errorRoleMessage = '')
           : (errorRoleMessage =
-              "Role's name cannot contain the number/special characters");
+              "Role's name cannot contain special characters");
       }
     }
     this.setState({
@@ -107,7 +127,7 @@ export default class ModalAddRole extends Component {
   handlePageChange(pageNumber) {
     this.setState({ activePage: pageNumber, currentPage: pageNumber });
     var { listChecked } = this.state;
-    var url = 'https://api.enclavei3.tk/api/permission?page=' + pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/permission?page=' + pageNumber;
     fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -135,7 +155,12 @@ export default class ModalAddRole extends Component {
   }
 
   wrapperFunction = () => {
-    const { listChecked, errorRoleMessage } = this.state;
+    this.addItem();
+    this.toggle();
+  };
+
+  handleErrorMessage = () => {
+    var { listChecked, errorPermissionMessage } = this.state;
     var array1 = [...new Set(listChecked)];
     var array2 = [];
     array1.map(element => {
@@ -146,14 +171,13 @@ export default class ModalAddRole extends Component {
       }
       return array2;
     });
-    if (errorRoleMessage !== '' && array2.length !== 0) {
-      this.addItem();
-      this.toggle();
-      this.toggleModalSuccess();
-    } else {
-      this.addItem();
-      this.toggleModalError();
-    }
+    array2.length === 0
+      ? (errorPermissionMessage = "Role's permissions cannot be empty")
+      : (errorPermissionMessage = '');
+    this.setState({
+      showErrorMessage: true,
+      errorPermissionMessage: errorPermissionMessage
+    });
   };
 
   addItem() {
@@ -169,7 +193,7 @@ export default class ModalAddRole extends Component {
       }
       return array2;
     });
-    var url = 'https://api.enclavei3.tk/api/role';
+    var url = 'https://api.enclavei3dev.tk/api/role';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -188,6 +212,7 @@ export default class ModalAddRole extends Component {
           alert('Add Failed');
         }
         if (res.status === 422) {
+          this.toggleModalError();
           res.json().then(data => {
             const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
             this.setState({
@@ -196,13 +221,15 @@ export default class ModalAddRole extends Component {
           });
         }
         if (res.status === 200) {
+          this.toggleModalSuccess();
+          this.toggle();
           this.setState(prevState => ({
             modal: !prevState.modal,
             modalError: false,
             modalSuccess: true
           }));
           var url2 =
-            'https://api.enclavei3.tk/api/list-role?page=' + this.props.page;
+            'https://api.enclavei3dev.tk/api/list-role?page=' + this.props.page;
           res.json().then(data => {
             fetch(url2, {
               method: 'POST',
@@ -235,29 +262,33 @@ export default class ModalAddRole extends Component {
   }
 
   toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-      role: '',
-      description: '',
-      listChecked: [],
-      errorRoleMessage: '',
-      errorData: ''
-    }));
+    if (this.state.modal == true) {
+      this.setState(prevState => ({
+        modal: !prevState.modal,
+        role: '',
+        description: '',
+        listChecked: [],
+        errorRoleMessage: "Role's name is required",
+        errorData: '',
+        showErrorMessage: false,
+        errorPermissionMessage: "Role's permissions cannot be empty"
+      }));
+    } else {
+      this.setState(prevState => ({
+        modal: !prevState.modal
+      }));
+    }
   }
 
   render() {
-    const { listChecked, errorRoleMessage, role } = this.state;
-    var array1 = [...new Set(listChecked)];
-    var array2 = [];
-    array1.map(element => {
-      var count = listChecked.filter(e => e === element);
-      var length = count.length;
-      if (length % 2 !== 0) {
-        array2.push(element);
-      }
-      return array2;
-    });
+    const {
+      listChecked,
+      errorRoleMessage,
+      role,
+      errorPermissionMessage
+    } = this.state;
     var i = 0;
+
     return (
       <div>
         {/*--------Modal-Success-----*/}
@@ -329,11 +360,7 @@ export default class ModalAddRole extends Component {
                       name="role"
                       onChange={this.handleChange}
                     />
-                    {this.state.role == '' ? (
-                      <span style={{ color: 'red' }}>
-                        Role's name is required
-                      </span>
-                    ) : (
+                    {errorRoleMessage !== '' && this.state.showErrorMessage && (
                       <span style={{ color: 'red' }}>
                         {this.state.errorRoleMessage}
                       </span>
@@ -362,23 +389,25 @@ export default class ModalAddRole extends Component {
                       onChange={this.handlePageChange}
                     />
                     <br />
-                    {array2.length == 0 && (
-                      <span style={{ color: 'red' }}>
-                        Role's permissions cannot be empty
-                      </span>
-                    )}
+                    {this.state.errorPermissionMessage !== '' &&
+                      this.state.showErrorMessage && (
+                        <span style={{ color: 'red' }}>
+                          Role's permissions cannot be empty
+                        </span>
+                      )}
                   </FormGroup>
                 </Form>
               </CardBody>
             </Card>
           </ModalBody>
           <ModalFooter>
-            {errorRoleMessage == '' && role !== '' && array2.length !== 0 ? (
+            {this.state.errorRoleMessage == '' &&
+            this.state.errorPermissionMessage == '' ? (
               <Button color="success" onClick={this.wrapperFunction}>
                 Submit
               </Button>
             ) : (
-              <Button color="success" onClick={this.wrapperFunction} disabled>
+              <Button color="success" onClick={this.handleErrorMessage}>
                 Submit
               </Button>
             )}
