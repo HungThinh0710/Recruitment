@@ -45,7 +45,7 @@ export default class Careers extends Component {
       "Content-Type": "application/json",
     }
     const { id } = this.props.match.params;
-    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
+    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
       headers: headers,
     }).then(response => response.json())
     await this.setState({
