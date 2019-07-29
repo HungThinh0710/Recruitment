@@ -69,7 +69,7 @@ export default class ProfilePage extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount(){
@@ -143,7 +143,7 @@ export default class ProfilePage extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/role');
+    this.props.history.push('/dashboard/role');
   };
 
   changeProfile(fullName,email,phone,address) {
@@ -420,7 +420,7 @@ export default class ProfilePage extends Component {
         <CardTitle className="title">
             <MdCancel className="first" />
             My Profile
-            <Link to="/admin/role">
+            <Link to="/dashboard/role">
               <MdCancel />
             </Link>
           </CardTitle>

@@ -63,116 +63,110 @@ class App extends React.Component {
           <Switch>
             <LayoutRoute
               exact
-              path={'/admin'}
+              path={'/dashboard/login'}
               layout={EmptyLayout}
               component={LoginPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/forgotpassword'}
+              path={'/dashboard/forgotpassword'}
               layout={EmptyLayout}
               component={ForgotPasswordPage}
             />
             <LayoutRoute
-              path={'/admin/reset-password'}
+              path={'/dashboard/reset-password'}
               layout={EmptyLayout}
               component={ResetPassword}
             />
             <LayoutRoute
               exact
-              path="/admin/profile"
+              path="/dashboard/profile"
               layout={MainLayout}
               component={ProfilePage}
             />
             <LayoutRoute
               exact
-              path="/admin/changeprofile"
+              path="/dashboard/changeprofile"
               layout={MainLayout}
               component={ChangeProfilePage}
             />
             <LayoutRoute
               exact
-              path="/admin/changeaccount"
+              path="/dashboard/changeaccount"
               layout={MainLayout}
               component={ChangeAccountPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/role'}
+              path={'/dashboard/role'}
               layout={MainLayout}
               component={Roles}
             />
             <LayoutRoute
               exact
-              path={'/admin/role/:id'}
+              path={'/dashboard/role/:id'}
               layout={MainLayout}
               component={RoleDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/user'}
+              path={'/dashboard/user'}
               layout={MainLayout}
               component={UsersPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/user/:id'}
+              path={'/dashboard/user/:id'}
               layout={MainLayout}
               component={UserDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/job'}
+              path={'/dashboard/job'}
               layout={MainLayout}
               component={JobsPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/job/:id'}
+              path={'/dashboard/job/:id'}
               layout={MainLayout}
               component={JobDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/article'}
+              path={'/dashboard/article'}
               layout={MainLayout}
               component={ArticlesPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/article/:id'}
+              path={'/dashboard/article/:id'}
               layout={MainLayout}
               component={ArticleDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/create-article'}
+              path={'/dashboard/create-article'}
               layout={MainLayout}
               component={AddNewArticlePage}
             />
             <LayoutRoute
               exact
-              path={'/admin/interview'}
+              path={'/dashboard/interview'}
               layout={MainLayout}
               component={InterviewsPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/interview/:id'}
+              path={'/dashboard/interview/:id'}
               layout={MainLayout}
               component={InterviewDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/test'}
+              path={'/dashboard/test'}
               layout={MainLayout}
               component={TestPage}
-            />
-            <LayoutRoute
-              exact
-              path="/admin/dashboard"
-              layout={MainLayout}
-              component={DashboardPage}
             />
             {/* <Redirect to="/" /> */}
             <Route path="/" component={Homepage} exact />

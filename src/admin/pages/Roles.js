@@ -38,7 +38,7 @@ export default class Roles extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
@@ -268,7 +268,7 @@ export default class Roles extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/admin/role/' + e.id;
+                    let url = '/dashboard/role/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>

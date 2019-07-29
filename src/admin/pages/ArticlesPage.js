@@ -43,7 +43,7 @@ export default class ArticlesPage extends Component {
 
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
 
@@ -238,7 +238,7 @@ export default class ArticlesPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <Link to="/admin/create-article">
+            <Link to="/dashboard/create-article">
               <Button color="success">Create A New Article</Button>
             </Link>
             {this.state.listDeleteId.length != 0 && (
@@ -275,7 +275,7 @@ export default class ArticlesPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/admin/article/' + e.id;
+                    let url = '/dashboard/article/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>

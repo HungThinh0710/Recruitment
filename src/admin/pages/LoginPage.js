@@ -24,7 +24,7 @@ export default class LoginPage extends React.Component {
   }
   componentWillMount() {
     if (localStorage.getItem('access_token')) {
-      this.props.history.push('/admin/role');
+      this.props.history.push('/dashboard/role');
     }
   }
 
@@ -90,7 +90,7 @@ export default class LoginPage extends React.Component {
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to="/admin/role" />;
+      return <Redirect to="/dashboard/role" />;
     }
   };
 
@@ -142,7 +142,7 @@ export default class LoginPage extends React.Component {
           />
         </FormGroup>
         <FormGroup className="input-area" style={{ marginBottom: '8%' }}>
-          <Link to="/admin/forgotpassword">
+          <Link to="/dashboard/forgotpassword">
             <h6>Forgot Password</h6>
           </Link>
         </FormGroup>

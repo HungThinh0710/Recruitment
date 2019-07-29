@@ -40,7 +40,7 @@ export default class UsersPage extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
 
@@ -273,7 +273,7 @@ export default class UsersPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/admin/user/' + e.id;
+                    let url = '/dashboard/user/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
