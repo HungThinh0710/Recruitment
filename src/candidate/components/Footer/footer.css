@@ -1,3 +1,35 @@
-#fixa {
-    /* margin-top: none; */
+.footer {
+	background: #8b8b8b;
+	height: auto;
+	padding-bottom: 30px;
+	position: relative;
+	width: 100%;
+	border-bottom: 1px solid #CCCCCC;
+	border-top: 1px solid #DDDDDD;
+}
+.footer-social {
+    margin-bottom: 1rem !important;
+    padding-top: 10px;
+}
+.textbottom {
+    margin-bottom: 0 !important;
+}
+.footer-social .facebook{
+    background: #466fb0;
+}
+.footer-social .twitter {
+    background: #1da1f1;
+}
+.footer-social .instagram {
+    background: #ffffff;
+}
+.footer-social .icon-instagram {
+    color: #303030;
+}
+.footer-social .skype {
+    background: #039cd8;
+}
+.footer-social .instagram:hover {
+    background: #F56040;
+    color: #fff;
 }
