@@ -24,6 +24,7 @@ import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
 import classnames from 'classnames';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
+import renderHTML from 'react-render-html';
 import './JobDetail.css';
 export default class ArticleDetail extends Component {
   constructor(props) {
@@ -244,41 +245,91 @@ export default class ArticleDetail extends Component {
                           <td className="job-title">Title</td>
                           <td>{this.state.title}</td>
                         </tr>
+
                         <tr key={2}>
-                          <td className="job-title">Content</td>
-                          <td>{this.state.content}</td>
-                        </tr>
-                        <tr key={3}>
                           <td className="job-title">Status</td>
                           <td>{this.state.status}</td>
                         </tr>
-                        <tr key={4}>
+                        <tr key={3}>
                           <td className="job-title">Job</td>
                           <td>
                             <Link to={url1}>{this.state.jobName}</Link>
                           </td>
                         </tr>
-                        <tr key={5}>
+                        <tr key={4}>
                           <td className="job-title">Category</td>
                           <td>{this.state.catName}</td>
                         </tr>
-                        <tr key={6}>
+                        <tr key={5}>
                           <td className="job-title">Created By</td>
                           <td>
                             <Link to={url2}>{this.state.userName}</Link>
                           </td>
                         </tr>
-                        <tr key={7}>
+                        <tr key={6}>
                           <td className="job-title">Created At</td>
                           <td>{this.state.created_at}</td>
                         </tr>
-                        <tr key={8}>
+                        <tr key={7}>
                           <td className="job-title">Updated At</td>
                           <td>{this.state.updated_at}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
+                </Row>
+                <Row>
+                  <div className="job-tabs">
+                    <Nav tabs>
+                      <NavItem style={{ width: '150px' }}>
+                        <NavLink
+                          className={classnames({
+                            jobtabactive: this.state.activeTab === '1'
+                          })}
+                          onClick={() => {
+                            this.toggle('1');
+                          }}
+                        >
+                          <MdBook style={{ marginRight: '5px' }} />
+                          Content
+                        </NavLink>
+                      </NavItem>
+                      <NavItem style={{ width: '150px' }}>
+                        <NavLink
+                          className={classnames({
+                            jobtabactive: this.state.activeTab === '2'
+                          })}
+                          onClick={() => {
+                            this.toggle('2');
+                          }}
+                        >
+                          <MdSettings style={{ marginRight: '5px' }} />
+                          Update
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                  </div>
+                </Row>
+
+                <br />
+                <br />
+                <Row>
+                  <TabContent
+                    style={{ width: '100%' }}
+                    activeTab={this.state.activeTab}
+                  >
+                    <TabPane tabId="1">
+                      <Row>
+                        <Col>{renderHTML(this.state.content)}</Col>
+                        {/* <Col>{this.state.content}</Col> */}
+                      </Row>
+                    </TabPane>
+                    <TabPane tabId="2">
+                      <Row>
+                        <Col />
+                      </Row>
+                    </TabPane>
+                  </TabContent>
                 </Row>
               </Container>
               <div

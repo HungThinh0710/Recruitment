@@ -6,6 +6,11 @@ import {
 } from './admin/components/Layout';
 
 // page
+
+/*------Action-----*/
+import AddNewArticlePage from './admin/pages/AddNewArticlePage';
+/*------Action-----*/
+
 /*------Sidebar----*/
 import TestPage from './admin/pages/TestPage';
 import Roles from './admin/pages/Roles';
@@ -138,6 +143,12 @@ class App extends React.Component {
               path={'/admin/article/:id'}
               layout={MainLayout}
               component={ArticleDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/admin/create-article'}
+              layout={MainLayout}
+              component={AddNewArticlePage}
             />
             <LayoutRoute
               exact

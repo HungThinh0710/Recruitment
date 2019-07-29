@@ -12,7 +12,7 @@ import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText,
 import './ProfilePage.css';
 import {Link} from 'react-router-dom';
 import TabInformation from '../components/TabInformation';
-import { ClipLoader,PulseLoader} from 'react-spinners';
+import { ClipLoader} from 'react-spinners';
 
 /*-------Regex----------*/
 const fullNameRegex = /^[a-zA-Z\s]+$/;

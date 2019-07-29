@@ -238,13 +238,9 @@ export default class ArticlesPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <ModalAddArticle
-              color="success"
-              page={this.state.activePage}
-              buttonLabel="Create a new article"
-              nameButtonAccept="Add"
-              function={this.addJob.bind(this)}
-            />
+            <Link to="/admin/create-article">
+              <Button color="success">Create A New Article</Button>
+            </Link>
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveArticles
                 arrayName={this.state.listDeleteName}
