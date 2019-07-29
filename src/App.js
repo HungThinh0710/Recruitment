@@ -178,7 +178,7 @@ class App extends React.Component {
             <Route path="/" component={Homepage} exact />
             <Route path="/careers" component={Careers} />
             <Route path="/about" component={About} />
-            <Route path="/describe/:id" component={Career1} />
+            <Route path="/article/:id" component={Career1} />
           </Switch>
         </GAListener>
       </BrowserRouter>

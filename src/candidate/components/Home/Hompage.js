@@ -133,8 +133,8 @@ export default class Homepage extends Component {
               <div className="row align-items-center justify-content-center">
                 <div className="col-md-12">
                   <div className="mb-5 text-center">
-                    <h1 className="text-white font-weight-bold">Enclave Recruitment</h1>
-                    <p className="text-white" >Find your dream jobs in our company</p>
+                    <h1 className="text-green font-weight-bold">Enclave Recruitment</h1>
+                    <p className="text-green" >Find your dream jobs in our company</p>
                   </div>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export default class Homepage extends Component {
                               return <tr class="transfer">
                                 <td data-th="Position">
                                   <div>
-                                    <Link to={"/describe/" + p.id}>
+                                    <Link to={"/article/" + p.id}>
                                       <p class="position-id">
                                         <p class="position-title">
                                           {p.title}

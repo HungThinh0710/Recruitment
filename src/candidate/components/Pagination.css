@@ -14,7 +14,7 @@
     border-radius: 0px;
     z-index: 3;
     font-weight: bold;
-    background-color: rgb(76, 186, 79);;
+    background-color: #45b649;
     border-color: black;
     border: 1px solid !important;
 }
@@ -35,4 +35,7 @@
   margin-right: 5px;
   padding: 3px 5px 3px 5px;
   
+}
+.pagination-area-web .pagination > li > a{
+  color: #3a3735;
 }
