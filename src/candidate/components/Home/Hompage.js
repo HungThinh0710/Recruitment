@@ -242,7 +242,7 @@ export default class Homepage extends Component {
                               return <tr class="transfer">
                                 <td data-th="Position">
                                   <div>
-                                    <Link to={"/article/" + p.id}>
+                                    <Link to={"/article/" + p.id} className="colorbottomline">
                                       <p class="position-id">
                                         <p class="position-title">
                                           {p.title}

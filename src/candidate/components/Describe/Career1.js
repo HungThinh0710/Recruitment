@@ -105,7 +105,7 @@ export default class Careers extends Component {
 
                     <div>
 
-                      <h2>{this.state.title}</h2>
+                      <h2 className="modify-title">{this.state.title}</h2>
                       <div class="show-line">
                         <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />{this.state.position}</span>
                         <span className="m-2"><span className="icon-room mr-2" />{this.state.address}</span>
@@ -127,7 +127,7 @@ export default class Careers extends Component {
                     </div>
                     <div className="col-sm-6">
 
-                      <Button block={true} color="info" onClick={this.toggleModal.bind(this)} >Apply Now</Button>
+                      <Button block={true} color="success" onClick={this.toggleModal.bind(this)} >Apply Now</Button>
                       <Button color="danger" className="close"
                         onClick={this.toggleModal.bind(this)}>{this.props.buttonLabel}
                       </Button>
@@ -148,49 +148,91 @@ export default class Careers extends Component {
               </div>
 
               <div className="row">
+                <div className="show-jobsummary-2">
+                  <div className="col-lg-4 jobsummary-moblie">
+                    <div className="bg-light p-3 border rounded mb-4">
+                      <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
+                      <ul className="list-unstyled pl-3 mb-0">
+                        <li className="mb-2"><strong className="text-black">Published on:</strong> <IntlProvider locale="fr">
+                          <FormattedDate
+                            value={this.state.publishedOn}
+                            day="numeric"
+                            month="long"
+                            year="numeric" />
+                        </IntlProvider></li>
+                        <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
+                        <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
+                        <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
+                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
+                        <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
+                        {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
+                        <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
+                          <FormattedDate
+                            value={this.state.deadline}
+                            day="numeric"
+                            month="long"
+                            year="numeric" />
+                        </IntlProvider></li>
+                      </ul>
+                    </div>
+                    <div className="bg-light p-3 border rounded">
+                      {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
+                      <div className="px-3 text-center">
+                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-facebook" /></NavLink>
+                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter" /></NavLink>
+                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-instagram" /></NavLink>
+                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-skype" /></NavLink>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div className="col-lg-8">
                   <div className="mb-5">
-                    <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded" /></figure>
+                    <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
 
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
-                <div className="col-lg-4">
-                  <div className="bg-light p-3 border rounded mb-4">
-                    <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
-                    <ul className="list-unstyled pl-3 mb-0">
-                      <li className="mb-2"><strong className="text-black">Published on:</strong> <IntlProvider locale="fr">
-                        <FormattedDate
-                          value={this.state.publishedOn}
-                          day="numeric"
-                          month="long"
-                          year="numeric" />
-                      </IntlProvider></li>
-                      <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
-                      <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
-                      <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-                      <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
-                      <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
-                      {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
-                      <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
-                        <FormattedDate
-                          value={this.state.deadline}
-                          day="numeric"
-                          month="long"
-                          year="numeric" />
-                      </IntlProvider></li>
-                    </ul>
-                  </div>
+                  <div className="col-lg-4">
+                  <div className="show-jobsummary">
+                    <div className="bg-light p-3 border rounded mb-4">
+                      <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
+                      <ul className="list-unstyled pl-3 mb-0">
+                        <li className="mb-2"><strong className="text-black">Published on:</strong> <IntlProvider locale="fr">
+                          <FormattedDate
+                            value={this.state.publishedOn}
+                            day="numeric"
+                            month="long"
+                            year="numeric" />
+                        </IntlProvider></li>
+                        <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
+                        <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
+                        <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
+                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
+                        <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
+                        {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
+                        <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
+                          <FormattedDate
+                            value={this.state.deadline}
+                            day="numeric"
+                            month="long"
+                            year="numeric" />
+                        </IntlProvider></li>
+                      </ul>
+                    </div>
 
-                  <div className="bg-light p-3 border rounded">
-                    {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
-                    <div className="px-3 text-center">
-                      <Link to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-facebook" /></Link>
-                      <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-twitter" /></NavLink>
-                      <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-instagram" /></NavLink>
-                      <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span className="icon-skype" /></NavLink>
+                    <div className="bg-light p-3 border rounded">
+                      {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
+                      <div className="text-center">
+                        <NavLink to={"#"} className="col-lg-3"><span class="icon-facebook" /></NavLink>
+                        <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
+                        <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
+                        <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink>
+                                            
+                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
 
