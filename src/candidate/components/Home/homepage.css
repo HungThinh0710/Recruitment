@@ -203,7 +203,6 @@
   font-weight: 500;
   font-size: 14.2px;
   color: black;
-
 }
 .article-table > tbody > tr:nth-of-type(even) {
   background-color: #f8f8f8;
@@ -235,3 +234,6 @@
   padding-left: 4px;
 }
 
+.colorbottomline {
+  text-decoration-color: black !important;
+}
