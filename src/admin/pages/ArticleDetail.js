@@ -67,7 +67,7 @@ export default class ArticleDetail extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
@@ -126,7 +126,7 @@ export default class ArticleDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/article');
+    this.props.history.push('/dashboard/article');
   };
 
   handleChange(event) {
@@ -205,15 +205,15 @@ export default class ArticleDetail extends Component {
 
   render() {
     const { jobId, userId } = this.state;
-    var url1 = '/admin/job/' + jobId;
-    var url2 = '/admin/user/' + userId;
+    var url1 = '/dashboard/job/' + jobId;
+    var url2 = '/dashboard/user/' + userId;
     return (
       <div className="profile-card">
         <Card className="card-body">
           <CardTitle className="title">
             <MdCancel className="first" />
             Article Information
-            <Link to="/admin/article">
+            <Link to="/dashboard/article">
               <MdCancel />
             </Link>
           </CardTitle>

@@ -76,7 +76,7 @@ export default class AddNewArticlePage extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
@@ -133,7 +133,7 @@ export default class AddNewArticlePage extends Component {
       totalItemsCat: data2.total,
       currentPageJob: data1.current_page,
       currentPageCat: data2.current_page,
-      urlArticle: '/admin/create-article'
+      urlArticle: '/dashboard/create-article'
     });
   }
 
@@ -183,7 +183,7 @@ export default class AddNewArticlePage extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/article');
+    this.props.history.push('/dashboard/article');
   };
 
   toggleModalSuccess() {
@@ -239,7 +239,7 @@ export default class AddNewArticlePage extends Component {
           this.toggleModalSuccess();
           res.json().then(data => {
             this.setState({
-              urlArticle: '/admin/article/' + data.id
+              urlArticle: '/dashboard/article/' + data.id
             });
           });
         }
@@ -389,7 +389,7 @@ export default class AddNewArticlePage extends Component {
           <CardTitle className="title">
             <MdCancel className="first" />
             Create A New Article
-            <Link to="/admin/article">
+            <Link to="/dashboard/article">
               <MdCancel />
             </Link>
           </CardTitle>

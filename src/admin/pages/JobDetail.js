@@ -92,7 +92,7 @@ export default class JobDetail extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
@@ -164,7 +164,7 @@ export default class JobDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/job');
+    this.props.history.push('/dashboard/job');
   };
 
   handleErrorMessage = () => {
@@ -426,7 +426,7 @@ export default class JobDetail extends Component {
           <CardTitle className="title">
             <MdCancel className="first" />
             Job Information
-            <Link to="/admin/job">
+            <Link to="/dashboard/job">
               <MdCancel />
             </Link>
           </CardTitle>

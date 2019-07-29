@@ -239,7 +239,7 @@ export default class TestPage extends Component {
               <tbody>
                 {this.state.rows.map(e => {
                   i++;
-                  let url = '/admin/user/' + e.id;
+                  let url = '/dashboard/user/' + e.id;
                   return (
                     <tr key={e.id}>
                       <td>

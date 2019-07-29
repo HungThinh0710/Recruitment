@@ -50,7 +50,7 @@ export default class ForgotPasswordPage extends React.Component {
   }
 
   handleBackToLogin = () => {
-    this.props.history.push('/admin');
+    this.props.history.push('/dashboard/login');
   };
 
   // handleKeyUp = event => {

@@ -101,7 +101,7 @@ class Header extends React.Component {
       localStorage.removeItem('access_token');
       localStorage.removeItem('token_type');
       localStorage.removeItem('expires_at');
-      return <Redirect to="/admin" />;
+      return <Redirect to="/dashboard/login" />;
     }
   };
 
@@ -170,7 +170,7 @@ class Header extends React.Component {
                   className="border-light"
                 >
                   <ListGroup flush>
-                    <Link to="/admin/profile">
+                    <Link to="/dashboard/profile">
                       <ListGroupItem
                         tag="button"
                         action

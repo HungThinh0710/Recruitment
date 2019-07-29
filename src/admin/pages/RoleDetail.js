@@ -48,7 +48,7 @@ export default class RoleDetail extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
@@ -84,7 +84,7 @@ export default class RoleDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/role');
+    this.props.history.push('/dashboard/role');
   };
 
   editRole(rows, name) {
@@ -101,7 +101,7 @@ export default class RoleDetail extends Component {
         <CardHeader style={styleFont}>
           Role Information
           <div className="button-exit">
-            <Link to="/admin/role">
+            <Link to="/dashboard/role">
               <MdCancel />
             </Link>
           </div>
