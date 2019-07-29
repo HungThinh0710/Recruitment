@@ -3866,6 +3866,7 @@
   right: 15px;
   top: 18px;
   content: "\e5d2";
+  color: #8b8b8b;
 }
 .icon-message:before {
   content: "\e0c9";

@@ -98,7 +98,7 @@
   padding-right: 0;
   font-size: 14px;
   text-transform: uppercase;
-  color:rgba(22, 138, 25, 1);
+  color:#45b649;
 }
 .list-group-item.active {
   border-color: green;
@@ -141,7 +141,7 @@
   padding-left: 0;
 }
 .rwd-table > thead {
-  background-color:rgba(75, 184, 79, 1);
+  background-color: #45b649;
   color: #fff;
   padding-left: 15px;
   font: 14px sans-serif;
@@ -220,9 +220,9 @@
   text-align: right !important;
 
 }
-/* .text-green {
-  color: green !important;
-} */
+.text-green {
+  color: #45b649 !important;
+} 
 .transistion > a:hover {
   color: black;
   text-decoration: none;

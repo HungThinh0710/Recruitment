@@ -1,21 +1,35 @@
-.footer-web {
-    background: #222;
-    border-top: 5px solid #333;
-    color: #ccc;
-    
-    height: 120px;
-    line-height: 50px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    }
-.footer-web .container .row .footer-social h6 {
-    padding-top: 15px;
-    color: gray;
+.footer {
+	background: #8b8b8b;
+	height: auto;
+	padding-bottom: 30px;
+	position: relative;
+	width: 100%;
+	border-bottom: 1px solid #CCCCCC;
+	border-top: 1px solid #DDDDDD;
 }
-.footer-social a:hover {
-    background: #fff;
+.footer-social {
+    margin-bottom: 1rem !important;
+    padding-top: 10px;
 }
-    
+.textbottom {
+    margin-bottom: 0 !important;
+}
+.footer-social .facebook{
+    background: #466fb0;
+}
+.footer-social .twitter {
+    background: #1da1f1;
+}
+.footer-social .instagram {
+    background: #ffffff;
+}
+.footer-social .icon-instagram {
+    color: #303030;
+}
+.footer-social .skype {
+    background: #039cd8;
+}
+.footer-social .instagram:hover {
+    background: #F56040;
+    color: #fff;
+}
