@@ -126,7 +126,7 @@ export default class ModalAddUser extends Component {
     }));
   }
   toggle() {
-    if (this.state.modal == true) {
+    if (this.state.modal) {
       this.setState(prevState => ({
         modal: !prevState.modal,
         name: '',
