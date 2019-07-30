@@ -1,3 +1,19 @@
 .activeTable {
   display: block !important;
 }
+
+.create-article-input:focus {
+  border-color: green !important;
+}
+
+.create-article-input {
+  font-size: 14px !important;
+}
+
+.input-title:active {
+  border: #2684ff 2px solid !important;
+}
+
+.input-title:focus {
+  border: #2684ff 2px solid !important;
+}
