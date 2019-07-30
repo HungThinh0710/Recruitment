@@ -155,7 +155,7 @@ export default class LoginPage extends React.Component {
               }}
               className="sweet-loading"
             >
-              <FadeLoader color={'green'} loading={this.state.loadingLogin} />
+              <FadeLoader color={'#45b649'} loading={this.state.loadingLogin} />
             </div>
           </FormGroup>
         ) : (

@@ -13,7 +13,7 @@
 .title {
   text-transform: uppercase;
   font-size: 200%;
-  background: green;
+  background: #45b649;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -54,10 +54,22 @@
 } */
 
 .tabactive {
-  background: green !important;
+  background: #45b649 !important;
   color: white !important;
 }
 
 .form-change-profile input {
   width: 50% !important;
+}
+
+.icon-cancle a {
+  color: black;
+}
+
+.icon-cancle a:hover {
+  color: black;
+}
+
+.hidden {
+  color: white !important;
 }

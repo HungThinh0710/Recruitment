@@ -223,7 +223,7 @@ export default class TestPage extends Component {
           <div className="table-test">
             <table>
               <thead>
-                <tr style={{ background: 'green', color: 'white' }}>
+                <tr style={{ background: '#45b649', color: 'white' }}>
                   <th>
                     <input type="checkbox" />
                   </th>
