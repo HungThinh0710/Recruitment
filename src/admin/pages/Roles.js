@@ -221,7 +221,7 @@ export default class Roles extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>

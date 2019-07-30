@@ -10,7 +10,7 @@ import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText,
     MdSettings,MdMap,MdBook,MdCancel
   } from 'react-icons/md';
 import './ProfilePage.css';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
 import TabInformation from '../components/TabInformation';
 import { ClipLoader} from 'react-spinners';
 
@@ -343,7 +343,6 @@ export default class ProfilePage extends Component {
   render() {
     var i = 0;
     const {name,fullName,email,phone,address,formError,password,password_confirmation,old_password,formErrorPassword} = this.state;
-    console.log(formErrorPassword);
     return (
       <div className="profile-card">
         {/*--------Modal-Success-----*/}
@@ -356,7 +355,7 @@ export default class ProfilePage extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: 'green' }}>Update succesfully</span>
+            <span style={{ color: '#45b649' }}>Update succesfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -417,12 +416,22 @@ export default class ProfilePage extends Component {
 
         {/*--------Modal-Error-----*/}
         <Card className="card-body">
-        <CardTitle className="title">
+        {/* <CardTitle className="title">
             <MdCancel className="first" />
             My Profile
             <Link to="/dashboard/role">
               <MdCancel />
             </Link>
+          </CardTitle> */}
+          <CardTitle style={{display:'flex',justifyContent:'space-between',fontSize:'35px'}}>
+          <MdCancel className="hidden" />
+            <span style={{color:'#45b649',fontWeight:'bolder',fontSize:'45px'}}>My Profile</span>
+            <div className="icon-cancle">
+            <Link to="/dashboard/role">
+              <MdCancel />
+            </Link>
+            </div>
+            
           </CardTitle>
           {this.state.loading ? (
           <div
@@ -437,12 +446,12 @@ export default class ProfilePage extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
         ) : (
-          <CardBody >
+          <CardBody>
             <Container style={{marginTop:'5%'}}>
             <Row>
               <Col xs="4">

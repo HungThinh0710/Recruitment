@@ -343,7 +343,7 @@ export default class AddNewArticlePage extends Component {
           </ModalHeader>
           <ModalBody>
             <Link to={urlArticle}>
-              <span style={{ color: 'green' }}>
+              <span style={{ color: '#45b649' }}>
                 Successfully! Click to see the detail of the new article
               </span>
             </Link>
@@ -504,7 +504,7 @@ export default class AddNewArticlePage extends Component {
                       <div className="table-test">
                         <table>
                           <thead>
-                            <tr style={{ background: 'green', color: 'white' }}>
+                            <tr style={{ background: '#45b649', color: 'white' }}>
                               <th>#</th>
                               <th>Name</th>
 
@@ -552,7 +552,7 @@ export default class AddNewArticlePage extends Component {
                     <div className="table-test">
                       <table>
                         <thead>
-                          <tr style={{ background: 'green', color: 'white' }}>
+                          <tr style={{ background: '#45b649', color: 'white' }}>
                             <th>#</th>
                             <th>Job</th>
                             <th>

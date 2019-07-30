@@ -122,7 +122,9 @@ export default class ResetPassword extends React.Component {
             <FormGroup className="input-area">
               {this.state.checked ? (
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ color: 'green' }}>{this.state.messenger}</span>
+                  <span style={{ color: '#45b649' }}>
+                    {this.state.messenger}
+                  </span>
                   <Link to="/dashboard/login">
                     <span>Click here to Login</span>
                   </Link>

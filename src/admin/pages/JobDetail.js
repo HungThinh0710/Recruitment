@@ -383,7 +383,7 @@ export default class JobDetail extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: 'green' }}>Updated succesfully</span>
+            <span style={{ color: '#45b649' }}>Updated succesfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -443,7 +443,7 @@ export default class JobDetail extends Component {
               <ClipLoader
                 sizeUnit={'px'}
                 size={200}
-                color={'green'}
+                color={'#45b649'}
                 loading={this.state.loading}
               />
             </div>
