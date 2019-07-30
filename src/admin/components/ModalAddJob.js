@@ -13,6 +13,11 @@ import {
   InputGroupText,
   InputGroup
 } from 'reactstrap';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+import './ModalAddJob.css';
+
 export default class ModalAddUser extends Component {
   constructor(props) {
     super(props);
@@ -55,7 +60,6 @@ export default class ModalAddUser extends Component {
 
   wrapperFunction = () => {
     this.handleSubmit();
-    this.toggle();
   };
   toggleModalSuccess() {
     this.setState(prevState => ({
@@ -126,10 +130,13 @@ export default class ModalAddUser extends Component {
       publishedOn,
       deadline
     } = this.state;
-    const i = publishedOn.indexOf('T');
-    const j = deadline.indexOf('T');
+
+    const publishedOnFormat = moment(publishedOn).format();
+    const deadlineFormat = moment(deadline).format();
+    const i = publishedOnFormat.indexOf('T');
+    const j = deadlineFormat.indexOf('T');
     const newDateString = (s, i) => {
-      return s.substr(0, i) + ' ' + s.substr(i + 1);
+      return s.substr(0, i) + ' ' + s.substr(i + 1, 8);
     };
     var salary = '';
     var exp = 0;
@@ -176,8 +183,8 @@ export default class ModalAddUser extends Component {
         category: category,
         experience: exp,
         amount: amount,
-        publishedOn: newDateString(publishedOn, i),
-        deadline: newDateString(deadline, j)
+        publishedOn: newDateString(publishedOnFormat, i),
+        deadline: newDateString(deadlineFormat, j)
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -200,7 +207,7 @@ export default class ModalAddUser extends Component {
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          this.toggle();
+          //this.toggle();
           this.setState(prevState => ({
             modal: !prevState.modal,
             modalError: false,
@@ -227,6 +234,17 @@ export default class ModalAddUser extends Component {
       })
       .catch(error => console.error('Error:', error));
   };
+
+  handleChangeDatePublishPicker(date) {
+    this.setState({
+      publishedOn: date
+    });
+  }
+  handleChangeDateDeadlinePicker(date) {
+    this.setState({
+      deadline: date
+    });
+  }
 
   handleChange(event) {
     var { formError } = this.state;
@@ -413,11 +431,18 @@ export default class ModalAddUser extends Component {
                 >
                   <div style={{ width: '45%' }}>
                     <Label for="Published">From</Label>
-                    <Input
-                      type="datetime-local"
-                      name="publishedOn"
-                      onChange={this.handleChange}
-                    />
+                    <div className="input-calendar">
+                      <DatePicker
+                        selected={this.state.publishedOn}
+                        onChange={this.handleChangeDatePublishPicker.bind(this)}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        timeCaption="time"
+                      />
+                    </div>
+
                     {formError.publishedOn !== '' &&
                       this.state.showErrorMessage && (
                         <span style={{ color: 'red' }}>
@@ -427,11 +452,19 @@ export default class ModalAddUser extends Component {
                   </div>
                   <div style={{ width: '45%' }}>
                     <Label for="Deadline">To</Label>
-                    <Input
-                      type="datetime-local"
-                      name="deadline"
-                      onChange={this.handleChange}
-                    />
+                    <div className="input-calendar">
+                      <DatePicker
+                        selected={this.state.deadline}
+                        onChange={this.handleChangeDateDeadlinePicker.bind(
+                          this
+                        )}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        timeCaption="time"
+                      />
+                    </div>
                     {formError.deadline !== '' &&
                       this.state.showErrorMessage && (
                         <span style={{ color: 'red' }}>
