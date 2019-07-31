@@ -39,7 +39,7 @@ export default class JobsPage extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
@@ -227,7 +227,7 @@ export default class JobsPage extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
@@ -273,7 +273,7 @@ export default class JobsPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/admin/job/' + e.id;
+                    let url = '/dashboard/job/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>

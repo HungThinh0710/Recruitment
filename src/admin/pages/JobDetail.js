@@ -31,6 +31,10 @@ import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import classnames from 'classnames';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../components/ModalAddJob.css';
 import './JobDetail.css';
 const cutStringSalary = (s, i) => {
   return s.substr(0, i);
@@ -92,7 +96,7 @@ export default class JobDetail extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
@@ -106,11 +110,6 @@ export default class JobDetail extends Component {
       }
     }).then(res => res.json());
     if (data.message !== 'Unauthenticated.') {
-      const i = data.publishedOn.indexOf(' ');
-      const j = data.deadline.indexOf(' ');
-      const newDateString = (s, i) => {
-        return s.substr(0, i) + 'T' + s.substr(i + 1);
-      };
       const n = data.salary.indexOf('$');
       const stringSalary2 = removeStringSalary(data.salary, n);
       const m = stringSalary2.indexOf('$');
@@ -137,8 +136,8 @@ export default class JobDetail extends Component {
           editstatus: data.status,
           editexperience: data.experience,
           editamount: data.amount,
-          editpublishedOn: newDateString(data.publishedOn, i),
-          editdeadline: newDateString(data.deadline, j),
+          editpublishedOn: new Date(data.publishedOn),
+          editdeadline: new Date(data.deadline),
           loading: false
         });
       }, 500);
@@ -164,7 +163,7 @@ export default class JobDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/job');
+    this.props.history.push('/dashboard/job');
   };
 
   handleErrorMessage = () => {
@@ -177,6 +176,17 @@ export default class JobDetail extends Component {
     const keyCode = event.keyCode || event.which;
     const keyValue = String.fromCharCode(keyCode);
     if (/\+|-/.test(keyValue)) event.preventDefault();
+  }
+
+  handleChangeDatePublishPicker(date) {
+    this.setState({
+      editpublishedOn: date
+    });
+  }
+  handleChangeDateDeadlinePicker(date) {
+    this.setState({
+      editdeadline: date
+    });
   }
 
   handleChange(event) {
@@ -272,10 +282,12 @@ export default class JobDetail extends Component {
       editpublishedOn,
       editdeadline
     } = this.state;
-    const i = editpublishedOn.indexOf('T');
-    const j = editdeadline.indexOf('T');
+    const publishedOnFormat = moment(editpublishedOn).format();
+    const deadlineFormat = moment(editdeadline).format();
+    const i = publishedOnFormat.indexOf('T');
+    const j = deadlineFormat.indexOf('T');
     const newDateString = (s, i) => {
-      return s.substr(0, i) + ' ' + s.substr(i + 1);
+      return s.substr(0, i) + ' ' + s.substr(i + 1, 8);
     };
 
     var salary = '';
@@ -321,8 +333,8 @@ export default class JobDetail extends Component {
         status: editstatus,
         experience: exp,
         amount: editamount,
-        publishedOn: newDateString(editpublishedOn, i),
-        deadline: newDateString(editdeadline, j)
+        publishedOn: newDateString(publishedOnFormat, i),
+        deadline: newDateString(deadlineFormat, j)
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -359,8 +371,8 @@ export default class JobDetail extends Component {
               status: editstatus,
               experience: editexperience,
               amount: editamount,
-              publishedOn: newDateString(editpublishedOn, i),
-              deadline: newDateString(editdeadline, j)
+              publishedOn: newDateString(publishedOnFormat, i),
+              deadline: newDateString(deadlineFormat, j)
             });
           });
         }
@@ -383,7 +395,7 @@ export default class JobDetail extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: 'green' }}>Updated succesfully</span>
+            <span style={{ color: '#45b649' }}>Updated succesfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -426,7 +438,7 @@ export default class JobDetail extends Component {
           <CardTitle className="title">
             <MdCancel className="first" />
             Job Information
-            <Link to="/admin/job">
+            <Link to="/dashboard/job">
               <MdCancel />
             </Link>
           </CardTitle>
@@ -443,7 +455,7 @@ export default class JobDetail extends Component {
               <ClipLoader
                 sizeUnit={'px'}
                 size={200}
-                color={'green'}
+                color={'#45b649'}
                 loading={this.state.loading}
               />
             </div>
@@ -723,7 +735,7 @@ export default class JobDetail extends Component {
                                     value={this.state.editdescription}
                                   />
                                 </FormGroup>
-                                <FormGroup>
+                                {/* <FormGroup>
                                   <Label
                                     style={{
                                       fontSize: '18px',
@@ -770,6 +782,69 @@ export default class JobDetail extends Component {
                                         )}
                                     </div>
                                   </div>
+                                </FormGroup> */}
+                                <FormGroup>
+                                  <Label
+                                    style={{
+                                      fontSize: '18px',
+                                      fontWeight: 'bold'
+                                    }}
+                                    for="time"
+                                  >
+                                    Time
+                                  </Label>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between'
+                                    }}
+                                  >
+                                    <div style={{ width: '45%' }}>
+                                      <Label for="Published">From</Label>
+                                      <div className="input-calendar">
+                                        <DatePicker
+                                          selected={this.state.editpublishedOn}
+                                          onChange={this.handleChangeDatePublishPicker.bind(
+                                            this
+                                          )}
+                                          showTimeSelect
+                                          timeFormat="HH:mm"
+                                          timeIntervals={15}
+                                          dateFormat="MMMM d, yyyy h:mm aa"
+                                          timeCaption="time"
+                                        />
+                                      </div>
+
+                                      {formError.publishedOn !== '' &&
+                                        this.state.showErrorMessage && (
+                                          <span style={{ color: 'red' }}>
+                                            {formError.publishedOn}
+                                          </span>
+                                        )}
+                                    </div>
+                                    <div style={{ width: '45%' }}>
+                                      <Label for="Deadline">To</Label>
+                                      <div className="input-calendar">
+                                        <DatePicker
+                                          selected={this.state.editdeadline}
+                                          onChange={this.handleChangeDateDeadlinePicker.bind(
+                                            this
+                                          )}
+                                          showTimeSelect
+                                          timeFormat="HH:mm"
+                                          timeIntervals={15}
+                                          dateFormat="MMMM d, yyyy h:mm aa"
+                                          timeCaption="time"
+                                        />
+                                      </div>
+                                      {formError.deadline !== '' &&
+                                        this.state.showErrorMessage && (
+                                          <span style={{ color: 'red' }}>
+                                            {formError.deadline}
+                                          </span>
+                                        )}
+                                    </div>
+                                  </div>
                                 </FormGroup>
                                 <FormGroup
                                   style={{
@@ -783,7 +858,6 @@ export default class JobDetail extends Component {
                                         fontSize: '18px',
                                         fontWeight: 'bold'
                                       }}
-                                      for="Salary"
                                       for="Address"
                                     >
                                       Address
@@ -804,7 +878,6 @@ export default class JobDetail extends Component {
                                         fontSize: '18px',
                                         fontWeight: 'bold'
                                       }}
-                                      for="Salary"
                                       for="Category"
                                     >
                                       Category

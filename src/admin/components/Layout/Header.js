@@ -52,7 +52,7 @@ class Header extends React.Component {
       image: ''
     };
   }
-  async componentWillMount() {
+  async componentDidMount() {
     //const {firstName, lastName, email} = this.state;
     var url = 'https://api.enclavei3dev.tk/api/current-profile';
     const data = await fetch(url, {
@@ -101,7 +101,7 @@ class Header extends React.Component {
       localStorage.removeItem('access_token');
       localStorage.removeItem('token_type');
       localStorage.removeItem('expires_at');
-      return <Redirect to="/admin" />;
+      return <Redirect to="/dashboard/login" />;
     }
   };
 
@@ -170,7 +170,7 @@ class Header extends React.Component {
                   className="border-light"
                 >
                   <ListGroup flush>
-                    <Link to="/admin/profile">
+                    <Link to="/dashboard/profile">
                       <ListGroupItem
                         tag="button"
                         action

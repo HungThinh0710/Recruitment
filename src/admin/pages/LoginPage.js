@@ -5,6 +5,9 @@ import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { Redirect, Link } from 'react-router-dom';
 import './LoginPage.css';
 import { ClipLoader, FadeLoader } from 'react-spinners';
+import CheckRoleUser from './CheckRoleUser';
+const Check = new CheckRoleUser();
+
 const stl = {
   color: 'red'
 };
@@ -24,7 +27,7 @@ export default class LoginPage extends React.Component {
   }
   componentWillMount() {
     if (localStorage.getItem('access_token')) {
-      this.props.history.push('/admin/role');
+      this.props.history.push('/dashboard/role');
     }
   }
 
@@ -75,6 +78,7 @@ export default class LoginPage extends React.Component {
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('token_type', data.token_type);
             localStorage.setItem('expires_at', data.expires_at);
+            Check.test();
             setTimeout(() => {
               this.setState({
                 redirect: true,
@@ -90,7 +94,7 @@ export default class LoginPage extends React.Component {
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to="/admin/role" />;
+      return <Redirect to="/dashboard/role" />;
     }
   };
 
@@ -142,7 +146,7 @@ export default class LoginPage extends React.Component {
           />
         </FormGroup>
         <FormGroup className="input-area" style={{ marginBottom: '8%' }}>
-          <Link to="/admin/forgotpassword">
+          <Link to="/dashboard/forgotpassword">
             <h6>Forgot Password</h6>
           </Link>
         </FormGroup>
@@ -155,7 +159,7 @@ export default class LoginPage extends React.Component {
               }}
               className="sweet-loading"
             >
-              <FadeLoader color={'green'} loading={this.state.loadingLogin} />
+              <FadeLoader color={'#45b649'} loading={this.state.loadingLogin} />
             </div>
           </FormGroup>
         ) : (
