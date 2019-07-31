@@ -168,7 +168,12 @@
         }
       })(window.location);
     </script>
-
+    <script type="application/javascript">
+        $('.navbar-nav .smoothscroll').click(function(){
+    $('.navbar-nav .smoothscroll').removeClass('active');
+    $(this).addClass('active');
+})
+    </script>
     <!-- End Single Page Apps for GitHub Pages -->
   </head>
 

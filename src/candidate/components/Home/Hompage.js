@@ -10,6 +10,7 @@ import { IntlProvider, FormattedDate } from 'react-intl';
 // function searchingFor(term) {
 //   return
 // }
+
 export default class Homepage extends Component {
   constructor(props) {
     super(props);
@@ -19,8 +20,12 @@ export default class Homepage extends Component {
       activePage: 1,
       totalItems: 0,
       loading: true,
+      keyword: '',
+      location: '',
+      filter: '',
     };
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   to_slug = (str) => {
@@ -58,7 +63,7 @@ export default class Homepage extends Component {
     }
 
     let body = {
-      "keyword": "",
+      "keyword": this.state.keyword,
       "position": "",
       "location": "",
       "experience": "",
@@ -73,19 +78,52 @@ export default class Homepage extends Component {
       this.setState({
         listjob: data.data,
         totalItems: data.total,
-        loading: false
+        loading: false,
       });
     }, 500);
   }
+  handleFilter(keyword, pageNumber) {
+    let headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    }
+
+    let body = {
+      "keyword": keyword,
+      "position": "",
+      "location": "",
+      "experience": "",
+      "orderby": "asc"
+    }
+    var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber;
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body)
+    }).then(res => {
+      res.json().then(data => {
+        this.setState({
+          currentPage: data.currentPage,
+          totalItems: data.total,
+          listjob: data.data,
+          activePage: pageNumber,
+        }); 
+      });
+      
+    });
+  }
   handlePageChange(pageNumber) {
+    
+    const {keyword} = this.state;
+    const {location} = this.state;
     let headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
     }
     let body = {
-      "keyword": "",
+      "keyword": keyword,
       "position": "",
-      "location": "",
+      "location": location,
       "experience": "",
       "orderby": "asc"
     }
@@ -101,13 +139,21 @@ export default class Homepage extends Component {
           currentPage: data.currentPage,
           totalItems: data.total,
           listjob: data.data,
-          activePage: pageNumber
-        });
-       
+          activePage: pageNumber,
+        }); 
+        console.log(keyword)
       });
       
     });
   }
+  
+    // this.setState({activePage: pageNumber});
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value
+    })
+  
+  }
+  
 
   render() {
     return (
@@ -170,21 +216,21 @@ export default class Homepage extends Component {
                       <p class="list-group-title">
                         Job opening
                       </p>
-                      <ul class="list-group">
-                        <li class="list-group-item active">
-                          <NavLink to={"#"}>All</NavLink>
+                      <ul name="keyword" value={this.state.keyword} onChange={this.handleChange} class="site-nemu list-group navbar-nav">
+                        <li class="list-group-item navbar-item">
+                          <NavLink to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('')}>All</NavLink>
                         </li>
-                        <li class="list-group-item">
-                          <NavLink to={"#"}>Internship</NavLink>
+                        <li  class="list-group-item navbar-item">
+                          <NavLink  to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('Internship')}>Internship</NavLink>
                         </li>
-                        <li class="list-group-item">
-                          <NavLink to={"#"}>Designer</NavLink>
+                        <li class="list-group-item navbar-item">
+                          <NavLink to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('Desginer')}>Designer</NavLink>
                         </li>
-                        <li class="list-group-item">
-                          <NavLink to={"#"}>Tester</NavLink>
+                        <li class="list-group-item navbar-item">
+                          <NavLink to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('Tester')}>Tester</NavLink>
                         </li>
-                        <li class="list-group-item">
-                          <NavLink to={"#"}>Developer</NavLink>
+                        <li class="list-group-item navbar-item">
+                          <NavLink to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('Developer')}>Developer</NavLink>
                         </li>
                       </ul>
                     </li>
@@ -199,14 +245,14 @@ export default class Homepage extends Component {
                           <div className="row mb-5">
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>Position</label>
-                              <input type="text" className="form-control form-control-lg-2" placeholder="Search" />
+                              <input name="keyword" value={this.state.keyword} onChange={this.handleChange} type="text" className="form-control form-control-lg-2" ref="search" placeholder="Search" />
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>Location</label>
-                              <select className="form-control">
-                                <option>All</option>
-                                <option>Office 1(453-455 Hoang Dieu)</option>
-                                <option>Office 2(117 Nguyen Huu Tho)</option>
+                              <select name="location" value={this.state.location} onChange={this.handleChange} className="form-control">
+                                <option value="">All</option>
+                                <option value="453-455 Hoang Dieu" type="text">453-455 Hoang Dieu</option>
+                                <option value="117 Nguyen Huu Tho">117 Nguyen Huu Tho</option>
                               </select>
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
@@ -220,7 +266,7 @@ export default class Homepage extends Component {
                             </div>
                             <div className="col-12 ml-auto col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>&nbsp; </label>
-                              <button type="submit" className="btn btn-success btn-lg-2 btn-block text-white btn-search" style={{ fontSize: 14 }}><span className="icon-search icon mr-2" />Search</button>
+                              <button onClick={this.handlePageChange} className="btn btn-success btn-lg-2 btn-block text-white" type="button" style={{ fontSize: 14 }}><span className="icon-search icon mr-2" />Search</button>
                             </div>
                           </div>
                         </form>
