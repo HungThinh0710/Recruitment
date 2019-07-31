@@ -8,7 +8,8 @@ import Pagination from '../components/Pagination.js';
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold',
 };
 const styleCard = {
   width: '90%',
