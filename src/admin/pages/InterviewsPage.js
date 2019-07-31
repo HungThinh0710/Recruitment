@@ -8,7 +8,8 @@ import Pagination from '../components/Pagination.js';
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold',
 };
 const styleCard = {
   width: '90%',
@@ -121,7 +122,7 @@ export default class UsersPage extends Component {
                     <th>Status</th>
                     <th>Start</th>
                     <th>End</th>
-                    <th style={{ width: '180px' }}>
+                    <th style={{marginHorizontal: '10px', }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
