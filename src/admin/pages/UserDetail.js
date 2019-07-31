@@ -104,6 +104,8 @@ export default class UserDetail extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
     }).then(res => res.json()) 
+    console.log(data);
+      
     await this.setState({
       name : data.name,
       fullName: data.fullname,

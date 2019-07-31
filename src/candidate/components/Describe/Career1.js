@@ -5,10 +5,10 @@ import { Button, Modal, ModalFooter } from 'reactstrap';
 import './Career1.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
-import $ from 'jquery';
 import { IntlProvider, FormattedDate } from 'react-intl';
-import ReactHtmlParser from 'react-html-parser';
 import renderHTML from 'react-render-html';
+import { FacebookShareButton, FacebookIcon } from 'react-share';
+
 export default class Careers extends Component {
   constructor(props) {
     super(props);
@@ -64,6 +64,7 @@ export default class Careers extends Component {
     console.log(this.state.jobID)
   }
   render() {
+    const { id } = this.props.match.params;
     const { jobID } = this.state;
     const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggleModal.bind(this)}>&times;</button>;
     return (
@@ -193,7 +194,7 @@ export default class Careers extends Component {
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
-                  <div className="col-lg-4">
+                <div className="col-lg-4">
                   <div className="show-jobsummary">
                     <div className="bg-light p-3 border rounded mb-4">
                       <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
@@ -224,12 +225,18 @@ export default class Careers extends Component {
                     <div className="bg-light p-3 border rounded">
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="text-center">
+                        {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
+
+                        <FacebookShareButton
+                          url={"https://enclavei3dev.tk/article/" + id}>
+                          <Button><FacebookIcon size={32} /></Button>
+                        </FacebookShareButton>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-facebook" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink>
-                                            
-                       </div>
+
+                      </div>
                     </div>
                   </div>
 
