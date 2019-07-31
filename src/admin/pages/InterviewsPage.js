@@ -121,7 +121,7 @@ export default class UsersPage extends Component {
                     <th>Status</th>
                     <th>Start</th>
                     <th>End</th>
-                    <th style={{ width: '180px' }}>
+                    <th style={{marginHorizontal: '10px', }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
