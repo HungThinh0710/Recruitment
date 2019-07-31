@@ -12,7 +12,7 @@ const styleFont = {
 };
 const styleCard = {
   width: '90%',
-  marginTop: '1%',
+  marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%',
   loading: true
