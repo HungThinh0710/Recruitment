@@ -52,7 +52,7 @@ class Header extends React.Component {
       image: ''
     };
   }
-  async componentWillMount() {
+  async componentDidMount() {
     //const {firstName, lastName, email} = this.state;
     var url = 'https://api.enclavei3dev.tk/api/current-profile';
     const data = await fetch(url, {
