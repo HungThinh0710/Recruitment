@@ -43,12 +43,12 @@ export default class ArticlesPage extends Component {
 
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
 
   async componentDidMount() {
-    var url = 'https://api.enclavei3.tk/api/list-article?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/list-article?page=1';
     const data = await fetch(url, {
       method: 'POST',
       headers: {
@@ -57,7 +57,6 @@ export default class ArticlesPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
     setTimeout(() => {
       this.setState({
         rows: data.data,
@@ -69,7 +68,7 @@ export default class ArticlesPage extends Component {
 
   handlePageChange(pageNumber) {
     // this.setState({activePage: pageNumber});
-    var url = 'https://api.enclavei3.tk/api/list-article?page=' + pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/list-article?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -92,7 +91,7 @@ export default class ArticlesPage extends Component {
   edit(index) {
     $('.item').removeClass('item-active');
     $('#' + index).addClass('item-active');
-    var url = 'https://api.enclavei3.tk/api/user?page=' + index;
+    var url = 'https://api.enclavei3dev.tk/api/user?page=' + index;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -121,7 +120,7 @@ export default class ArticlesPage extends Component {
     const { activePage } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3.tk/api/article';
+    var url = 'https://api.enclavei3dev.tk/api/article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -133,7 +132,7 @@ export default class ArticlesPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3.tk/api/list-article?page=' + activePage, {
+      fetch('https://api.enclavei3dev.tk/api/list-article?page=' + activePage, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +182,7 @@ export default class ArticlesPage extends Component {
 
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3.tk/api/article';
+    var url = 'https://api.enclavei3dev.tk/api/article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -195,7 +194,7 @@ export default class ArticlesPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3.tk/api/list-article?page=' + activePage, {
+      fetch('https://api.enclavei3dev.tk/api/list-article?page=' + activePage, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -233,19 +232,15 @@ export default class ArticlesPage extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
         ) : (
           <CardBody>
-            <ModalAddArticle
-              color="success"
-              page={this.state.activePage}
-              buttonLabel="Create a new article"
-              nameButtonAccept="Add"
-              function={this.addJob.bind(this)}
-            />
+            <Link to="/dashboard/create-article">
+              <Button color="success">Create A New Article</Button>
+            </Link>
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveArticles
                 arrayName={this.state.listDeleteName}
@@ -280,7 +275,7 @@ export default class ArticlesPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/admin/article/' + e.id;
+                    let url = '/dashboard/article/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>

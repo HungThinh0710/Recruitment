@@ -44,7 +44,7 @@ export default class TabInformation extends Component {
   }
   handleSubmit = () => {
     const { fullname, email, phone, address } = this.state;
-    var url = 'https://api.enclavei3.tk/api/profile';
+    var url = 'https://api.enclavei3dev.tk/api/profile';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -148,11 +148,11 @@ export default class TabInformation extends Component {
                 <br />
               </Col>
               <Col className="contact-information">
-                <h6 style={{ color: 'green' }}>{this.props.phone}</h6>
+                <h6 style={{ color: '#45b649' }}>{this.props.phone}</h6>
                 <br />
                 <h6>{this.props.address}</h6>
                 <br />
-                <h6 style={{ color: 'green' }}>{this.props.email}</h6>
+                <h6 style={{ color: '#45b649' }}>{this.props.email}</h6>
                 <br />
               </Col>
             </Row>

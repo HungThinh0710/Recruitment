@@ -68,7 +68,9 @@ export default class UserDetail extends Component {
         },
         modalError: false,
         modalSuccess: false,
-        errorData: ''
+        errorData: '',
+        showErrorMessage: false,
+        errorRoleMessage: "",
       };
       this.toggle = this.toggle.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -88,13 +90,13 @@ export default class UserDetail extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount(){
     
     const {id} = this.props.match.params;
-    var url = 'https://api.enclavei3.tk/api/user/'+id;
+    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     const data = await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
@@ -102,6 +104,8 @@ export default class UserDetail extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
     }).then(res => res.json()) 
+    console.log(data);
+      
     await this.setState({
       name : data.name,
       fullName: data.fullname,
@@ -118,7 +122,7 @@ export default class UserDetail extends Component {
     })
     const columns = this.state.listRoles.columns;
     let {editRoles} = this.state;
-    var url2 = 'https://api.enclavei3.tk/api/list-role?page=1';
+    var url2 = 'https://api.enclavei3dev.tk/api/list-role?page=1';
     const data2 = await fetch(url2, {
       method:'POST',
       headers:{
@@ -166,13 +170,28 @@ export default class UserDetail extends Component {
   
   handleCheck(id,editRoles){
     editRoles.push(id);
+    var { errorRoleMessage } = this.state;
+    var array1 = [...new Set(editRoles)];
+    var array2 = [];
+    array1.map(element => {
+      var count = editRoles.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    array2.length === 0
+      ? (errorRoleMessage = "User's roles cannot be empty")
+      : (errorRoleMessage = '');
     this.setState({
-      editRoles: editRoles
+      editRoles: editRoles,
+      errorRoleMessage: errorRoleMessage
     });   
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/user');
+    this.props.history.push('/dashboard/user');
   };
 
   toggleModalSuccess() {
@@ -253,7 +272,7 @@ export default class UserDetail extends Component {
       } 
       return array2;
       });
-    var url = 'https://api.enclavei3.tk/api/user/'+id;
+    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
     fetch(url, {
       method: 'PUT', 
       body: JSON.stringify({
@@ -285,7 +304,7 @@ export default class UserDetail extends Component {
         this.toggleModalSuccess();
         res.json().then(data =>{
           array2.map(e =>{
-            var url2 = 'https://api.enclavei3.tk/api/role/'+e;
+            var url2 = 'https://api.enclavei3dev.tk/api/role/'+e;
             fetch(url2, {
               headers:{
                 'Content-Type': 'application/json',
@@ -313,21 +332,32 @@ export default class UserDetail extends Component {
   handleChangePassword(){
     
   }
+  handleErrorMessage = () => {
+    var { editRoles, errorRoleMessage } = this.state;
+    var array1 = [...new Set(editRoles)];
+    var array2 = [];
+    array1.map(element => {
+      var count = editRoles.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    array2.length === 0
+      ? (errorRoleMessage = "User's roles cannot be empty")
+      : (errorRoleMessage = '');
+    this.setState({
+      showErrorMessage: true,
+      errorRoleMessage: errorRoleMessage
+    });
+  };
 
+  
   render() {
     var i = 0;
     const {name,fullName,email,phone,address,
-      formError,editRoles} = this.state;
-      var array1 = [... new Set(editRoles)];
-      var array2 =[];
-      array1.map(element=>{
-        var count = editRoles.filter(e => e===element);
-        var length = count.length;
-        if (length%2!==0) {
-          array2.push(element);
-        } 
-        return array2;
-        });
+      formError} = this.state;
     return (
         <div className="profile-card">
           {/*--------Modal-Success-----*/}
@@ -340,7 +370,7 @@ export default class UserDetail extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: 'green' }}>Updated succesfully</span>
+            <span style={{ color: '#45b649' }}>Updated succesfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -383,7 +413,7 @@ export default class UserDetail extends Component {
           <CardTitle className="title">
               <MdCancel className='first'/>
             User Profile
-            <Link to="/admin/user">
+            <Link to="/dashboard/user">
               <MdCancel />
             </Link>
           </CardTitle>
@@ -400,7 +430,7 @@ export default class UserDetail extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
@@ -582,28 +612,22 @@ export default class UserDetail extends Component {
                     <FormGroup>
                       <Label for="Fullname">Fullname</Label>
                       <Input type="text" name="editFullName"  value={this.state.editFullName} onChange={this.handleChange}/>
-                      {this.state.formError.fullname !== '' && (                       
-                        <span style={{ color: 'red' }}>
-                          {this.state.formError.fullname}
-                        </span>
+                      {formError.fullname !== '' && this.state.showErrorMessage && (
+                        <span style={{ color: 'red' }}>{formError.fullname}</span>
                       )}
                     </FormGroup>
                     <FormGroup>
                       <Label for="Email">Email</Label>
                       <Input type="email" name="editEmail" value={this.state.editEmail} onChange={this.handleChange}/>
-                      {this.state.formError.email !== '' && (                       
-                        <span style={{ color: 'red' }}>
-                          {this.state.formError.email}
-                        </span>
+                      {formError.email !== '' && this.state.showErrorMessage && (
+                        <span style={{ color: 'red' }}>{formError.email}</span>
                       )}
                     </FormGroup>
                     <FormGroup>
                       <Label for="Phone">Phone</Label>
                       <Input type="text" name="editPhone" value={this.state.editPhone} onChange={this.handleChange}/>
-                      {this.state.formError.phone !== '' && (
-                        <span style={{ color: 'red' }}>
-                          {this.state.formError.phone}
-                        </span>
+                      {formError.phone !== '' && this.state.showErrorMessage && (
+                        <span style={{ color: 'red' }}>{formError.phone}</span>
                       )}
                     </FormGroup>
                     <FormGroup>
@@ -620,13 +644,13 @@ export default class UserDetail extends Component {
                       formError.fullname == '' &&
                       formError.email == '' &&
                       formError.phone == '' &&
-                      array2.length !==0
+                      this.state.errorRoleMessage == ''
                       ? (
                         <Button color="success" onClick={this.handleSubmit}>
                           Submit
                         </Button>
                       ) : (
-                        <Button color="success"  disabled>
+                        <Button color="success" onClick={this.handleErrorMessage}>
                           Submit
                         </Button>
                       )}
@@ -646,7 +670,8 @@ export default class UserDetail extends Component {
                           hover
                           data={this.state.listRoles}
                           />
-                          {array2.length === 0 && (
+                          {this.state.errorRoleMessage !== '' &&
+                          this.state.showErrorMessage && (
                             <span style={{ color: 'red' }}>
                               User's roles cannot be empty
                             </span>

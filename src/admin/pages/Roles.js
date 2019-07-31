@@ -38,12 +38,12 @@ export default class Roles extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
     const { activePage } = this.state;
-    var url = 'https://api.enclavei3.tk/api/list-role?page=' + activePage;
+    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
     // var i = 0;
     // var listRoles = [];
     const data = await fetch(url, {
@@ -70,7 +70,7 @@ export default class Roles extends Component {
     array.push(id);
     var index = listDeleteId.indexOf(id);
     listDeleteId.splice(index, 1);
-    var url = 'https://api.enclavei3.tk/api/role';
+    var url = 'https://api.enclavei3dev.tk/api/role';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -82,7 +82,7 @@ export default class Roles extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3.tk/api/list-role?page=' + activePage, {
+      fetch('https://api.enclavei3dev.tk/api/list-role?page=' + activePage, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export default class Roles extends Component {
   }
 
   handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3.tk/api/list-role?page=' + pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -170,7 +170,7 @@ export default class Roles extends Component {
 
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3.tk/api/role';
+    var url = 'https://api.enclavei3dev.tk/api/role';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -182,7 +182,7 @@ export default class Roles extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3.tk/api/list-role?page=' + activePage, {
+      fetch('https://api.enclavei3dev.tk/api/list-role?page=' + activePage, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -221,7 +221,7 @@ export default class Roles extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
@@ -268,7 +268,7 @@ export default class Roles extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/admin/role/' + e.id;
+                    let url = '/dashboard/role/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>

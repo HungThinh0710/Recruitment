@@ -48,14 +48,14 @@ export default class RoleDetail extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
     var i = 0;
     const { id } = this.props.match.params;
     var listRoles = [];
-    var url = 'https://api.enclavei3.tk/api/role/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/role/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ export default class RoleDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/role');
+    this.props.history.push('/dashboard/role');
   };
 
   editRole(rows, name) {
@@ -101,7 +101,7 @@ export default class RoleDetail extends Component {
         <CardHeader style={styleFont}>
           Role Information
           <div className="button-exit">
-            <Link to="/admin/role">
+            <Link to="/dashboard/role">
               <MdCancel />
             </Link>
           </div>
@@ -119,7 +119,7 @@ export default class RoleDetail extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>

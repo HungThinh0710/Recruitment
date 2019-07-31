@@ -39,7 +39,7 @@ export default class CollapsePermission extends Component {
               <div className="table-test">
                 <table>
                   <thead>
-                    <tr style={{ background: 'green', color: 'white' }}>
+                    <tr style={{ background: '#45b649', color: 'white' }}>
                       <th>#</th>
                       <th>Role</th>
                       <th>Description</th>

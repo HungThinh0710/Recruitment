@@ -24,6 +24,7 @@ import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
 import classnames from 'classnames';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
+import renderHTML from 'react-render-html';
 import './JobDetail.css';
 export default class ArticleDetail extends Component {
   constructor(props) {
@@ -66,13 +67,13 @@ export default class ArticleDetail extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
     const { id } = this.props.match.params;
     var status = '';
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +126,7 @@ export default class ArticleDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/article');
+    this.props.history.push('/dashboard/article');
   };
 
   handleChange(event) {
@@ -153,7 +154,7 @@ export default class ArticleDetail extends Component {
     const newDateString = (s, i) => {
       return s.substr(0, i) + ' ' + s.substr(i + 1);
     };
-    var url = 'https://api.enclavei3.tk/api/job/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/job/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -204,15 +205,15 @@ export default class ArticleDetail extends Component {
 
   render() {
     const { jobId, userId } = this.state;
-    var url1 = '/admin/job/' + jobId;
-    var url2 = '/admin/user/' + userId;
+    var url1 = '/dashboard/job/' + jobId;
+    var url2 = '/dashboard/user/' + userId;
     return (
       <div className="profile-card">
         <Card className="card-body">
           <CardTitle className="title">
             <MdCancel className="first" />
             Article Information
-            <Link to="/admin/article">
+            <Link to="/dashboard/article">
               <MdCancel />
             </Link>
           </CardTitle>
@@ -229,7 +230,7 @@ export default class ArticleDetail extends Component {
               <ClipLoader
                 sizeUnit={'px'}
                 size={200}
-                color={'green'}
+                color={'#45b649'}
                 loading={this.state.loading}
               />
             </div>
@@ -244,41 +245,91 @@ export default class ArticleDetail extends Component {
                           <td className="job-title">Title</td>
                           <td>{this.state.title}</td>
                         </tr>
+
                         <tr key={2}>
-                          <td className="job-title">Content</td>
-                          <td>{this.state.content}</td>
-                        </tr>
-                        <tr key={3}>
                           <td className="job-title">Status</td>
                           <td>{this.state.status}</td>
                         </tr>
-                        <tr key={4}>
+                        <tr key={3}>
                           <td className="job-title">Job</td>
                           <td>
                             <Link to={url1}>{this.state.jobName}</Link>
                           </td>
                         </tr>
-                        <tr key={5}>
+                        <tr key={4}>
                           <td className="job-title">Category</td>
                           <td>{this.state.catName}</td>
                         </tr>
-                        <tr key={6}>
+                        <tr key={5}>
                           <td className="job-title">Created By</td>
                           <td>
                             <Link to={url2}>{this.state.userName}</Link>
                           </td>
                         </tr>
-                        <tr key={7}>
+                        <tr key={6}>
                           <td className="job-title">Created At</td>
                           <td>{this.state.created_at}</td>
                         </tr>
-                        <tr key={8}>
+                        <tr key={7}>
                           <td className="job-title">Updated At</td>
                           <td>{this.state.updated_at}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
+                </Row>
+                <Row>
+                  <div className="job-tabs">
+                    <Nav tabs>
+                      <NavItem style={{ width: '150px' }}>
+                        <NavLink
+                          className={classnames({
+                            jobtabactive: this.state.activeTab === '1'
+                          })}
+                          onClick={() => {
+                            this.toggle('1');
+                          }}
+                        >
+                          <MdBook style={{ marginRight: '5px' }} />
+                          Content
+                        </NavLink>
+                      </NavItem>
+                      <NavItem style={{ width: '150px' }}>
+                        <NavLink
+                          className={classnames({
+                            jobtabactive: this.state.activeTab === '2'
+                          })}
+                          onClick={() => {
+                            this.toggle('2');
+                          }}
+                        >
+                          <MdSettings style={{ marginRight: '5px' }} />
+                          Update
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                  </div>
+                </Row>
+
+                <br />
+                <br />
+                <Row>
+                  <TabContent
+                    style={{ width: '100%' }}
+                    activeTab={this.state.activeTab}
+                  >
+                    <TabPane tabId="1">
+                      <Row>
+                        <Col>{renderHTML(this.state.content)}</Col>
+                        {/* <Col>{this.state.content}</Col> */}
+                      </Row>
+                    </TabPane>
+                    <TabPane tabId="2">
+                      <Row>
+                        <Col />
+                      </Row>
+                    </TabPane>
+                  </TabContent>
                 </Row>
               </Container>
               <div

@@ -50,7 +50,7 @@ export default class ForgotPasswordPage extends React.Component {
   }
 
   handleBackToLogin = () => {
-    this.props.history.push('/admin');
+    this.props.history.push('/dashboard/login');
   };
 
   // handleKeyUp = event => {
@@ -63,7 +63,7 @@ export default class ForgotPasswordPage extends React.Component {
       status: true,
       showLoading: true
     });
-    var url = 'https://api.enclavei3.tk/api/password/forgot';
+    var url = 'https://api.enclavei3dev.tk/api/password/forgot';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -129,7 +129,7 @@ export default class ForgotPasswordPage extends React.Component {
         {this.state.status && (
           <FormGroup className="input-area">
             {this.state.checked ? (
-              <span style={{ color: 'green' }}>{this.state.messenger}</span>
+              <span style={{ color: '#45b649' }}>{this.state.messenger}</span>
             ) : (
               <span style={{ color: 'red' }}>{this.state.messenger}</span>
             )}
@@ -155,7 +155,7 @@ export default class ForgotPasswordPage extends React.Component {
               }}
               className="sweet-loading"
             >
-              <FadeLoader color={'green'} loading={this.state.loadingLogin} />
+              <FadeLoader color={'#45b649'} loading={this.state.loadingLogin} />
             </div>
           </FormGroup>
         ) : (
