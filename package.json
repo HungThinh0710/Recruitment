@@ -28,6 +28,7 @@
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.13.2",
     "react-ga": "^2.5.7",
+    "react-helmet": "^5.2.1",
     "react-html-parser": "^2.0.2",
     "react-icons": "^3.5.0",
     "react-infinite-calendar": "^2.3.1",
