@@ -5,10 +5,12 @@ import { Button, Modal, ModalFooter } from 'reactstrap';
 import './Career1.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
-import $ from 'jquery';
 import { IntlProvider, FormattedDate } from 'react-intl';
-import ReactHtmlParser from 'react-html-parser';
 import renderHTML from 'react-render-html';
+import {
+  FacebookShareButton,
+  TwitterShareButton
+} from 'react-share';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
@@ -224,6 +226,7 @@ export default class Careers extends Component {
                     <div className="bg-light p-3 border rounded">
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="text-center">
+                      {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-facebook" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>

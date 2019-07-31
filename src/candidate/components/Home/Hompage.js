@@ -89,8 +89,8 @@ export default class Homepage extends Component {
     }
 
     let body = {
-      "keyword": keyword,
-      "position": "",
+      "keyword": "",
+      "position": keyword,
       "location": "",
       "experience": "",
       "orderby": "asc"
