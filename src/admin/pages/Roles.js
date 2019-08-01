@@ -43,7 +43,8 @@ export default class Roles extends Component {
   }
   async componentDidMount() {
     const { activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
+    // var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
+    var url = 'https://api.enclavei3dev.tk/api/list-role';
     // var i = 0;
     // var listRoles = [];
     const data = await fetch(url, {

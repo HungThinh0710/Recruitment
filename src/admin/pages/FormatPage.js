@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
-
-import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveArticle from '../components/ModalRemoveArticle';
-import ModalRemoveArticles from '../components/ModalRemoveArticles';
-import ModalEditItem from '../components/ModalEditItem';
-import { Link } from 'react-router-dom';
-import Pagination from '../components/Pagination.js';
-import 'react-quill/dist/quill.snow.css';
-import 'react-quill/dist/quill.bubble.css';
-import './ArticlesPage.css';
-import ModalAddArticle from '../components/ModalAddArticle';
 import { ClipLoader } from 'react-spinners';
-import $ from 'jquery';
+import { Link } from 'react-router-dom';
+import ModalEditItem from '../components/ModalEditItem';
+import ModalRemoveItem from '../components/ModalRemoveItem';
+import { MdCancel, MdPageview } from 'react-icons/md';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  display: 'flex',
+  justifyContent: 'space-between'
 };
+
 const styleCard = {
   width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%'
 };
-export default class ArticlesPage extends Component {
+export default class FormatPage extends Component {
   constructor(props) {
     super(props);
 
@@ -36,21 +31,19 @@ export default class ArticlesPage extends Component {
       listId: [],
       loading: true
     };
-    this.handleCheckChange = this.handleCheckChange.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
+    // this.handleCheckChange = this.handleCheckChange.bind(this);
+    // this.handlePageChange = this.handlePageChange.bind(this);
     // this.removeManyItems = this.removeManyItems.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
-
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
       this.props.history.push('/dashboard/login');
     }
   }
-
   async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/list-article?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
     const data = await fetch(url, {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -59,97 +52,11 @@ export default class ArticlesPage extends Component {
     }).then(res => res.json());
     setTimeout(() => {
       this.setState({
-        rows: data.data,
-        totalItems: data.total,
+        rows: data,
         loading: false
       });
     }, 500);
   }
-
-  handlePageChange(pageNumber) {
-    // this.setState({activePage: pageNumber});
-    var url = 'https://api.enclavei3dev.tk/api/list-article?page=' + pageNumber;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          currentPage: data.currentPage,
-          totalItems: data.total,
-          rows: data.data,
-          activePage: pageNumber
-        });
-      });
-    });
-  }
-
-  edit(index) {
-    $('.item').removeClass('item-active');
-    $('#' + index).addClass('item-active');
-    var url = 'https://api.enclavei3dev.tk/api/user?page=' + index;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          rows: data.data,
-          totalItems: data.total
-        });
-      });
-    });
-  }
-
-  addJob(data) {
-    this.setState({
-      rows: data.data,
-      totalItems: data.total
-    });
-  }
-
-  removeItem(id) {
-    const { activePage } = this.state;
-    var array = [];
-    array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/article';
-    fetch(url, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        articleId: array
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-article?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total
-          });
-        });
-      });
-    });
-  }
-
   handleCheckChange(e) {
     const { listDeleteId, listDeleteName } = this.state;
     listDeleteId.push(e.id);
@@ -179,14 +86,14 @@ export default class ArticlesPage extends Component {
       listDeleteName: array4
     });
   }
-
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/article';
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        articleId: listDeleteId
+        formatId: listDeleteId,
+        status: 'all'
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -194,20 +101,56 @@ export default class ArticlesPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-article?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      fetch(
+        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
         }
-      }).then(res => {
+      ).then(res => {
         res.json().then(data => {
           this.setState({
-            rows: data.data,
-            totalItems: data.total,
-            listDeleteId: [],
-            listDeleteName: []
+            rows: data,
+            listDeleteId: []
+          });
+        });
+      });
+    });
+  }
+
+  removeItem(id) {
+    const { activePage } = this.state;
+    var array = [];
+    array.push(id);
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        formatId: array,
+        status: 'none'
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch(
+        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
+        }
+      ).then(res => {
+        res.json().then(data => {
+          this.setState({
+            rows: data
           });
         });
       });
@@ -218,7 +161,14 @@ export default class ArticlesPage extends Component {
     var i = 0;
     return (
       <Card style={styleCard}>
-        <CardHeader style={styleFont}>Articles Management</CardHeader>
+        <CardHeader style={styleFont}>
+          Format Management
+          <div className="icon-cancle">
+            <Link to="/dashboard/article">
+              <MdCancel />
+            </Link>
+          </div>
+        </CardHeader>
         {this.state.loading ? (
           <div
             style={{
@@ -239,17 +189,14 @@ export default class ArticlesPage extends Component {
         ) : (
           <CardBody>
             <div className="area-btn-header">
-              <Link to="/dashboard/create-article">
-                <Button color="success">Create A New Article</Button>
-              </Link>
-              <Link to="/dashboard/format">
-                <Button color="primary">Format</Button>
+              <Link to="/dashboard/create-format">
+                <Button color="success">Create A New Format</Button>
               </Link>
             </div>
             {this.state.listDeleteId.length != 0 && (
-              <ModalRemoveArticles
-                arrayName={this.state.listDeleteName}
-                buttonLabel="Delete"
+              <ModalRemoveItem
+                itemName="this formats"
+                buttonLabel="DELETE"
                 function={() => this.removeManyItems()}
               />
             )}
@@ -263,13 +210,11 @@ export default class ArticlesPage extends Component {
                       color: 'white'
                     }}
                   >
-                    <th>
+                    <th style={{ width: '5%' }}>
                       <input type="checkbox" />
                     </th>
-                    <th>#</th>
+                    <th style={{ width: '5%' }}>#</th>
                     <th>Title</th>
-                    <th>Job</th>
-                    <th>Author</th>
                     {/* <th>Created At</th>
                   <th>Updated At</th> */}
                     <th style={{ width: '180px' }}>
@@ -280,7 +225,7 @@ export default class ArticlesPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/dashboard/article/' + e.id;
+                    let url = '/dashboard/format/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
@@ -291,9 +236,6 @@ export default class ArticlesPage extends Component {
                         </td>
                         <td>{i}</td>
                         <td>{e.title}</td>
-                        {e.job ? <td>{e.job.name}</td> : <td />}
-
-                        <td>{e.user.fullname}</td>
                         {/* <td>{e.created_at}</td>
                       <td>{e.updated_at}</td> */}
                         <td>
@@ -311,10 +253,9 @@ export default class ArticlesPage extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveArticle
-                              item={e}
-                              buttonLabel="Delete"
+                            <ModalRemoveItem
                               function={() => this.removeItem(e.id)}
+                              itemName="this format"
                             />
                           </div>
                         </td>
@@ -324,13 +265,6 @@ export default class ArticlesPage extends Component {
                 </tbody>
               </table>
             </div>
-            <Pagination
-              activePage={this.state.activePage}
-              itemsCountPerPage={10}
-              totalItemsCount={this.state.totalItems}
-              pageRangeDisplayed={5}
-              onChange={this.handlePageChange.bind(this)}
-            />
           </CardBody>
         )}
       </Card>

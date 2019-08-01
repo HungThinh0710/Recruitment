@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
 import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardImg,
-  Button,
-  CardText,
-  Row,
-  Col,
-  Container,
   TabContent,
   TabPane,
   Nav,
   NavItem,
   NavLink,
+  Button,
+  Card,
+  CardBody,
+  CardTitle,
   Form,
+  Container,
   FormGroup,
   Label,
-  Input
+  Input,
+  Row,
+  Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter
 } from 'reactstrap';
+import Select from 'react-select';
+import ReactQuill from 'react-quill';
 import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
 import classnames from 'classnames';
 import { ClipLoader } from 'react-spinners';
@@ -44,26 +47,33 @@ export default class ArticleDetail extends Component {
       userName: '',
       created_at: '',
       updated_at: '',
-      editname: '',
-      editdescription: '',
-      editaddress: '',
-      editposition: '',
-      editsalary: '',
-      editstatus: '',
-      editexperience: '',
-      editamount: '',
-      editpublishedOn: '',
-      editdeadline: '',
-      roles: [],
-      editRoles: [],
-      editRolesName: [],
-      rows: [],
-      listId: [],
+      editTitle: '',
+      editContent: '',
+      editStatus: '',
+      errorTitle: '',
+      errorData: '',
+      modalError: false,
+      modalSuccess: false,
+      modalPreview: false,
+      showErrorMessage: false,
+      selectedJobOption: null,
+      selectedCategoryOption: null,
+      selectedFormatOption: null,
+      optionsJob: [],
+      optionsCategory: [],
+      optionsFormat: [],
+      isDisabled: false,
+      showJobError: false,
       loading: true
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeStatus = this.handleChangeStatus.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     // this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.toggleModalError = this.toggleModalError.bind(this);
+    this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
+    this.toggleModalPreview = this.toggleModalPreview.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -72,8 +82,14 @@ export default class ArticleDetail extends Component {
   }
   async componentDidMount() {
     const { id } = this.props.match.params;
+    var { optionsJob, optionsCategory, optionsFormat, isDisabled } = this.state;
     var status = '';
+    var jobName = '';
     var url = 'https://api.enclavei3dev.tk/api/article/' + id;
+
+    var url2 = 'https://api.enclavei3dev.tk/api/list-job';
+    var url3 = 'https://api.enclavei3dev.tk/api/category?page=1';
+    var url4 = 'https://api.enclavei3dev.tk/api/format-article';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -81,42 +97,294 @@ export default class ArticleDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    if (data.message !== 'Unauthenticated.') {
-      data.isPublic === 1 ? (status = 'Public') : (status = 'Not public');
-      // const i = data.publishedOn.indexOf(' ');
-      // const j = data.deadline.indexOf(' ');
-      // const newDateString = (s, i) => {
-      //   return s.substr(0, i) + 'T' + s.substr(i + 1);
-      // };
-      setTimeout(() => {
-        this.setState({
-          title: data.title,
-          content: data.content,
-          status: status,
-          jobId: data.jobId,
-          jobName: data.job.name,
-          catId: data.catId,
-          catName: data.category.name,
-          userId: data.userId,
-          userName: data.user.fullname,
-          created_at: data.created_at,
-          updated_at: data.updated_at,
-          loading: false
-          // editname: data.name,
-          // editdescription: data.description,
-          // editaddress: data.address,
-          // editposition: data.position,
-          // editsalary: data.salary,
-          // editstatus: data.status,
-          // editexperience: data.experience,
-          // editamount: data.amount,
-          // editpublishedOn: newDateString(data.publishedOn, i),
-          // editdeadline: newDateString(data.deadline, j)
-        });
-      }, 500);
+    const data1 = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data2 = await fetch(url2, {
+      method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data3 = await fetch(url3, {
+      method: 'POST',
+      body: JSON.stringify({
+        field: 'name',
+        orderBy: 'asc'
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data4 = await fetch(url4, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    data2.map(e => {
+      var job = { id: e.id, value: e.name, label: e.name };
+      optionsJob.push(job);
+      return optionsJob;
+    });
+    data3.data.map(e => {
+      var category = { id: e.id, value: e.name, label: e.name };
+      optionsCategory.push(category);
+      return optionsCategory;
+    });
+    data4.map(e => {
+      var format = {
+        id: e.id,
+        value: e.title,
+        label: e.title,
+        content: e.content
+      };
+      optionsFormat.push(format);
+      return optionsFormat;
+    });
+    if (data1.message !== 'Unauthenticated.') {
+      data1.isPublic === 1 ? (status = 'Publised') : (status = 'Not publised');
+      data1.job ? (jobName = data.job.name) : (jobName = '');
+      data1.category.name == 'Others'
+        ? (isDisabled = true)
+        : (isDisabled = false);
+      if (data.job) {
+        setTimeout(() => {
+          this.setState({
+            title: data1.title,
+            content: data1.content,
+            status: status,
+            jobId: data1.jobId,
+            jobName: jobName,
+            catId: data1.catId,
+            catName: data1.category.name,
+            userId: data1.userId,
+            userName: data1.user.fullname,
+            created_at: data1.created_at,
+            updated_at: data1.updated_at,
+            loading: false,
+            editTitle: data1.title,
+            editContent: data1.content,
+            editStatus: data1.isPublic,
+            optionsJob: optionsJob,
+            optionsCategory: optionsCategory,
+            optionsFormat: optionsFormat,
+            isDisabled: isDisabled,
+            selectedJobOption: {
+              id: data1.job.id,
+              value: data1.job.name,
+              label: data1.job.name
+            },
+            selectedCategoryOption: {
+              id: data1.category.id,
+              value: data1.category.name,
+              label: data1.category.name
+            }
+          });
+        }, 500);
+      } else {
+        setTimeout(() => {
+          this.setState({
+            title: data1.title,
+            content: data1.content,
+            status: status,
+            jobId: null,
+            jobName: null,
+            catId: data1.catId,
+            catName: data1.category.name,
+            userId: data1.userId,
+            userName: data1.user.fullname,
+            created_at: data1.created_at,
+            updated_at: data1.updated_at,
+            loading: false,
+            editTitle: data1.title,
+            editContent: data1.content,
+            editStatus: data1.isPublic,
+            optionsJob: optionsJob,
+            optionsCategory: optionsCategory,
+            optionsFormat: optionsFormat,
+            isDisabled: isDisabled,
+            // selectedJobOption: {
+            //   id: data.job.id,
+            //   value: data.job.name,
+            //   label: data.job.name
+            // },
+            selectedCategoryOption: {
+              id: data1.category.id,
+              value: data1.category.name,
+              label: data1.category.name
+            }
+          });
+        }, 500);
+      }
     }
   }
+  handleErrorMessage = () => {
+    this.setState({
+      showErrorMessage: true
+    });
+  };
 
+  handleChangeStatus = () => {
+    let { editStatus } = this.state;
+    let status = 0;
+    if (editStatus === 0) {
+      status = 1;
+      this.setState({
+        editStatus: 1
+      });
+    } else {
+      status = 0;
+      this.setState({
+        editStatus: 0
+      });
+    }
+    const { id } = this.props.match.params;
+    const {
+      editTitle,
+      editContent,
+      selectedCategoryOption,
+      selectedJobOption
+    } = this.state;
+    var body = '';
+    var jobId = 0;
+    var catId = 0;
+    var statusString = '';
+    if (selectedCategoryOption) catId = selectedCategoryOption.id;
+    if (selectedJobOption) jobId = selectedJobOption.id;
+    var body = '';
+    jobId === 0
+      ? (body = {
+          title: editTitle,
+          content: editContent,
+          catId: catId,
+          isPublic: status
+        })
+      : (body = {
+          title: editTitle,
+          content: editContent,
+          catId: catId,
+          jobId: jobId,
+          isPublic: status
+        });
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    })
+      .then(res => {
+        if (res.status === 401) {
+          alert('Update Failed');
+        }
+        if (res.status === 422) {
+          this.toggleModalError();
+          res.json().then(data => {
+            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
+            this.setState({
+              errorData: dataArray
+            });
+          });
+        }
+        if (res.status === 200) {
+          this.toggleModalSuccess();
+          res.json().then(data => {
+            status === 1
+              ? (statusString = 'Publised')
+              : (statusString = 'Not publised');
+            if (selectedJobOption) {
+              this.setState({
+                title: editTitle,
+                content: editContent,
+                selectedJobOption: selectedJobOption,
+                selectedCategoryOption: selectedCategoryOption,
+                jobName: selectedJobOption.value,
+                jobId: selectedJobOption.id,
+                catName: selectedCategoryOption.value,
+                status: statusString
+              });
+            } else {
+              this.setState({
+                title: editTitle,
+                content: editContent,
+                selectedJobOption: selectedJobOption,
+                selectedCategoryOption: selectedCategoryOption,
+                jobName: null,
+                jobId: null,
+                catName: selectedCategoryOption.value,
+                status: statusString
+              });
+            }
+          });
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  };
+
+  handleEditorChange(html) {
+    this.setState({ editContent: html });
+  }
+  handleSelectCategoryChange = selectedCategoryOption => {
+    if (selectedCategoryOption.value == 'Others') {
+      this.setState({
+        selectedCategoryOption,
+        isDisabled: true,
+        showJobError: false,
+        selectedJobOption: null
+      });
+    } else {
+      this.setState({
+        selectedCategoryOption,
+        isDisabled: false,
+        showJobError: true
+      });
+    }
+  };
+  handleSelectJobChange = selectedJobOption => {
+    this.setState({ selectedJobOption, showJobError: false });
+  };
+
+  handleSelectFormatChange = selectedFormatOption => {
+    this.setState({
+      selectedFormatOption,
+      editContent: selectedFormatOption.content
+    });
+  };
+  backToPreviousPage = () => {
+    this.props.history.push('/dashboard/article');
+  };
+
+  toggleModalSuccess() {
+    this.setState(prevState => ({
+      modalSuccess: !prevState.modalSuccess
+    }));
+  }
+  toggleModalError() {
+    this.setState(prevState => ({
+      modalError: !prevState.modalError
+    }));
+  }
+  toggleModalPreview() {
+    this.setState(prevState => ({
+      modalPreview: !prevState.modalPreview
+    }));
+  }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
@@ -130,45 +398,52 @@ export default class ArticleDetail extends Component {
   };
 
   handleChange(event) {
+    var { errorTitle } = this.state;
+    if (event.target.name == 'editTitle') {
+      event.target.value !== ''
+        ? (errorTitle = '')
+        : (errorTitle = 'Title is required');
+    }
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      errorTitle: errorTitle
     });
   }
 
   handleSubmit = () => {
     const { id } = this.props.match.params;
     const {
-      editname,
-      editdescription,
-      editaddress,
-      editposition,
-      editsalary,
-      editstatus,
-      editexperience,
-      editamount,
-      editpublishedOn,
-      editdeadline
+      editTitle,
+      editContent,
+      selectedCategoryOption,
+      selectedJobOption,
+      editStatus
     } = this.state;
-    const i = editpublishedOn.indexOf('T');
-    const j = editdeadline.indexOf('T');
-    const newDateString = (s, i) => {
-      return s.substr(0, i) + ' ' + s.substr(i + 1);
-    };
-    var url = 'https://api.enclavei3dev.tk/api/job/' + id;
+    var body = '';
+    var jobId = 0;
+    var catId = 0;
+    var status = '';
+    if (selectedCategoryOption) catId = selectedCategoryOption.id;
+    if (selectedJobOption) jobId = selectedJobOption.id;
+    var body = '';
+    jobId === 0
+      ? (body = {
+          title: editTitle,
+          content: editContent,
+          catId: catId,
+          isPublic: editStatus
+        })
+      : (body = {
+          title: editTitle,
+          content: editContent,
+          catId: catId,
+          jobId: jobId,
+          isPublic: editStatus
+        });
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
     fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify({
-        name: editname,
-        description: editdescription,
-        address: editaddress,
-        position: editposition,
-        salary: editsalary,
-        status: editstatus,
-        experience: editexperience,
-        amount: editamount,
-        publishedOn: newDateString(editpublishedOn, i),
-        deadline: newDateString(editdeadline, j)
-      }),
+      method: 'POST',
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -180,23 +455,43 @@ export default class ArticleDetail extends Component {
           alert('Update Failed');
         }
         if (res.status === 422) {
-          alert('Update Failed');
+          this.toggleModalError();
+          res.json().then(data => {
+            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
+            this.setState({
+              errorData: dataArray
+            });
+          });
         }
         if (res.status === 200) {
+          this.toggleModalSuccess();
           res.json().then(data => {
-            alert('Update Success');
-            this.setState({
-              name: editname,
-              description: editdescription,
-              address: editaddress,
-              position: editposition,
-              salary: editsalary,
-              status: editstatus,
-              experience: editexperience,
-              amount: editamount,
-              publishedOn: newDateString(editpublishedOn, i),
-              deadline: newDateString(editdeadline, j)
-            });
+            editStatus === 1
+              ? (status = 'Publised')
+              : (status = 'Not publised');
+            if (selectedJobOption) {
+              this.setState({
+                title: editTitle,
+                content: editContent,
+                selectedJobOption: selectedJobOption,
+                selectedCategoryOption: selectedCategoryOption,
+                jobName: selectedJobOption.value,
+                jobId: selectedJobOption.id,
+                catName: selectedCategoryOption.value,
+                status: status
+              });
+            } else {
+              this.setState({
+                title: editTitle,
+                content: editContent,
+                selectedJobOption: selectedJobOption,
+                selectedCategoryOption: selectedCategoryOption,
+                jobName: null,
+                jobId: null,
+                catName: selectedCategoryOption.value,
+                status: status
+              });
+            }
           });
         }
       })
@@ -204,11 +499,91 @@ export default class ArticleDetail extends Component {
   };
 
   render() {
-    const { jobId, userId } = this.state;
+    var i = 0;
+    const { jobId, userId, showJobError, selectedJobOption } = this.state;
     var url1 = '/dashboard/job/' + jobId;
     var url2 = '/dashboard/user/' + userId;
+    var check = false;
+    if (showJobError == true && !selectedJobOption) {
+      check = false;
+    }
+    if (showJobError == true && selectedJobOption) {
+      check = true;
+    }
+    if (showJobError == false) {
+      check = true;
+    }
+
     return (
       <div className="profile-card">
+        {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalSuccess}>
+            Notification
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: '#45b649' }}>Update successfully</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalError}>Notification</ModalHeader>
+          <ModalBody>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {this.state.errorData !== undefined &&
+                this.state.errorData.length !== 0 &&
+                this.state.errorData.map(e => {
+                  i++;
+                  return (
+                    <span key={i} style={{ color: 'red' }}>
+                      {e[0]}
+                    </span>
+                  );
+                })}
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
+
+        {/*--------Modal-Preview-----*/}
+        <Modal
+          size="lg"
+          isOpen={this.state.modalPreview}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalPreview}>
+            Title: {this.state.title}
+          </ModalHeader>
+          <ModalBody>{renderHTML(this.state.editContent)}</ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalPreview}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Preview-----*/}
         <Card className="card-body">
           <CardTitle className="title">
             <MdCancel className="first" />
@@ -250,16 +625,19 @@ export default class ArticleDetail extends Component {
                           <td className="job-title">Status</td>
                           <td>{this.state.status}</td>
                         </tr>
+
                         <tr key={3}>
-                          <td className="job-title">Job</td>
-                          <td>
-                            <Link to={url1}>{this.state.jobName}</Link>
-                          </td>
-                        </tr>
-                        <tr key={4}>
                           <td className="job-title">Category</td>
                           <td>{this.state.catName}</td>
                         </tr>
+                        {this.state.jobName !== '' && (
+                          <tr key={4}>
+                            <td className="job-title">Job</td>
+                            <td>
+                              <Link to={url1}>{this.state.jobName}</Link>
+                            </td>
+                          </tr>
+                        )}
                         <tr key={5}>
                           <td className="job-title">Created By</td>
                           <td>
@@ -323,29 +701,217 @@ export default class ArticleDetail extends Component {
                         <Col>{renderHTML(this.state.content)}</Col>
                         {/* <Col>{this.state.content}</Col> */}
                       </Row>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          marginTop: '20px'
+                        }}
+                      >
+                        <Button
+                          onClick={() => this.backToPreviousPage()}
+                          color="secondary"
+                        >
+                          Back
+                        </Button>
+                      </div>
                     </TabPane>
                     <TabPane tabId="2">
                       <Row>
-                        <Col />
+                        <Col>
+                          <Form>
+                            <FormGroup>
+                              <Label className="title-input" for="Name">
+                                Title
+                              </Label>
+                              <Input
+                                className="title-add-new-article"
+                                type="text"
+                                name="editTitle"
+                                value={this.state.editTitle}
+                                onChange={this.handleChange}
+                              />
+                              {this.state.errorTitle !== '' &&
+                                this.state.showErrorMessage && (
+                                  <span style={{ color: 'red' }}>
+                                    {this.state.errorTitle}
+                                  </span>
+                                )}
+                            </FormGroup>
+                            <FormGroup>
+                              <Label className="title-input" for="Category">
+                                Category
+                              </Label>
+                              <Select
+                                className="create-article-input"
+                                value={this.state.selectedCategoryOption}
+                                onChange={this.handleSelectCategoryChange.bind(
+                                  this
+                                )}
+                                options={this.state.optionsCategory}
+                              />
+                              {!this.state.selectedCategoryOption &&
+                                this.state.showErrorMessage && (
+                                  <span style={{ color: 'red' }}>
+                                    Category is required
+                                  </span>
+                                )}
+                            </FormGroup>
+                            <FormGroup
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                              }}
+                            >
+                              <div style={{ width: '45%' }}>
+                                <Label className="title-input" for="Job">
+                                  Job
+                                </Label>
+                                <Select
+                                  className="create-article-input"
+                                  value={this.state.selectedJobOption}
+                                  onChange={this.handleSelectJobChange.bind(
+                                    this
+                                  )}
+                                  options={this.state.optionsJob}
+                                  isDisabled={this.state.isDisabled}
+                                />
+                                {!this.state.selectedJobOption &&
+                                  this.state.showJobError &&
+                                  this.state.showErrorMessage && (
+                                    <span style={{ color: 'red' }}>
+                                      Job is required
+                                    </span>
+                                  )}
+                              </div>
+
+                              <div style={{ width: '45%' }}>
+                                <Label className="title-input" for="Category">
+                                  Format
+                                </Label>
+                                <Select
+                                  className="create-article-input"
+                                  value={this.state.selectedFormatOption}
+                                  onChange={this.handleSelectFormatChange.bind(
+                                    this
+                                  )}
+                                  options={this.state.optionsFormat}
+                                />
+                              </div>
+                            </FormGroup>
+                            {this.state.content && (
+                              <FormGroup>
+                                <Label className="title-input" for="Content">
+                                  Content
+                                </Label>
+                                <ReactQuill
+                                  onChange={this.handleEditorChange}
+                                  value={this.state.editContent}
+                                  modules={ArticleDetail.modules}
+                                  formats={ArticleDetail.formats}
+                                  bounds={'.app'}
+                                  placeholder={this.props.placeholder}
+                                />
+                              </FormGroup>
+                            )}
+                            <br />
+                            <FormGroup
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'flex-end'
+                              }}
+                            >
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between',
+                                  width: '350px'
+                                }}
+                              >
+                                <Button
+                                  onClick={this.toggleModalPreview}
+                                  color="primary"
+                                >
+                                  Preview
+                                </Button>
+                                {this.state.errorTitle == '' &&
+                                check &&
+                                this.state.selectedCategoryOption ? (
+                                  <Button
+                                    color="success"
+                                    onClick={this.handleSubmit}
+                                  >
+                                    Update
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    color="success"
+                                    onClick={this.handleErrorMessage.bind(this)}
+                                  >
+                                    Update
+                                  </Button>
+                                )}
+                                {this.state.editStatus === 1 ? (
+                                  <div>
+                                    {this.state.errorTitle == '' &&
+                                    check &&
+                                    this.state.selectedCategoryOption ? (
+                                      <Button
+                                        onClick={this.handleChangeStatus}
+                                        color="warning"
+                                      >
+                                        Close
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        onClick={this.handleErrorMessage.bind(
+                                          this
+                                        )}
+                                        color="warning"
+                                      >
+                                        Close
+                                      </Button>
+                                    )}
+                                  </div>
+                                ) : (
+                                  <div>
+                                    {this.state.errorTitle == '' &&
+                                    check &&
+                                    this.state.selectedCategoryOption ? (
+                                      <Button
+                                        onClick={this.handleChangeStatus}
+                                        color="warning"
+                                      >
+                                        Publish
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        onClick={this.handleErrorMessage.bind(
+                                          this
+                                        )}
+                                        color="warning"
+                                      >
+                                        Publish
+                                      </Button>
+                                    )}
+                                  </div>
+                                )}
+
+                                <Button
+                                  onClick={() => this.backToPreviousPage()}
+                                  color="secondary"
+                                >
+                                  Back
+                                </Button>
+                              </div>
+                            </FormGroup>
+                          </Form>
+                        </Col>
                       </Row>
                     </TabPane>
                   </TabContent>
                 </Row>
               </Container>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  marginTop: '20px'
-                }}
-              >
-                <Button
-                  onClick={() => this.backToPreviousPage()}
-                  color="secondary"
-                >
-                  Back
-                </Button>
-              </div>
             </CardBody>
           )}
         </Card>
@@ -353,3 +919,43 @@ export default class ArticleDetail extends Component {
     );
   }
 }
+ArticleDetail.modules = {
+  toolbar: [
+    [{ header: [1, 2, 3, 4, 5, 6] }, { font: [] }],
+    [{ size: [] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' }
+    ],
+    [{ align: [] }],
+    [{ color: [] }, { background: [] }],
+    ['link', 'image', 'video'],
+    ['clean']
+  ],
+  clipboard: {
+    matchVisual: false
+  }
+};
+
+ArticleDetail.formats = [
+  'header',
+  'font',
+  'size',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'align',
+  'color',
+  'background',
+  'link',
+  'image',
+  'video'
+];
