@@ -332,7 +332,7 @@ export default class ModalAddArticle extends Component {
 }
 ModalAddArticle.modules = {
   toolbar: [
-    [{ header: [] }, { font: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6] }, { font: [] }],
     [{ size: [] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [

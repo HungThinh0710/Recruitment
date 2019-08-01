@@ -9,6 +9,7 @@ import {
 
 /*------Action-----*/
 import AddNewArticlePage from './admin/pages/AddNewArticlePage';
+import AddNewFormatPage from './admin/pages/AddNewFormatPage';
 /*------Action-----*/
 
 /*------Sidebar----*/
@@ -21,6 +22,8 @@ import JobsPage from './admin/pages/JobsPage';
 import JobDetail from './admin/pages/JobDetail';
 import ArticlesPage from './admin/pages/ArticlesPage';
 import ArticleDetail from './admin/pages/ArticleDetail';
+import FormatPage from './admin/pages/FormatPage';
+import FormatDetail from './admin/pages/FormatDetail';
 import InterviewsPage from './admin/pages/InterviewsPage';
 import InterviewDetail from './admin/pages/InterviewDetail';
 import Candidates from './admin/pages/candidate/candidate'
@@ -153,6 +156,24 @@ class App extends React.Component {
               path={'/dashboard/create-article'}
               layout={MainLayout}
               component={AddNewArticlePage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/format'}
+              layout={MainLayout}
+              component={FormatPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/format/:id'}
+              layout={MainLayout}
+              component={FormatDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/create-format'}
+              layout={MainLayout}
+              component={AddNewFormatPage}
             />
             <LayoutRoute
               exact

@@ -3,3 +3,8 @@
   margin-bottom: 100px;
 
 }
+
+.area-btn-header {
+  display: flex;
+  justify-content: space-between;
+}
