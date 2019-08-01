@@ -232,14 +232,14 @@ export default class Careers extends Component {
                           <meta property="og:url" content={"https://enclavei3dev.tk/article/" + id} />
                           <meta property="og:type" content="website" />
                           <meta property="og:title" content="Your Website Title" />
-                          <meta property="og:description" content="Your description" />
+                          <meta property="og:description" content="This is the article of Enclave Recruitment System, I just add more text to Facebook read it and anylaxxxxxx..." />
                           <meta property="og:image" content="" />
                         </Helmet>
+                        
                         <div class="fb-share-button"
                           data-href={"https://enclavei3dev.tk/article/" + id}
                           data-layout="button_count">
                         </div>
-                        <NavLink to={"#"} className="col-lg-3"><span class="icon-facebook" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink>
