@@ -48,6 +48,7 @@
     "react-simple-maps": "^0.12.1",
     "react-sizeme": "^2.5.2",
     "react-spinners": "^0.5.13",
+    "react-static": "^7.1.0",
     "react-table": "^6.10.0",
     "reactstrap": "^7.1.0",
     "victory": "^32.0.0"
