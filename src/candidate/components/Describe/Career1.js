@@ -229,17 +229,16 @@ export default class Careers extends Component {
                         {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
                         <Helmet>
                           <title>Enclave Recruitment</title>
-                          <meta property="og:url" content={"enclave3dev.tk/article/" + id}/>
+                          <meta property="og:url" content={"https://enclavei3dev.tk/article/" + id} />
                           <meta property="og:type" content="website" />
-                          <meta property="og:title" content={this.state.title} />
-                          <meta property="og:description" content="Find your dream job in our company" />
-                          <meta property="og:image" content="https://www.your-domain.com/path/image.jpg" />
+                          <meta property="og:title" content="Your Website Title" />
+                          <meta property="og:description" content="Your description" />
+                          <meta property="og:image" content="" />
                         </Helmet>
-                        <FacebookShareButton
-                          url={"enclave3dev.tk/article/" + id}
-                        >
-                          <Button><FacebookIcon size={32} /></Button>
-                        </FacebookShareButton>
+                        <div class="fb-share-button"
+                          data-href={"https://enclavei3dev.tk/article/" + id}
+                          data-layout="button_count">
+                        </div>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-facebook" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
