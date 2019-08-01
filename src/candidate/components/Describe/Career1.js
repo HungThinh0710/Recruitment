@@ -9,6 +9,7 @@ import { IntlProvider, FormattedDate } from 'react-intl';
 import renderHTML from 'react-render-html';
 import { FacebookShareButton, FacebookIcon } from 'react-share';
 import { Helmet , Parent} from 'react-helmet';
+import MetaTags from 'react-meta-tags';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
@@ -228,14 +229,14 @@ export default class Careers extends Component {
                       <div className="text-center">
                         {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
                          
-                         <Helmet>
+                         <MetaTags>
                           <meta property="fb:app_id" content="2309010198"/>
 <meta property="og:title" content="Enclave Recruitment System" />
 <meta property="og:type" content="article" />
 <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"/>
 <meta property="og:url" content="https://enclavei3dev.tk/article/6" />
 <meta property="og:description" content="Find your dream job in our company" />
-                        </Helmet> 
+                        </MetaTags> 
                         
                         <div class="fb-share-button"
                           data-href={"https://enclavei3dev.tk/article/6"}
