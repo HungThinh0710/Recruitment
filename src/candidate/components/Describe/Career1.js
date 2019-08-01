@@ -67,6 +67,7 @@ export default class Careers extends Component {
   }
 
   render() {
+   
     const { id } = this.props.match.params;
     const { jobID } = this.state;
     const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggleModal.bind(this)}>&times;</button>;
@@ -229,19 +230,7 @@ export default class Careers extends Component {
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="text-center">
                         {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
-                      <HelmetProvider>
-                        <Helmet>
-                          
-                            <meta property="fb:app_id" content="2309010198" />
-                            <meta property="og:title" content="Enclave Recruitment System" />
-                            <meta property="og:type" content="article" />
-                            <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
-                            <meta property="og:url" content="https://enclavei3dev.tk/article/6" />
-                            <meta property="og:description" content="Find your dream job in our company" />
-                         
-                        </Helmet>
-                        </HelmetProvider>
-
+                        
                         <div class="fb-share-button"
                           data-href={"https://enclavei3dev.tk/article/6"}
                           data-layout="button_count">
