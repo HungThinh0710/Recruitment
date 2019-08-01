@@ -150,7 +150,7 @@ export default class LoginPage extends React.Component {
                 <input onChange={this.handleChange} name="password" type="password" className="login-input-text" placeholder="Password"/>
               </div>
               <div className="form-forgot text-right">
-              <Link to="/dashboard/forgotpassword">
+              <Link to="/dashboard/forgotpassword" className={this.state.circleLoading && "login-disabled-link"}>
                 Forgot Password
               </Link>
                   

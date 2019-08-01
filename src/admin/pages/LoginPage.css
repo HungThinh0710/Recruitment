@@ -136,3 +136,8 @@
   font-family: 'Ubuntu'!important;
   font-weight: bold;
 }
+
+.login-disabled-link{
+  pointer-events: none;
+  color: #8c8c8c!important;
+}
