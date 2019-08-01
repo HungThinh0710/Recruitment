@@ -156,7 +156,6 @@ export default class ModalAddRole extends Component {
 
   wrapperFunction = () => {
     this.addItem();
-    this.toggle();
   };
 
   handleErrorMessage = () => {
@@ -301,7 +300,7 @@ export default class ModalAddRole extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: '#45b649' }}>Added succesfully</span>
+            <span style={{ color: '#45b649' }}>Created successfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>

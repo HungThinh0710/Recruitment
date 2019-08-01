@@ -113,7 +113,6 @@ export default class ModalAddUser extends Component {
 
   wrapperFunction = () => {
     this.handleSubmit();
-    this.toggle();
   };
   toggleModalSuccess() {
     this.setState(prevState => ({
@@ -390,7 +389,7 @@ export default class ModalAddUser extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: '#45b649' }}>Added succesfully</span>
+            <span style={{ color: '#45b649' }}>Created successfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>

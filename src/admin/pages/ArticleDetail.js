@@ -155,7 +155,9 @@ export default class ArticleDetail extends Component {
       return optionsFormat;
     });
     if (data1.message !== 'Unauthenticated.') {
-      data1.isPublic === 1 ? (status = 'Publised') : (status = 'Not publised');
+      data1.isPublic === 1
+        ? (status = 'Published')
+        : (status = 'Not published');
       data1.job ? (jobName = data.job.name) : (jobName = '');
       data1.category.name == 'Others'
         ? (isDisabled = true)

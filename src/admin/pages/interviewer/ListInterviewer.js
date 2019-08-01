@@ -10,10 +10,10 @@ import ModalRemoveItem from '../../components/ModalRemoveItem';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
-  fontWeight: 'bold',
+  fontWeight: 'bold'
 };
 const styleCard = {
-  width: '90%',
+  width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%',
@@ -59,7 +59,8 @@ export default class UsersPage extends Component {
   }
 
   handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3dev.tk/api/list-interviewer?page=' + pageNumber;
+    var url =
+      'https://api.enclavei3dev.tk/api/list-interviewer?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -68,7 +69,7 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      res.json().then(data => {       
+      res.json().then(data => {
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
@@ -142,7 +143,7 @@ removeItem(id) {
           </div>
         ) : (
           <CardBody>
-            <div style={{overflowX : 'auto'}} className="table-test">
+            <div style={{ overflowX: 'auto' }} className="table-test">
               <table>
                 <thead>
                   <tr
@@ -158,9 +159,17 @@ removeItem(id) {
                     <th>#</th>
                     <th>Name</th>
                     <th>Address</th>
-                    <th  style = {{textOverflow: 'ellipsis',maxWidth: 100, minWidth:80}}>Email</th>
+                    <th
+                      style={{
+                        textOverflow: 'ellipsis',
+                        maxWidth: 100,
+                        minWidth: 80
+                      }}
+                    >
+                      Email
+                    </th>
                     <th>Phone</th>
-                    <th style={{marginHorizontal: '10px', }}>
+                    <th style={{ marginHorizontal: '10px' }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
@@ -172,14 +181,12 @@ removeItem(id) {
                     return (
                       <tr key={e.id}>
                         <td>
-                          <input
-                            type="checkbox"
-                          />
+                          <input type="checkbox" />
                         </td>
                         <td>{i}</td>
                         <td>{e.fullname}</td>
                         <td>{e.address}</td>
-                        <td  style = {{textOverflow: 'ellipsis'}}>{e.email}</td>
+                        <td style={{ textOverflow: 'ellipsis' }}>{e.email}</td>
                         <td>{e.phone}</td>
                         <td>
                           <div className="action">

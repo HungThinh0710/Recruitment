@@ -26,9 +26,9 @@ import FormatPage from './admin/pages/FormatPage';
 import FormatDetail from './admin/pages/FormatDetail';
 import InterviewsPage from './admin/pages/InterviewsPage';
 import InterviewDetail from './admin/pages/InterviewDetail';
-import Candidates from './admin/pages/candidate/candidate'
+import Candidates from './admin/pages/candidate/candidate';
 import CandidateDetail from './admin/pages/candidate/detailCandidate';
-import ListInterviewer from './admin/pages/interviewer/ListInterviewer'; 
+import ListInterviewer from './admin/pages/interviewer/ListInterviewer';
 import DetailInterviewer from './admin/pages/interviewer/DetailIterViewer';
 /*------Sidebar----*/
 import LoginPage from './admin/pages/LoginPage';
@@ -193,7 +193,7 @@ class App extends React.Component {
               layout={MainLayout}
               component={Candidates}
             />
-             <LayoutRoute
+            <LayoutRoute
               exact
               path={'/dashboard/candidate/:id'}
               layout={MainLayout}

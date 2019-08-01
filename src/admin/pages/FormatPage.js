@@ -8,7 +8,8 @@ import { MdCancel, MdPageview } from 'react-icons/md';
 const styleFont = {
   fontSize: '200%',
   display: 'flex',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  fontWeight: 'bold'
 };
 
 const styleCard = {
@@ -93,7 +94,7 @@ export default class FormatPage extends Component {
       method: 'DELETE',
       body: JSON.stringify({
         formatId: listDeleteId,
-        status: 'all'
+        status: 'none'
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -193,6 +194,7 @@ export default class FormatPage extends Component {
                 <Button color="success">Create A New Format</Button>
               </Link>
             </div>
+            <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
                 itemName="this formats"
