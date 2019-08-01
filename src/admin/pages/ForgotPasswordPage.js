@@ -159,6 +159,10 @@ export default class ForgotPasswordPage extends React.Component {
               </div>
               <div className="form-forgot text-right"></div>
               <div className="form-submit">
+              <button className="btn-login-form-back" onClick={() => this.handleBackToLogin()} disabled={this.state.circleLoading}>
+                 <span>BACK</span>
+                </button>
+                <div className="login-two-button"></div>
                 <button className="btn-login-form" onClick={() => this.handleSubmit()} disabled={this.state.circleLoading}>
                   {!this.state.circleLoading && <span>SEND</span>}
                   {this.state.circleLoading && (
