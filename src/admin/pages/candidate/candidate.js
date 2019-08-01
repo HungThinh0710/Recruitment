@@ -12,7 +12,7 @@ const styleFont = {
 };
 const styleCard = {
   width: '90%',
-  marginTop: '1%',
+  marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%',
   loading: true
@@ -44,7 +44,6 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
     
     setTimeout(() => {
       this.setState({
@@ -126,6 +125,21 @@ export default class UsersPage extends Component {
                 </thead>
                 <tbody>
                   {this.state.rows.map(e => {
+                    if(e.status == '1'){
+                        e.status = 'Pending';
+                    }
+                    if(e.status == '2'){
+                      e.status = 'Deny';
+                    }
+                    if(e.status == '3'){
+                      e.status = 'Approve Application';
+                    }
+                    if(e.status == '4'){
+                      e.status = 'Passed';
+                    }
+                    if(e.status == '5'){
+                      e.status = 'Failed';
+                    };
                     i++;
                     let url = '/dashboard/candidate/' + e.id;
                     return (

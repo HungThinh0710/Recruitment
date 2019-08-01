@@ -13,7 +13,7 @@ const styleFont = {
 };
 const styleCard = {
   width: '90%',
-  marginTop: '1%',
+  marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%',
   loading: true
@@ -46,8 +46,6 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
-    
     setTimeout(() => {
       this.setState({
         rows: data.data,
@@ -67,7 +65,7 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      res.json().then(data => {
+      res.json().then(data => {       
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
