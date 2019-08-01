@@ -86,6 +86,13 @@ const navItems = [
     name: 'candidates',
     exact: true,
     Icon: MdMap
+  },
+
+  {
+    to: '/dashboard/interviewer',
+    name: 'interviewer',
+    exact: true,
+    Icon: MdMap
   }
   // { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
   // { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
