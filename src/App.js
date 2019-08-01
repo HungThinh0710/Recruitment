@@ -9,6 +9,7 @@ import {
 
 /*------Action-----*/
 import AddNewArticlePage from './admin/pages/AddNewArticlePage';
+import AddNewFormatPage from './admin/pages/AddNewFormatPage';
 /*------Action-----*/
 
 /*------Sidebar----*/
@@ -21,8 +22,14 @@ import JobsPage from './admin/pages/JobsPage';
 import JobDetail from './admin/pages/JobDetail';
 import ArticlesPage from './admin/pages/ArticlesPage';
 import ArticleDetail from './admin/pages/ArticleDetail';
+import FormatPage from './admin/pages/FormatPage';
+import FormatDetail from './admin/pages/FormatDetail';
 import InterviewsPage from './admin/pages/InterviewsPage';
 import InterviewDetail from './admin/pages/InterviewDetail';
+import Candidates from './admin/pages/candidate/candidate'
+import CandidateDetail from './admin/pages/candidate/detailCandidate';
+import ListInterviewer from './admin/pages/interviewer/ListInterviewer'; 
+import DetailInterviewer from './admin/pages/interviewer/DetailIterViewer';
 /*------Sidebar----*/
 import LoginPage from './admin/pages/LoginPage';
 import ForgotPasswordPage from './admin/pages/ForgotPasswordPage';
@@ -152,6 +159,24 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/format'}
+              layout={MainLayout}
+              component={FormatPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/format/:id'}
+              layout={MainLayout}
+              component={FormatDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/create-format'}
+              layout={MainLayout}
+              component={AddNewFormatPage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/interview'}
               layout={MainLayout}
               component={InterviewsPage}
@@ -161,6 +186,31 @@ class App extends React.Component {
               path={'/dashboard/interview/:id'}
               layout={MainLayout}
               component={InterviewDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/candidate'}
+              layout={MainLayout}
+              component={Candidates}
+            />
+             <LayoutRoute
+              exact
+              path={'/dashboard/candidate/:id'}
+              layout={MainLayout}
+              component={CandidateDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/interviewer'}
+              layout={MainLayout}
+              component={ListInterviewer}
+            />
+
+            <LayoutRoute
+              exact
+              path={'/dashboard/interviewer/:id'}
+              layout={MainLayout}
+              component={DetailInterviewer}
             />
             <LayoutRoute
               exact
