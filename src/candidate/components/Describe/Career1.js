@@ -8,9 +8,9 @@ import Footer from '../Footer';
 import { IntlProvider, FormattedDate } from 'react-intl';
 import renderHTML from 'react-render-html';
 import { FacebookShareButton, FacebookIcon } from 'react-share';
-import { Helmet, Parent } from 'react-helmet';
 import MetaTags from 'react-meta-tags';
 import { Head } from 'react-static';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
@@ -229,7 +229,7 @@ export default class Careers extends Component {
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="text-center">
                         {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
-
+                      <HelmetProvider>
                         <Helmet>
                           
                             <meta property="fb:app_id" content="2309010198" />
@@ -240,6 +240,7 @@ export default class Careers extends Component {
                             <meta property="og:description" content="Find your dream job in our company" />
                          
                         </Helmet>
+                        </HelmetProvider>
 
                         <div class="fb-share-button"
                           data-href={"https://enclavei3dev.tk/article/6"}
