@@ -29,6 +29,7 @@
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.13.2",
     "react-ga": "^2.5.7",
+    "react-head": "^3.1.1",
     "react-helmet": "^5.2.1",
     "react-helmet-async": "^1.0.2",
     "react-html-parser": "^2.0.2",
