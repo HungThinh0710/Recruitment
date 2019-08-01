@@ -29,8 +29,6 @@ export default class JobDetail extends Component {
       email: '',
       phone: '',
       address: '',
-      description: '',
-      status: '',
       jobs: [],
       interviews: [],
       technicalSkill: [],
@@ -45,39 +43,22 @@ export default class JobDetail extends Component {
   }
   async componentDidMount() {
     const { id } = this.props.match.params;
-    var url = 'https://api.enclavei3dev.tk/api/candidate/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json());
-        switch (data.status) {
-            case '1':
-                data.status  = 'Pending';
-              break;
-            case '2':
-                data.status = 'Deny';
-              break;
-            case '3':
-                data.status = 'Approve Application';
-              break;
-            case '4':
-                data.status = 'Passed';
-              break;
-            case '5':
-                data.status = 'Failed';
-              break;
-          }      
+    }).then(res => res.json()); 
+        console.log(data);
+        
       setTimeout(() => {
         this.setState({
           fullname: data.fullname,
           address: data.address,
-          status: data.status,
           email: data.email,
           phone: data.phone,
-          description: data.description,
           technicalSkill: data.technicalSkill,
           interviews: data.interviews,
           loading: false
@@ -94,7 +75,7 @@ export default class JobDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/dashboard/candidate');
+    this.props.history.push('/dashboard/interviewer');
   };
 
   render() {
@@ -106,7 +87,7 @@ export default class JobDetail extends Component {
           <CardTitle className="title">
             <MdCancel className="first" />
             Candidate Information
-            <Link to="/dashboard/candidate">
+            <Link to="/dashboard/interviewer">
             </Link>
           </CardTitle>
           {this.state.loading ? (
@@ -149,15 +130,7 @@ export default class JobDetail extends Component {
                         <tr key={4}>
                           <td className="job-title">Phone</td>
                           <td>{this.state.phone}</td>
-                        </tr>
-                        <tr key={5}>
-                          <td className="job-title">Status</td>
-                          <td>{this.state.status}</td>
-                        </tr>
-                        <tr key={6}>
-                          <td className="job-title">Description</td>
-                          <td>{this.state.description}</td>
-                        </tr>
+                        </tr>   
                         <tr key={7}>
                           <td className="job-title">Technical Skill</td>
                           <td>{this.state.technicalSkill.map( e=> {
