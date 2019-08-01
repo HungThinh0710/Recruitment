@@ -20,6 +20,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import classnames from 'classnames';
 import moment from 'moment';
 import '../JobDetail.css';
+import { strict } from 'assert';
 export default class JobDetail extends Component {
   constructor(props) {
     super(props);
@@ -81,12 +82,21 @@ export default class JobDetail extends Component {
   render() {
     var i = 0;
     const { formError } = this.state;
+    var string = '';
+    {this.state.technicalSkill.map( e=> {
+      string = e.name + ': ' + e.year + ' years;'
+      var length = string.length;
+      console.log(length)
+      return(
+        string = string.slice(0,length-1)
+      );
+     })}
     return (
       <div className="profile-card">
         <Card className="card-body">
           <CardTitle className="title">
             <MdCancel className="first" />
-            Candidate Information
+            Interviewer Information
             <Link to="/dashboard/interviewer">
             </Link>
           </CardTitle>
@@ -133,11 +143,7 @@ export default class JobDetail extends Component {
                         </tr>   
                         <tr key={7}>
                           <td className="job-title">Technical Skill</td>
-                          <td>{this.state.technicalSkill.map( e=> {
-                              return(
-                                <span> {e.name} : {e.year + ' years'}&#44;</span>
-                              )
-                             })}</td>
+                          <td><span>{string}</span></td>
                         </tr>
                       </tbody>
                     </table>
