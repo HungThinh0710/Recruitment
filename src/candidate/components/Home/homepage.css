@@ -100,10 +100,12 @@
   text-transform: uppercase;
   color:#45b649;
 }
-.list-group-item.active {
+/* .sidebar-nav .list-group-item:hover, 
+.sidebar-nav .list-group-item.active, 
+.sidebar-nav .list-group-item.active:hover{
   border-color: green;
   font-weight: bold !important;
-}
+} */
 
 .sidebar-nav .list-group-item a {
   width: 100%;
@@ -236,4 +238,13 @@
 
 .colorbottomline {
   text-decoration-color: black !important;
+}
+ .nav-item > .smoothscroll:hover,
+ .nav-item > .smoothscroll.active,
+ .nav-item > .smoothscroll.active:hover {
+  border-color: green;
+  font-weight: bold !important;
+}
+.nav-item > .smoothscroll.active > a {
+  color: red !important;
 }

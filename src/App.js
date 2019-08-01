@@ -26,6 +26,10 @@ import FormatPage from './admin/pages/FormatPage';
 import FormatDetail from './admin/pages/FormatDetail';
 import InterviewsPage from './admin/pages/InterviewsPage';
 import InterviewDetail from './admin/pages/InterviewDetail';
+import Candidates from './admin/pages/candidate/candidate'
+import CandidateDetail from './admin/pages/candidate/detailCandidate';
+import ListInterviewer from './admin/pages/interviewer/ListInterviewer'; 
+import DetailInterviewer from './admin/pages/interviewer/DetailIterViewer';
 /*------Sidebar----*/
 import LoginPage from './admin/pages/LoginPage';
 import ForgotPasswordPage from './admin/pages/ForgotPasswordPage';
@@ -182,6 +186,31 @@ class App extends React.Component {
               path={'/dashboard/interview/:id'}
               layout={MainLayout}
               component={InterviewDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/candidate'}
+              layout={MainLayout}
+              component={Candidates}
+            />
+             <LayoutRoute
+              exact
+              path={'/dashboard/candidate/:id'}
+              layout={MainLayout}
+              component={CandidateDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/interviewer'}
+              layout={MainLayout}
+              component={ListInterviewer}
+            />
+
+            <LayoutRoute
+              exact
+              path={'/dashboard/interviewer/:id'}
+              layout={MainLayout}
+              component={DetailInterviewer}
             />
             <LayoutRoute
               exact
