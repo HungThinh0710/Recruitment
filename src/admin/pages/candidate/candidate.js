@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import Pagination from '../components/Pagination.js';
+import Pagination from '../../components/Pagination';
 // import './Roles.css'
 import { ClipLoader } from 'react-spinners';
-import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
   fontWeight: 'bold',
@@ -22,7 +21,6 @@ export default class UsersPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: [],
       currentPage: 0,
       activePage: 1,
       totalItems: 0,
@@ -37,7 +35,7 @@ export default class UsersPage extends Component {
   }
 
   async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/list-interview?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/list-candidate?page=1';
     const data = await fetch(url, {
       method: 'POST',
       headers: {
@@ -46,6 +44,7 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    
     setTimeout(() => {
       this.setState({
         rows: data.data,
@@ -56,7 +55,7 @@ export default class UsersPage extends Component {
   }
 
   handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3dev.tk/api/list-interview?page=' + pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/list-candidate?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -65,7 +64,7 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      res.json().then(data => {       
+      res.json().then(data => {
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
@@ -81,7 +80,7 @@ export default class UsersPage extends Component {
     var i = 0;
     return (
       <Card style={styleCard}>
-        <CardHeader style={styleFont}>interviews Management</CardHeader>
+        <CardHeader style={styleFont}>Candidate Management</CardHeader>
         {this.state.loading ? (
           <div
             style={{
@@ -101,7 +100,7 @@ export default class UsersPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <div style={{overflowX : 'auto'}} className="table-test">
+            <div className="table-test">
               <table>
                 <thead>
                   <tr
@@ -116,10 +115,9 @@ export default class UsersPage extends Component {
                     </th>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Address</th>
+                    <th style = {{textOverflow: 'ellipsis'}}>Email</th>
                     <th>Status</th>
-                    <th>Start</th>
-                    <th>End</th>
+                    <th>Phone</th>
                     <th style={{marginHorizontal: '10px', }}>
                       <div className="action">Action</div>
                     </th>
@@ -127,8 +125,23 @@ export default class UsersPage extends Component {
                 </thead>
                 <tbody>
                   {this.state.rows.map(e => {
+                    if(e.status == '1'){
+                        e.status = 'Pending';
+                    }
+                    if(e.status == '2'){
+                      e.status = 'Deny';
+                    }
+                    if(e.status == '3'){
+                      e.status = 'Approve Application';
+                    }
+                    if(e.status == '4'){
+                      e.status = 'Passed';
+                    }
+                    if(e.status == '5'){
+                      e.status = 'Failed';
+                    };
                     i++;
-                    let url = '/dashboard/interview/' + e.id;
+                    let url = '/dashboard/candidate/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
@@ -137,11 +150,10 @@ export default class UsersPage extends Component {
                           />
                         </td>
                         <td>{i}</td>
-                        <td>{e.name}</td>
-                        <td>{e.address}</td>
+                        <td>{e.fullname}</td>
+                        <td style = {{textOverflow: 'ellipsis', maxWidth: 150, minWidth:80}}>{e.email}</td>
                         <td>{e.status}</td>
-                        <td>{e.timeStart}</td>
-                        <td>{e.timeEnd}</td>
+                        <td>{e.phone}</td>
                         <td>
                           <div className="action">
                             <Link style={{ width: 'auto' }} to={url}>
