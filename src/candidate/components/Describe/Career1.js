@@ -240,6 +240,8 @@ export default class Careers extends Component {
                           data-href={"https://enclavei3dev.tk/article/6"}
                           data-layout="button_count">
                         </div>
+
+                        <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}> </FacebookShareButton> 
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink>
