@@ -48,7 +48,7 @@ export default class ModalRemoveItem extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggle}>
-            Are you sure to delete {this.props.itemName} ?
+            Are you sure to delete {this.props.itemName}?
           </ModalHeader>
           <ModalFooter>
             <Button color="primary" onClick={this.wrapperFunction}>
