@@ -84,13 +84,13 @@ export default class JobDetail extends Component {
     const { formError } = this.state;
     var string = '';
     {this.state.technicalSkill.map( e=> {
-      string = e.name + ': ' + e.year + ' years;'
-      var length = string.length;
-      console.log(length)
+      string += e.name + ': ' + e.year + ' years; '
       return(
-        string = string.slice(0,length-1)
+        string 
       );
      })}
+    var length = string.length;
+    var newString = string.slice(0,length-2);
     return (
       <div className="profile-card">
         <Card className="card-body">
@@ -143,7 +143,7 @@ export default class JobDetail extends Component {
                         </tr>   
                         <tr key={7}>
                           <td className="job-title">Technical Skill</td>
-                          <td><span>{string}</span></td>
+                          <td><span>{newString}</span></td>
                         </tr>
                       </tbody>
                     </table>

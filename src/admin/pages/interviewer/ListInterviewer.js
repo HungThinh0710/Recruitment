@@ -195,8 +195,7 @@ removeItem(id) {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveItem
-                                
+                            <ModalRemoveItem                               
                                 itemName="this interviewer"
                                 function={() => this.removeItem(e.id)}
                               />
