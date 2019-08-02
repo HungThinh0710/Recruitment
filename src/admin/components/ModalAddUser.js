@@ -113,7 +113,6 @@ export default class ModalAddUser extends Component {
 
   wrapperFunction = () => {
     this.handleSubmit();
-    this.toggle();
   };
   toggleModalSuccess() {
     this.setState(prevState => ({

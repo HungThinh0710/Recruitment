@@ -8,10 +8,10 @@ import Pagination from '../../components/Pagination';
 import { ClipLoader } from 'react-spinners';
 const styleFont = {
   fontSize: '200%',
-  fontWeight: 'bold',
+  fontWeight: 'bold'
 };
 const styleCard = {
-  width: '90%',
+  width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%',
@@ -43,7 +43,7 @@ export default class UsersPage extends Component {
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json());  
+    }).then(res => res.json());
     setTimeout(() => {
       this.setState({
         rows: data.data,
@@ -54,7 +54,8 @@ export default class UsersPage extends Component {
   }
 
   handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3dev.tk/api/list-candidate?page=' + pageNumber;
+    var url =
+      'https://api.enclavei3dev.tk/api/list-candidate?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -73,7 +74,6 @@ export default class UsersPage extends Component {
       });
     });
   }
-
 
   render() {
     var i = 0;
@@ -114,43 +114,49 @@ export default class UsersPage extends Component {
                     </th>
                     <th>#</th>
                     <th>Name</th>
-                    <th style = {{textOverflow: 'ellipsis'}}>Email</th>
+                    <th style={{ textOverflow: 'ellipsis' }}>Email</th>
                     <th>Status</th>
                     <th>Phone</th>
-                    <th style={{marginHorizontal: '10px', }}>
+                    <th style={{ marginHorizontal: '10px' }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {this.state.rows.map(e => {
-                    if(e.status == '1'){
-                        e.status = 'Pending';
+                    if (e.status == '1') {
+                      e.status = 'Pending';
                     }
-                    if(e.status == '2'){
+                    if (e.status == '2') {
                       e.status = 'Deny';
                     }
-                    if(e.status == '3'){
+                    if (e.status == '3') {
                       e.status = 'Approve Application';
                     }
-                    if(e.status == '4'){
+                    if (e.status == '4') {
                       e.status = 'Passed';
                     }
-                    if(e.status == '5'){
+                    if (e.status == '5') {
                       e.status = 'Failed';
-                    };
+                    }
                     i++;
                     let url = '/dashboard/candidate/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
-                          <input
-                            type="checkbox"
-                          />
+                          <input type="checkbox" />
                         </td>
                         <td>{i}</td>
                         <td>{e.fullname}</td>
-                        <td style = {{textOverflow: 'ellipsis', maxWidth: 150, minWidth:80}}>{e.email}</td>
+                        <td
+                          style={{
+                            textOverflow: 'ellipsis',
+                            maxWidth: 150,
+                            minWidth: 80
+                          }}
+                        >
+                          {e.email}
+                        </td>
                         <td>{e.status}</td>
                         <td>{e.phone}</td>
                         <td>

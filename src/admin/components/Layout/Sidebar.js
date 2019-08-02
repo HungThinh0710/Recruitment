@@ -7,7 +7,10 @@ import {
   MdPeople,
   MdBook,
   MdMap,
-  MdWork
+  MdWork,
+  MdPerson,
+  MdNaturePeople,
+  MdPeopleOutline
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -80,20 +83,20 @@ const navItems = [
     exact: true,
     Icon: MdMap
   },
+  {
+    to: '/dashboard/interviewer',
+    name: 'interviewers',
+    exact: true,
+    Icon: MdNaturePeople
+  },
 
   {
     to: '/dashboard/candidate',
     name: 'candidates',
     exact: true,
-    Icon: MdMap
-  },
-
-  {
-    to: '/dashboard/interviewer',
-    name: 'interviewer',
-    exact: true,
-    Icon: MdMap
+    Icon: MdPeopleOutline
   }
+
   // { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
   // { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
   // { to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
