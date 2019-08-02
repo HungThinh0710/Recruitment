@@ -156,7 +156,6 @@ export default class ModalAddRole extends Component {
 
   wrapperFunction = () => {
     this.addItem();
-    this.toggle();
   };
 
   handleErrorMessage = () => {
