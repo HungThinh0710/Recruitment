@@ -94,7 +94,7 @@ export default class FormatPage extends Component {
       method: 'DELETE',
       body: JSON.stringify({
         formatId: listDeleteId,
-        status: 'all'
+        status: 'none'
       }),
       headers: {
         'Content-Type': 'application/json',

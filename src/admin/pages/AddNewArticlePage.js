@@ -98,7 +98,6 @@ export default class AddNewArticlePage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data2);
     const data3 = await fetch(url3, {
       headers: {
         'Content-Type': 'application/json',
@@ -513,6 +512,12 @@ export default class AddNewArticlePage extends Component {
                           bounds={'.app'}
                           placeholder={this.props.placeholder}
                         />
+                        {this.state.content == '' &&
+                          this.state.showErrorMessage && (
+                            <span style={{ color: 'red' }}>
+                              Content is required
+                            </span>
+                          )}
                       </FormGroup>
                       {/* )} */}
                       <br />

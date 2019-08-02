@@ -34,7 +34,7 @@ import classnames from 'classnames';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../components/ModalAddJob.css';
+import './AddNewJobPage.css';
 import './JobDetail.css';
 const cutStringSalary = (s, i) => {
   return s.substr(0, i);
