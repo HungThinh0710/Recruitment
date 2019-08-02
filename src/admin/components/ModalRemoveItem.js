@@ -52,7 +52,7 @@ export default class ModalRemoveItem extends Component {
           </ModalHeader>
           <ModalFooter>
             <Button color="primary" onClick={this.wrapperFunction}>
-              Yes, I'm sure
+              Yes
             </Button>{' '}
             <Button color="secondary" onClick={this.toggle}>
               Cancel

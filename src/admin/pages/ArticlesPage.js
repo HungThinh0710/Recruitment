@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveArticle from '../components/ModalRemoveArticle';
-import ModalRemoveArticles from '../components/ModalRemoveArticles';
+import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import './ArticlesPage.css';
-import ModalAddArticle from '../components/ModalAddArticle';
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold'
 };
 const styleCard = {
   width: '80%',
@@ -246,9 +245,10 @@ export default class ArticlesPage extends Component {
                 <Button color="primary">Format</Button>
               </Link>
             </div>
+            <br />
             {this.state.listDeleteId.length != 0 && (
-              <ModalRemoveArticles
-                arrayName={this.state.listDeleteName}
+              <ModalRemoveItem
+                itemName="this articles"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
@@ -311,9 +311,8 @@ export default class ArticlesPage extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveArticle
-                              item={e}
-                              buttonLabel="Delete"
+                            <ModalRemoveItem
+                              itemName="this article"
                               function={() => this.removeItem(e.id)}
                             />
                           </div>
