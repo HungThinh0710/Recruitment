@@ -208,7 +208,7 @@ removeItem(id) {
           <CardBody>
              {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="this articles"
+                itemName="this interviewer"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />

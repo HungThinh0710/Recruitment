@@ -207,7 +207,7 @@ export default class UsersPage extends Component {
           <CardBody>
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="this articles"
+                itemName="this candidate"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
@@ -259,7 +259,7 @@ export default class UsersPage extends Component {
                               </Button>
                             </Link>
                             <ModalRemoveItem                               
-                                itemName="this interviewer"
+                                itemName="this interview"
                                 function={() => this.removeItem(e.id)}
                               />
                           </div>
