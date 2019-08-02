@@ -21,6 +21,7 @@ export default class UsersPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      rows: [],
       currentPage: 0,
       activePage: 1,
       totalItems: 0,
