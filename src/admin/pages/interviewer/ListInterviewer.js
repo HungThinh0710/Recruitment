@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 // import './Roles.css'
 import { ClipLoader } from 'react-spinners';
+import ModalRemoveItem from '../../components/ModalRemoveItem';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
@@ -28,6 +29,7 @@ export default class UsersPage extends Component {
       totalItems: 0,
       loading: true
     };
+    this.handlePageChange = this.handlePageChange.bind(this);
     // this.removeManyItems = this.removeManyItems.bind(this);
   }
   componentWillMount() {
@@ -73,6 +75,45 @@ export default class UsersPage extends Component {
           totalItems: data.total,
           rows: data.data,
           activePage: pageNumber
+        });
+      });
+    });
+  }
+
+removeItem(id) {
+    const { activePage} = this.state;
+    var array = [];
+    array.push(id);
+    var url = 'https://api.enclavei3dev.tk/api/interviewer';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        interviewerId: array,
+        status: 'none'
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch('https://api.enclavei3dev.tk/api/list-interviewer?page=' + activePage, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(data => {
+          data.data.forEach(function(e) {
+            delete e.created_at;
+            delete e.updated_at;
+          });
+          this.setState({
+            rows: data.data,
+            totalItems: data.total,
+          });
         });
       });
     });
@@ -154,6 +195,11 @@ export default class UsersPage extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
+                            <ModalRemoveItem
+                                
+                                itemName="this interviewer"
+                                function={() => this.removeItem(e.id)}
+                              />
                           </div>
                         </td>
                       </tr>

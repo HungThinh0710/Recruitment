@@ -17,6 +17,7 @@ import {  MdMap, MdBook, MdCancel,MdPageview } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import classnames from 'classnames';
+import ModalRemoveRole from './interviewer/ModalDeleteInterviewer';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import './JobDetail.css';
@@ -203,7 +204,6 @@ export default class JobDetail extends Component {
                                   <th>Fullname</th>
                                   <th>Email</th>
                                   <th>Phone</th>
-                                  <th>Technical Skill</th>
                                   <th style={{ width: '100px' }}>
                                     <div className="action">Action</div>
                                   </th>
@@ -219,7 +219,6 @@ export default class JobDetail extends Component {
                                       <td>{e.fullname}</td>
                                       <td>{e.email}</td>
                                       <td>{e.phone}</td>
-                                      <td>{e.technicalSkill}</td>
                                       <td>
                                         <div className="action">
                                           <Link style={{ width: 'auto' }} to={'/dashboard/candidate/'+ e.id}>
@@ -227,6 +226,7 @@ export default class JobDetail extends Component {
                                               <MdPageview />
                                             </Button>
                                           </Link>
+                                          
                                         </div>
                                       </td>
                                     </tr>
@@ -259,7 +259,6 @@ export default class JobDetail extends Component {
                                   <th>Email</th>
                                   <th>Phone</th>
                                   <th>Status</th>
-                                  <th>Technical Skill</th>
                                   <th style={{ width: '100px' }}>
                                     <div className="action">Action</div>
                                   </th>
@@ -267,6 +266,21 @@ export default class JobDetail extends Component {
                               </thead>
                               <tbody>
                                 {this.state.candidates.map(e => {
+                                    if(e.status == '1'){
+                                      e.status = 'Pending';
+                                  }
+                                  if(e.status == '2'){
+                                    e.status = 'Deny';
+                                  }
+                                  if(e.status == '3'){
+                                    e.status = 'Approve Application';
+                                  }
+                                  if(e.status == '4'){
+                                    e.status = 'Passed';
+                                  }
+                                  if(e.status == '5'){
+                                    e.status = 'Failed';
+                                  }
                                   i++;
                                   let url = '/dashboard/interview/' + e.id;
                                   return (
@@ -276,7 +290,6 @@ export default class JobDetail extends Component {
                                       <td>{e.email}</td>
                                       <td>{e.phone}</td>
                                       <td>{e.status}</td>
-                                      <td>{e.technicalSkill}</td>
                                       <td>
                                         <div className="action">
                                           <Link style={{ width: 'auto' }} to={'/dashboard/candidate/'+ e.id}>
