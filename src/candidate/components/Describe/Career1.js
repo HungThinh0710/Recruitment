@@ -12,6 +12,8 @@ import MetaTags from 'react-meta-tags';
 import { Head } from 'react-static';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { HeadProvider, Meta, Title } from 'react-head';
+import ReactDOM from 'react-dom';
+import App from '/Users/leminhduc/Enclave-SI2019/Recruitment/src/App';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +32,7 @@ export default class Careers extends Component {
       status: '',
       address: '',
       content: '',
+      active: false,
     };
   }
   toggleAlert() {
@@ -68,7 +71,7 @@ export default class Careers extends Component {
   }
 
   render() {
-
+    
     const { id } = this.props.match.params;
     const { jobID } = this.state;
     const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggleModal.bind(this)}>&times;</button>;
@@ -231,16 +234,10 @@ export default class Careers extends Component {
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="text-center">
                         {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
-
-                        <HeadProvider>
-                          <Title>job company</Title>
-                          <Meta
-                            name='description'
-                            content='Find your dream job in our company'
-                          />
-                        </HeadProvider>
+                      
+                        
                         <div class="fb-share-button"
-                          data-href={"https://enclavei3dev.tk/article/6"}
+                          data-href={"https://enclavei3dev.tk/article/" + id}
                           data-layout="button_count">
                         </div>
 
@@ -255,6 +252,7 @@ export default class Careers extends Component {
                   </div>
 
                 </div>
+                
               </div>
 
 
