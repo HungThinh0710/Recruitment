@@ -13,7 +13,6 @@ import { Head } from 'react-static';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { HeadProvider, Meta, Title } from 'react-head';
 import ReactDOM from 'react-dom';
-import App from '/Users/leminhduc/Enclave-SI2019/Recruitment/src/App';
 export default class Careers extends Component {
   constructor(props) {
     super(props);
