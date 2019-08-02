@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveRole from '../components/ModalRemoveRole';
-import ModalRemoveRoles from '../components/ModalRemoveRoles';
+import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalAddRole from '../components/ModalAddRole';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
@@ -12,7 +11,8 @@ import './TestPage.css';
 
 import { ClipLoader } from 'react-spinners';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold'
 };
 const styleCard = {
   width: '80%',
@@ -235,10 +235,10 @@ export default class Roles extends Component {
               nameButtonAccept="Submit"
               function={this.addRole.bind(this)}
             />
-
+            <br />
             {this.state.listDeleteId.length != 0 && (
-              <ModalRemoveRoles
-                arrayName={this.state.listDeleteName}
+              <ModalRemoveItem
+                itemName="this roles"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
@@ -298,9 +298,8 @@ export default class Roles extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveRole
-                              item={e}
-                              buttonLabel="Delete"
+                            <ModalRemoveItem
+                              itemName="this role"
                               function={() => this.removeItem(e.id)}
                             />
                           </div>

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveJob from '../components/ModalRemoveJob';
-import ModalRemoveJobs from '../components/ModalRemoveJobs';
+import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
@@ -12,7 +11,8 @@ import ModalAddJob from '../components/ModalAddJob';
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold'
 };
 const styleCard = {
   width: '80%',
@@ -240,9 +240,10 @@ export default class JobsPage extends Component {
               nameButtonAccept="Add"
               function={this.addJob.bind(this)}
             />
+            <br />
             {this.state.listDeleteId.length !== 0 && (
-              <ModalRemoveJobs
-                arrayName={this.state.listDeleteName}
+              <ModalRemoveItem
+                itemName="this jobs"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
@@ -302,9 +303,8 @@ export default class JobsPage extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveJob
-                              item={e}
-                              buttonLabel="Delete"
+                            <ModalRemoveItem
+                              itemName="this job"
                               function={() => this.removeItem(e.id)}
                             />
                           </div>

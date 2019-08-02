@@ -9,10 +9,10 @@ import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
-  fontWeight: 'bold',
+  fontWeight: 'bold'
 };
 const styleCard = {
-  width: '90%',
+  width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%',
@@ -56,7 +56,8 @@ export default class UsersPage extends Component {
   }
 
   handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3dev.tk/api/list-interview?page=' + pageNumber;
+    var url =
+      'https://api.enclavei3dev.tk/api/list-interview?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -65,7 +66,7 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      res.json().then(data => {       
+      res.json().then(data => {
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
@@ -75,7 +76,6 @@ export default class UsersPage extends Component {
       });
     });
   }
-
 
   render() {
     var i = 0;
@@ -101,7 +101,7 @@ export default class UsersPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <div style={{overflowX : 'auto'}} className="table-test">
+            <div style={{ overflowX: 'auto' }} className="table-test">
               <table>
                 <thead>
                   <tr
@@ -120,7 +120,7 @@ export default class UsersPage extends Component {
                     <th>Status</th>
                     <th>Start</th>
                     <th>End</th>
-                    <th style={{marginHorizontal: '10px', }}>
+                    <th style={{ marginHorizontal: '10px' }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
@@ -132,9 +132,7 @@ export default class UsersPage extends Component {
                     return (
                       <tr key={e.id}>
                         <td>
-                          <input
-                            type="checkbox"
-                          />
+                          <input type="checkbox" />
                         </td>
                         <td>{i}</td>
                         <td>{e.name}</td>
