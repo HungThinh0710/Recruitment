@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import ModalRemoveItem from '../components/ModalRemoveItem';
-import ModalAddRole from '../components/ModalAddRole';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import './RolesPage.css';
@@ -228,13 +227,10 @@ export default class Roles extends Component {
           </div>
         ) : (
           <CardBody>
-            <ModalAddRole
-              color="success"
-              buttonLabel="Create a new role"
-              page={this.state.activePage}
-              nameButtonAccept="Submit"
-              function={this.addRole.bind(this)}
-            />
+            <Link to="/dashboard/create-role">
+              <Button color="success">Create a new role</Button>
+            </Link>
+            <br />
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
