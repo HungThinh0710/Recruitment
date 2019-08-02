@@ -23,10 +23,18 @@ export default class Homepage extends Component {
       keyword: '',
       location: '',
       filter: '',
+      All: false,
+      Internship: false,
+      designer: false,
+      tester: false,
+      developer: false,
+
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.addActiveClass= this.addActiveClass.bind(this);
   }
+  
 
   to_slug = (str) => {
     // Chuyển hết sang chữ thường
@@ -112,6 +120,7 @@ export default class Homepage extends Component {
       
     });
   }
+  
   handlePageChange(pageNumber) {
     
     const {keyword} = this.state;
@@ -141,7 +150,6 @@ export default class Homepage extends Component {
           listjob: data.data,
           activePage: pageNumber,
         }); 
-        console.log(keyword)
       });
       
     });
@@ -153,9 +161,15 @@ export default class Homepage extends Component {
     })
   
   }
+  addActiveClass(event) {
+    this.setState({[event.target.name]: !event.target.value
+    })
+    
+}
   
 
   render() {
+    const {active} = this.state;
     return (
       <section id="Home">
         <div className="site-wrap" >
@@ -216,21 +230,21 @@ export default class Homepage extends Component {
                       <p class="list-group-title">
                         Job opening
                       </p>
-                      <ul name="keyword" value={this.state.keyword} onChange={this.handleChange} class="site-nemu list-group navbar-nav">
-                        <li class="list-group-item navbar-item">
-                          <NavLink to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('')}>All</NavLink>
+                      <ul  class="site-nemu list-group navbar-nav" >
+                        <li className="list-group-item"  name="All">
+                          <NavLink to="/" exact  onClick={()=>this.handleFilter('')}>All</NavLink>
                         </li>
-                        <li  class="list-group-item navbar-item">
-                          <NavLink  to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('Internship')}>Internship</NavLink>
+                        <li  className="list-group-item" name="internship">
+                          <NavLink  to="/" exact  onClick={()=>this.handleFilter('Internship')}>Internship</NavLink>
                         </li>
-                        <li class="list-group-item navbar-item">
-                          <NavLink to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('Desginer')}>Designer</NavLink>
+                        <li className="list-group-item" name="designer">
+                          <NavLink to="/" exact  onClick={()=>this.handleFilter('Desginer')}>Designer</NavLink>
                         </li>
-                        <li class="list-group-item navbar-item">
-                          <NavLink to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('Tester')}>Tester</NavLink>
+                        <li className="list-group-item" name="tester">
+                          <NavLink to="/" exact  onClick={()=>this.handleFilter('Tester')}>Tester</NavLink>
                         </li>
-                        <li class="list-group-item navbar-item">
-                          <NavLink to="/" exact class="smoothscroll" onClick={()=>this.handleFilter('Developer')}>Developer</NavLink>
+                        <li className="list-group-item" name="developer">
+                          <NavLink to="/" exact  onClick={()=>this.handleFilter('Developer')}>Developer</NavLink>
                         </li>
                       </ul>
                     </li>
