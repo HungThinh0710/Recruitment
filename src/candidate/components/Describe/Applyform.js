@@ -38,6 +38,7 @@ class Applyform extends Component {
       dotnet: false,
       java: false,
       Reactjs: false,
+      listcandidate: [],
 
       formErrors: {
         fullName: '',
@@ -51,7 +52,7 @@ class Applyform extends Component {
       }
     };
   }
-
+  
   handleSubmit = e => {
     e.preventDefault();
 

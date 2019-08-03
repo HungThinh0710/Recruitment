@@ -6,6 +6,10 @@ dark green: #519E8A
 medium green: #7EB09B
 light green: #A3C4BC
 */
+#abc {
+  text-align:center;
+  width: 100%;
+} 
 input {
     padding: 10px 10px;
     border-radius: 5px;

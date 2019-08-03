@@ -45,7 +45,7 @@ import './admin/styles/reduction.scss';
 import Homepage from './candidate/components/Home/Hompage';
 import Careers from './candidate/components/Career/Careers';
 import About from './candidate/components/About/About';
-import Career1 from './candidate/components/Describe/Career1';
+import DetailArticle from './candidate/components/Describe/DetailArticle';
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
 };
@@ -222,7 +222,7 @@ class App extends React.Component {
             <Route path="/" component={Homepage} exact />
             <Route path="/careers" component={Careers} />
             <Route path="/about" component={About} />
-            <Route path="/article/:id" component={Career1} />
+            <Route path="/article/:id" component={DetailArticle} />
           </Switch>
         </GAListener>
       </BrowserRouter>
