@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
 import { Button, Modal, ModalFooter, Form, ModalBody, FormGroup } from 'reactstrap';
-import './Career1.css';
+import './DetailArticle.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
 import { IntlProvider, FormattedDate } from 'react-intl';

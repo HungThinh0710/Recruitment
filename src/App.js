@@ -43,7 +43,6 @@ import componentQueries from 'react-component-queries';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './admin/styles/reduction.scss';
 import Homepage from './candidate/components/Home/Hompage';
-import Careers from './candidate/components/Career/Careers';
 import About from './candidate/components/About/About';
 import DetailArticle from './candidate/components/Describe/DetailArticle';
 const getBasename = () => {
@@ -220,7 +219,7 @@ class App extends React.Component {
             />
             {/* <Redirect to="/" /> */}
             <Route path="/" component={Homepage} exact />
-            <Route path="/careers" component={Careers} />
+            
             <Route path="/about" component={About} />
             <Route path="/article/:id" component={DetailArticle} />
           </Switch>
