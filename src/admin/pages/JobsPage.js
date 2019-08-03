@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveJob from '../components/ModalRemoveJob';
-import ModalRemoveJobs from '../components/ModalRemoveJobs';
+import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
 // import './Roles.css'
-import ModalAddJob from '../components/ModalAddJob';
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold'
 };
 const styleCard = {
   width: '80%',
@@ -39,7 +38,7 @@ export default class JobsPage extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount() {
@@ -227,22 +226,20 @@ export default class JobsPage extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
         ) : (
           <CardBody>
-            <ModalAddJob
-              color="success"
-              page={this.state.activePage}
-              buttonLabel="Create a new job"
-              nameButtonAccept="Add"
-              function={this.addJob.bind(this)}
-            />
+            <Link to="/dashboard/create-job">
+              <Button color="success">Create a new job</Button>
+            </Link>
+            <br />
+            <br />
             {this.state.listDeleteId.length !== 0 && (
-              <ModalRemoveJobs
-                arrayName={this.state.listDeleteName}
+              <ModalRemoveItem
+                itemName="this jobs"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
@@ -273,7 +270,7 @@ export default class JobsPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/admin/job/' + e.id;
+                    let url = '/dashboard/job/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
@@ -302,9 +299,8 @@ export default class JobsPage extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveJob
-                              item={e}
-                              buttonLabel="Delete"
+                            <ModalRemoveItem
+                              itemName="this job"
                               function={() => this.removeItem(e.id)}
                             />
                           </div>

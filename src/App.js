@@ -6,6 +6,15 @@ import {
 } from './admin/components/Layout';
 
 // page
+
+/*------Action-----*/
+import AddNewRolePage from './admin/pages/AddNewRolePage';
+import AddNewUserPage from './admin/pages/AddNewUserPage';
+import AddNewJobPage from './admin/pages/AddNewJobPage';
+import AddNewArticlePage from './admin/pages/AddNewArticlePage';
+import AddNewFormatPage from './admin/pages/AddNewFormatPage';
+/*------Action-----*/
+
 /*------Sidebar----*/
 import TestPage from './admin/pages/TestPage';
 import Roles from './admin/pages/Roles';
@@ -16,8 +25,14 @@ import JobsPage from './admin/pages/JobsPage';
 import JobDetail from './admin/pages/JobDetail';
 import ArticlesPage from './admin/pages/ArticlesPage';
 import ArticleDetail from './admin/pages/ArticleDetail';
+import FormatPage from './admin/pages/FormatPage';
+import FormatDetail from './admin/pages/FormatDetail';
 import InterviewsPage from './admin/pages/InterviewsPage';
 import InterviewDetail from './admin/pages/InterviewDetail';
+import Candidates from './admin/pages/candidate/candidate';
+import CandidateDetail from './admin/pages/candidate/detailCandidate';
+import ListInterviewer from './admin/pages/interviewer/ListInterviewer';
+import DetailInterviewer from './admin/pages/interviewer/DetailIterViewer';
 /*------Sidebar----*/
 import LoginPage from './admin/pages/LoginPage';
 import ForgotPasswordPage from './admin/pages/ForgotPasswordPage';
@@ -58,110 +73,171 @@ class App extends React.Component {
           <Switch>
             <LayoutRoute
               exact
-              path={'/admin'}
+              path={'/dashboard/login'}
               layout={EmptyLayout}
               component={LoginPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/forgotpassword'}
+              path={'/dashboard/forgotpassword'}
               layout={EmptyLayout}
               component={ForgotPasswordPage}
             />
             <LayoutRoute
-              path={'/admin/reset-password'}
+              path={'/dashboard/reset-password'}
               layout={EmptyLayout}
               component={ResetPassword}
             />
             <LayoutRoute
               exact
-              path="/admin/profile"
+              path="/dashboard/profile"
               layout={MainLayout}
               component={ProfilePage}
             />
             <LayoutRoute
               exact
-              path="/admin/changeprofile"
+              path="/dashboard/changeprofile"
               layout={MainLayout}
               component={ChangeProfilePage}
             />
             <LayoutRoute
               exact
-              path="/admin/changeaccount"
+              path="/dashboard/changeaccount"
               layout={MainLayout}
               component={ChangeAccountPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/role'}
+              path={'/dashboard/role'}
               layout={MainLayout}
               component={Roles}
             />
             <LayoutRoute
               exact
-              path={'/admin/role/:id'}
+              path={'/dashboard/role/:id'}
               layout={MainLayout}
               component={RoleDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/user'}
+              path={'/dashboard/create-role'}
+              layout={MainLayout}
+              component={AddNewRolePage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/user'}
               layout={MainLayout}
               component={UsersPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/user/:id'}
+              path={'/dashboard/user/:id'}
               layout={MainLayout}
               component={UserDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/job'}
+              path={'/dashboard/create-user'}
+              layout={MainLayout}
+              component={AddNewUserPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/job'}
               layout={MainLayout}
               component={JobsPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/job/:id'}
+              path={'/dashboard/job/:id'}
               layout={MainLayout}
               component={JobDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/article'}
+              path={'/dashboard/create-job'}
+              layout={MainLayout}
+              component={AddNewJobPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/article'}
               layout={MainLayout}
               component={ArticlesPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/article/:id'}
+              path={'/dashboard/article/:id'}
               layout={MainLayout}
               component={ArticleDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/interview'}
+              path={'/dashboard/create-article'}
+              layout={MainLayout}
+              component={AddNewArticlePage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/format'}
+              layout={MainLayout}
+              component={FormatPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/format/:id'}
+              layout={MainLayout}
+              component={FormatDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/create-format'}
+              layout={MainLayout}
+              component={AddNewFormatPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/interview'}
               layout={MainLayout}
               component={InterviewsPage}
             />
             <LayoutRoute
               exact
-              path={'/admin/interview/:id'}
+              path={'/dashboard/interview/:id'}
               layout={MainLayout}
               component={InterviewDetail}
             />
             <LayoutRoute
               exact
-              path={'/admin/test'}
+              path={'/dashboard/candidate'}
               layout={MainLayout}
-              component={TestPage}
+              component={Candidates}
             />
             <LayoutRoute
               exact
-              path="/admin/dashboard"
+              path={'/dashboard/candidate/:id'}
               layout={MainLayout}
-              component={DashboardPage}
+              component={CandidateDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/interviewer'}
+              layout={MainLayout}
+              component={ListInterviewer}
+            />
+
+            <LayoutRoute
+              exact
+              path={'/dashboard/interviewer/:id'}
+              layout={MainLayout}
+              component={DetailInterviewer}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/test'}
+              layout={MainLayout}
+              component={TestPage}
             />
             {/* <Redirect to="/" /> */}
             <Route path="/" component={Homepage} exact />

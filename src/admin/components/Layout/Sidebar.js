@@ -7,7 +7,10 @@ import {
   MdPeople,
   MdBook,
   MdMap,
-  MdWork
+  MdWork,
+  MdPerson,
+  MdNaturePeople,
+  MdPeopleOutline
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -65,21 +68,35 @@ const sidebarBackground = {
 
 const navItems = [
   // { to: '/admin/dashboard', name: 'dashboard', exact: true, Icon: MdDashboard },
-  { to: '/admin/role', name: 'roles', exact: true, Icon: MdAccountCircle },
-  { to: '/admin/user', name: 'users', exact: true, Icon: MdPeople },
-  { to: '/admin/job', name: 'jobs', exact: true, Icon: MdWork },
+  { to: '/dashboard/role', name: 'roles', exact: true, Icon: MdAccountCircle },
+  { to: '/dashboard/user', name: 'users', exact: true, Icon: MdPeople },
+  { to: '/dashboard/job', name: 'jobs', exact: true, Icon: MdWork },
   {
-    to: '/admin/article',
+    to: '/dashboard/article',
     name: 'articles',
     exact: true,
     Icon: MdBook
   },
   {
-    to: '/admin/interview',
+    to: '/dashboard/interview',
     name: 'interviews',
     exact: true,
     Icon: MdMap
+  },
+  {
+    to: '/dashboard/interviewer',
+    name: 'interviewers',
+    exact: true,
+    Icon: MdNaturePeople
+  },
+
+  {
+    to: '/dashboard/candidate',
+    name: 'candidates',
+    exact: true,
+    Icon: MdPeopleOutline
   }
+
   // { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
   // { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
   // { to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },

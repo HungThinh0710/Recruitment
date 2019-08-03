@@ -16,29 +16,23 @@ import {
 import {  MdMap, MdBook, MdCancel,MdPageview } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
-import classnames from 'classnames';
-import ModalRemoveRole from './interviewer/ModalDeleteInterviewer';
-import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import './JobDetail.css';
-const cutStringSalary = (s, i) => {
-  return s.substr(0, i);
-};
-const removeStringSalary = (s, i) => {
-  return s.substr(i + 4);
-};
+import classnames from 'classnames';
+import moment from 'moment';
+import '../JobDetail.css';
+import { strict } from 'assert';
 export default class JobDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeTab: '1',
-      name: '',
+      fullname: '',
+      email: '',
+      phone: '',
       address: '',
-      status: '',
-      timeEnd: '',
-      timeStart: '',
-      candidates: [],
-      interviewers: [],
+      jobs: [],
+      interviews: [],
+      technicalSkill: [],
       loading: true,
     };
     // this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -50,24 +44,24 @@ export default class JobDetail extends Component {
   }
   async componentDidMount() {
     const { id } = this.props.match.params;
-    var url = 'https://api.enclavei3dev.tk/api/interview/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json());
-    
+    }).then(res => res.json()); 
+        console.log(data);
+        
       setTimeout(() => {
         this.setState({
-          name: data.name,
+          fullname: data.fullname,
           address: data.address,
-          status: data.status,
-          timeEnd: data.timeEnd,
-          timeStart: data.timeStart,
-          candidates: data.candidates,
-          interviewers: data.interviewers,
+          email: data.email,
+          phone: data.phone,
+          technicalSkill: data.technicalSkill,
+          interviews: data.interviews,
           loading: false
         });
       }, 500);
@@ -82,20 +76,28 @@ export default class JobDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/dashboard/interview');
+    this.props.history.push('/dashboard/interviewer');
   };
 
   render() {
     var i = 0;
     const { formError } = this.state;
+    var string = '';
+    {this.state.technicalSkill.map( e=> {
+      string += e.name + ': ' + e.year + ' years; '
+      return(
+        string 
+      );
+     })}
+    var length = string.length;
+    var newString = string.slice(0,length-2);
     return (
       <div className="profile-card">
         <Card className="card-body">
           <CardTitle className="title">
             <MdCancel className="first" />
-            Interview Information
-            <Link to="/dashboard/interview">
-              <MdCancel />
+            Interviewer Information
+            <Link to="/dashboard/interviewer">
             </Link>
           </CardTitle>
           {this.state.loading ? (
@@ -124,24 +126,24 @@ export default class JobDetail extends Component {
                       <tbody>
                         <tr key={1}>
                           <td className="job-title">Name</td>
-                          <td>{this.state.name}</td>
+                          <td>{this.state.fullname}</td>
                         </tr>
                         <tr key={2}>
                           <td className="job-title">Address</td>
                           <td>{this.state.address}</td>
                         </tr>
                         <tr key={3}>
-                          <td className="job-title">Start</td>
-                          <td>{this.state.timeStart}</td>
+                          <td className="job-title">Email</td>
+                          <td>{this.state.email}</td>
                         </tr>
                         
                         <tr key={4}>
-                          <td className="job-title">End</td>
-                          <td>{this.state.timeEnd}</td>
-                        </tr>
-                        <tr key={5}>
-                          <td className="job-title">Status</td>
-                          <td>{this.state.status}</td>
+                          <td className="job-title">Phone</td>
+                          <td>{this.state.phone}</td>
+                        </tr>   
+                        <tr key={7}>
+                          <td className="job-title">Technical Skill</td>
+                          <td><span>{newString}</span></td>
                         </tr>
                       </tbody>
                     </table>
@@ -161,27 +163,12 @@ export default class JobDetail extends Component {
                           }}
                         >
                           <MdBook style={{ marginRight: '5px' }} />
-                          Interviewers
-                        </NavLink>
-                      </NavItem>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '2'
-                          })}
-                          onClick={() => {
-                            this.toggle('2');
-                          }}
-                        >
-                          <MdMap style={{ marginRight: '5px' }} />
-                          Candidates
+                          Interviews
                         </NavLink>
                       </NavItem>
                     </Nav>
                   </div>
                 </Row>
-                <br />
-                <br />
                 <Row>
                   <TabContent
                     style={{ width: '100%' }}
@@ -202,62 +189,8 @@ export default class JobDetail extends Component {
                                 >
                                   <th>#</th>
                                   <th>Fullname</th>
-                                  <th>Email</th>
-                                  <th>Phone</th>
-                                  <th style={{ width: '100px' }}>
-                                    <div className="action">Action</div>
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {this.state.interviewers.map(e => {
-                                  i++;
-                                  let url = '/dashboard/interview/' + e.id;
-                                  return (
-                                    <tr key={e.id}>
-                                      <td>{i}</td>
-                                      <td>{e.fullname}</td>
-                                      <td>{e.email}</td>
-                                      <td>{e.phone}</td>
-                                      <td>
-                                        <div className="action">
-                                          <Link style={{ width: 'auto' }} to={'/dashboard/candidate/'+ e.id}>
-                                            <Button className="view-button" color="primary">
-                                              <MdPageview />
-                                            </Button>
-                                          </Link>
-                                          
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
-                            <br />
-
-                          </div>
-                        </CardBody>
-                      </Row>
-                    </TabPane>
-                    <TabPane tabId="2">
-                      <Row>
-
-                      <CardBody>
-                          <div className="table-test">
-                            <table>
-                              <thead>
-                                <tr
-                                  style={{
-                                    background:
-                                      '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                    color: 'white'
-                                  }}
-                                >
-                                  <th>#</th>
-                                  <th>Fullname</th>
-                                  <th>Email</th>
-                                  <th>Phone</th>
+                                  <th>Address</th>
+                                  <th>Start</th>
                                   <th>Status</th>
                                   <th style={{ width: '100px' }}>
                                     <div className="action">Action</div>
@@ -265,34 +198,52 @@ export default class JobDetail extends Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                {this.state.candidates.map(e => {
-                                    if(e.status == '1'){
-                                      e.status = 'Pending';
-                                  }
-                                  if(e.status == '2'){
-                                    e.status = 'Deny';
-                                  }
-                                  if(e.status == '3'){
-                                    e.status = 'Approve Application';
-                                  }
-                                  if(e.status == '4'){
-                                    e.status = 'Passed';
-                                  }
-                                  if(e.status == '5'){
-                                    e.status = 'Failed';
-                                  }
+                                {this.state.interviews.map(e => {
+                                     if(e.status == '1'){
+                                        e.status = 'Pending';
+                                    }
+                                    if(e.status == '2'){
+                                      e.status = 'Opening';
+                                    }
+                                    if(e.status == '3'){
+                                      e.status = 'Closed';
+                                    }
+                                    if(e.address == '2-1'){
+                                        e.address = 'Floor 2 - 453-455 Hoang Dieu Str';
+                                      }
+                                      if(e.address == '3-1'){
+                                        e.address = 'Floor 3 - 453-455 Hoang Dieu Str';
+                                      }
+                                      if(e.address == '4-1'){
+                                        e.address = 'Floor 4 - 453-455 Hoang Dieu Str';
+                                      }
+                                      if(e.address == '5-1'){
+                                        e.address = 'Floor 5 - 453-455 Hoang Dieu Str';
+                                      }
+                                      if(e.address == '2-2'){
+                                        e.address = 'Floor 2 - 117 Nguyen Huu Tho Str';
+                                      }
+                                      if(e.address == '3-2'){
+                                        e.address = 'Floor 3 - 117 Nguyen Huu Tho Str';
+                                      }
+                                      if(e.address == '4-2'){
+                                        e.address = 'Floor 4 - 117 Nguyen Huu Tho Str';
+                                      }
+                                      if(e.address == '5-2'){
+                                        e.address = 'Floor 5 - 117 Nguyen Huu Tho Str';
+                                      }
                                   i++;
-                                  let url = '/dashboard/interview/' + e.id;
+                                  let url = '/dashboard/candidate/' + e.id;
                                   return (
                                     <tr key={e.id}>
                                       <td>{i}</td>
-                                      <td>{e.fullname}</td>
-                                      <td>{e.email}</td>
-                                      <td>{e.phone}</td>
+                                      <td>{e.name}</td>
+                                      <td>{e.address}</td>
+                                      <td>{e.timeStart}</td>
                                       <td>{e.status}</td>
                                       <td>
                                         <div className="action">
-                                          <Link style={{ width: 'auto' }} to={'/dashboard/candidate/'+ e.id}>
+                                          <Link style={{ width: 'auto' }} to={'/dashboard/interview/'+ e.id}>
                                             <Button className="view-button" color="primary">
                                               <MdPageview />
                                             </Button>
@@ -310,7 +261,7 @@ export default class JobDetail extends Component {
                         </CardBody>
                       </Row>
                     </TabPane>
-                  </TabContent>
+                    </TabContent>
                 </Row>
               </Container>
               <div

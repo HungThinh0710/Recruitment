@@ -1,5 +1,9 @@
-.pagination-area-web .pagination {
+/* .pagination-area-web .pagination {
   margin-left: 70%;
+} */
+.pagination-area-web {
+  display: flex;
+    justify-content: flex-end;
 }
 
 .pagination-area-web .pagination li {
@@ -27,7 +31,8 @@
   padding-left: 20px;
   padding-bottom: 5px; 
   border-radius: 0px;
-  display: fixed;
+  display: flex;
+  justify-content: flex-end;
 }
 .pagination-area-web .pagination li {
   border: 1px solid !important;
@@ -39,3 +44,9 @@
 .pagination-area-web .pagination > li > a{
   color: #3a3735;
 }
+@media (max-width: 991px){
+  .pagination-area-web {
+    display: flex !important;
+      justify-content: flex-end;
+  }
+}  

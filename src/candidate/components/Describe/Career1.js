@@ -59,6 +59,7 @@ export default class Careers extends Component {
       addressed: '',
       content: '',
 
+
       active: false,
       description: null,
       technicalSkill: null,
@@ -77,6 +78,8 @@ export default class Careers extends Component {
         technicalSkill: '',
         Nodejs: ''
       }
+      active: false,
+
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleFile = this.handleFile.bind(this);
@@ -132,6 +135,7 @@ export default class Careers extends Component {
     this.updateHead();
     console.log(this.state.jobID)
   }
+
 
   updateHead() {
   const  link=document.createElement('meta');
@@ -258,6 +262,10 @@ document.getElementsByTagName('head')[0].append(link);
   };
   render() {
     const { formErrors } = this.state;
+
+  render() {
+    
+
     const { id } = this.props.match.params;
     const { jobID } = this.state;
     const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggleModal.bind(this)}>&times;</button>;
@@ -489,7 +497,11 @@ document.getElementsByTagName('head')[0].append(link);
                         <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
                         <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
                         <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
+
                         <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
+
+                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
+
                         <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
                         {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
                         <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
@@ -534,7 +546,11 @@ document.getElementsByTagName('head')[0].append(link);
                         <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
                         <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
                         <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
+
                         <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
+
+                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
+
                         <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
                         {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
                         <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
@@ -575,7 +591,7 @@ document.getElementsByTagName('head')[0].append(link);
 
             </div>
           </section>
-          <Footer />
+       
         </div>
       </div>
     )

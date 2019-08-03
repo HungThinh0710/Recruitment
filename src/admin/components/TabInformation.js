@@ -148,11 +148,11 @@ export default class TabInformation extends Component {
                 <br />
               </Col>
               <Col className="contact-information">
-                <h6 style={{ color: 'green' }}>{this.props.phone}</h6>
+                <h6 style={{ color: '#45b649' }}>{this.props.phone}</h6>
                 <br />
                 <h6>{this.props.address}</h6>
                 <br />
-                <h6 style={{ color: 'green' }}>{this.props.email}</h6>
+                <h6 style={{ color: '#45b649' }}>{this.props.email}</h6>
                 <br />
               </Col>
             </Row>

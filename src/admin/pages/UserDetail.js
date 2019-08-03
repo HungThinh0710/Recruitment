@@ -90,7 +90,7 @@ export default class UserDetail extends Component {
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/admin');
+      this.props.history.push('/dashboard/login');
     }
   }
   async componentDidMount(){
@@ -104,6 +104,8 @@ export default class UserDetail extends Component {
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
     }).then(res => res.json()) 
+    console.log(data);
+      
     await this.setState({
       name : data.name,
       fullName: data.fullname,
@@ -189,7 +191,7 @@ export default class UserDetail extends Component {
   }
 
   backToPreviousPage = () => {
-    this.props.history.push('/admin/user');
+    this.props.history.push('/dashboard/user');
   };
 
   toggleModalSuccess() {
@@ -368,7 +370,7 @@ export default class UserDetail extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: 'green' }}>Updated succesfully</span>
+            <span style={{ color: '#45b649' }}>Updated succesfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -411,7 +413,7 @@ export default class UserDetail extends Component {
           <CardTitle className="title">
               <MdCancel className='first'/>
             User Profile
-            <Link to="/admin/user">
+            <Link to="/dashboard/user">
               <MdCancel />
             </Link>
           </CardTitle>
@@ -428,7 +430,7 @@ export default class UserDetail extends Component {
             <ClipLoader
               sizeUnit={'px'}
               size={200}
-              color={'green'}
+              color={'#45b649'}
               loading={this.state.loading}
             />
           </div>

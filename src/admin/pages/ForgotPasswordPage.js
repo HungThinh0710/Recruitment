@@ -21,7 +21,10 @@ export default class ForgotPasswordPage extends React.Component {
       status: false,
       showLoading: false,
       loading: true,
-      errorEmailMessage: ''
+      errorEmailMessage: '',
+      circleLoading: false,
+      showError: false,
+      message: 'Please enter the email to reset password.',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,59 +53,79 @@ export default class ForgotPasswordPage extends React.Component {
   }
 
   handleBackToLogin = () => {
-    this.props.history.push('/admin');
+    this.props.history.push('/dashboard/login');
   };
 
-  // handleKeyUp = event => {
-  //   if (event.keyCode === 13) return this.handleSubmit(event);
-  // };
+  handleKeyUp = event => {
+    if (event.keyCode === 13) return this.handleSubmit(event);
+  };
 
   handleSubmit() {
     const { email } = this.state;
+    this.setState({ circleLoading: true, showError: false });
     this.setState({
       status: true,
       showLoading: true
     });
-    var url = 'https://api.enclavei3dev.tk/api/password/forgot';
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({
-        email: email
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    })
-      .then(response => {
-        if (response.status === 404) {
-          this.setState({
-            messenger: "The email you entered doesn't match any account.",
-            showLoading: false,
-            checked: false
-          });
-        }
-        if (response.status === 422) {
-          this.setState({
-            showLoading: false,
-            checked: false
-          });
-        }
-        if (response.status === 200) {
-          response.json().then(data => {
-            setTimeout(() => {
-              this.setState({
-                messenger: data.message,
-                checked: true,
-                loading: false,
-                showLoading: false
-              });
-            });
-          }, 3000);
+
+    if(email == ""){
+      this.setState({
+        showError:true,
+        circleLoading: false,
+        errorMessage: 'Email is invalid.',
+      })
+    }
+    if(email != ""){
+      var url = 'https://api.enclavei3dev.tk/api/password/forgot';
+
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: email
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
         }
       })
-      .catch(error => console.error('Error:', error));
+        .then(response => {
+          if (response.status === 404) {
+            this.setState({
+              circleLoading: false,
+              errorMessage: "We did not recognize this email.",
+              showLoading: false,
+              showError: true,
+              checked: false,
+            }); 
+          }
+          if (response.status === 422) {
+            this.setState({
+              errorMessage: "Your email is invalid.",
+              circleLoading: false,
+              showLoading: false,
+              showError: true,
+              checked: false,
+            });
+          }
+          if (response.status === 200) {
+            response.json().then(data => {
+              setTimeout(() => {
+                this.setState({
+                  message: data.message,
+                  checked: true,
+                  loading: false,
+                  showLoading: false,
+                  showError: false,
+                  circleLoading: false,
+                  email: '',
+                });
+              });
+            }, 3000);
+          }
+        }).catch(error => console.error('Error:', error));
+    }
+
   }
 
   render() {
@@ -110,82 +133,54 @@ export default class ForgotPasswordPage extends React.Component {
 
     return (
       // <Form className="form-login" onKeyUp={this.handleKeyUp}>
-      <Form className="form-login" onSubmit={this.handleSubmit}>
-        {showLogo && (
-          <div className="text-center pb-4" style={{ marginBottom: '5%' }}>
-            <img
-              src={logo200Image}
-              className="rounded"
-              style={{ width: '70%', cursor: 'pointer' }}
-              alt="logo"
-              onClick={onLogoClick}
-            />
-            <span />
-          </div>
-        )}
-        <FormGroup className="input-area">
-          <h5>Please enter the email to reset password</h5>
-        </FormGroup>
-        {this.state.status && (
-          <FormGroup className="input-area">
-            {this.state.checked ? (
-              <span style={{ color: 'green' }}>{this.state.messenger}</span>
-            ) : (
-              <span style={{ color: 'red' }}>{this.state.messenger}</span>
-            )}
-          </FormGroup>
-        )}
-        <FormGroup className="input-area" style={{ marginBottom: '5%' }}>
-          <Label for={emailLabel}>{emailLabel}</Label>
-          <Input
-            {...emailInputProps}
-            value={this.state.username}
-            onChange={this.handleChange}
-          />
-          <br />
-          <span style={{ color: 'red' }}>{this.state.errorEmailMessage}</span>
-        </FormGroup>
-        {/* {this.renderRedirect()} */}
-        {this.state.showLoading && this.state.loading ? (
-          <FormGroup className="input-area" style={{ marginBottom: '8%' }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center'
-              }}
-              className="sweet-loading"
-            >
-              <FadeLoader color={'green'} loading={this.state.loadingLogin} />
+      <div className="container login-container">
+        <div className="container-frame">
+          <div className="login-form">
+            <div className="login-title">
+              <img
+                src={logo200Image}
+                className="rounded"
+                style={{ width: '70%', cursor: 'pointer' }}
+                alt="logo"
+                onClick={onLogoClick}
+              />
             </div>
-          </FormGroup>
-        ) : (
-          <div />
-        )}
-        <FormGroup
-          className="input-area button-area"
-          style={{ marginBottom: '8%' }}
-        >
-          <Button
-            className="btn-submitLogin"
-            size="lg"
-            block
-            onClick={this.handleSubmit}
-          >
-            {' '}
-            Submit
-          </Button>
-          <Button
-            className="btn-backToLogin"
-            size="lg"
-            block
-            color="secondary"
-            onClick={() => this.handleBackToLogin()}
-          >
-            {' '}
-            Back
-          </Button>
-        </FormGroup>
-      </Form>
+            <hr />
+            <div className="login-body">
+              <div className="form-input" onKeyUp={this.handleKeyUp}>
+                {!this.state.showError && <div className="error-message-alert alert alert-success" role="alert">
+                  <div className="text-error">{this.state.message}</div>
+                </div>}
+                {this.state.showError && 
+                <div className="error-message-alert alert alert-danger" role="alert">
+                  <div className="text-error">{this.state.errorMessage}</div>
+                </div>}
+                <input onChange={this.handleChange} name="email" type="email" value={this.state.email} className="login-input-text" placeholder="Email" />
+              </div>
+              <div className="form-forgot text-right"></div>
+              <div className="form-submit">
+              <button className="btn-login-form-back" onClick={() => this.handleBackToLogin()} disabled={this.state.circleLoading}>
+                 <span>BACK</span>
+                </button>
+                <div className="login-two-button"></div>
+                <button className="btn-login-form" onClick={() => this.handleSubmit()} disabled={this.state.circleLoading}>
+                  {!this.state.circleLoading && <span>SEND</span>}
+                  {this.state.circleLoading && (
+                    <div>
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span style={{ paddingLeft: '4px' }}>Loading...</span>
+                    </div>)}
+
+                </button>
+              </div>
+            </div>
+            <hr />
+            <div className="login-footer">
+              <div className="login-footer-text">© 2007 - 2019 - Enclave Recruitment management</div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -208,5 +203,5 @@ ForgotPasswordPage.defaultProps = {
     type: 'email',
     name: 'email'
   },
-  onLogoClick: () => {}
+  onLogoClick: () => { }
 };
