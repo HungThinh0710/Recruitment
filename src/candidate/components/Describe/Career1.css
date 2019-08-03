@@ -4,6 +4,7 @@
  #myModallabel {
   z-index: auto;
   font-size: 45px;
+  text-align: center;
  }
  #abc {
     text-align:center;
@@ -12,23 +13,44 @@
  #section-describe {
    padding-top: 3rem !important;
  }
- @media (max-width: 767.98px){
+ @media (max-width: 768.98px){
  .align-items-center {
     margin-bottom: 1rem !important;
  }
- .show-line {
+ .show-line, .show-jobsummary {
    display: none;
  }
  .show-line-2 {
    display: absolute;
  }
+ .btn-block {
+   width: 100%;
+ }
+ .show-jobsummary-2 {
+    display: relative;
+    width: 100%;
+ }
+ .show-jobsummary-2 .text-center a {
+  margin-left: none;
+  padding-left: 10% !important;
+  padding-right: 10% !important;
+  
+}
+ .jobsummary-moblie .rounded{
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 15px !important;
+}
+.footer-social a {
+  margin-left: 10px ! important;
+}
  
  }
  .icon-facebook, .icon-twitter, .icon-instagram, .icon-skype{
   font-size: 23px;
  }
- @media (min-width: 768px){
- .show-line-2 {
+ @media (min-width: 769px){
+ .show-line-2, .show-jobsummary-2 {
    display: none;
  }
  
@@ -39,4 +61,34 @@
 #career1 {
   height: 96px !important;
   padding-top: 0px !important;
+}
+.modify-title {
+  font-weight: 700;
+}
+.show-line, .show-line-2 {
+  color: #45b649;
+}
+.text-jobsummary {
+  color: #45b649;
+}
+.modify-img {
+  height: 400px;
+  width: 100%;
+  object-fit: cover;
+}
+.show-jobsummary .text-center a:hover{
+  text-decoration: none ! important;
+}
+.show-jobsummary .text-center a {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.show-jobsummary-2 .text-center a:hover{
+  text-decoration: none ! important;
+}
+.show-jobsummary-2 .text-center a {
+  margin-left: none;
+  padding-left: 10%;
+  padding-right: 10%;
+  
 }
