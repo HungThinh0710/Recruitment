@@ -7,7 +7,6 @@ import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
 // import './Roles.css'
-import ModalAddJob from '../components/ModalAddJob';
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
@@ -233,13 +232,10 @@ export default class JobsPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <ModalAddJob
-              color="success"
-              page={this.state.activePage}
-              buttonLabel="Create a new job"
-              nameButtonAccept="Add"
-              function={this.addJob.bind(this)}
-            />
+            <Link to="/dashboard/create-job">
+              <Button color="success">Create a new job</Button>
+            </Link>
+            <br />
             <br />
             {this.state.listDeleteId.length !== 0 && (
               <ModalRemoveItem

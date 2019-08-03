@@ -8,6 +8,9 @@ import {
 // page
 
 /*------Action-----*/
+import AddNewRolePage from './admin/pages/AddNewRolePage';
+import AddNewUserPage from './admin/pages/AddNewUserPage';
+import AddNewJobPage from './admin/pages/AddNewJobPage';
 import AddNewArticlePage from './admin/pages/AddNewArticlePage';
 import AddNewFormatPage from './admin/pages/AddNewFormatPage';
 /*------Action-----*/
@@ -117,6 +120,12 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/create-role'}
+              layout={MainLayout}
+              component={AddNewRolePage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/user'}
               layout={MainLayout}
               component={UsersPage}
@@ -129,6 +138,12 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/create-user'}
+              layout={MainLayout}
+              component={AddNewUserPage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/job'}
               layout={MainLayout}
               component={JobsPage}
@@ -138,6 +153,12 @@ class App extends React.Component {
               path={'/dashboard/job/:id'}
               layout={MainLayout}
               component={JobDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/create-job'}
+              layout={MainLayout}
+              component={AddNewJobPage}
             />
             <LayoutRoute
               exact

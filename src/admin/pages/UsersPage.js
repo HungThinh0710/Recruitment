@@ -7,7 +7,6 @@ import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
 // import './Roles.css'
-import ModalAddUser from '../components/ModalAddUser';
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
@@ -234,13 +233,10 @@ export default class UsersPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <ModalAddUser
-              color="success"
-              buttonLabel="Create a new user"
-              page={this.state.activePage}
-              nameButtonAccept="Add"
-              function={this.addUser.bind(this)}
-            />
+            <Link to="/dashboard/create-user">
+              <Button color="success">Create a new user</Button>
+            </Link>
+            <br />
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
