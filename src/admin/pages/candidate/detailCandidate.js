@@ -100,6 +100,15 @@ export default class JobDetail extends Component {
   render() {
     var i = 0;
     const { formError } = this.state;
+    var string = '';
+    {this.state.technicalSkill.map( e=> {
+      string += e.name + ': ' + e.year + ' years; '
+      return(
+        string 
+      );
+     })}
+    var length = string.length;
+    var newString = string.slice(0,length-2);
     return (
       <div className="profile-card">
         <Card className="card-body">
@@ -160,11 +169,7 @@ export default class JobDetail extends Component {
                         </tr>
                         <tr key={7}>
                           <td className="job-title">Technical Skill</td>
-                          <td>{this.state.technicalSkill.map( e=> {
-                              return(
-                                <span> {e.name} : {e.year + ' years'}&#44;</span>
-                              )
-                             })}</td>
+                          <td><span>{newString}</span></td>
                         </tr>
                       </tbody>
                     </table>

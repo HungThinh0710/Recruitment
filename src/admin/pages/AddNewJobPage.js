@@ -11,18 +11,25 @@ import {
   Input,
   InputGroupAddon,
   InputGroupText,
-  InputGroup
+  InputGroup,
+  Card,
+  CardTitle,
+  CardBody
 } from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import './ModalAddJob.css';
+import './AddNewJobPage.css';
+import { MdCancel } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+const animatedComponents = makeAnimated();
 
-export default class ModalAddUser extends Component {
+export default class AddNewJobPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
       name: '',
       description: '',
       address: '453-455 Hoang Dieu',
@@ -48,19 +55,25 @@ export default class ModalAddUser extends Component {
       modalError: false,
       modalSuccess: false,
       errorData: '',
-      showErrorMessage: false
+      showErrorMessage: false,
+      urlJob: ''
     };
 
-    this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
   }
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/dashboard/login');
+    }
+  }
 
-  wrapperFunction = () => {
-    this.handleSubmit();
+  backToPreviousPage = () => {
+    this.props.history.push('/dashboard/job');
   };
+
   toggleModalSuccess() {
     this.setState(prevState => ({
       modalSuccess: !prevState.modalSuccess
@@ -70,45 +83,6 @@ export default class ModalAddUser extends Component {
     this.setState(prevState => ({
       modalError: !prevState.modalError
     }));
-  }
-  toggle() {
-    if (this.state.modal) {
-      this.setState(prevState => ({
-        modal: !prevState.modal,
-        name: '',
-        description: '',
-        address: '453-455 Hoang Dieu',
-        position: '',
-        category: 'Internship',
-        salaryBegin: '',
-        salaryEnd: '',
-        status: 'Full-time',
-        experience: '1 year',
-        amount: 0,
-        publishedOn: '',
-        deadline: '',
-        formError: {
-          name: 'Name is required',
-          address: 'Address is required',
-          position: 'Position is required',
-          salary: 'Salary is required',
-          status: 'Status is required',
-          publishedOn: 'Published date is required',
-          deadline: 'Closed date is required',
-          amount: 'Amount is required',
-          salaryBegin: 'Starting salary is required',
-          salaryEnd: ''
-        },
-        modalError: false,
-        modalSuccess: false,
-        errorData: '',
-        showErrorMessage: false
-      }));
-    } else {
-      this.setState(prevState => ({
-        modal: !prevState.modal
-      }));
-    }
   }
   handlePossitiveNumber(event) {
     const keyCode = event.keyCode || event.which;
@@ -207,27 +181,9 @@ export default class ModalAddUser extends Component {
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          //this.toggle();
-          this.setState(prevState => ({
-            modal: !prevState.modal,
-            modalError: false,
-            modalSuccess: true
-          }));
           res.json().then(data => {
-            var url2 =
-              'https://api.enclavei3dev.tk/api/list-job?page=' +
-              this.props.page;
-            fetch(url2, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                Authorization: 'Bearer ' + localStorage.getItem('access_token')
-              }
-            }).then(res => {
-              res.json().then(data => {
-                this.props.function(data);
-              });
+            this.setState({
+              urlJob: '/dashboard/job/' + data.job.id
             });
           });
         }
@@ -330,9 +286,12 @@ export default class ModalAddUser extends Component {
   };
   render() {
     var i = 0;
-    const { formError } = this.state;
+    const { formError, urlJob } = this.state;
     return (
-      <div>
+      <div
+        className="profile-card"
+        style={{ marginBottom: '150px', width: '70%', marginTop: '6%' }}
+      >
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -343,7 +302,11 @@ export default class ModalAddUser extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: '#45b649' }}>Added succesfully</span>
+            <Link to={urlJob}>
+              <span style={{ color: '#45b649' }}>
+                Successfully! Click to see the detail of the new job
+              </span>
+            </Link>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -382,17 +345,16 @@ export default class ModalAddUser extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <Button color={this.props.color} onClick={this.toggle}>
-          {this.props.buttonLabel}
-        </Button>
-        <Modal
-          size="lg"
-          isOpen={this.state.modal}
-          toggle={this.toggle}
-          className={this.props.className}
-        >
-          <ModalHeader toggle={this.toggle}>Create A New Job</ModalHeader>
-          <ModalBody>
+
+        <Card className="card-body">
+          <CardTitle className="title">
+            <MdCancel className="first" />
+            Create A New Job
+            <Link to="/dashboard/job">
+              <MdCancel />
+            </Link>
+          </CardTitle>
+          <CardBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup>
                 <Label
@@ -654,27 +616,41 @@ export default class ModalAddUser extends Component {
                   )}
                 </div>
               </FormGroup>
+
+              <FormGroup
+                style={{ display: 'flex', justifyContent: 'flex-end' }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    width: '180px',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  {formError.name == '' &&
+                  formError.position == '' &&
+                  formError.amount == '' &&
+                  formError.salaryBegin == '' &&
+                  formError.salaryEnd == '' ? (
+                    <Button color="success" onClick={this.handleSubmit}>
+                      Submit
+                    </Button>
+                  ) : (
+                    <Button color="success" onClick={this.handleErrorMessage}>
+                      Submit
+                    </Button>
+                  )}
+                  <Button
+                    onClick={() => this.backToPreviousPage()}
+                    color="secondary"
+                  >
+                    Back
+                  </Button>
+                </div>
+              </FormGroup>
             </Form>
-          </ModalBody>
-          <ModalFooter>
-            {formError.name == '' &&
-            formError.position == '' &&
-            formError.amount == '' &&
-            formError.salaryBegin == '' &&
-            formError.salaryEnd == '' ? (
-              <Button color="success" onClick={this.wrapperFunction}>
-                Submit
-              </Button>
-            ) : (
-              <Button color="success" onClick={this.handleErrorMessage}>
-                Submit
-              </Button>
-            )}
-            <Button color="secondary" onClick={this.toggle}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
+          </CardBody>
+        </Card>
       </div>
     );
   }

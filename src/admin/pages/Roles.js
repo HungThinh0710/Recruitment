@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { Card, CardBody, CardHeader, Button, InputGroupAddon, InputGroup, Input, Container, Row, Col, FormGroup, Badge , } from 'reactstrap';
 import ModalRemoveRole from '../components/ModalRemoveRole';
 import ModalRemoveRoles from '../components/ModalRemoveRoles';
 import ModalAddRole from '../components/ModalAddRole';
+=======
+import { Card, CardBody, CardHeader, Button } from 'reactstrap';
+import ModalRemoveItem from '../components/ModalRemoveItem';
+>>>>>>> dev
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';  
 import './RolesPage.css';
@@ -13,7 +18,8 @@ import './TestPage.css';
 
 import { PulseLoader } from 'react-spinners';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold'
 };
 const styleCard = {
   width: '95%',
@@ -46,7 +52,8 @@ export default class Roles extends Component {
   }
   async componentDidMount() {
     const { activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
+    // var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
+    var url = 'https://api.enclavei3dev.tk/api/list-role';
     // var i = 0;
     // var listRoles = [];
     const data = await fetch(url, {
@@ -270,7 +277,6 @@ export default class Roles extends Component {
                           </InputGroupAddon>
                         </InputGroup>
                       </Col>
-
                     </Row>
                   </Col>
                 </Row>
@@ -314,6 +320,7 @@ export default class Roles extends Component {
                         <td>{e.description}</td>
                         <td>
                           <div className="action">
+<<<<<<< HEAD
                             <div className="action-item">
                               <ModalEditItem 
                                 icon
@@ -342,6 +349,25 @@ export default class Roles extends Component {
                           </div>
                           <div className="action-mobile">
                           <DropDownTable/>
+=======
+                            <ModalEditItem
+                              icon
+                              // id={listId[index]}
+                              name={e.name}
+                              color="success"
+                              buttonLabel="Edit"
+                              // function={this.editRole.bind(this)}
+                            />
+                            <Link style={{ width: 'auto' }} to={url}>
+                              <Button className="view-button" color="primary">
+                                <MdPageview />
+                              </Button>
+                            </Link>
+                            <ModalRemoveItem
+                              itemName="this role"
+                              function={() => this.removeItem(e.id)}
+                            />
+>>>>>>> dev
                           </div>
                         </td>
                       </tr>

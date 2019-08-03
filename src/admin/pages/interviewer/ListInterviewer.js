@@ -6,28 +6,31 @@ import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 // import './Roles.css'
 import { ClipLoader } from 'react-spinners';
+import ModalRemoveItem from '../../components/ModalRemoveItem';
 import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
-  fontWeight: 'bold',
+  fontWeight: 'bold'
 };
 const styleCard = {
-  width: '90%',
+  width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%',
-  loading: true
 };
 export default class UsersPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      listDeleteName: [],
+      listDeleteId: [],
       rows: [],
       currentPage: 0,
       activePage: 1,
       totalItems: 0,
       loading: true
     };
+    this.handlePageChange = this.handlePageChange.bind(this);
     // this.removeManyItems = this.removeManyItems.bind(this);
   }
   componentWillMount() {
@@ -57,7 +60,8 @@ export default class UsersPage extends Component {
   }
 
   handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3dev.tk/api/list-interviewer?page=' + pageNumber;
+    var url =
+      'https://api.enclavei3dev.tk/api/list-interviewer?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -66,7 +70,7 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      res.json().then(data => {       
+      res.json().then(data => {
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
@@ -77,7 +81,107 @@ export default class UsersPage extends Component {
     });
   }
 
-
+removeItem(id) {
+    const { activePage} = this.state;
+    var array = [];
+    array.push(id);
+    var url = 'https://api.enclavei3dev.tk/api/interviewer';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        interviewerId: array,
+        status: 'none'
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch('https://api.enclavei3dev.tk/api/list-interviewer?page=' + activePage, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(data => {
+          data.data.forEach(function(e) {
+            delete e.created_at;
+            delete e.updated_at;
+          });
+          this.setState({
+            rows: data.data,
+            totalItems: data.total,
+          });
+        });
+      });
+    });
+  }
+  handleCheckChange(e) {
+    const { listDeleteId, listDeleteName } = this.state;
+    listDeleteId.push(e.id);
+    listDeleteName.push(e);
+    var array1 = [...new Set(listDeleteId)];
+    var array3 = [...new Set(listDeleteName)];
+    var array2 = [];
+    var array4 = [];
+    array1.map(element => {
+      var count = listDeleteId.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    array3.map(element => {
+      var count = listDeleteName.filter(e => e.id === element.id);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array4.push(element);
+      }
+      return array4;
+    });
+    this.setState({
+      listDeleteId: array2,
+      listDeleteName: array4
+    });
+  }
+  removeManyItems() {
+    const { listDeleteId, activePage } = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/interviewer';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        interviewerId: listDeleteId,
+        status: 'none'
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch('https://api.enclavei3dev.tk/api/list-interviewer?page=' + activePage, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(data => {
+          this.setState({
+            rows: data.data,
+            totalItems: data.total,
+            listDeleteId: [],
+            listDeleteName: []
+          });
+        });
+      });
+    });
+  }
   render() {
     var i = 0;
     return (
@@ -102,7 +206,14 @@ export default class UsersPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <div style={{overflowX : 'auto'}} className="table-test">
+             {this.state.listDeleteId.length != 0 && (
+              <ModalRemoveItem
+                itemName="this interviewer"
+                buttonLabel="Delete"
+                function={() => this.removeManyItems()}
+              />
+            )}
+            <div style={{ overflowX: 'auto' }} className="table-test">
               <table>
                 <thead>
                   <tr
@@ -118,9 +229,17 @@ export default class UsersPage extends Component {
                     <th>#</th>
                     <th>Name</th>
                     <th>Address</th>
-                    <th  style = {{textOverflow: 'ellipsis',maxWidth: 100, minWidth:80}}>Email</th>
+                    <th
+                      style={{
+                        textOverflow: 'ellipsis',
+                        maxWidth: 100,
+                        minWidth: 80
+                      }}
+                    >
+                      Email
+                    </th>
                     <th>Phone</th>
-                    <th style={{marginHorizontal: '10px', }}>
+                    <th style={{ marginHorizontal: '10px' }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
@@ -132,14 +251,14 @@ export default class UsersPage extends Component {
                     return (
                       <tr key={e.id}>
                         <td>
-                          <input
-                            type="checkbox"
+                          <input type="checkbox"
+                                 onChange={() => this.handleCheckChange(e)}
                           />
                         </td>
                         <td>{i}</td>
                         <td>{e.fullname}</td>
                         <td>{e.address}</td>
-                        <td  style = {{textOverflow: 'ellipsis'}}>{e.email}</td>
+                        <td style={{ textOverflow: 'ellipsis' }}>{e.email}</td>
                         <td>{e.phone}</td>
                         <td>
                           <div className="action">
@@ -148,6 +267,10 @@ export default class UsersPage extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
+                            <ModalRemoveItem                               
+                                itemName="this interviewer"
+                                function={() => this.removeItem(e.id)}
+                              />
                           </div>
                         </td>
                       </tr>

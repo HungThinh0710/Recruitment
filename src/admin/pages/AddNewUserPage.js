@@ -5,13 +5,20 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Form,
-  FormGroup,
   Label,
-  Input
+  Input,
+  Card,
+  CardTitle,
+  CardBody,
+  FormGroup,
+  Form
 } from 'reactstrap';
 import CollapsePermission from '../components/CollapsePermission';
-
+import { MdCancel } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+const animatedComponents = makeAnimated();
 /*-------Regex----------*/
 const nameRegex = /^[a-zA-Z0-9]+$/;
 const fullNameRegex = /^[a-zA-Z\s]+$/;
@@ -19,11 +26,10 @@ const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
 /*-------Regex----------*/
-export default class ModalAddUser extends Component {
+export default class AddNewUserPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
       name: '',
       fullname: '',
       email: '',
@@ -48,73 +54,50 @@ export default class ModalAddUser extends Component {
       modalSuccess: false,
       errorData: '',
       errorRoleMessage: "User's roles cannot be empty",
-      showErrorMessage: false
+      showErrorMessage: false,
+      urlUser: '',
+      optionRole: [],
+      selectedRoleOption: [{ id: 2, value: 'User', label: 'User' }]
     };
-
-    this.toggle = this.toggle.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
-    this.handleCheck = this.handleCheck.bind(this);
     this.handleErrorMessage = this.handleErrorMessage.bind(this);
   }
-
+  componentWillMount() {
+    if (!localStorage.getItem('access_token')) {
+      this.props.history.push('/dashboard/login');
+    }
+  }
   async componentDidMount() {
-    var { listChecked } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=1';
+    var { optionRole } = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/list-role';
     const data = await fetch(url, {
       method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    data.data.map(e => {
-      return (e.action = (
-        <input
-          type="checkbox"
-          onChange={() => this.handleCheck(e, listChecked)}
-        />
-      ));
+    data.map(e => {
+      var role = { id: e.id, value: e.name, label: e.name };
+      optionRole.push(role);
+      return optionRole;
     });
     this.setState({
-      rows: data.data,
-      listChecked: listChecked,
-      totalItems: data.total,
-      currentPage: data.current_page
+      optionRole: optionRole
     });
   }
 
-  handleCheck(e, listChecked) {
-    listChecked.push(e.id);
-    var { errorRoleMessage } = this.state;
-    var array1 = [...new Set(listChecked)];
-    var array2 = [];
-    array1.map(element => {
-      var count = listChecked.filter(e => e === element);
-      var length = count.length;
-      if (length % 2 !== 0) {
-        array2.push(element);
-      }
-      return array2;
-    });
-    array2.length === 0
-      ? (errorRoleMessage = "User's roles cannot be empty")
-      : (errorRoleMessage = '');
-
-    this.setState({
-      listChecked: listChecked,
-      errorRoleMessage: errorRoleMessage
-    });
-  }
-
-  wrapperFunction = () => {
-    this.handleSubmit();
-    this.toggle();
+  backToPreviousPage = () => {
+    this.props.history.push('/dashboard/user');
   };
+
   toggleModalSuccess() {
     this.setState(prevState => ({
       modalSuccess: !prevState.modalSuccess
@@ -124,35 +107,6 @@ export default class ModalAddUser extends Component {
     this.setState(prevState => ({
       modalError: !prevState.modalError
     }));
-  }
-  toggle() {
-    if (this.state.modal) {
-      this.setState(prevState => ({
-        modal: !prevState.modal,
-        name: '',
-        fullname: '',
-        phone: '',
-        email: '',
-        password: '',
-        passwordConfirm: '',
-        formError: {
-          name: 'Username is required',
-          fullname: 'Fullname is required',
-          email: 'Email is required',
-          phone: 'Phone is required',
-          address: '',
-          password: 'Password is required',
-          passwordConfirm: 'Password does not match'
-        },
-        errorData: '',
-        showErrorMessage: false,
-        errorRoleMessage: "User's permissions cannot be empty"
-      }));
-    } else {
-      this.setState(prevState => ({
-        modal: !prevState.modal
-      }));
-    }
   }
 
   handleSubmit = () => {
@@ -164,17 +118,12 @@ export default class ModalAddUser extends Component {
       address,
       password,
       passwordConfirm,
-      listChecked
+      selectedRoleOption
     } = this.state;
-    var array1 = [...new Set(listChecked)];
-    var array2 = [];
-    array1.map(element => {
-      var count = listChecked.filter(e => e === element);
-      var length = count.length;
-      if (length % 2 !== 0) {
-        array2.push(element);
-      }
-      return array2;
+    var array = [];
+    selectedRoleOption.map(e => {
+      array.push(e.id);
+      return array;
     });
     var url = 'https://api.enclavei3dev.tk/api/user';
     fetch(url, {
@@ -187,7 +136,7 @@ export default class ModalAddUser extends Component {
         address: address,
         password: password,
         password_confirmation: passwordConfirm,
-        roles: array2
+        roles: array
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -210,32 +159,18 @@ export default class ModalAddUser extends Component {
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          this.toggle();
-          this.setState(prevState => ({
-            modal: !prevState.modal,
-            modalError: false,
-            modalSuccess: true
-          }));
           res.json().then(data => {
-            var url2 =
-              'https://api.enclavei3dev.tk/api/list-user?page=' +
-              this.props.page;
-            fetch(url2, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                Authorization: 'Bearer ' + localStorage.getItem('access_token')
-              }
-            }).then(res => {
-              res.json().then(data => {
-                this.props.function(data);
-              });
+            this.setState({
+              urlUser: '/dashboard/user/' + data.user.id
             });
           });
         }
       })
       .catch(error => console.error('Error:', error));
+  };
+
+  handleSelectRoleChange = selectedRoleOption => {
+    this.setState({ selectedRoleOption });
   };
 
   handleErrorMessage = () => {
@@ -336,37 +271,6 @@ export default class ModalAddUser extends Component {
     });
   }
 
-  handlePageChange(pageNumber) {
-    this.setState({ activePage: pageNumber, currentPage: pageNumber });
-    var { listChecked } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + pageNumber;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        data.data.map(e => {
-          return (e.action = (
-            <input
-              type="checkbox"
-              onChange={() => this.handleCheck(e, listChecked)}
-            />
-          ));
-        });
-        this.setState({
-          rows: data.data,
-          listChecked: listChecked,
-          totalItems: data.total,
-          currentPage: data.current_page
-        });
-      });
-    });
-  }
-
   render() {
     var i = 0;
     const {
@@ -376,10 +280,14 @@ export default class ModalAddUser extends Component {
       email,
       phone,
       password,
-      passwordConfirm
+      passwordConfirm,
+      urlUser
     } = this.state;
     return (
-      <div>
+      <div
+        className="profile-card"
+        style={{ marginBottom: '150px', width: '70%', marginTop: '6%' }}
+      >
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -390,7 +298,11 @@ export default class ModalAddUser extends Component {
             Notification
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: '#45b649' }}>Added succesfully</span>
+            <Link to={urlUser}>
+              <span style={{ color: '#45b649' }}>
+                Successfully! Click to see the detail of the new role
+              </span>
+            </Link>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -430,27 +342,29 @@ export default class ModalAddUser extends Component {
 
         {/*--------Modal-Error-----*/}
 
-        <Button color={this.props.color} onClick={this.toggle}>
-          {this.props.buttonLabel}
-        </Button>
-        <Modal
-          size="lg"
-          isOpen={this.state.modal}
-          toggle={this.toggle}
-          className={this.props.className}
-        >
-          <ModalHeader toggle={this.toggle}>Create A New User</ModalHeader>
-          <ModalBody>
+        <Card className="card-body">
+          <CardTitle className="title">
+            <MdCancel className="first" />
+            Create A New User
+            <Link to="/dashboard/user">
+              <MdCancel />
+            </Link>
+          </CardTitle>
+          <CardBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup>
-                <Label for="Name">Username</Label>
+                <Label className="title-input" for="Name">
+                  Username
+                </Label>
                 <Input type="text" name="name" onChange={this.handleChange} />
                 {formError.name !== '' && this.state.showErrorMessage && (
                   <span style={{ color: 'red' }}>{formError.name}</span>
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="Fullname">Fullname</Label>
+                <Label className="title-input" for="Fullname">
+                  Fullname
+                </Label>
                 <Input
                   type="text"
                   name="fullname"
@@ -461,21 +375,27 @@ export default class ModalAddUser extends Component {
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="Email">Email</Label>
+                <Label className="title-input" for="Email">
+                  Email
+                </Label>
                 <Input type="email" name="email" onChange={this.handleChange} />
                 {formError.email !== '' && this.state.showErrorMessage && (
                   <span style={{ color: 'red' }}>{formError.email}</span>
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="Phone">Phone</Label>
+                <Label className="title-input" for="Phone">
+                  Phone
+                </Label>
                 <Input type="text" name="phone" onChange={this.handleChange} />
                 {formError.phone !== '' && this.state.showErrorMessage && (
                   <span style={{ color: 'red' }}>{formError.phone}</span>
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="Fullname">Address</Label>
+                <Label className="title-input" for="Fullname">
+                  Address
+                </Label>
                 <Input
                   type="text"
                   name="address"
@@ -483,7 +403,9 @@ export default class ModalAddUser extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="Password">Password</Label>
+                <Label className="title-input" for="Password">
+                  Password
+                </Label>
                 <Input
                   type="password"
                   name="password"
@@ -494,7 +416,9 @@ export default class ModalAddUser extends Component {
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="ConfirmPassword">Confirm Password</Label>
+                <Label className="title-input" for="ConfirmPassword">
+                  Confirm Password
+                </Label>
                 <Input
                   type="password"
                   name="passwordConfirm"
@@ -508,46 +432,56 @@ export default class ModalAddUser extends Component {
                   )}
               </FormGroup>
               <FormGroup>
-                <CollapsePermission
-                  style={{ width: '100%' }}
-                  name="Roles"
-                  data={this.state.rows}
-                  activePage={this.state.activePage}
-                  itemsCountPerPage={10}
-                  totalItemsCount={this.state.totalItems}
-                  pageRangeDisplayed={5}
-                  onChange={this.handlePageChange}
+                <Label className="title-input">Roles</Label>
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  onChange={this.handleSelectRoleChange.bind(this)}
+                  defaultValue={this.state.selectedRoleOption}
+                  options={this.state.optionRole}
                 />
+                {!this.state.selectedRoleOption &&
+                  this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>Roles are required</span>
+                  )}
               </FormGroup>
-              {this.state.errorRoleMessage !== '' &&
-                this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>
-                    User's roles cannot be empty
-                  </span>
-                )}
+              <FormGroup
+                style={{ display: 'flex', justifyContent: 'flex-end' }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    width: '180px',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  {formError.name == '' &&
+                  formError.fullname == '' &&
+                  formError.email == '' &&
+                  formError.phone == '' &&
+                  formError.password == '' &&
+                  formError.passwordConfirm == '' &&
+                  this.state.selectedRoleOption ? (
+                    <Button color="success" onClick={this.handleSubmit}>
+                      Submit
+                    </Button>
+                  ) : (
+                    <Button color="success" onClick={this.handleErrorMessage}>
+                      Submit
+                    </Button>
+                  )}
+                  <Button
+                    onClick={() => this.backToPreviousPage()}
+                    color="secondary"
+                  >
+                    Back
+                  </Button>
+                </div>
+              </FormGroup>
             </Form>
-          </ModalBody>
-          <ModalFooter>
-            {formError.name == '' &&
-            formError.fullname == '' &&
-            formError.email == '' &&
-            formError.phone == '' &&
-            formError.password == '' &&
-            formError.passwordConfirm == '' &&
-            this.state.errorRoleMessage == '' ? (
-              <Button color="success" onClick={this.wrapperFunction}>
-                Submit
-              </Button>
-            ) : (
-              <Button color="success" onClick={this.handleErrorMessage}>
-                Submit
-              </Button>
-            )}
-            <Button color="secondary" onClick={this.toggle}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
+          </CardBody>
+        </Card>
       </div>
     );
   }

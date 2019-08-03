@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
-
-import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveItem from '../components/ModalRemoveItem';
-import ModalEditItem from '../components/ModalEditItem';
-import { Link } from 'react-router-dom';
-import Pagination from '../components/Pagination.js';
-// import './Roles.css'
 import { ClipLoader } from 'react-spinners';
-import $ from 'jquery';
+import { Link } from 'react-router-dom';
+import ModalEditItem from '../components/ModalEditItem';
+import ModalRemoveItem from '../components/ModalRemoveItem';
+import { MdCancel, MdPageview } from 'react-icons/md';
 const styleFont = {
   fontSize: '200%',
+  display: 'flex',
+  justifyContent: 'space-between',
   fontWeight: 'bold'
 };
+
 const styleCard = {
   width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
   marginBottom: '8%'
 };
-export default class JobsPage extends Component {
+export default class FormatPage extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       listDeleteName: [],
       listDeleteId: [],
@@ -32,9 +32,10 @@ export default class JobsPage extends Component {
       listId: [],
       loading: true
     };
-    this.handleCheckChange = this.handleCheckChange.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
+    // this.handleCheckChange = this.handleCheckChange.bind(this);
+    // this.handlePageChange = this.handlePageChange.bind(this);
     // this.removeManyItems = this.removeManyItems.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -42,9 +43,8 @@ export default class JobsPage extends Component {
     }
   }
   async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/list-job?page=1';
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
     const data = await fetch(url, {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -53,97 +53,11 @@ export default class JobsPage extends Component {
     }).then(res => res.json());
     setTimeout(() => {
       this.setState({
-        rows: data.data,
-        totalItems: data.total,
+        rows: data,
         loading: false
       });
     }, 500);
   }
-
-  handlePageChange(pageNumber) {
-    // this.setState({activePage: pageNumber});
-    var url = 'https://api.enclavei3dev.tk/api/list-job?page=' + pageNumber;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          currentPage: data.currentPage,
-          totalItems: data.total,
-          rows: data.data,
-          activePage: pageNumber
-        });
-      });
-    });
-  }
-
-  edit(index) {
-    $('.item').removeClass('item-active');
-    $('#' + index).addClass('item-active');
-    var url = 'https://api.enclavei3dev.tk/api/user?page=' + index;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          rows: data.data,
-          totalItems: data.total
-        });
-      });
-    });
-  }
-
-  addJob(data) {
-    this.setState({
-      rows: data.data,
-      totalItems: data.total
-    });
-  }
-
-  removeItem(id) {
-    const { activePage } = this.state;
-    var array = [];
-    array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/job';
-    fetch(url, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        jobId: array
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-job?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total
-          });
-        });
-      });
-    });
-  }
-
   handleCheckChange(e) {
     const { listDeleteId, listDeleteName } = this.state;
     listDeleteId.push(e.id);
@@ -173,14 +87,14 @@ export default class JobsPage extends Component {
       listDeleteName: array4
     });
   }
-
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/job';
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        jobId: listDeleteId
+        formatId: listDeleteId,
+        status: 'none'
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -188,20 +102,56 @@ export default class JobsPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-job?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      fetch(
+        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
         }
-      }).then(res => {
+      ).then(res => {
         res.json().then(data => {
           this.setState({
-            rows: data.data,
-            totalItems: data.total,
-            listDeleteId: [],
-            listDeleteName: []
+            rows: data,
+            listDeleteId: []
+          });
+        });
+      });
+    });
+  }
+
+  removeItem(id) {
+    const { activePage } = this.state;
+    var array = [];
+    array.push(id);
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        formatId: array,
+        status: 'none'
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch(
+        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
+        }
+      ).then(res => {
+        res.json().then(data => {
+          this.setState({
+            rows: data
           });
         });
       });
@@ -212,7 +162,14 @@ export default class JobsPage extends Component {
     var i = 0;
     return (
       <Card style={styleCard}>
-        <CardHeader style={styleFont}>Jobs Management</CardHeader>
+        <CardHeader style={styleFont}>
+          Format Management
+          <div className="icon-cancle">
+            <Link to="/dashboard/article">
+              <MdCancel />
+            </Link>
+          </div>
+        </CardHeader>
         {this.state.loading ? (
           <div
             style={{
@@ -232,15 +189,16 @@ export default class JobsPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <Link to="/dashboard/create-job">
-              <Button color="success">Create a new job</Button>
-            </Link>
+            <div className="area-btn-header">
+              <Link to="/dashboard/create-format">
+                <Button color="success">Create A New Format</Button>
+              </Link>
+            </div>
             <br />
-            <br />
-            {this.state.listDeleteId.length !== 0 && (
+            {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="this jobs"
-                buttonLabel="Delete"
+                itemName="this formats"
+                buttonLabel="DELETE"
                 function={() => this.removeManyItems()}
               />
             )}
@@ -254,14 +212,13 @@ export default class JobsPage extends Component {
                       color: 'white'
                     }}
                   >
-                    <th>
+                    <th style={{ width: '5%' }}>
                       <input type="checkbox" />
                     </th>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Salary</th>
-                    <th>Deadline</th>
+                    <th style={{ width: '5%' }}>#</th>
+                    <th>Title</th>
+                    {/* <th>Created At</th>
+                  <th>Updated At</th> */}
                     <th style={{ width: '180px' }}>
                       <div className="action">Action</div>
                     </th>
@@ -270,7 +227,7 @@ export default class JobsPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/dashboard/job/' + e.id;
+                    let url = '/dashboard/format/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
@@ -280,10 +237,9 @@ export default class JobsPage extends Component {
                           />
                         </td>
                         <td>{i}</td>
-                        <td>{e.name}</td>
-                        <td>{e.position}</td>
-                        <td>{e.salary}</td>
-                        <td>{e.deadline}</td>
+                        <td>{e.title}</td>
+                        {/* <td>{e.created_at}</td>
+                      <td>{e.updated_at}</td> */}
                         <td>
                           <div className="action">
                             <ModalEditItem
@@ -300,8 +256,8 @@ export default class JobsPage extends Component {
                               </Button>
                             </Link>
                             <ModalRemoveItem
-                              itemName="this job"
                               function={() => this.removeItem(e.id)}
+                              itemName="this format"
                             />
                           </div>
                         </td>
@@ -310,14 +266,6 @@ export default class JobsPage extends Component {
                   })}
                 </tbody>
               </table>
-              <br />
-              <Pagination
-                activePage={this.state.activePage}
-                itemsCountPerPage={10}
-                totalItemsCount={this.state.totalItems}
-                pageRangeDisplayed={5}
-                onChange={this.handlePageChange.bind(this)}
-              />
             </div>
           </CardBody>
         )}

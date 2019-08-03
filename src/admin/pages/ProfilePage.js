@@ -425,7 +425,7 @@ export default class ProfilePage extends Component {
           </CardTitle> */}
           <CardTitle style={{display:'flex',justifyContent:'space-between',fontSize:'35px'}}>
           <MdCancel className="hidden" />
-            <span style={{color:'#45b649',fontWeight:'bolder',fontSize:'45px'}}>My Profile</span>
+            <span style={{color:'#45b649',fontWeight:'bolder',fontSize:'45px'}}>Profile</span>
             <div className="icon-cancle">
             <Link to="/dashboard/role">
               <MdCancel />

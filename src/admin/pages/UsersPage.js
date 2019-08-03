@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveUser from '../components/ModalRemoveUser';
-import ModalRemoveUsers from '../components/ModalRemoveUsers';
+import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
 // import './Roles.css'
-import ModalAddUser from '../components/ModalAddUser';
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold'
 };
 const styleCard = {
   width: '80%',
@@ -234,16 +233,14 @@ export default class UsersPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <ModalAddUser
-              color="success"
-              buttonLabel="Create a new user"
-              page={this.state.activePage}
-              nameButtonAccept="Add"
-              function={this.addUser.bind(this)}
-            />
+            <Link to="/dashboard/create-user">
+              <Button color="success">Create a new user</Button>
+            </Link>
+            <br />
+            <br />
             {this.state.listDeleteId.length != 0 && (
-              <ModalRemoveUsers
-                arrayName={this.state.listDeleteName}
+              <ModalRemoveItem
+                itemName="this users"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
@@ -301,9 +298,8 @@ export default class UsersPage extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveUser
-                              item={e}
-                              buttonLabel="Delete"
+                            <ModalRemoveItem
+                              itemName="this user"
                               function={() => this.removeItem(e.id)}
                             />
                           </div>
