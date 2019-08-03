@@ -13,6 +13,7 @@ import { Head } from 'react-static';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { HeadProvider, Meta, Title } from 'react-head';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
@@ -55,7 +56,7 @@ export default class Careers extends Component {
       experience: '',
       salary: '',
       status: '',
-      address: '',
+      addressed: '',
       content: '',
 
       active: false,
@@ -78,6 +79,8 @@ export default class Careers extends Component {
       }
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleFile = this.handleFile.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   toggleAlert() {
     this.setState({
@@ -113,34 +116,42 @@ export default class Careers extends Component {
       experience: data.job.experience,
       salary: data.job.salary,
       status: data.job.status,
-      address: data.job.address,
+      addressed: data.job.address,
       content: data.content
     });
     // gia tri thay doi
+//     const head = document.getElementsByTagName('head');
+//     head.innerHTML = "<meta title=\"xxx\"></meta>" + head.innerHTML;
+//     <meta property=\"fb:app_id\" content=\"2309010198\"/>
+// <meta property=\"og:title\" content=\"Enclave Recruitment System\" />
+// <meta property="og:type" content="article" />
+// <meta property=\"og:image\" content=\"http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg\"/>
+// <meta property=\"og:url\" content=\"https://enclavei3dev.tk/article/6\" />
+// <meta property=\"og:description\" content=\"Find your dream job in our company\" />
+
     this.updateHead();
     console.log(this.state.jobID)
   }
 
   updateHead() {
-
+  const  link=document.createElement('meta');
+link.property="og:title";
+link.content="Content should be displayed";
+document.getElementsByTagName('head')[0].append(link);
   }
-
   handleSubmit() {
-    let file = this.state.CV;
-    let formdata = new FormData();
-    formdata.append('photo', file)
+    const formdata = new FormData();
+    formdata.get('file', this.state.CV, this.state.CV.name)
     const { fullName,
       email,
       phone,
       description,
       address,
+      CV,
       technicalSkill } = this.state;
-
-    console.log(typeof formdata);
+      console.log(formdata);
     var url = 'https://api.enclavei3dev.tk/api/candidate';
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({
+    axios.post(url, {
         fullname: fullName,
         email: email,
         phone: phone,
@@ -148,13 +159,14 @@ export default class Careers extends Component {
         description: description,
         address: address,
         technicalSkill: technicalSkill,
-        CV: formdata
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
+        CV: formdata,
+        headers: {
+          'content-type': 'multipart/form-data',
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+      },
+    
+      
     })
       .then(res => {
         if (res.status === 401) {
@@ -179,13 +191,13 @@ export default class Careers extends Component {
           res.json().then(data => {
             var url2 =
               'https://api.enclavei3dev.tk/api/candidate'
-            fetch(url2, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                Authorization: 'Bearer ' + localStorage.getItem('access_token')
-              }
+            axios.post(url2, {
+              // method: 'POST',
+              // headers: {
+              //   'Content-Type': 'application/json',
+              //   Accept: 'application/json',
+              //   Authorization: 'Bearer ' + localStorage.getItem('access_token')
+              // }
             }).then(res => {
               res.json().then(data => {
                 this.props.function(data);
@@ -198,10 +210,15 @@ export default class Careers extends Component {
   };
   handleFile = event => {
     this.setState({
-      CV: event.target.files[0],
-      loaded: 0,
-    })
-
+      CV: event.target.files[0], 
+    },
+    () => {
+      console.log(this.state.CV)
+      console.log(typeof this.state.CV)
+      }
+    )
+    console.log(event.target.files[0])
+  
   }
 
 
@@ -237,7 +254,7 @@ export default class Careers extends Component {
         break;
     }
 
-    this.setState({ formErrors, [e.target.name]: value }, () => console.log(this.state.fullName, this.state.email, this.state.CV));
+    this.setState({ formErrors, [e.target.name]: value }, () => console.log(this.state.fullName, this.state.email));
   };
   render() {
     const { formErrors } = this.state;
@@ -395,7 +412,7 @@ export default class Careers extends Component {
                                   class="form-control"
                                   className={formErrors.CV.length > 0 ? 'error' : null}
                                   placeholder="Choose your CV"
-                                  name="CV"
+                                  name="file"
                                   noValidate
                                   multiple
                                   onChange={this.handleFile}
@@ -423,7 +440,7 @@ export default class Careers extends Component {
                               </div>
                             </FormGroup>
                             <FormGroup>
-                              <label class="col-form-label">TechnicalSkilltechnicalSkill skill</label>
+                              <label class="col-form-label">Technical skill</label>
                               <select
                                 class="form-control"
                                 className={formErrors.technicalSkill.length > 0 ? 'error' : null}
@@ -472,7 +489,7 @@ export default class Careers extends Component {
                         <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
                         <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
                         <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
+                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
                         <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
                         {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
                         <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
@@ -517,7 +534,7 @@ export default class Careers extends Component {
                         <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
                         <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
                         <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
+                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
                         <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
                         {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
                         <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
@@ -535,7 +552,7 @@ export default class Careers extends Component {
                       <div className="text-center">
                         {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
 
-
+                        
                         <div class="fb-share-button"
                           data-href={"https://enclavei3dev.tk/article/" + id}
                           data-layout="button_count">

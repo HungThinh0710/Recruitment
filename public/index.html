@@ -13,9 +13,7 @@
     -->
   <meta name="application-name" content="Enclave Recruitment" />
   <title>Enclave Recruitment</title>
-<meta property="og:title"       content="Enclave Recruitment" />
-<meta property="og:description" content="Find your dream jobs in our company"/>
-<meta property="og:image"       content="https://cdn1.imggmi.com/uploads/2019/8/2/d41154d927fdfda4a3070544e42eba30-full.png" />
+
 
   <!-- For Facebook -->
   <!-- <meta property="fb:app_id" content="2309010198" />
@@ -109,6 +107,8 @@
       }
     })(window.location);
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.min.js"></script>
 
   <!-- End Single Page Apps for GitHub Pages -->
 </head>
@@ -127,7 +127,12 @@
 
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    --><script>
+var link=document.createElement('meta');
+link.name="my:url";
+link.content="Content should be displayed";
+document.getElementsByTagName('head')[0].append(link);
+</script>
   <script>(function (d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
