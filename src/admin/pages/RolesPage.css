@@ -3,15 +3,49 @@
   justify-content: space-around;
 
 }
+.action-mobile{
+  display: none;
+}
+.table-custom{
 
-
+}
 @media only screen and (max-width: 768px) {
+  .card-header-custom{
+    font-size: 25px!important;
+    font-weight: bold;
+    text-align: center;
+  }
+
   .action {
-    flex-direction: column;
+    display: none;
+  }
+
+  .action-mobile{
+    display: block;
+    text-align: center;
   }
 
   .button-first {
     font-size: 50% !important;
+  }
+
+  .table-custom td{
+    font-size: 85%;
+  }
+
+  .role-form-search{
+    margin-top: 10px; 
+  }
+
+  .role-input-group-search{
+    width: 100%!important;
+  }
+  
+  .role-btn-search{
+    height: 35px!important;
+  }
+  .text-show-entries{
+    width: 60%!important;
   }
 }
 
@@ -19,6 +53,74 @@
   padding: 3px 8px !important;
 }
 
+.action-item{
+  display: flex;
+  padding: 0px 2px;
+}
+
 .table-test th {
   font-weight: bold;
+}
+
+.card-header-custom{
+  font-size: 30px;
+  font-weight: bold;
+}
+
+
+.role-create-area{
+  padding: 5px 15px 15px 0px!important;
+  display: flex;
+}
+.role-create-area div{
+  padding:0px 8px 0px 0px!important;
+}
+
+.role-filter-area{
+  width: 100%;
+  padding: 5px 0px 15px 0px!important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.role-input-search{
+  
+}
+
+.role-btn-search{
+  height: 35px!important;
+}
+
+.role-input-group-search{
+  /* width:100%!important; */
+}
+
+.role-form-create{
+  display: flex;
+}
+
+.role-form-search{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.role-head-row{
+  padding: 0;
+}
+
+.role-container-head-row{
+  padding-right: 0!important; 
+  padding-left: 0!important;
+  padding-bottom: 15px; 
+}
+
+.role-form-create div{
+  padding-right: 8px; 
+}
+
+.text-show-entries{
+  font-size: 14px;
+  margin-top: 5px;
 }

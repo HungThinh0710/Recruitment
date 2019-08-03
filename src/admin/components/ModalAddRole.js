@@ -56,6 +56,7 @@ export default class ModalAddRole extends Component {
     var url = 'https://api.enclavei3dev.tk/api/permission?page=1';
 
     const data = await fetch(url, {
+      method:'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Button, InputGroupAddon, InputGroup, Input, Container, Row, Col, FormGroup, Badge , } from 'reactstrap';
 import ModalRemoveRole from '../components/ModalRemoveRole';
 import ModalRemoveRoles from '../components/ModalRemoveRoles';
 import ModalAddRole from '../components/ModalAddRole';
 import ModalEditItem from '../components/ModalEditItem';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';  
 import './RolesPage.css';
 import { MdPageview, MdEdit } from 'react-icons/md';
 import PaginationComponent from '../components/Pagination.js';
+import DropDownTable from '../components/DropDownTable.js';
 import './TestPage.css';
 
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 const styleFont = {
   fontSize: '200%'
 };
 const styleCard = {
-  width: '80%',
-  marginTop: '5%',
+  width: '95%',
+  marginTop: '2%',
   alignSelf: 'center',
-  marginBottom: '8%'
+  marginBottom: '200px',
+
 };
 
 export default class Roles extends Component {
@@ -30,12 +32,13 @@ export default class Roles extends Component {
       activePage: 1,
       totalItems: 0,
       rows: [],
-      loading: true
+      loading: true,
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.removeManyItems = this.removeManyItems.bind(this);
   }
+  
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
       this.props.history.push('/dashboard/login');
@@ -207,7 +210,7 @@ export default class Roles extends Component {
     var i = 0;
     return (
       <Card style={styleCard}>
-        <CardHeader style={styleFont}>Roles Management</CardHeader>
+        <CardHeader className="card-header-custom">Roles Management</CardHeader>
         {this.state.loading ? (
           <div
             style={{
@@ -218,49 +221,71 @@ export default class Roles extends Component {
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
         ) : (
           <CardBody>
-            <ModalAddRole
-              color="success"
-              buttonLabel="Create a new role"
-              page={this.state.activePage}
-              nameButtonAccept="Submit"
-              function={this.addRole.bind(this)}
-            />
+            <Container fluid={true} className="role-container-head-row">
+                <Row className="role-head-row">
+                  <Col sm="12" md="6" className="role-form-create">
+                    <ModalAddRole
+                      color="success"
+                      buttonLabel="Create"
+                      page={this.state.activePage}
+                      nameButtonAccept="Submit"
+                      function={this.addRole.bind(this)
+                      }
+                    />
 
-            {this.state.listDeleteId.length != 0 && (
-              <ModalRemoveRoles
-                arrayName={this.state.listDeleteName}
-                buttonLabel="Delete"
-                function={() => this.removeManyItems()}
-              />
-            )}
+                    {this.state.listDeleteId.length != 0 && (
+                      <ModalRemoveRoles
+                        arrayName={this.state.listDeleteName}
+                        buttonLabel="Delete"
+                        function={() => this.removeManyItems()}
+                      />
+                    )}
+                  </Col>
+                  <Col sm="12" md="6" className="role-form-search">
+                    <Row style={{}}>
+                      <Col sm="12" md="5">
+                        <FormGroup>
+                          <Input type="select" name="select" id="exampleSelect">
+                            <option>Show 10 entries</option>
+                            <option>Show 20 entries</option>
+                            <option>Show 50 entries</option>
+                            <option>Show 100 entries</option>
+                          </Input>
+                        </FormGroup>
+                      </Col>
+                      <Col sm="12" md="7">
+                        <InputGroup className="role-input-group-search">
+                          <Input className="role-input-search" />
+                          <InputGroupAddon addonType="append">
+                            <Button className="role-btn-search" color="success">Search</Button>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </Col>
 
-            <div className="table-test">
-              <table>
-                <thead>
-                  <tr
-                    style={{
-                      background:
-                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                      color: 'white'
-                    }}
-                  >
+                    </Row>
+                  </Col>
+                </Row>
+              </Container>
+              <div className="table-rm">
+                <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
+                  <thead className="thead-light">
+                    <tr>
                     <th>
                       <input type="checkbox" />
                     </th>
                     <th>#</th>
                     <th>Role</th>
                     <th>Description</th>
-                    <th style={{ width: '180px' }}>
-                      <div className="action">Action</div>
+                    <th >Action
                     </th>
                   </tr>
                 </thead>
@@ -280,28 +305,43 @@ export default class Roles extends Component {
                           />
                         </td>
                         <td>{i}</td>
-                        <td>{e.name}</td>
+                        <td>
+                          {e.name.toLowerCase() == "admin" ?
+                          (<Badge color="danger" pill>{e.name}</Badge>)
+                           :
+                          (<Badge color="primary" pill>{e.name}</Badge>)}
+                          </td>
                         <td>{e.description}</td>
                         <td>
                           <div className="action">
-                            <ModalEditItem
-                              icon
-                              // id={listId[index]}
-                              name={e.name}
-                              color="success"
-                              buttonLabel="Edit"
-                              // function={this.editRole.bind(this)}
-                            />
-                            <Link style={{ width: 'auto' }} to={url}>
-                              <Button className="view-button" color="primary">
-                                <MdPageview />
-                              </Button>
-                            </Link>
-                            <ModalRemoveRole
-                              item={e}
-                              buttonLabel="Delete"
-                              function={() => this.removeItem(e.id)}
-                            />
+                            <div className="action-item">
+                              <ModalEditItem 
+                                icon
+                                // id={listId[index]}
+                                name={e.name}
+                                color="warning"
+                                buttonLabel="Edit"
+                                // function={this.editRole.bind(this)}
+                              />
+                            </div>
+                            <div className="action-item">
+                              <Link style={{ width: 'auto' }} to={url}>
+                                <Button className="view-button" color="primary">
+                                  <MdPageview />
+                                </Button>
+                              </Link>
+                            </div>
+                            <div className="action-item">
+                              <ModalRemoveRole
+                                item={e}
+                                buttonLabel="Delete"
+                                function={() => this.removeItem(e.id)}
+                              />
+                            </div>
+
+                          </div>
+                          <div className="action-mobile">
+                          <DropDownTable/>
                           </div>
                         </td>
                       </tr>
