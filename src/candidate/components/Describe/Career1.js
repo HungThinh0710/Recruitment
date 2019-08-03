@@ -78,7 +78,7 @@ export default class Careers extends Component {
         technicalSkill: '',
         Nodejs: ''
       }
-      active: false,
+     
 
     };
     this.handleChange = this.handleChange.bind(this);
@@ -263,7 +263,6 @@ document.getElementsByTagName('head')[0].append(link);
   render() {
     const { formErrors } = this.state;
 
-  render() {
     
 
     const { id } = this.props.match.params;
@@ -591,8 +590,8 @@ document.getElementsByTagName('head')[0].append(link);
 
             </div>
           </section>
-       
-        </div>
+         </div>                       
+        
       </div>
     )
   }
