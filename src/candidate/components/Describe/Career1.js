@@ -170,6 +170,7 @@ document.getElementsByTagName('head')[0].append(link);
     const formData = new FormData();
     formData.set('fullname',this.state.fullName);
     formData.set('email',this.state.email);
+    formData.set('phone',this.state.phone);
     formData.set('address',this.state.address);
     formData.set('description',this.state.description);
     formData.set('technicalSkill',this.state.technicalSkill);
