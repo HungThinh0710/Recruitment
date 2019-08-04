@@ -46,6 +46,7 @@ export default class Careers extends Component {
       visible: true,
       modalisOpen: false,
       modalError: false,
+      modalSuccess: false,
       jobID: [],
       loading: true,
       title: '',
@@ -58,7 +59,7 @@ export default class Careers extends Component {
       status: '',
       addressed: '',
       content: '',
-
+      selectedFile: '',
 
       active: false,
       description: null,
@@ -84,6 +85,10 @@ export default class Careers extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleFile = this.handleFile.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFilechange = this.handleFilechange.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.toggleModalError = this.toggleModalError.bind(this);
+    this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
   }
   toggleAlert() {
     this.setState({
@@ -98,6 +103,11 @@ export default class Careers extends Component {
   toggleModalError() {
     this.setState(prevState => ({
       modalError: !prevState.modalError
+    }));
+  }
+  toggleModalSuccess() {
+    this.setState(prevState => ({
+      modalSuccess: !prevState.modalSuccess
     }));
   }
   async componentDidMount() {
@@ -144,8 +154,10 @@ link.content="Content should be displayed";
 document.getElementsByTagName('head')[0].append(link);
   }
   handleSubmit() {
-    const formdata = new FormData();
-    formdata.get('file', this.state.CV, this.state.CV.name)
+    
+    // const formData = new FormData();
+    
+    // formData.append('file', this.state.CV, this.state.CV.name)
     const { fullName,
       email,
       phone,
@@ -153,25 +165,18 @@ document.getElementsByTagName('head')[0].append(link);
       address,
       CV,
       technicalSkill } = this.state;
-      console.log(formdata);
+
+    let configs = {header: {'Content-Type': 'multipart/form-data'}}
+    const formData = new FormData();
+    formData.set('fullname',this.state.fullName);
+    formData.set('email',this.state.email);
+    formData.set('address',this.state.address);
+    formData.set('description',this.state.description);
+    formData.set('technicalSkill',this.state.technicalSkill);
+    formData.append('file',this.state.selectedFile);
     var url = 'https://api.enclavei3dev.tk/api/candidate';
-    axios.post(url, {
-        fullname: fullName,
-        email: email,
-        phone: phone,
-        address: address,
-        description: description,
-        address: address,
-        technicalSkill: technicalSkill,
-        CV: formdata,
-        headers: {
-          'content-type': 'multipart/form-data',
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-      },
-    
-      
-    })
+    axios.post(url, formData,{},configs 
+    )
       .then(res => {
         if (res.status === 401) {
           alert('Add Failed');
@@ -186,45 +191,48 @@ document.getElementsByTagName('head')[0].append(link);
           });
         }
         if (res.status === 200) {
-          this.toggleModal();
+          this.toggleModalSuccess();
           this.setState(prevState => ({
-            modal: !prevState.modal,
+            modalisOpen: !prevState.modalisOpen,
             modalError: false,
             modalSuccess: true
           }));
-          res.json().then(data => {
-            var url2 =
-              'https://api.enclavei3dev.tk/api/candidate'
-            axios.post(url2, {
-              // method: 'POST',
-              // headers: {
-              //   'Content-Type': 'application/json',
-              //   Accept: 'application/json',
-              //   Authorization: 'Bearer ' + localStorage.getItem('access_token')
-              // }
-            }).then(res => {
-              res.json().then(data => {
-                this.props.function(data);
-              });
-            });
-          });
+          
         }
+        
       })
       .catch(error => console.error('Error:', error));
   };
   handleFile = event => {
-    this.setState({
-      CV: event.target.files[0], 
-    },
-    () => {
-      console.log(this.state.CV)
-      console.log(typeof this.state.CV)
-      }
-    )
-    console.log(event.target.files[0])
+   this.setState({
+     CV : event.target.files[0],
+   },() => { console.log(this.state.CV)})
   
   }
+  handleFilechange = e => {
+    // let files = e.target.files || e.dataTransfer.files;
+    //   if (!files.length)
+    //         return;
+    //   this.createImage(files[0]);
+    this.setState({
+      selectedFile: e.target.files[0],
+      loaded: 0,
+    });
 
+
+  }
+  createImage(file) {
+    // let reader = new FileReader();
+    // reader.onload = (e) => {
+    //   this.setState({
+    //     CV: e.target.result
+    //   },
+    //   () => {console.log(this.state.CV)})
+    // };
+    // reader.readAsBinaryString(file);
+    
+   
+  }
 
 
 
@@ -422,7 +430,7 @@ document.getElementsByTagName('head')[0].append(link);
                                   name="file"
                                   noValidate
                                   multiple
-                                  onChange={this.handleFile}
+                                  onChange={this.handleFilechange}
                                 />
                                 {formErrors.CV.length > 0 && (
                                   <span className="errorMessage">{formErrors.CV}</span>
