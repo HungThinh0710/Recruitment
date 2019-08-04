@@ -234,7 +234,7 @@ export default class Roles extends Component {
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="this roles"
+                itemName="these roles"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
