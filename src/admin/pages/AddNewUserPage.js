@@ -284,10 +284,7 @@ export default class AddNewUserPage extends Component {
       urlUser
     } = this.state;
     return (
-      <div
-        className="profile-card"
-        style={{ marginBottom: '150px', width: '70%', marginTop: '6%' }}
-      >
+      <div className="profile-card" style={{ marginBottom: '150px' }}>
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -295,7 +292,7 @@ export default class AddNewUserPage extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalSuccess}>
-            Notification
+            <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
             <Link to={urlUser}>
@@ -318,7 +315,9 @@ export default class AddNewUserPage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>Notification</ModalHeader>
+          <ModalHeader toggle={this.toggleModalError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
           <ModalBody>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.state.errorData !== undefined &&

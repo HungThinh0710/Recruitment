@@ -367,7 +367,7 @@ export default class UserDetail extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalSuccess}>
-            Notification
+            <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
             <span style={{ color: '#45b649' }}>Updated succesfully</span>
@@ -386,7 +386,9 @@ export default class UserDetail extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>Notification</ModalHeader>
+          <ModalHeader toggle={this.toggleModalError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
           <ModalBody>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.state.errorData !== undefined &&

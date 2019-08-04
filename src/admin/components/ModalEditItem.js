@@ -53,40 +53,6 @@ export default class ModalEditItem extends Component {
     this.toggle = this.toggle.bind(this);
   }
 
-  async componentDidMount() {
-    //const {firstName, lastName, email} = this.state;
-    const columns = this.state.permissions.columns;
-    let list = this.state.listChecked;
-    var url = 'https://api.enclavei3dev.tk/api/permission?page=1';
-    const data = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
-
-    data.data.map(e => {
-      delete e.created_at;
-      delete e.updated_at;
-      return (e.action = (
-        <input type="checkbox" onChange={() => handleCheck(e)} />
-      ));
-    });
-    function handleCheck(e) {
-      String(e.id);
-      list.push(e.id);
-    }
-    this.setState({
-      permissions: {
-        columns: columns,
-        rows: data.data
-      },
-      listChecked: list
-    });
-  }
-
   handleChange(event) {
     this.setState({
       itemName: event.target.value

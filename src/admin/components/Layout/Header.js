@@ -115,7 +115,7 @@ class Header extends React.Component {
             className="menu-button"
             onClick={this.handleSidebarControlButton}
           >
-            <MdMenu size={50} />
+            <MdMenu size={40} />
           </button>
         </Nav>
         <Nav navbar className={bem.e('nav-right')}>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
-import ModalEditItem from '../components/ModalEditItem';
+import ModalEditRole from '../components/ModalEditRole';
 import { MdCancel } from 'react-icons/md';
 import './RoleDetail.css';
 import { ClipLoader } from 'react-spinners';
@@ -43,7 +43,8 @@ export default class RoleDetail extends Component {
           width: 300
         }
       ],
-      rows: []
+      rows: [],
+      dataPermissions: ''
     };
   }
   componentWillMount() {
@@ -56,7 +57,19 @@ export default class RoleDetail extends Component {
     const { id } = this.props.match.params;
     var listRoles = [];
     var url = 'https://api.enclavei3dev.tk/api/role/' + id;
+    var url2 = 'https://api.enclavei3dev.tk/api/permission';
     const data = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data2 = await fetch(url2, {
+      method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -70,14 +83,15 @@ export default class RoleDetail extends Component {
         delete e.updated_at;
         delete e.pivot;
         i++;
-        e = Object.assign({ index: i }, e, { description: 'abc' });
+        e = Object.assign({ index: i }, e, { description: '' });
         listRoles.push(e);
       });
       setTimeout(() => {
         this.setState({
           name: data.name,
           rows: listRoles,
-          loading: false
+          loading: false,
+          dataPermissions: data2
         });
       }, 500);
     }
@@ -93,59 +107,75 @@ export default class RoleDetail extends Component {
       rows: rows
     });
   }
+  getUpdate(update) {
+    if ((update = true)) {
+      this.componentDidMount();
+    }
+  }
 
   render() {
     const { id } = this.props.match.params;
     return (
-      <Card style={styleCard}>
-        <CardHeader style={styleFont}>
-          Role Information
-          <div className="button-exit">
-            <Link to="/dashboard/role">
-              <MdCancel />
-            </Link>
-          </div>
-        </CardHeader>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         {this.state.loading ? (
-          <div
-            style={{
-              marginTop: '100px',
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '100px'
-            }}
-            className="sweet-loading"
-          >
-            <ClipLoader
-              sizeUnit={'px'}
-              size={200}
-              color={'#45b649'}
-              loading={this.state.loading}
-            />
-          </div>
-        ) : (
-          <CardBody>
-            <ModalEditItem
-              icon
-              id={id}
-              name={this.state.name}
-              color="success"
-              buttonLabel="Edit"
-              function={this.editRole.bind(this)}
-            />
-            <br />
-            <MDBDataTable striped bordered hover data={this.state} />
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button
-                onClick={() => this.backToPreviousPage()}
-                color="secondary"
-              >
-                Back
-              </Button>
+          <Card style={styleCard}>
+            <CardHeader style={styleFont}>
+              Role's Information
+              <div className="button-exit">
+                <Link to="/dashboard/role">
+                  <MdCancel />
+                </Link>
+              </div>
+            </CardHeader>
+            <div
+              style={{
+                marginTop: '100px',
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: '100px'
+              }}
+              className="sweet-loading"
+            >
+              <ClipLoader
+                sizeUnit={'px'}
+                size={200}
+                color={'#45b649'}
+                loading={this.state.loading}
+              />
             </div>
-          </CardBody>
+          </Card>
+        ) : (
+          <Card style={styleCard}>
+            <CardHeader style={styleFont}>
+              {this.state.name}'s Information
+              <div className="button-exit">
+                <Link to="/dashboard/role">
+                  <MdCancel />
+                </Link>
+              </div>
+            </CardHeader>
+            <CardBody>
+              <ModalEditRole
+                icon
+                dataPermissions={this.state.dataPermissions}
+                id={id}
+                color="success"
+                getUpdate={this.getUpdate.bind(this)}
+              />
+              <br />
+              <MDBDataTable striped bordered hover data={this.state} />
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
+                >
+                  Back
+                </Button>
+              </div>
+            </CardBody>
+          </Card>
         )}
-      </Card>
+      </div>
     );
   }
 }

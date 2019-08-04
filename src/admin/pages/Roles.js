@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Button } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter
+} from 'reactstrap';
 import ModalRemoveItem from '../components/ModalRemoveItem';
-import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import './RolesPage.css';
-import { MdPageview, MdEdit } from 'react-icons/md';
+import { MdPageview } from 'react-icons/md';
 import PaginationComponent from '../components/Pagination.js';
 import './TestPage.css';
 
 import { ClipLoader } from 'react-spinners';
+import ModalEditRole from '../components/ModalEditRole';
 const styleFont = {
   fontSize: '200%',
   fontWeight: 'bold'
-};
-const styleCard = {
-  width: '80%',
-  marginTop: '5%',
-  alignSelf: 'center',
-  marginBottom: '8%'
 };
 
 export default class Roles extends Component {
@@ -29,11 +32,16 @@ export default class Roles extends Component {
       activePage: 1,
       totalItems: 0,
       rows: [],
-      loading: true
+      loading: true,
+      dataPermissions: '',
+      modalDeleteError: false,
+      modalDeleteSuccess: false
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.removeManyItems = this.removeManyItems.bind(this);
+    this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
+    this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -43,11 +51,23 @@ export default class Roles extends Component {
   async componentDidMount() {
     const { activePage } = this.state;
     // var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
-    var url = 'https://api.enclavei3dev.tk/api/list-role';
+    var url1 = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
+    var url2 = 'https://api.enclavei3dev.tk/api/permission';
     // var i = 0;
     // var listRoles = [];
-    const data = await fetch(url, {
+    const data1 = await fetch(url1, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data2 = await fetch(url2, {
+      method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -56,12 +76,30 @@ export default class Roles extends Component {
     }).then(res => res.json());
     setTimeout(() => {
       this.setState({
-        currentPage: data.currentPage,
-        totalItems: data.total,
-        rows: data.data,
-        loading: false
+        currentPage: data1.currentPage,
+        totalItems: data1.total,
+        rows: data1.data,
+        loading: false,
+        dataPermissions: data2
       });
     }, 500);
+  }
+
+  getUpdate(update) {
+    if ((update = true)) {
+      this.componentDidMount();
+    }
+  }
+
+  toggleModalDeleteSuccess() {
+    this.setState(prevState => ({
+      modalDeleteSuccess: !prevState.modalDeleteSuccess
+    }));
+  }
+  toggleModalDeleteError() {
+    this.setState(prevState => ({
+      modalDeleteError: !prevState.modalDeleteError
+    }));
   }
 
   removeItem(id) {
@@ -90,18 +128,23 @@ export default class Roles extends Component {
           Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
       }).then(res => {
-        res.json().then(data => {
-          data.data.forEach(function(e) {
-            delete e.created_at;
-            delete e.updated_at;
+        if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
+          res.json().then(data => {
+            data.data.forEach(function(e) {
+              delete e.created_at;
+              delete e.updated_at;
+            });
+            this.setState({
+              rows: data.data,
+              totalItems: data.total,
+              listDeleteId: listDeleteId,
+              listDeleteName: []
+            });
           });
-          this.setState({
-            rows: data.data,
-            totalItems: data.total,
-            listDeleteId: listDeleteId,
-            listDeleteName: []
-          });
-        });
+        } else {
+          this.toggleModalDeleteError();
+        }
       });
     });
   }
@@ -190,14 +233,19 @@ export default class Roles extends Component {
           Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
       }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total,
-            listDeleteId: [],
-            listDeleteName: []
+        if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
+          res.json().then(data => {
+            this.setState({
+              rows: data.data,
+              totalItems: data.total,
+              listDeleteId: [],
+              listDeleteName: []
+            });
           });
-        });
+        } else {
+          this.toggleModalDeleteError();
+        }
       });
     });
   }
@@ -206,7 +254,47 @@ export default class Roles extends Component {
     const { totalItems } = this.state;
     var i = 0;
     return (
-      <Card style={styleCard}>
+      <Card className="dashboard-card">
+        {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalDeleteSuccess}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: '#45b649' }}>Deleted succesfully</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalDeleteError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: 'red' }}>Cannot delete this role</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
         <CardHeader style={styleFont}>Roles Management</CardHeader>
         {this.state.loading ? (
           <div
@@ -281,13 +369,13 @@ export default class Roles extends Component {
                         <td>{e.description}</td>
                         <td>
                           <div className="action">
-                            <ModalEditItem
+                            <ModalEditRole
                               icon
-                              // id={listId[index]}
+                              dataPermissions={this.state.dataPermissions}
+                              id={e.id}
                               name={e.name}
                               color="success"
-                              buttonLabel="Edit"
-                              // function={this.editRole.bind(this)}
+                              getUpdate={this.getUpdate.bind(this)}
                             />
                             <Link style={{ width: 'auto' }} to={url}>
                               <Button className="view-button" color="primary">
