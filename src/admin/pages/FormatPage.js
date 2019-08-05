@@ -276,7 +276,7 @@ export default class FormatPage extends Component {
 
                     {this.state.listDeleteId.length != 0 && (
                       <ModalRemoveItem
-                        itemName="this formats"
+                        itemName="these formats"
                         buttonLabel="Delete"
                         function={() => this.removeManyItems()}
                       />

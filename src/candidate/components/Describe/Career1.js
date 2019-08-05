@@ -13,7 +13,9 @@ import { Head } from 'react-static';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { HeadProvider, Meta, Title } from 'react-head';
 import ReactDOM from 'react-dom';
+import $ from 'jquery';
 import axios from 'axios';
+
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
@@ -46,6 +48,7 @@ export default class Careers extends Component {
       visible: true,
       modalisOpen: false,
       modalError: false,
+      modalSuccess: false,
       jobID: [],
       loading: true,
       title: '',
@@ -58,7 +61,7 @@ export default class Careers extends Component {
       status: '',
       addressed: '',
       content: '',
-
+      selectedFile: '',
 
       active: false,
       description: null,
@@ -70,7 +73,7 @@ export default class Careers extends Component {
       listcandidate: [],
       formErrors: {
         fullName: '',
-        address: '',
+        addressed: '',
         email: '',
         phone: '',
         CV: '',
@@ -78,12 +81,16 @@ export default class Careers extends Component {
         technicalSkill: '',
         Nodejs: ''
       }
-     
+
 
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleFile = this.handleFile.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFilechange = this.handleFilechange.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.toggleModalError = this.toggleModalError.bind(this);
+    this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
   }
   toggleAlert() {
     this.setState({
@@ -98,6 +105,11 @@ export default class Careers extends Component {
   toggleModalError() {
     this.setState(prevState => ({
       modalError: !prevState.modalError
+    }));
+  }
+  toggleModalSuccess() {
+    this.setState(prevState => ({
+      modalSuccess: !prevState.modalSuccess
     }));
   }
   async componentDidMount() {
@@ -122,30 +134,43 @@ export default class Careers extends Component {
       addressed: data.job.address,
       content: data.content
     });
-    // gia tri thay doi
-//     const head = document.getElementsByTagName('head');
-//     head.innerHTML = "<meta title=\"xxx\"></meta>" + head.innerHTML;
-//     <meta property=\"fb:app_id\" content=\"2309010198\"/>
-// <meta property=\"og:title\" content=\"Enclave Recruitment System\" />
-// <meta property="og:type" content="article" />
-// <meta property=\"og:image\" content=\"http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg\"/>
-// <meta property=\"og:url\" content=\"https://enclavei3dev.tk/article/6\" />
-// <meta property=\"og:description\" content=\"Find your dream job in our company\" />
+    //gia tri thay doi
+  //  var list = document.getElementsByTagName('head');
+  //  list.insertBefore('<meta property=\"fb:app_id\" content=\"2309010198\"/>', list.childNodes[0]);
+    $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
+    $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
+    // $("<meta property=\"og:description\" content=\"Find your dream job in our company\" />").appendTo($('meta[property=og:description]'))
 
-    this.updateHead();
-    console.log(this.state.jobID)
+
+    // const head = document.getElementsByTagName('head')[0];
+    // const listMeta =  [];
+    // var metaApp = '<meta property="fb:app_id" content="2309010198"/>';
+    
+    // metaApp += '<meta property="og:title" content="Enclave Recruitment System" />'
+    // metaApp += '<meta property="og:type" content="article" />'
+    // metaApp += '<meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"/>'
+    // metaApp += '<meta property="og:url" content="https://enclavei3dev.tk/article/6" />'
+    // metaApp += '<meta property="og:description" content="Find your dream job in our company" />'
+
+    // listMeta.push(metaApp);
+    // head.innerHTML = listMeta + head.innerHTML;
+
+    // this.updateHead();
+    // console.log(this.state.jobID)
   }
 
 
   updateHead() {
-  const  link=document.createElement('meta');
-link.property="og:title";
-link.content="Content should be displayed";
-document.getElementsByTagName('head')[0].append(link);
+    const link = document.createElement('meta');
+    link.property = "og:title";
+    link.content = "Content should be displayed";
+    document.getElementsByTagName('head')[0].append(link);
   }
   handleSubmit() {
-    const formdata = new FormData();
-    formdata.get('file', this.state.CV, this.state.CV.name)
+
+    // const formData = new FormData();
+
+    // formData.append('file', this.state.CV, this.state.CV.name)
     const { fullName,
       email,
       phone,
@@ -153,25 +178,19 @@ document.getElementsByTagName('head')[0].append(link);
       address,
       CV,
       technicalSkill } = this.state;
-      console.log(formdata);
+
+    let configs = { header: { 'Content-Type': 'multipart/form-data' } }
+    const formData = new FormData();
+    formData.set('fullname', this.state.fullName);
+    formData.set('email', this.state.email);
+    formData.set('phone', this.state.phone);
+    formData.set('address', this.state.address);
+    formData.set('description', this.state.description);
+    formData.set('technicalSkill', this.state.technicalSkill);
+    formData.append('file', this.state.selectedFile);
     var url = 'https://api.enclavei3dev.tk/api/candidate';
-    axios.post(url, {
-        fullname: fullName,
-        email: email,
-        phone: phone,
-        address: address,
-        description: description,
-        address: address,
-        technicalSkill: technicalSkill,
-        CV: formdata,
-        headers: {
-          'content-type': 'multipart/form-data',
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-      },
-    
-      
-    })
+    axios.post(url, formData, {}, configs
+    )
       .then(res => {
         if (res.status === 401) {
           alert('Add Failed');
@@ -186,45 +205,48 @@ document.getElementsByTagName('head')[0].append(link);
           });
         }
         if (res.status === 200) {
-          this.toggleModal();
+          this.toggleModalSuccess();
           this.setState(prevState => ({
-            modal: !prevState.modal,
+            modalisOpen: !prevState.modalisOpen,
             modalError: false,
             modalSuccess: true
           }));
-          res.json().then(data => {
-            var url2 =
-              'https://api.enclavei3dev.tk/api/candidate'
-            axios.post(url2, {
-              // method: 'POST',
-              // headers: {
-              //   'Content-Type': 'application/json',
-              //   Accept: 'application/json',
-              //   Authorization: 'Bearer ' + localStorage.getItem('access_token')
-              // }
-            }).then(res => {
-              res.json().then(data => {
-                this.props.function(data);
-              });
-            });
-          });
+
         }
+
       })
       .catch(error => console.error('Error:', error));
   };
   handleFile = event => {
     this.setState({
-      CV: event.target.files[0], 
-    },
-    () => {
-      console.log(this.state.CV)
-      console.log(typeof this.state.CV)
-      }
-    )
-    console.log(event.target.files[0])
-  
-  }
+      CV: event.target.files[0],
+    }, () => { console.log(this.state.CV) })
 
+  }
+  handleFilechange = e => {
+    // let files = e.target.files || e.dataTransfer.files;
+    //   if (!files.length)
+    //         return;
+    //   this.createImage(files[0]);
+    this.setState({
+      selectedFile: e.target.files[0],
+      loaded: 0,
+    });
+
+
+  }
+  createImage(file) {
+    // let reader = new FileReader();
+    // reader.onload = (e) => {
+    //   this.setState({
+    //     CV: e.target.result
+    //   },
+    //   () => {console.log(this.state.CV)})
+    // };
+    // reader.readAsBinaryString(file);
+
+
+  }
 
 
 
@@ -241,8 +263,8 @@ document.getElementsByTagName('head')[0].append(link);
         formErrors.fullName =
           value.length < 3 ? 'minimum 3 characaters required' : '';
         break;
-      case 'address':
-        formErrors.address =
+      case 'addressed':
+        formErrors.addressed =
           value.length < 3 ? 'minimum 3 characaters required' : '';
         break;
       case 'email':
@@ -263,7 +285,7 @@ document.getElementsByTagName('head')[0].append(link);
   render() {
     const { formErrors } = this.state;
 
-    
+
 
     const { id } = this.props.match.params;
     const { jobID } = this.state;
@@ -310,13 +332,13 @@ document.getElementsByTagName('head')[0].append(link);
                       <h2 className="modify-title">{this.state.title}</h2>
                       <div class="show-line">
                         <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />{this.state.position}</span>
-                        <span className="m-2"><span className="icon-room mr-2" />{this.state.address}</span>
+                        <span className="m-2"><span className="icon-room mr-2" />{this.state.addressed}</span>
                         <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status}
                         </span></span>
                       </div>
                       <div class="show-line-2">
                         <p className="m-2"><span className="icon-briefcase mr-2" />{this.state.position}</p>
-                        <p className="m-2"><span className="icon-room mr-2" />{this.state.address}</p>
+                        <p className="m-2"><span className="icon-room mr-2" />{this.state.addressed}</p>
                         <p className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status}</span></p>
                       </div>
                     </div>
@@ -379,7 +401,7 @@ document.getElementsByTagName('head')[0].append(link);
                               <div className="phone">
                                 <label class="col-form-label" className="phone">
                                   Phone
-                </label>
+                                  </label>
                                 <input
                                   class="form-control"
                                   className={formErrors.phone.length > 0 ? 'error' : null}
@@ -399,15 +421,15 @@ document.getElementsByTagName('head')[0].append(link);
                                 <label class="col-form-label">Address</label>
                                 <input
                                   class="form-control"
-                                  className={formErrors.address.length > 0 ? 'error' : null}
+                                  className={formErrors.addressed.length > 0 ? 'error' : null}
                                   placeholder="Address"
                                   type="text"
                                   name="address"
                                   noValidate
                                   onChange={this.handleChange}
                                 />
-                                {formErrors.address.length > 0 && (
-                                  <span className="errorMessage">{formErrors.address}</span>
+                                {formErrors.addressed.length > 0 && (
+                                  <span className="errorMessage">{formErrors.addressed}</span>
                                 )}
                               </div>
                             </FormGroup>
@@ -422,7 +444,7 @@ document.getElementsByTagName('head')[0].append(link);
                                   name="file"
                                   noValidate
                                   multiple
-                                  onChange={this.handleFile}
+                                  onChange={this.handleFilechange}
                                 />
                                 {formErrors.CV.length > 0 && (
                                   <span className="errorMessage">{formErrors.CV}</span>
@@ -479,7 +501,6 @@ document.getElementsByTagName('head')[0].append(link);
                   </div>
                 </div>
               </div>
-
               <div className="row">
                 <div className="show-jobsummary-2">
                   <div className="col-lg-4 jobsummary-moblie">
@@ -496,11 +517,7 @@ document.getElementsByTagName('head')[0].append(link);
                         <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
                         <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
                         <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-
                         <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
-
-                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
-
                         <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
                         {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
                         <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
@@ -526,7 +543,6 @@ document.getElementsByTagName('head')[0].append(link);
                 <div className="col-lg-8">
                   <div className="mb-5">
                     <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
-
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
@@ -545,11 +561,7 @@ document.getElementsByTagName('head')[0].append(link);
                         <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
                         <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
                         <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-
                         <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
-
-                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
-
                         <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
                         {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
                         <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
@@ -561,37 +573,26 @@ document.getElementsByTagName('head')[0].append(link);
                         </IntlProvider></li>
                       </ul>
                     </div>
-
                     <div className="bg-light p-3 border rounded">
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="text-center">
                         {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
-
-                        
                         <div class="fb-share-button"
                           data-href={"https://enclavei3dev.tk/article/" + id}
                           data-layout="button_count">
                         </div>
-
-
-
+                        
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink>
-
                       </div>
                     </div>
                   </div>
-
                 </div>
-
               </div>
-
-
             </div>
           </section>
-         </div>                       
-        
+        </div>
       </div>
     )
   }

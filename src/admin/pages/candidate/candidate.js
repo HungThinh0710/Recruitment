@@ -219,7 +219,7 @@ export default class UsersPage extends Component {
                 <Col sm="12" md="6" className="role-form-create">
                   {this.state.listDeleteId.length != 0 && (
                     <ModalRemoveItem
-                      itemName="this candidate"
+                      itemName="these candidates"
                       buttonLabel="Delete"
                       function={() => this.removeManyItems()}
                     />
