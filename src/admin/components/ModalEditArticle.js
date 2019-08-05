@@ -421,6 +421,7 @@ export default class ModalEditArticle extends Component {
             className="button-first"
             color={this.props.color}
             onClick={this.toggle}
+            style={{ color: 'white' }}
           >
             <MdEdit />
           </Button>

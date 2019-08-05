@@ -6,11 +6,8 @@ import { Redirect, Link } from 'react-router-dom';
 import './LoginPage.css';
 import { ClipLoader, FadeLoader } from 'react-spinners';
 import CheckRoleUser from './CheckRoleUser';
-const Check = new CheckRoleUser();
+const checkRoleUser = new CheckRoleUser();
 
-const stl = {
-  color: 'red'
-};
 export default class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -90,7 +87,7 @@ export default class LoginPage extends React.Component {
               localStorage.setItem('access_token', data.access_token);
               localStorage.setItem('token_type', data.token_type);
               localStorage.setItem('expires_at', data.expires_at);
-              Check.test();
+              checkRoleUser.setUser(data.user);
               setTimeout(() => {
                 this.setState({
                   redirect: true,
