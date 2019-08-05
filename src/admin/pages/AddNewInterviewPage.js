@@ -21,21 +21,24 @@ const animatedComponents = makeAnimated();
 
 const roleNameRegex = /^[a-zA-Z0-9\s]+$/;
 
-export default class AddNewRolePage extends Component {
+export default class AddNewInterviewPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      role: '',
-      description: '',
-      errorRoleMessage: "Role's name is required",
+      name: '',
+      address: '',
+      timeStart: '',
       errorData: '',
       modalError: false,
       modalSuccess: false,
       showErrorMessage: false,
       errorPermissionMessage: "Role's permissions cannot be empty",
-      optionPermission: [],
-      selectedPermissionOption: null,
-      urlRole: ''
+      optionInterviewer: [],
+      optionCandidate: [],
+      dataCandidate: [],
+      selectedInterviewerOption: null,
+      selectedCandidateOption: null,
+      urlInterview: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -49,10 +52,21 @@ export default class AddNewRolePage extends Component {
     }
   }
   async componentDidMount() {
-    var { optionPermission } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/permission';
-
-    const data = await fetch(url, {
+    var { optionInterviewer, optionCandidate } = this.state;
+    var url1 = 'https://api.enclavei3dev.tk/api/list-interviewer';
+    var url2 = 'https://api.enclavei3dev.tk/api/list-candidate';
+    const data1 = await fetch(url1, {
+      method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data2 = await fetch(url2, {
       method: 'POST',
       body: JSON.stringify({
         all: 1
@@ -64,14 +78,27 @@ export default class AddNewRolePage extends Component {
       }
     }).then(res => res.json());
 
-    data.map(e => {
-      var permission = { id: e.id, value: e.name, label: e.name };
-      optionPermission.push(permission);
-      return optionPermission;
+    data1.map(e => {
+      var interviewer = {
+        id: e.id,
+        value: e.fullname,
+        label: e.fullname
+      };
+      optionInterviewer.push(interviewer);
+      return optionInterviewer;
     });
-
+    console.log(data2.data);
+    data2.data.map(e => {
+      var candidate = {
+        id: e.id,
+        value: e.fullname,
+        label: e.fullname
+      };
+      optionCandidate.push(candidate);
+      return optionCandidate;
+    });
     this.setState({
-      optionPermission: optionPermission
+      optionInterviewer: optionInterviewer
     });
   }
 
@@ -102,8 +129,23 @@ export default class AddNewRolePage extends Component {
   }
 
   handleErrorMessage = () => {
+    var { listChecked, errorPermissionMessage } = this.state;
+    var array1 = [...new Set(listChecked)];
+    var array2 = [];
+    array1.map(element => {
+      var count = listChecked.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    array2.length === 0
+      ? (errorPermissionMessage = "Role's permissions cannot be empty")
+      : (errorPermissionMessage = '');
     this.setState({
-      showErrorMessage: true
+      showErrorMessage: true,
+      errorPermissionMessage: errorPermissionMessage
     });
   };
 
@@ -166,9 +208,12 @@ export default class AddNewRolePage extends Component {
 
   render() {
     var i = 0;
-    const { errorRoleMessage, urlRole } = this.state;
+    const { errorRoleMessage, urlInterview } = this.state;
     return (
-      <div className="profile-card" style={{ marginBottom: '250px' }}>
+      <div
+        className="profile-card"
+        style={{ marginBottom: '250px', width: '90%', marginTop: '3%' }}
+      >
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -179,7 +224,7 @@ export default class AddNewRolePage extends Component {
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            <Link to={urlRole}>
+            <Link to={urlInterview}>
               <span style={{ color: '#45b649' }}>
                 Successfully! Click to see the detail of the new role
               </span>
@@ -228,7 +273,7 @@ export default class AddNewRolePage extends Component {
         <Card className="card-body">
           <CardTitle className="title">
             <MdCancel className="first" />
-            Create A New Role
+            Create An New Interview
             <Link to="/dashboard/role">
               <MdCancel />
             </Link>
@@ -257,14 +302,31 @@ export default class AddNewRolePage extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <Label className="title-input">Permissions</Label>
+                <Label className="title-input">Interviewers</Label>
                 <Select
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   isMulti
-                  onChange={this.handleSelectPermissionChange.bind(this)}
-                  defaultValue={this.state.selectedPermissionOption}
-                  options={this.state.optionPermission}
+                  //onChange={this.handleSelectPermissionChange.bind(this)}
+                  defaultValue={this.state.selectedInterviewerOption}
+                  options={this.state.optionInterviewer}
+                />
+                {!this.state.selectedPermissionOption &&
+                  this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>
+                      Permissions are required
+                    </span>
+                  )}
+              </FormGroup>
+              <FormGroup>
+                <Label className="title-input">Candidates</Label>
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  //onChange={this.handleSelectPermissionChange.bind(this)}
+                  defaultValue={this.state.selectedCandidateOption}
+                  options={this.state.optionCandidate}
                 />
                 {!this.state.selectedPermissionOption &&
                   this.state.showErrorMessage && (

@@ -1,39 +1,33 @@
 import React, { Component } from 'react';
 import {
-  Button,
-  Card,
-  CardBody,
-  CardTitle,
   Form,
   FormGroup,
   Label,
   Input,
   Modal,
-  ModalBody,
   ModalHeader,
-  ModalFooter
+  ModalBody,
+  ModalFooter,
+  Button
 } from 'reactstrap';
 import ReactQuill from 'react-quill';
+import { MdEdit } from 'react-icons/md';
 import 'react-quill/dist/quill.snow.css';
-import { MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
-import PropTypes from 'prop-types';
-import './AddNewFormatPage.css';
-
-export default class AddNewFormatPage extends Component {
+export default class ModalEditFormat extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: '',
       content: '',
-      errorTitle: 'Title is required',
+      errorTitle: '',
       errorData: '',
+      modal: false,
       modalError: false,
       modalSuccess: false,
       modalPreview: false,
-      showErrorMessage: false,
-      urlFormat: ''
+      showErrorMessage: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
@@ -41,11 +35,22 @@ export default class AddNewFormatPage extends Component {
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
     this.toggleModalPreview = this.toggleModalPreview.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
-  componentWillMount() {
-    if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/dashboard/login');
-    }
+  async componentDidMount() {
+    const { id } = this.props;
+    var url = 'https://api.enclavei3dev.tk/api/format-article/' + id;
+    const data = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    this.setState({
+      title: data.title,
+      content: data.content
+    });
   }
   handleChange(event) {
     var { errorTitle } = this.state;
@@ -59,6 +64,11 @@ export default class AddNewFormatPage extends Component {
       [event.target.name]: event.target.value,
       errorTitle: errorTitle
     });
+  }
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
   toggleModalSuccess() {
     this.setState(prevState => ({
@@ -82,10 +92,11 @@ export default class AddNewFormatPage extends Component {
   };
 
   handleSubmit() {
+    const { id } = this.props;
     const { title, content } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    var url = 'https://api.enclavei3dev.tk/api/format-article/' + id;
     fetch(url, {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({
         title: title,
         content: content
@@ -110,12 +121,9 @@ export default class AddNewFormatPage extends Component {
           });
         }
         if (res.status === 200) {
+          var update = true;
           this.toggleModalSuccess();
-          res.json().then(data => {
-            this.setState({
-              urlFormat: '/dashboard/format/' + data.id
-            });
-          });
+          this.props.getUpdate(update);
         }
       })
       .catch(error => console.error('Error:', error));
@@ -127,7 +135,7 @@ export default class AddNewFormatPage extends Component {
   render() {
     var i = 0;
     return (
-      <div className="profile-card">
+      <div>
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -138,11 +146,7 @@ export default class AddNewFormatPage extends Component {
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            <Link to={this.state.urlFormat}>
-              <span style={{ color: '#45b649' }}>
-                Successfully! Click to see the detail of the new format
-              </span>
-            </Link>
+            <span style={{ color: '#45b649' }}>Update Successfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -183,7 +187,6 @@ export default class AddNewFormatPage extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-
         {/*--------Modal-Preview-----*/}
         <Modal
           size="lg"
@@ -202,32 +205,35 @@ export default class AddNewFormatPage extends Component {
           </ModalFooter>
         </Modal>
         {/*--------Modal-Preview-----*/}
-
-        <Card className="card-body">
-          <CardTitle
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '35px'
-            }}
+        {this.props.icon ? (
+          <Button
+            className="button-first"
+            color={this.props.color}
+            onClick={this.toggle}
           >
-            <MdCancel className="hidden" />
-            <span
-              style={{
-                color: '#45b649',
-                fontWeight: 'bold',
-                fontSize: '45px'
-              }}
-            >
-              Create New Format
-            </span>
-            <div className="icon-cancle">
-              <Link to="/dashboard/format">
-                <MdCancel />
-              </Link>
-            </div>
-          </CardTitle>
-          <CardBody>
+            <MdEdit />
+          </Button>
+        ) : (
+          <Button
+            className="button-first"
+            color={this.props.color}
+            onClick={this.toggle}
+          >
+            Edit
+          </Button>
+        )}
+
+        <Modal
+          size="lg"
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggle}>
+            {' '}
+            <span className="dashboard-modal-header">Update format</span>{' '}
+          </ModalHeader>
+          <ModalBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup>
                 <Label for="Name">Name</Label>
@@ -236,6 +242,7 @@ export default class AddNewFormatPage extends Component {
                   type="text"
                   name="title"
                   onChange={this.handleChange}
+                  value={this.state.title}
                 />
                 {this.state.errorTitle !== '' &&
                   this.state.showErrorMessage && (
@@ -249,8 +256,8 @@ export default class AddNewFormatPage extends Component {
                 <ReactQuill
                   onChange={this.handleEditorChange}
                   value={this.state.content}
-                  modules={AddNewFormatPage.modules}
-                  formats={AddNewFormatPage.formats}
+                  modules={ModalEditFormat.modules}
+                  formats={ModalEditFormat.formats}
                   bounds={'.app'}
                 />
               </FormGroup>
@@ -282,19 +289,19 @@ export default class AddNewFormatPage extends Component {
                   <Button color="primary" onClick={this.toggleModalPreview}>
                     Preview
                   </Button>
-                  <Link to="/dashboard/format">
-                    <Button>Back</Button>
-                  </Link>
+                  <Button onClick={this.toggle} color="secondary">
+                    Back
+                  </Button>
                 </div>
               </FormGroup>
             </Form>
-          </CardBody>
-        </Card>
+          </ModalBody>
+        </Modal>
       </div>
     );
   }
 }
-AddNewFormatPage.modules = {
+ModalEditFormat.modules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6] }, { font: [] }],
     [{ size: [] }],
@@ -315,7 +322,7 @@ AddNewFormatPage.modules = {
   }
 };
 
-AddNewFormatPage.formats = [
+ModalEditFormat.formats = [
   'header',
   'font',
   'size',
@@ -334,7 +341,3 @@ AddNewFormatPage.formats = [
   'image',
   'video'
 ];
-
-AddNewFormatPage.propTypes = {
-  placeholder: PropTypes.string
-};

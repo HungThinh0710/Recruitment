@@ -13,6 +13,8 @@ import AddNewUserPage from './admin/pages/AddNewUserPage';
 import AddNewJobPage from './admin/pages/AddNewJobPage';
 import AddNewArticlePage from './admin/pages/AddNewArticlePage';
 import AddNewFormatPage from './admin/pages/AddNewFormatPage';
+import AddNewInterviewPage from './admin/pages/AddNewInterviewPage';
+import AddNewInterviewerPage from './admin/pages/AddNewInterviewerPage';
 /*------Action-----*/
 
 /*------Sidebar----*/
@@ -66,6 +68,13 @@ class App extends React.Component {
   //     return <Redirect to='/home'/>
   //   }
   // }
+  componentWillMount() {
+    if (localStorage.getItem('loginToken') != null) {
+      this.setState({
+        hasToken: true
+      });
+    }
+  }
   render() {
     return (
       <BrowserRouter basename={getBasename()}>
@@ -210,6 +219,12 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/create-interview'}
+              layout={MainLayout}
+              component={AddNewInterviewPage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/candidate'}
               layout={MainLayout}
               component={Candidates}
@@ -235,15 +250,27 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/create-interviewer'}
+              layout={MainLayout}
+              component={AddNewInterviewerPage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/test'}
               layout={MainLayout}
               component={TestPage}
             />
+            {/* {!this.state.hasToken ? (
+              <LayoutRoute layout={EmptyLayout} component={LoginPage} />
+            ) : (
+              <LayoutRoute layout={MainLayout} component={Roles} />
+            )} */}
+
             {/* <Redirect to="/" /> */}
             <Route path="/" component={Homepage} exact />
-            <Route path="/careers" component={Careers} />
-            <Route path="/about" component={About} />
-            <Route path="/article/:id" component={Career1} />
+            <Route path="/careers" exact component={Careers} />
+            <Route path="/about" exact component={About} />
+            <Route path="/article/:id" exact component={Career1} />
           </Switch>
         </GAListener>
       </BrowserRouter>

@@ -4,18 +4,13 @@ import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
+import ModalEditItem from '../../components/ModalEditItem';
+import ModalRemoveItem from '../../components/ModalRemoveItem';
 // import './Roles.css'
 import { ClipLoader } from 'react-spinners';
 const styleFont = {
   fontSize: '200%',
   fontWeight: 'bold'
-};
-const styleCard = {
-  width: '80%',
-  marginTop: '5%',
-  alignSelf: 'center',
-  marginBottom: '8%',
-  loading: true
 };
 export default class UsersPage extends Component {
   constructor(props) {
@@ -78,7 +73,7 @@ export default class UsersPage extends Component {
   render() {
     var i = 0;
     return (
-      <Card style={styleCard}>
+      <Card className="dashboard-card">
         <CardHeader style={styleFont}>Candidate Management</CardHeader>
         {this.state.loading ? (
           <div
@@ -117,7 +112,7 @@ export default class UsersPage extends Component {
                     <th style={{ textOverflow: 'ellipsis' }}>Email</th>
                     <th>Status</th>
                     <th>Phone</th>
-                    <th style={{ marginHorizontal: '10px' }}>
+                    <th style={{ width: '180px' }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
@@ -161,11 +156,23 @@ export default class UsersPage extends Component {
                         <td>{e.phone}</td>
                         <td>
                           <div className="action">
+                            <ModalEditItem
+                              icon
+                              // id={listId[index]}
+                              name={e.name}
+                              color="success"
+                              buttonLabel="Edit"
+                              // function={this.editRole.bind(this)}
+                            />
                             <Link style={{ width: 'auto' }} to={url}>
                               <Button className="view-button" color="primary">
                                 <MdPageview />
                               </Button>
                             </Link>
+                            <ModalRemoveItem
+                              itemName="this candidate"
+                              function={() => this.removeItem(e.id)}
+                            />
                           </div>
                         </td>
                       </tr>

@@ -38,7 +38,7 @@ export default class AddNewFormatPage extends Component {
       editTitle: '',
       editContent: '',
       activeTab: '1',
-      errorTitle: 'Title is required',
+      errorTitle: '',
       errorData: '',
       modalError: false,
       modalSuccess: false,
@@ -171,7 +171,7 @@ export default class AddNewFormatPage extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalSuccess}>
-            Notification
+            <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
             <span style={{ color: '#45b649' }}>Update Successfully</span>
@@ -190,7 +190,9 @@ export default class AddNewFormatPage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>Notification</ModalHeader>
+          <ModalHeader toggle={this.toggleModalError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
           <ModalBody>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.state.errorData !== undefined &&
