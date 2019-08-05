@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Button } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader
+} from 'reactstrap';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
-import ModalEditItem from '../components/ModalEditItem';
+import ModalEditFormat from '../components/ModalEditFormat';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import { MdCancel, MdPageview } from 'react-icons/md';
 const styleFont = {
@@ -12,12 +21,6 @@ const styleFont = {
   fontWeight: 'bold'
 };
 
-const styleCard = {
-  width: '80%',
-  marginTop: '5%',
-  alignSelf: 'center',
-  marginBottom: '8%'
-};
 export default class FormatPage extends Component {
   constructor(props) {
     super(props);
@@ -30,11 +33,12 @@ export default class FormatPage extends Component {
       activePage: 1,
       totalItems: 0,
       listId: [],
-      loading: true
+      loading: true,
+      modalDeleteError: false,
+      modalDeleteSuccess: false
     };
-    // this.handleCheckChange = this.handleCheckChange.bind(this);
-    // this.handlePageChange = this.handlePageChange.bind(this);
-    // this.removeManyItems = this.removeManyItems.bind(this);
+    this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
+    this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
     this.removeItem = this.removeItem.bind(this);
   }
   componentWillMount() {
@@ -58,6 +62,24 @@ export default class FormatPage extends Component {
       });
     }, 500);
   }
+
+  getUpdate(update) {
+    if ((update = true)) {
+      this.componentDidMount();
+    }
+  }
+
+  toggleModalDeleteSuccess() {
+    this.setState(prevState => ({
+      modalDeleteSuccess: !prevState.modalDeleteSuccess
+    }));
+  }
+  toggleModalDeleteError() {
+    this.setState(prevState => ({
+      modalDeleteError: !prevState.modalDeleteError
+    }));
+  }
+
   handleCheckChange(e) {
     const { listDeleteId, listDeleteName } = this.state;
     listDeleteId.push(e.id);
@@ -113,10 +135,15 @@ export default class FormatPage extends Component {
         }
       ).then(res => {
         res.json().then(data => {
-          this.setState({
-            rows: data,
-            listDeleteId: []
-          });
+          if (res.status === 200) {
+            this.toggleModalDeleteSuccess();
+            this.setState({
+              rows: data,
+              listDeleteId: []
+            });
+          } else {
+            this.toggleModalDeleteError();
+          }
         });
       });
     });
@@ -149,11 +176,16 @@ export default class FormatPage extends Component {
           }
         }
       ).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data
+        if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
+          res.json().then(data => {
+            this.setState({
+              rows: data
+            });
           });
-        });
+        } else {
+          this.toggleModalDeleteError();
+        }
       });
     });
   }
@@ -161,7 +193,47 @@ export default class FormatPage extends Component {
   render() {
     var i = 0;
     return (
-      <Card style={styleCard}>
+      <Card className="dashboard-card">
+        {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalDeleteSuccess}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: '#45b649' }}>Deleted succesfully</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalDeleteError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: 'red' }}>Cannot delete this job</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
         <CardHeader style={styleFont}>
           Format Management
           <div className="icon-cancle">
@@ -197,7 +269,7 @@ export default class FormatPage extends Component {
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="this formats"
+                itemName="these formats"
                 buttonLabel="DELETE"
                 function={() => this.removeManyItems()}
               />
@@ -242,12 +314,13 @@ export default class FormatPage extends Component {
                       <td>{e.updated_at}</td> */}
                         <td>
                           <div className="action">
-                            <ModalEditItem
+                            <ModalEditFormat
                               icon
-                              // id={listId[index]}
+                              id={e.id}
                               name={e.name}
                               color="success"
                               buttonLabel="Edit"
+                              getUpdate={this.getUpdate.bind(this)}
                               // function={this.editRole.bind(this)}
                             />
                             <Link style={{ width: 'auto' }} to={url}>

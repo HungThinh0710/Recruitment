@@ -1,26 +1,29 @@
 import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
-import { Card, CardBody, CardHeader, Button } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader
+} from 'reactstrap';
 import ModalRemoveItem from '../components/ModalRemoveItem';
-import ModalEditItem from '../components/ModalEditItem';
+import ModalEditArticle from '../components/ModalEditArticle';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import './ArticlesPage.css';
 import { ClipLoader } from 'react-spinners';
-import $ from 'jquery';
 const styleFont = {
   fontSize: '200%',
   fontWeight: 'bold'
 };
-const styleCard = {
-  width: '80%',
-  marginTop: '5%',
-  alignSelf: 'center',
-  marginBottom: '8%'
-};
+
 export default class ArticlesPage extends Component {
   constructor(props) {
     super(props);
@@ -32,12 +35,17 @@ export default class ArticlesPage extends Component {
       currentPage: 0,
       activePage: 1,
       totalItems: 0,
-      listId: [],
-      loading: true
+      loading: true,
+      dataJob: '',
+      dataCategory: '',
+      dataFormat: '',
+      modalDeleteError: false,
+      modalDeleteSuccess: false
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    // this.removeManyItems = this.removeManyItems.bind(this);
+    this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
+    this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
   }
 
   componentWillMount() {
@@ -47,9 +55,43 @@ export default class ArticlesPage extends Component {
   }
 
   async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/list-article?page=1';
+    const { activePage } = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/list-article?page=' + activePage;
+    var url2 = 'https://api.enclavei3dev.tk/api/list-job';
+    var url3 = 'https://api.enclavei3dev.tk/api/category?page=1';
+    var url4 = 'https://api.enclavei3dev.tk/api/format-article';
     const data = await fetch(url, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data2 = await fetch(url2, {
+      method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data3 = await fetch(url3, {
+      method: 'POST',
+      body: JSON.stringify({
+        field: 'name',
+        orderBy: 'asc'
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data4 = await fetch(url4, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -60,9 +102,29 @@ export default class ArticlesPage extends Component {
       this.setState({
         rows: data.data,
         totalItems: data.total,
-        loading: false
+        loading: false,
+        dataJob: data2,
+        dataCategory: data3,
+        dataFormat: data4
       });
     }, 500);
+  }
+
+  getUpdate(update) {
+    if ((update = true)) {
+      this.componentDidMount();
+    }
+  }
+
+  toggleModalDeleteSuccess() {
+    this.setState(prevState => ({
+      modalDeleteSuccess: !prevState.modalDeleteSuccess
+    }));
+  }
+  toggleModalDeleteError() {
+    this.setState(prevState => ({
+      modalDeleteError: !prevState.modalDeleteError
+    }));
   }
 
   handlePageChange(pageNumber) {
@@ -82,27 +144,6 @@ export default class ArticlesPage extends Component {
           totalItems: data.total,
           rows: data.data,
           activePage: pageNumber
-        });
-      });
-    });
-  }
-
-  edit(index) {
-    $('.item').removeClass('item-active');
-    $('#' + index).addClass('item-active');
-    var url = 'https://api.enclavei3dev.tk/api/user?page=' + index;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          rows: data.data,
-          totalItems: data.total
         });
       });
     });
@@ -139,12 +180,17 @@ export default class ArticlesPage extends Component {
           Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
       }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total
+        if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
+          res.json().then(data => {
+            this.setState({
+              rows: data.data,
+              totalItems: data.total
+            });
           });
-        });
+        } else {
+          this.toggleModalDeleteError();
+        }
       });
     });
   }
@@ -201,14 +247,19 @@ export default class ArticlesPage extends Component {
           Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
       }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total,
-            listDeleteId: [],
-            listDeleteName: []
+        if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
+          res.json().then(data => {
+            this.setState({
+              rows: data.data,
+              totalItems: data.total,
+              listDeleteId: [],
+              listDeleteName: []
+            });
           });
-        });
+        } else {
+          this.toggleModalDeleteError();
+        }
       });
     });
   }
@@ -216,7 +267,47 @@ export default class ArticlesPage extends Component {
   render() {
     var i = 0;
     return (
-      <Card style={styleCard}>
+      <Card className="dashboard-card">
+        {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalDeleteSuccess}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: '#45b649' }}>Deleted succesfully</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalDeleteError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: 'red' }}>Cannot delete this article</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
         <CardHeader style={styleFont}>Articles Management</CardHeader>
         {this.state.loading ? (
           <div
@@ -248,7 +339,7 @@ export default class ArticlesPage extends Component {
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="this articles"
+                itemName="these articles"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
@@ -269,6 +360,7 @@ export default class ArticlesPage extends Component {
                     <th>#</th>
                     <th>Title</th>
                     <th>Job</th>
+                    <th>Status</th>
                     <th>Author</th>
                     {/* <th>Created At</th>
                   <th>Updated At</th> */}
@@ -292,15 +384,24 @@ export default class ArticlesPage extends Component {
                         <td>{i}</td>
                         <td>{e.title}</td>
                         {e.job ? <td>{e.job.name}</td> : <td />}
+                        {e.isPublic === 1 ? (
+                          <td>Publised</td>
+                        ) : (
+                          <td>Not published</td>
+                        )}
 
                         <td>{e.user.fullname}</td>
                         {/* <td>{e.created_at}</td>
                       <td>{e.updated_at}</td> */}
                         <td>
                           <div className="action">
-                            <ModalEditItem
+                            <ModalEditArticle
                               icon
-                              // id={listId[index]}
+                              id={e.id}
+                              getUpdate={this.getUpdate.bind(this)}
+                              dataJob={this.state.dataJob}
+                              dataFormat={this.state.dataFormat}
+                              dataCategory={this.state.dataCategory}
                               name={e.name}
                               color="success"
                               buttonLabel="Edit"

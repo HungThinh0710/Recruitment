@@ -22,7 +22,7 @@ export default class LoginPage extends React.Component {
       showLoadingLogin: false,
       circleLoading: false,
       showError: false,
-      errorMessage:''
+      errorMessage: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
@@ -45,13 +45,13 @@ export default class LoginPage extends React.Component {
 
     if (username == '' || password == '') {
       this.setState({
-        showError:true,
+        showError: true,
         circleLoading: false,
-        errorMessage: 'Username or password is invalid.',
-      })
+        errorMessage: 'Username or password is invalid.'
+      });
     }
 
-    if (username != '' && password != ''){
+    if (username != '' && password != '') {
       var url = 'https://api.enclavei3dev.tk/api/login';
       var messenger = '';
       fetch(url, {
@@ -66,43 +66,43 @@ export default class LoginPage extends React.Component {
           'X-Requested-With': 'XMLHttpRequest'
         }
       })
-      .then(response => {
-        if (response.status === 401) {
-          this.setState({
-            errorMessage: 'Username or password is incorrect.',
-            circleLoading: false,
-            showError:true,
-          });
-        }
-        if (response.status === 422) {
-          if (username == '' && password == '')
-            messenger = 'Username or password is invalid.';
-          else if (password == '') messenger = 'Invalid password.';
-          else if (username == '') messenger = 'Invalid username.';
-          this.setState({
-            circleLoading: false,
-            errorMessage:messenger,
-            showError:true,
-
-          });
-        }
-        if (response.status === 200) {
-          response.json().then(data => {
-            localStorage.setItem('access_token', data.access_token);
-            localStorage.setItem('token_type', data.token_type);
-            localStorage.setItem('expires_at', data.expires_at);
-            Check.test();
-            setTimeout(() => {
-              this.setState({
-                redirect: true,
-                circleLoading: false,
-                showLoadingLogin: true
-              });
-            }, 500);
-          });
-        }
-      })
-      .catch(error => console.error('Error:', error));}
+        .then(response => {
+          if (response.status === 401) {
+            this.setState({
+              errorMessage: 'Username or password is incorrect.',
+              circleLoading: false,
+              showError: true
+            });
+          }
+          if (response.status === 422) {
+            if (username == '' && password == '')
+              messenger = 'Username or password is invalid.';
+            else if (password == '') messenger = 'Invalid password.';
+            else if (username == '') messenger = 'Invalid username.';
+            this.setState({
+              circleLoading: false,
+              errorMessage: messenger,
+              showError: true
+            });
+          }
+          if (response.status === 200) {
+            response.json().then(data => {
+              localStorage.setItem('access_token', data.access_token);
+              localStorage.setItem('token_type', data.token_type);
+              localStorage.setItem('expires_at', data.expires_at);
+              Check.test();
+              setTimeout(() => {
+                this.setState({
+                  redirect: true,
+                  circleLoading: false,
+                  showLoadingLogin: true
+                });
+              }, 500);
+            });
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
   };
 
   renderRedirect = () => {
@@ -137,41 +137,75 @@ export default class LoginPage extends React.Component {
                 onClick={onLogoClick}
               />
             </div>
-            <hr/>
+            <hr />
             <div className="login-body">
               <div className="form-input" onKeyUp={this.handleKeyUp}>
-               {this.state.showError && <div className="error-message-alert alert alert-danger alert-dismissible fade show" role="alert">
-                  <div className="text-error">{this.state.errorMessage}</div>
-                    <button type="button" onClick={()=>this.setState({showError:false})} className="close" aria-label="">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>}
-                <input onChange={this.handleChange} name="username" type="text" className='login-input-text' placeholder="Username"/>
-                <input onChange={this.handleChange} name="password" type="password" className="login-input-text" placeholder="Password"/>
+                {this.state.showError && (
+                  <div
+                    className="error-message-alert alert alert-danger alert-dismissible fade show"
+                    role="alert"
+                  >
+                    <div className="text-error">{this.state.errorMessage}</div>
+                    <button
+                      type="button"
+                      onClick={() => this.setState({ showError: false })}
+                      className="close"
+                      aria-label=""
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                )}
+                <input
+                  onChange={this.handleChange}
+                  name="username"
+                  type="text"
+                  className="login-input-text"
+                  placeholder="Username"
+                />
+                <input
+                  onChange={this.handleChange}
+                  name="password"
+                  type="password"
+                  className="login-input-text"
+                  placeholder="Password"
+                />
               </div>
               <div className="form-forgot text-right">
-              <Link to="/dashboard/forgotpassword" className={this.state.circleLoading && "login-disabled-link"}>
-                Forgot Password
-              </Link>
-                  
+                <Link
+                  to="/dashboard/forgotpassword"
+                  className={this.state.circleLoading && 'login-disabled-link'}
+                >
+                  Forgot Password
+                </Link>
               </div>
               {this.renderRedirect()}
               <div className="form-submit">
-                <button className="btn-login-form" onClick={()=>this.handleSubmit()} disabled={this.state.circleLoading}>
-                {!this.state.circleLoading && <span>Login</span>}
+                <button
+                  className="btn-login-form"
+                  onClick={() => this.handleSubmit()}
+                  disabled={this.state.circleLoading}
+                >
+                  {!this.state.circleLoading && <span>Login</span>}
 
-                {this.state.circleLoading &&  ( 
-                  <div>
-                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span style={{paddingLeft:'4px'}}>Loading...</span> 
-                  </div>)}
-                  
+                  {this.state.circleLoading && (
+                    <div>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span style={{ paddingLeft: '4px' }}>Loading...</span>
+                    </div>
+                  )}
                 </button>
               </div>
             </div>
-            <hr/>
+            <hr />
             <div className="login-footer">
-              <div className="login-footer-text">© 2007 - 2019 - Enclave Recruitment management</div>
+              <div className="login-footer-text">
+                © 2007 - 2019 - Enclave Recruitment management
+              </div>
             </div>
           </div>
         </div>
