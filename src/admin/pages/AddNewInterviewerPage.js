@@ -447,8 +447,8 @@ export default class AddNewInterviewerPage extends Component {
                 >
                   {errorTechnicalSkillMessage == '' &&
                   formError.fullname == '' &&
-                  formError.phone &&
-                  formError.email ? (
+                  formError.phone == '' &&
+                  formError.email == '' ? (
                     <Button color="success" onClick={this.handleSubmit}>
                       Submit
                     </Button>
