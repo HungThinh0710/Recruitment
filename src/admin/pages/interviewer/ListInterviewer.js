@@ -11,11 +11,11 @@ import {
   ModalFooter,
   ModalHeader
 } from 'reactstrap';
-import ModalRemoveItem from '../components/ModalRemoveItem';
-import ModalEditUser from '../components/ModalEditUser';
 import { Link } from 'react-router-dom';
-import Pagination from '../components/Pagination.js';
+import Pagination from '../../components/Pagination';
 import { ClipLoader } from 'react-spinners';
+import ModalRemoveItem from '../../components/ModalRemoveItem';
+import ModalEditInterviewer from '../../components/ModalEditInterviewer';
 const styleFont = {
   fontSize: '200%',
   fontWeight: 'bold'
@@ -31,17 +31,13 @@ export default class UsersPage extends Component {
       currentPage: 0,
       activePage: 1,
       totalItems: 0,
-      listId: [],
       loading: true,
-      dataRoles: '',
       modalDeleteError: false,
       modalDeleteSuccess: false
     };
-    this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
     this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
-    // this.removeManyItems = this.removeManyItems.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -51,21 +47,10 @@ export default class UsersPage extends Component {
 
   async componentDidMount() {
     const { activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-user?page=' + activePage;
-    var url2 = 'https://api.enclavei3dev.tk/api/list-role';
+    var url =
+      'https://api.enclavei3dev.tk/api/list-interviewer?page=' + activePage;
     const data = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
-    const data2 = await fetch(url2, {
-      method: 'POST',
-      body: JSON.stringify({
-        all: 1
-      }),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -76,8 +61,7 @@ export default class UsersPage extends Component {
       this.setState({
         rows: data.data,
         totalItems: data.total,
-        loading: false,
-        dataRoles: data2
+        loading: false
       });
     }, 500);
   }
@@ -100,7 +84,8 @@ export default class UsersPage extends Component {
   }
 
   handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3dev.tk/api/list-user?page=' + pageNumber;
+    var url =
+      'https://api.enclavei3dev.tk/api/list-interviewer?page=' + pageNumber;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -120,22 +105,16 @@ export default class UsersPage extends Component {
     });
   }
 
-  addUser(data) {
-    this.setState({
-      rows: data.data,
-      totalItems: data.total
-    });
-  }
-
   removeItem(id) {
     const { activePage } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/interviewer';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        userId: array
+        interviewerId: array,
+        status: 'none'
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -143,17 +122,24 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-user?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      fetch(
+        'https://api.enclavei3dev.tk/api/list-interviewer?page=' + activePage,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
         }
-      }).then(res => {
+      ).then(res => {
         if (res.status === 200) {
           this.toggleModalDeleteSuccess();
           res.json().then(data => {
+            data.data.forEach(function(e) {
+              delete e.created_at;
+              delete e.updated_at;
+            });
             this.setState({
               rows: data.data,
               totalItems: data.total
@@ -165,7 +151,6 @@ export default class UsersPage extends Component {
       });
     });
   }
-
   handleCheckChange(e) {
     const { listDeleteId, listDeleteName } = this.state;
     listDeleteId.push(e.id);
@@ -195,14 +180,14 @@ export default class UsersPage extends Component {
       listDeleteName: array4
     });
   }
-
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/interviewer';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        userId: listDeleteId
+        interviewerId: listDeleteId,
+        status: 'none'
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -210,15 +195,19 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-user?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      fetch(
+        'https://api.enclavei3dev.tk/api/list-interviewer?page=' + activePage,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
         }
-      }).then(res => {
+      ).then(res => {
         if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
           res.json().then(data => {
             this.setState({
               rows: data.data,
@@ -233,7 +222,6 @@ export default class UsersPage extends Component {
       });
     });
   }
-
   render() {
     var i = 0;
     return (
@@ -268,7 +256,7 @@ export default class UsersPage extends Component {
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: 'red' }}>Cannot delete this user</span>
+            <span style={{ color: 'red' }}>Cannot delete this interviewer</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalDeleteError}>
@@ -278,7 +266,7 @@ export default class UsersPage extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <CardHeader style={styleFont}>Users Management</CardHeader>
+        <CardHeader style={styleFont}>interviewers Management</CardHeader>
         {this.state.loading ? (
           <div
             style={{
@@ -298,19 +286,19 @@ export default class UsersPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <Link to="/dashboard/create-user">
-              <Button color="success">Create a new user</Button>
+            <Link to="/dashboard/create-interviewer">
+              <Button color="success">Create An New Interviewer</Button>
             </Link>
             <br />
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="these users"
+                itemName="these interviewer"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
             )}
-            <div className="table-test">
+            <div style={{ overflowX: 'auto' }} className="table-test">
               <table>
                 <thead>
                   <tr
@@ -324,8 +312,17 @@ export default class UsersPage extends Component {
                       <input type="checkbox" />
                     </th>
                     <th>#</th>
-                    <th>Fullname</th>
-                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th
+                      style={{
+                        textOverflow: 'ellipsis',
+                        maxWidth: 100,
+                        minWidth: 80
+                      }}
+                    >
+                      Email
+                    </th>
                     <th>Phone</th>
                     <th style={{ width: '180px' }}>
                       <div className="action">Action</div>
@@ -335,7 +332,7 @@ export default class UsersPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/dashboard/user/' + e.id;
+                    let url = '/dashboard/interviewer/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
@@ -346,17 +343,19 @@ export default class UsersPage extends Component {
                         </td>
                         <td>{i}</td>
                         <td>{e.fullname}</td>
-                        <td>{e.email}</td>
+                        <td>{e.address}</td>
+                        <td style={{ textOverflow: 'ellipsis' }}>{e.email}</td>
                         <td>{e.phone}</td>
                         <td>
                           <div className="action">
-                            <ModalEditUser
+                            <ModalEditInterviewer
                               icon
-                              dataRoles={this.state.dataRoles}
                               id={e.id}
                               name={e.name}
                               color="success"
+                              buttonLabel="Edit"
                               getUpdate={this.getUpdate.bind(this)}
+                              // function={this.editRole.bind(this)}
                             />
                             <Link style={{ width: 'auto' }} to={url}>
                               <Button className="view-button" color="primary">
@@ -364,7 +363,7 @@ export default class UsersPage extends Component {
                               </Button>
                             </Link>
                             <ModalRemoveItem
-                              itemName="this user"
+                              itemName="this interviewer"
                               function={() => this.removeItem(e.id)}
                             />
                           </div>

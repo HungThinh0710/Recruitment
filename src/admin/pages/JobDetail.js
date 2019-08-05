@@ -34,7 +34,7 @@ import classnames from 'classnames';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../components/ModalAddJob.css';
+import './AddNewJobPage.css';
 import './JobDetail.css';
 const cutStringSalary = (s, i) => {
   return s.substr(0, i);
@@ -46,8 +46,6 @@ export default class JobDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkedRole: false,
-      activeRole: false,
       activeTab: '1',
       name: '',
       description: '',
@@ -392,7 +390,7 @@ export default class JobDetail extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalSuccess}>
-            Notification
+            <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
             <span style={{ color: '#45b649' }}>Updated succesfully</span>
@@ -411,7 +409,9 @@ export default class JobDetail extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>Notification</ModalHeader>
+          <ModalHeader toggle={this.toggleModalError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
           <ModalBody>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.state.errorData !== undefined &&
@@ -735,54 +735,6 @@ export default class JobDetail extends Component {
                                     value={this.state.editdescription}
                                   />
                                 </FormGroup>
-                                {/* <FormGroup>
-                                  <Label
-                                    style={{
-                                      fontSize: '18px',
-                                      fontWeight: 'bold'
-                                    }}
-                                    for="time"
-                                  >
-                                    Time
-                                  </Label>
-                                  <div
-                                    style={{
-                                      display: 'flex',
-                                      justifyContent: 'space-between'
-                                    }}
-                                  >
-                                    <div style={{ width: '45%' }}>
-                                      <Label for="Published">From</Label>
-                                      <Input
-                                        type="datetime-local"
-                                        name="editpublishedOn"
-                                        value={this.state.editpublishedOn}
-                                        onChange={this.handleChange}
-                                      />
-                                      {formError.publishedOn !== '' &&
-                                        this.state.showErrorMessage && (
-                                          <span style={{ color: 'red' }}>
-                                            {formError.publishedOn}
-                                          </span>
-                                        )}
-                                    </div>
-                                    <div style={{ width: '45%' }}>
-                                      <Label for="Deadline">To</Label>
-                                      <Input
-                                        type="datetime-local"
-                                        name="editdeadline"
-                                        value={this.state.editdeadline}
-                                        onChange={this.handleChange}
-                                      />
-                                      {formError.deadline !== '' &&
-                                        this.state.showErrorMessage && (
-                                          <span style={{ color: 'red' }}>
-                                            {formError.deadline}
-                                          </span>
-                                        )}
-                                    </div>
-                                  </div>
-                                </FormGroup> */}
                                 <FormGroup>
                                   <Label
                                     style={{
@@ -1072,31 +1024,46 @@ export default class JobDetail extends Component {
                                       )}
                                   </div>
                                 </FormGroup>
+                                <br />
                                 <FormGroup
                                   style={{
                                     display: 'flex',
                                     justifyContent: 'flex-end'
                                   }}
                                 >
-                                  {formError.name == '' &&
-                                  formError.position == '' &&
-                                  formError.amount == '' &&
-                                  formError.salaryBegin == '' &&
-                                  formError.salaryEnd == '' ? (
+                                  <div
+                                    style={{
+                                      width: '180px',
+                                      display: 'flex',
+                                      justifyContent: 'space-between'
+                                    }}
+                                  >
+                                    {formError.name == '' &&
+                                    formError.position == '' &&
+                                    formError.amount == '' &&
+                                    formError.salaryBegin == '' &&
+                                    formError.salaryEnd == '' ? (
+                                      <Button
+                                        color="success"
+                                        onClick={this.handleSubmit}
+                                      >
+                                        Submit
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        color="success"
+                                        onClick={this.handleErrorMessage}
+                                      >
+                                        Submit
+                                      </Button>
+                                    )}
                                     <Button
-                                      color="success"
-                                      onClick={this.handleSubmit}
+                                      onClick={() => this.backToPreviousPage()}
+                                      color="secondary"
                                     >
-                                      Submit
+                                      Back
                                     </Button>
-                                  ) : (
-                                    <Button
-                                      color="success"
-                                      onClick={this.handleErrorMessage}
-                                    >
-                                      Submit
-                                    </Button>
-                                  )}
+                                  </div>
                                 </FormGroup>
                               </Form>
                             </CardBody>
@@ -1107,20 +1074,22 @@ export default class JobDetail extends Component {
                   </TabContent>
                 </Row>
               </Container>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  marginTop: '20px'
-                }}
-              >
-                <Button
-                  onClick={() => this.backToPreviousPage()}
-                  color="secondary"
+              {this.state.activeTab !== '3' && (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: '20px'
+                  }}
                 >
-                  Back
-                </Button>
-              </div>
+                  <Button
+                    onClick={() => this.backToPreviousPage()}
+                    color="secondary"
+                  >
+                    Back
+                  </Button>
+                </div>
+              )}
             </CardBody>
           )}
         </Card>

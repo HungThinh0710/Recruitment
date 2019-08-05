@@ -352,7 +352,7 @@ export default class ProfilePage extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalSuccess}>
-            Notification
+            <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
             <span style={{ color: '#45b649' }}>Update succesfully</span>
@@ -371,7 +371,9 @@ export default class ProfilePage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>Notification</ModalHeader>
+          <ModalHeader toggle={this.toggleModalError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
           <ModalBody>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.state.errorData !== undefined &&
@@ -425,7 +427,7 @@ export default class ProfilePage extends Component {
           </CardTitle> */}
           <CardTitle style={{display:'flex',justifyContent:'space-between',fontSize:'35px'}}>
           <MdCancel className="hidden" />
-            <span style={{color:'#45b649',fontWeight:'bolder',fontSize:'45px'}}>My Profile</span>
+            <span style={{color:'#45b649',fontWeight:'bolder',fontSize:'45px'}}>Profile</span>
             <div className="icon-cancle">
             <Link to="/dashboard/role">
               <MdCancel />

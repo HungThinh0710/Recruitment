@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-
-import { MdPageview } from 'react-icons/md';
 import {
   Card,
   CardBody,
@@ -11,19 +9,22 @@ import {
   ModalFooter,
   ModalHeader
 } from 'reactstrap';
-import ModalRemoveItem from '../components/ModalRemoveItem';
-import ModalEditUser from '../components/ModalEditUser';
-import { Link } from 'react-router-dom';
-import Pagination from '../components/Pagination.js';
 import { ClipLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
+import ModalEditFormat from '../components/ModalEditFormat';
+import ModalRemoveItem from '../components/ModalRemoveItem';
+import { MdCancel, MdPageview } from 'react-icons/md';
 const styleFont = {
   fontSize: '200%',
+  display: 'flex',
+  justifyContent: 'space-between',
   fontWeight: 'bold'
 };
 
-export default class UsersPage extends Component {
+export default class FormatPage extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       listDeleteName: [],
       listDeleteId: [],
@@ -33,39 +34,21 @@ export default class UsersPage extends Component {
       totalItems: 0,
       listId: [],
       loading: true,
-      dataRoles: '',
       modalDeleteError: false,
       modalDeleteSuccess: false
     };
-    this.handleCheckChange = this.handleCheckChange.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
     this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
     this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
-    // this.removeManyItems = this.removeManyItems.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
       this.props.history.push('/dashboard/login');
     }
   }
-
   async componentDidMount() {
-    const { activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-user?page=' + activePage;
-    var url2 = 'https://api.enclavei3dev.tk/api/list-role';
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
     const data = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
-    const data2 = await fetch(url2, {
-      method: 'POST',
-      body: JSON.stringify({
-        all: 1
-      }),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -74,10 +57,8 @@ export default class UsersPage extends Component {
     }).then(res => res.json());
     setTimeout(() => {
       this.setState({
-        rows: data.data,
-        totalItems: data.total,
-        loading: false,
-        dataRoles: data2
+        rows: data,
+        loading: false
       });
     }, 500);
   }
@@ -97,73 +78,6 @@ export default class UsersPage extends Component {
     this.setState(prevState => ({
       modalDeleteError: !prevState.modalDeleteError
     }));
-  }
-
-  handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3dev.tk/api/list-user?page=' + pageNumber;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          currentPage: data.currentPage,
-          totalItems: data.total,
-          rows: data.data,
-          activePage: pageNumber
-        });
-      });
-    });
-  }
-
-  addUser(data) {
-    this.setState({
-      rows: data.data,
-      totalItems: data.total
-    });
-  }
-
-  removeItem(id) {
-    const { activePage } = this.state;
-    var array = [];
-    array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/user';
-    fetch(url, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        userId: array
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-user?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => {
-        if (res.status === 200) {
-          this.toggleModalDeleteSuccess();
-          res.json().then(data => {
-            this.setState({
-              rows: data.data,
-              totalItems: data.total
-            });
-          });
-        } else {
-          this.toggleModalDeleteError();
-        }
-      });
-    });
   }
 
   handleCheckChange(e) {
@@ -195,14 +109,14 @@ export default class UsersPage extends Component {
       listDeleteName: array4
     });
   }
-
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
-        userId: listDeleteId
+        formatId: listDeleteId,
+        status: 'none'
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -210,21 +124,63 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-user?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      fetch(
+        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
         }
-      }).then(res => {
+      ).then(res => {
+        res.json().then(data => {
+          if (res.status === 200) {
+            this.toggleModalDeleteSuccess();
+            this.setState({
+              rows: data,
+              listDeleteId: []
+            });
+          } else {
+            this.toggleModalDeleteError();
+          }
+        });
+      });
+    });
+  }
+
+  removeItem(id) {
+    const { activePage } = this.state;
+    var array = [];
+    array.push(id);
+    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        formatId: array,
+        status: 'none'
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      fetch(
+        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
+        }
+      ).then(res => {
         if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
           res.json().then(data => {
             this.setState({
-              rows: data.data,
-              totalItems: data.total,
-              listDeleteId: [],
-              listDeleteName: []
+              rows: data
             });
           });
         } else {
@@ -268,7 +224,7 @@ export default class UsersPage extends Component {
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: 'red' }}>Cannot delete this user</span>
+            <span style={{ color: 'red' }}>Cannot delete this job</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalDeleteError}>
@@ -278,7 +234,14 @@ export default class UsersPage extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <CardHeader style={styleFont}>Users Management</CardHeader>
+        <CardHeader style={styleFont}>
+          Format Management
+          <div className="icon-cancle">
+            <Link to="/dashboard/article">
+              <MdCancel />
+            </Link>
+          </div>
+        </CardHeader>
         {this.state.loading ? (
           <div
             style={{
@@ -298,15 +261,16 @@ export default class UsersPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <Link to="/dashboard/create-user">
-              <Button color="success">Create a new user</Button>
-            </Link>
-            <br />
+            <div className="area-btn-header">
+              <Link to="/dashboard/create-format">
+                <Button color="success">Create A New Format</Button>
+              </Link>
+            </div>
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="these users"
-                buttonLabel="Delete"
+                itemName="these formats"
+                buttonLabel="DELETE"
                 function={() => this.removeManyItems()}
               />
             )}
@@ -320,13 +284,13 @@ export default class UsersPage extends Component {
                       color: 'white'
                     }}
                   >
-                    <th>
+                    <th style={{ width: '5%' }}>
                       <input type="checkbox" />
                     </th>
-                    <th>#</th>
-                    <th>Fullname</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    <th style={{ width: '5%' }}>#</th>
+                    <th>Title</th>
+                    {/* <th>Created At</th>
+                  <th>Updated At</th> */}
                     <th style={{ width: '180px' }}>
                       <div className="action">Action</div>
                     </th>
@@ -335,7 +299,7 @@ export default class UsersPage extends Component {
                 <tbody>
                   {this.state.rows.map(e => {
                     i++;
-                    let url = '/dashboard/user/' + e.id;
+                    let url = '/dashboard/format/' + e.id;
                     return (
                       <tr key={e.id}>
                         <td>
@@ -345,18 +309,19 @@ export default class UsersPage extends Component {
                           />
                         </td>
                         <td>{i}</td>
-                        <td>{e.fullname}</td>
-                        <td>{e.email}</td>
-                        <td>{e.phone}</td>
+                        <td>{e.title}</td>
+                        {/* <td>{e.created_at}</td>
+                      <td>{e.updated_at}</td> */}
                         <td>
                           <div className="action">
-                            <ModalEditUser
+                            <ModalEditFormat
                               icon
-                              dataRoles={this.state.dataRoles}
                               id={e.id}
                               name={e.name}
                               color="success"
+                              buttonLabel="Edit"
                               getUpdate={this.getUpdate.bind(this)}
+                              // function={this.editRole.bind(this)}
                             />
                             <Link style={{ width: 'auto' }} to={url}>
                               <Button className="view-button" color="primary">
@@ -364,8 +329,8 @@ export default class UsersPage extends Component {
                               </Button>
                             </Link>
                             <ModalRemoveItem
-                              itemName="this user"
                               function={() => this.removeItem(e.id)}
+                              itemName="this format"
                             />
                           </div>
                         </td>
@@ -374,14 +339,6 @@ export default class UsersPage extends Component {
                   })}
                 </tbody>
               </table>
-              <br />
-              <Pagination
-                activePage={this.state.activePage}
-                itemsCountPerPage={10}
-                totalItemsCount={this.state.totalItems}
-                pageRangeDisplayed={5}
-                onChange={this.handlePageChange.bind(this)}
-              />
             </div>
           </CardBody>
         )}

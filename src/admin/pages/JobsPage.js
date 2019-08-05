@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
-import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveJob from '../components/ModalRemoveJob';
-import ModalRemoveJobs from '../components/ModalRemoveJobs';
-import ModalEditItem from '../components/ModalEditItem';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader
+} from 'reactstrap';
+import ModalRemoveItem from '../components/ModalRemoveItem';
+import ModalEditJob from '../components/ModalEditJob';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
-// import './Roles.css'
-import ModalAddJob from '../components/ModalAddJob';
 import { ClipLoader } from 'react-spinners';
-import $ from 'jquery';
 const styleFont = {
-  fontSize: '200%'
+  fontSize: '200%',
+  fontWeight: 'bold'
 };
-const styleCard = {
-  width: '80%',
-  marginTop: '5%',
-  alignSelf: 'center',
-  marginBottom: '8%'
-};
+
 export default class JobsPage extends Component {
   constructor(props) {
     super(props);
@@ -31,11 +32,14 @@ export default class JobsPage extends Component {
       activePage: 1,
       totalItems: 0,
       listId: [],
-      loading: true
+      loading: true,
+      modalDeleteError: false,
+      modalDeleteSuccess: false
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    // this.removeManyItems = this.removeManyItems.bind(this);
+    this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
+    this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -43,7 +47,8 @@ export default class JobsPage extends Component {
     }
   }
   async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/list-job?page=1';
+    const { activePage } = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/list-job?page=' + activePage;
     const data = await fetch(url, {
       method: 'POST',
       headers: {
@@ -59,6 +64,23 @@ export default class JobsPage extends Component {
         loading: false
       });
     }, 500);
+  }
+
+  getUpdate(update) {
+    if ((update = true)) {
+      this.componentDidMount();
+    }
+  }
+
+  toggleModalDeleteSuccess() {
+    this.setState(prevState => ({
+      modalDeleteSuccess: !prevState.modalDeleteSuccess
+    }));
+  }
+  toggleModalDeleteError() {
+    this.setState(prevState => ({
+      modalDeleteError: !prevState.modalDeleteError
+    }));
   }
 
   handlePageChange(pageNumber) {
@@ -78,27 +100,6 @@ export default class JobsPage extends Component {
           totalItems: data.total,
           rows: data.data,
           activePage: pageNumber
-        });
-      });
-    });
-  }
-
-  edit(index) {
-    $('.item').removeClass('item-active');
-    $('#' + index).addClass('item-active');
-    var url = 'https://api.enclavei3dev.tk/api/user?page=' + index;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          rows: data.data,
-          totalItems: data.total
         });
       });
     });
@@ -135,12 +136,17 @@ export default class JobsPage extends Component {
           Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
       }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total
+        if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
+          res.json().then(data => {
+            this.setState({
+              rows: data.data,
+              totalItems: data.total
+            });
           });
-        });
+        } else {
+          this.toggleModalDeleteError();
+        }
       });
     });
   }
@@ -197,14 +203,19 @@ export default class JobsPage extends Component {
           Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
       }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total,
-            listDeleteId: [],
-            listDeleteName: []
+        if (res.status === 200) {
+          this.toggleModalDeleteSuccess();
+          res.json().then(data => {
+            this.setState({
+              rows: data.data,
+              totalItems: data.total,
+              listDeleteId: [],
+              listDeleteName: []
+            });
           });
-        });
+        } else {
+          this.toggleModalDeleteError();
+        }
       });
     });
   }
@@ -212,7 +223,47 @@ export default class JobsPage extends Component {
   render() {
     var i = 0;
     return (
-      <Card style={styleCard}>
+      <Card className="dashboard-card">
+        {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalDeleteSuccess}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: '#45b649' }}>Deleted succesfully</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalDeleteError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: 'red' }}>Cannot delete this job</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
         <CardHeader style={styleFont}>Jobs Management</CardHeader>
         {this.state.loading ? (
           <div
@@ -233,16 +284,14 @@ export default class JobsPage extends Component {
           </div>
         ) : (
           <CardBody>
-            <ModalAddJob
-              color="success"
-              page={this.state.activePage}
-              buttonLabel="Create a new job"
-              nameButtonAccept="Add"
-              function={this.addJob.bind(this)}
-            />
+            <Link to="/dashboard/create-job">
+              <Button color="success">Create a new job</Button>
+            </Link>
+            <br />
+            <br />
             {this.state.listDeleteId.length !== 0 && (
-              <ModalRemoveJobs
-                arrayName={this.state.listDeleteName}
+              <ModalRemoveItem
+                itemName="these jobs"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
@@ -289,12 +338,13 @@ export default class JobsPage extends Component {
                         <td>{e.deadline}</td>
                         <td>
                           <div className="action">
-                            <ModalEditItem
+                            <ModalEditJob
                               icon
-                              // id={listId[index]}
+                              id={e.id}
                               name={e.name}
                               color="success"
                               buttonLabel="Edit"
+                              getUpdate={this.getUpdate.bind(this)}
                               // function={this.editRole.bind(this)}
                             />
                             <Link style={{ width: 'auto' }} to={url}>
@@ -302,9 +352,8 @@ export default class JobsPage extends Component {
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveJob
-                              item={e}
-                              buttonLabel="Delete"
+                            <ModalRemoveItem
+                              itemName="this job"
                               function={() => this.removeItem(e.id)}
                             />
                           </div>
