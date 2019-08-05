@@ -593,7 +593,6 @@ export default class ArticleDetail extends Component {
             <MdCancel className="first" />
             Article Information
             <Link to="/dashboard/article">
-              <MdCancel />
             </Link>
           </CardTitle>
           {this.state.loading ? (
@@ -618,48 +617,50 @@ export default class ArticleDetail extends Component {
               <Container>
                 <Row style={{ justifyContent: 'center' }}>
                   <div className="table-test" style={{ width: '100%' }}>
-                    <table>
-                      <tbody>
-                        <tr key={1}>
+                    <table style={{ width: '100%' }}>
+                      <tbody style={{ width: '100%' }}>
+                        <tr className = 'job-title3' key={1}>
                           <td className="job-title">Title</td>
-                          <td>{this.state.title}</td>
+                          <td className = 'job-title1'>{this.state.title}</td>
                         </tr>
 
-                        <tr key={2}>
+                        <tr className = 'job-title3' key={2}>
                           <td className="job-title">Status</td>
-                          <td>{this.state.status}</td>
+                          <td className = 'job-title1'>{this.state.status}</td>
                         </tr>
 
-                        <tr key={3}>
+                        <tr className = 'job-title3' key={3}>
                           <td className="job-title">Category</td>
-                          <td>{this.state.catName}</td>
+                          <td className = 'job-title1'>{this.state.catName}</td>
                         </tr>
                         {this.state.jobName !== '' && (
-                          <tr key={4}>
+                          <tr className = 'job-title3' key={4}>
                             <td className="job-title">Job</td>
-                            <td>
+                            <td className = 'job-title1'>
                               <Link to={url1}>{this.state.jobName}</Link>
                             </td>
                           </tr>
                         )}
-                        <tr key={5}>
+                        <tr className = 'job-title3' key={5}>
                           <td className="job-title">Created By</td>
-                          <td>
+                          <td className = 'job-title1'>
                             <Link to={url2}>{this.state.userName}</Link>
                           </td>
                         </tr>
-                        <tr key={6}>
+                        <tr className = 'job-title3' key={6}>
                           <td className="job-title">Created At</td>
-                          <td>{this.state.created_at}</td>
+                          <td className = 'job-title1'>{this.state.created_at}</td>
                         </tr>
-                        <tr key={7}>
+                        <tr className = 'job-title3' key={7}>
                           <td className="job-title">Updated At</td>
-                          <td>{this.state.updated_at}</td>
+                          <td className = 'job-title1'>{this.state.updated_at}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </Row>
+                <br/>
+                <br/>
                 <Row>
                   <div className="job-tabs">
                     <Nav tabs>

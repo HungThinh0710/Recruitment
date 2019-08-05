@@ -140,36 +140,36 @@ export default class JobDetail extends Component {
               <Container>
                 <Row style={{ justifyContent: 'center' }}>
                   <div className="table-test" style={{ width: '100%' }}>
-                    <table>
-                      <tbody>
-                        <tr key={1}>
+                    <table style={{ width: '100%' }}>
+                      <tbody style={{ width: '100%' }}>
+                        <tr className = 'job-title3' key={1}>
                           <td className="job-title">Name</td>
-                          <td>{this.state.fullname}</td>
+                          <td  className="job-title1">{this.state.fullname}</td>
                         </tr>
-                        <tr key={2}>
+                        <tr className="job-title3" key={2}>
                           <td className="job-title">Address</td>
-                          <td>{this.state.address}</td>
+                          <td className="job-title1">{this.state.address}</td>
                         </tr>
-                        <tr key={3}>
+                        <tr className="job-title3" key={3}>
                           <td className="job-title">Email</td>
-                          <td>{this.state.email}</td>
+                          <td className="job-title1">{this.state.email}</td>
                         </tr>
                         
-                        <tr key={4}>
+                        <tr className="job-title3" key={4}>
                           <td className="job-title">Phone</td>
-                          <td>{this.state.phone}</td>
+                          <td className="job-title1">{this.state.phone}</td>
                         </tr>
-                        <tr key={5}>
+                        <tr className="job-title3" key={5}>
                           <td className="job-title">Status</td>
-                          <td>{this.state.status}</td>
+                          <td className="job-title1">{this.state.status}</td>
                         </tr>
-                        <tr key={6}>
+                        <tr className="job-title3" key={6}>
                           <td className="job-title">Description</td>
-                          <td>{this.state.description}</td>
+                          <td className="job-title1">{this.state.description}</td>
                         </tr>
-                        <tr key={7}>
-                          <td className="job-title">Technical Skill</td>
-                          <td><span>{newString}</span></td>
+                        <tr className="job-title3" key={7}>
+                          <td className="job-title">Skill</td>
+                          <td className="job-title1"><span>{newString}</span></td>
                         </tr>
                       </tbody>
                     </table>
@@ -201,10 +201,9 @@ export default class JobDetail extends Component {
                     activeTab={this.state.activeTab}
                   >
                     <TabPane tabId="1">
-                      <Row>
-                      <CardBody>
+                      <CardBody style = {{paddingLeft: 0, paddingRight: 0}}>
                           <div className="table-test">
-                            <table>
+                            <table style={{ width: '100%' }}>
                               <thead>
                                 <tr
                                   style={{
@@ -213,14 +212,11 @@ export default class JobDetail extends Component {
                                     color: 'white'
                                   }}
                                 >
-                                  <th>#</th>
-                                  <th>Fullname</th>
-                                  <th>Address</th>
-                                  <th>Start</th>
-                                  <th>Status</th>
-                                  <th style={{ width: '100px' }}>
-                                    <div className="action">Action</div>
-                                  </th>
+                                  <th className ="title1">#</th>
+                                  <th className ="title1">Fullname</th>
+                                  <th className ="title1">Address</th>
+                                  <th className ="title1">Start</th>
+                                  <th className ="title1">Status</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -261,21 +257,12 @@ export default class JobDetail extends Component {
                                   i++;
                                   let url = '/dashboard/candidate/' + e.id;
                                   return (
-                                    <tr key={e.id}>
-                                      <td>{i}</td>
-                                      <td>{e.name}</td>
-                                      <td>{e.address}</td>
-                                      <td>{e.timeStart}</td>
-                                      <td>{e.status}</td>
-                                      <td>
-                                        <div className="action">
-                                          <Link style={{ width: 'auto' }} to={'/dashboard/interview/'+ e.id}>
-                                            <Button className="view-button" color="primary">
-                                              <MdPageview />
-                                            </Button>
-                                          </Link>
-                                        </div>
-                                      </td>
+                                    <tr style={{ textAlign: 'center' }} key={e.id}>
+                                      <td className ="title1">{i}</td>
+                                      <td className ="title1">{e.name}</td>
+                                      <td className ="title1">{e.address}</td>
+                                      <td className ="title1">{e.timeStart}</td>
+                                      <td className ="title1">{e.status}</td>
                                     </tr>
                                   );
                                 })}
@@ -285,7 +272,6 @@ export default class JobDetail extends Component {
 
                           </div>
                         </CardBody>
-                      </Row>
                     </TabPane>
                     </TabContent>
                 </Row>
