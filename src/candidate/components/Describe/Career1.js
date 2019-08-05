@@ -134,18 +134,22 @@ export default class Careers extends Component {
       content: data.content
     });
     //gia tri thay doi
-    const head = document.getElementsByTagName('head')[5];
-    const listMeta =  [];
-    var metaApp = '<meta property="fb:app_id" content="2309010198"/>';
-    
-    metaApp += '<meta property="og:title" content="Enclave Recruitment System" />'
-    metaApp += '<meta property="og:type" content="article" />'
-    metaApp += '<meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"/>'
-    metaApp += '<meta property="og:url" content="https://enclavei3dev.tk/article/6" />'
-    metaApp += '<meta property="og:description" content="Find your dream job in our company" />'
+    document.getElementsByTagName("META")[5].content = "This is title by Hung Thinh";
+    document.getElementsByTagName("META")[6].content = "his is descrip by Hung Thinh";
 
-    listMeta.push(metaApp);
-    head.innerHTML = listMeta + head.innerHTML;
+
+    // const head = document.getElementsByTagName('head')[0];
+    // const listMeta =  [];
+    // var metaApp = '<meta property="fb:app_id" content="2309010198"/>';
+    
+    // metaApp += '<meta property="og:title" content="Enclave Recruitment System" />'
+    // metaApp += '<meta property="og:type" content="article" />'
+    // metaApp += '<meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"/>'
+    // metaApp += '<meta property="og:url" content="https://enclavei3dev.tk/article/6" />'
+    // metaApp += '<meta property="og:description" content="Find your dream job in our company" />'
+
+    // listMeta.push(metaApp);
+    // head.innerHTML = listMeta + head.innerHTML;
 
     // this.updateHead();
     // console.log(this.state.jobID)
