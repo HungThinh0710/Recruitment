@@ -291,7 +291,7 @@ export default class JobsPage extends Component {
             <br />
             {this.state.listDeleteId.length !== 0 && (
               <ModalRemoveItem
-                itemName="this jobs"
+                itemName="these jobs"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />

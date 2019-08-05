@@ -293,7 +293,7 @@ export default class UsersPage extends Component {
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="this interviewers"
+                itemName="these interviewer"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />

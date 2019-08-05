@@ -339,7 +339,7 @@ export default class ArticlesPage extends Component {
             <br />
             {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
-                itemName="this articles"
+                itemName="these articles"
                 buttonLabel="Delete"
                 function={() => this.removeManyItems()}
               />
