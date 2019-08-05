@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Card,
   CardBody,
-  CardTitle,
+  CardHeader,
   Button,
   Row,
   Container,
@@ -23,7 +23,7 @@ import {
 } from 'reactstrap';
 import { MdBook, MdCancel, MdPageview, MdSettings } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import 'react-datepicker/dist/react-datepicker.css';
 import classnames from 'classnames';
 import '../JobDetail.css';
@@ -342,14 +342,17 @@ export default class JobDetail extends Component {
       ? (errorTechnicalSkillMessage = 'Technical skill is required')
       : (errorTechnicalSkillMessage = '');
     return (
-      <div className="profile-card">
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -369,7 +372,10 @@ export default class JobDetail extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -394,382 +400,366 @@ export default class JobDetail extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Interviewer Information
-            <Link to="/dashboard/interviewer" />
-          </CardTitle>
-          {this.state.loading ? (
-            <div
-              style={{
-                marginTop: '100px',
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: '100px'
-              }}
-              className="sweet-loading"
-            >
-              <ClipLoader
-                sizeUnit={'px'}
-                size={200}
-                color={'#45b649'}
-                loading={this.state.loading}
-              />
-            </div>
-          ) : (
-            <CardBody>
-              <Container>
-                <Row style={{ justifyContent: 'center' }}>
-                  <div className="table-test" style={{ width: '100%' }}>
-                    <table style={{ width: '100%' }}>
-                      <tbody style={{ width: '100%' }}>
-                        <tr className = 'job-title3' key={1}>
-                          <td className="job-title">Fullname</td>
-                          <td className="job-title1">{this.state.fullname}</td>
-                        </tr>
-                        <tr className = 'job-title3' key={2}>
-                          <td className="job-title">Address</td>
-                          <td className="job-title1">{this.state.address}</td>
-                        </tr>
-                        <tr className = 'job-title3' key={3}>
-                          <td className="job-title">Email</td>
-                          <td className="job-title1">{this.state.email}</td>
-                        </tr>
+        <CardHeader className="card-header-custom">
+          Interviewer's information
+        </CardHeader>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <PulseLoader
+              sizeUnit={'px'}
+              size={15}
+              color={'#45b649'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
+          <CardBody>
+            <Container>
+              <Row style={{ justifyContent: 'center' }}>
+                <div className="table-test" style={{ width: '100%' }}>
+                  <table style={{ width: '100%' }}>
+                    <tbody style={{ width: '100%' }}>
+                      <tr className="job-title3" key={1}>
+                        <td className="job-title">Fullname</td>
+                        <td className="job-title1">{this.state.fullname}</td>
+                      </tr>
+                      <tr className="job-title3" key={2}>
+                        <td className="job-title">Address</td>
+                        <td className="job-title1">{this.state.address}</td>
+                      </tr>
+                      <tr className="job-title3" key={3}>
+                        <td className="job-title">Email</td>
+                        <td className="job-title1">{this.state.email}</td>
+                      </tr>
 
-                        <tr className = 'job-title3' key={4}>
-                          <td className="job-title">Phone</td>
-                          <td className="job-title1">{this.state.phone}</td>
-                        </tr>
-                        <tr className = 'job-title3' key={5}>
-                          <td className="job-title">Skill</td>
-                          <td className="job-title1">
-                            <span>{newString}</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </Row>
-                <br />
-                <Row>
-                  <div className="job-tabs">
-                    <Nav tabs>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '1'
-                          })}
-                          onClick={() => {
-                            this.toggle('1');
-                          }}
-                        >
-                          <MdBook style={{ marginRight: '5px' }} />
-                          Interviews
-                        </NavLink>
-                      </NavItem>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '2'
-                          })}
-                          onClick={() => {
-                            this.toggle('2');
-                          }}
-                        >
-                          <MdSettings style={{ marginRight: '5px' }} />
-                          Update
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
-                </Row>
-                <Row>
-                  <TabContent
-                    style={{ width: '100%' }}
-                    activeTab={this.state.activeTab}
-                  >
-                    <TabPane tabId="1">
-                        <CardBody style = {{paddingLeft: 0, paddingRight: 0}}>
-                          <div className="table-test">
-                            <table  style={{ width: '100%' }}>
-                              <thead>
-                                <tr
-                                  style={{
-                                    background:
-                                      '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                    color: 'white',
-                                  }}
-                                >
-                                  <th className ="title1" >#</th>
-                                  <th className ="title1">Fullname</th>
-                                  <th className ="title1">Address</th>
-                                  <th className ="title1">Start</th>
-                                  <th className ="title1">Status</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {this.state.interviews.map(e => {
-                                  if (e.status == '1') {
-                                    e.status = 'Pending';
-                                  }
-                                  if (e.status == '2') {
-                                    e.status = 'Opening';
-                                  }
-                                  if (e.status == '3') {
-                                    e.status = 'Closed';
-                                  }
-                                  if (e.address == '2-1') {
-                                    e.address =
-                                      'Floor 2 - 453-455 Hoang Dieu Str';
-                                  }
-                                  if (e.address == '3-1') {
-                                    e.address =
-                                      'Floor 3 - 453-455 Hoang Dieu Str';
-                                  }
-                                  if (e.address == '4-1') {
-                                    e.address =
-                                      'Floor 4 - 453-455 Hoang Dieu Str';
-                                  }
-                                  if (e.address == '5-1') {
-                                    e.address =
-                                      'Floor 5 - 453-455 Hoang Dieu Str';
-                                  }
-                                  if (e.address == '2-2') {
-                                    e.address =
-                                      'Floor 2 - 117 Nguyen Huu Tho Str';
-                                  }
-                                  if (e.address == '3-2') {
-                                    e.address =
-                                      'Floor 3 - 117 Nguyen Huu Tho Str';
-                                  }
-                                  if (e.address == '4-2') {
-                                    e.address =
-                                      'Floor 4 - 117 Nguyen Huu Tho Str';
-                                  }
-                                  if (e.address == '5-2') {
-                                    e.address =
-                                      'Floor 5 - 117 Nguyen Huu Tho Str';
-                                  }
-                                  i++;
-                                  let url = '/dashboard/candidate/' + e.id;
-                                  return (
-                                    <tr style={{ textAlign: 'center' }} key={e.id}>
-                                      <td className ="title1">{i}</td>
-                                      <td className ="title1">{e.name}</td>
-                                      <td className ="title1">{e.address}</td>
-                                      <td className ="title1">{e.timeStart}</td>
-                                      <td className ="title1">{e.status}</td>
-                                    </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
-                            <br />
-                          </div>
-                        </CardBody>
-                    </TabPane>
-                    <TabPane tabId="2">
-                      <Form>
-                        <br />
-                        <br />
-                        <Row>
-                          <Col xs="4">
-                            <div
+                      <tr className="job-title3" key={4}>
+                        <td className="job-title">Phone</td>
+                        <td className="job-title1">{this.state.phone}</td>
+                      </tr>
+                      <tr className="job-title3" key={5}>
+                        <td className="job-title">Skill</td>
+                        <td className="job-title1">
+                          <span>{newString}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Row>
+              <br />
+              <Row>
+                <div className="job-tabs">
+                  <Nav tabs>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '1'
+                        })}
+                        onClick={() => {
+                          this.toggle('1');
+                        }}
+                      >
+                        <MdBook style={{ marginRight: '5px' }} />
+                        Interviews
+                      </NavLink>
+                    </NavItem>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '2'
+                        })}
+                        onClick={() => {
+                          this.toggle('2');
+                        }}
+                      >
+                        <MdSettings style={{ marginRight: '5px' }} />
+                        Update
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                </div>
+              </Row>
+              <Row>
+                <TabContent
+                  style={{ width: '100%' }}
+                  activeTab={this.state.activeTab}
+                >
+                  <TabPane tabId="1">
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
                               style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                flexDirection: 'column'
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
                               }}
                             >
-                              <img
-                                src="/admin/img/Default-avatar.png"
-                                style={{ width: '200px' }}
-                              />
-                              <br />
-                              <Input
-                                type="file"
-                                name="image"
-                                style={{ padding: '5px' }}
-                                onChange={this.handleChange}
-                              />
-                            </div>
-                          </Col>
-                          <Col xs="8">
-                            <FormGroup>
-                              <Label className="title-input" for="exampleName">
-                                Fullname
-                              </Label>
-                              <Input
-                                type="text"
-                                name="editFullname"
-                                onChange={this.handleChange}
-                                value={this.state.editFullname}
-                              />
-                              {formError.fullname !== '' &&
-                                this.state.showErrorMessage && (
-                                  <span style={{ color: 'red' }}>
-                                    {formError.fullname}
-                                  </span>
-                                )}
-                            </FormGroup>
-                            <FormGroup>
-                              <Label
-                                className="title-input"
-                                for="exampleDescription"
-                              >
-                                Email
-                              </Label>
-                              <Input
-                                type="email"
-                                name="editEmail"
-                                onChange={this.handleChange}
-                                value={this.state.editEmail}
-                              />
-                              {formError.email !== '' &&
-                                this.state.showErrorMessage && (
-                                  <span style={{ color: 'red' }}>
-                                    {formError.email}
-                                  </span>
-                                )}
-                            </FormGroup>
-                            <FormGroup>
-                              <Label
-                                className="title-input"
-                                for="exampleDescription"
-                              >
-                                Phone
-                              </Label>
-                              <Input
-                                type="text"
-                                name="editPhone"
-                                onChange={this.handleChange}
-                                value={this.state.editPhone}
-                              />
-
-                              {formError.phone !== '' &&
-                                this.state.showErrorMessage && (
-                                  <span style={{ color: 'red' }}>
-                                    {formError.phone}
-                                  </span>
-                                )}
-                            </FormGroup>
-                            <FormGroup>
-                              <Label
-                                className="title-input"
-                                for="exampleDescription"
-                              >
-                                Address
-                              </Label>
-                              <Input
-                                type="text"
-                                name="editAddress"
-                                value={this.state.editAddress}
-                                onChange={this.handleChange}
-                              />
-                            </FormGroup>
-                            <FormGroup>
-                              <div
-                                style={{
-                                  display: 'flex',
-                                  alignItems: 'center'
-                                }}
-                              >
-                                <Label
-                                  className="title-input"
-                                  for="exampleDescription"
-                                >
-                                  Technical skill{' '}
-                                  <Button
-                                    onClick={() => this.createTechnicalSkill()}
-                                    style={{
-                                      fontSize: '15px',
-                                      padding: '0px 6px',
-                                      marginLeft: '10px'
-                                    }}
-                                  >
-                                    +
-                                  </Button>
-                                </Label>
-                              </div>
-                              {this.state.arrayTechnicalSkillComponents.map(
-                                e => e
-                              )}
-                              {errorTechnicalSkillMessage != '' &&
-                                this.state.showErrorMessage && (
-                                  <span style={{ color: 'red' }}>
-                                    {errorTechnicalSkillMessage}
-                                  </span>
-                                )}
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                        <br />
-                        <FormGroup
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'flex-end'
-                          }}
-                        >
+                              <th className="title1">#</th>
+                              <th className="title1">Fullname</th>
+                              <th className="title1">Address</th>
+                              <th className="title1">Start</th>
+                              <th className="title1">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.interviews.map(e => {
+                              if (e.status == '1') {
+                                e.status = 'Pending';
+                              }
+                              if (e.status == '2') {
+                                e.status = 'Opening';
+                              }
+                              if (e.status == '3') {
+                                e.status = 'Closed';
+                              }
+                              if (e.address == '2-1') {
+                                e.address = 'Floor 2 - 453-455 Hoang Dieu Str';
+                              }
+                              if (e.address == '3-1') {
+                                e.address = 'Floor 3 - 453-455 Hoang Dieu Str';
+                              }
+                              if (e.address == '4-1') {
+                                e.address = 'Floor 4 - 453-455 Hoang Dieu Str';
+                              }
+                              if (e.address == '5-1') {
+                                e.address = 'Floor 5 - 453-455 Hoang Dieu Str';
+                              }
+                              if (e.address == '2-2') {
+                                e.address = 'Floor 2 - 117 Nguyen Huu Tho Str';
+                              }
+                              if (e.address == '3-2') {
+                                e.address = 'Floor 3 - 117 Nguyen Huu Tho Str';
+                              }
+                              if (e.address == '4-2') {
+                                e.address = 'Floor 4 - 117 Nguyen Huu Tho Str';
+                              }
+                              if (e.address == '5-2') {
+                                e.address = 'Floor 5 - 117 Nguyen Huu Tho Str';
+                              }
+                              i++;
+                              let url = '/dashboard/candidate/' + e.id;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{i}</td>
+                                  <td className="title1">{e.name}</td>
+                                  <td className="title1">{e.address}</td>
+                                  <td className="title1">{e.timeStart}</td>
+                                  <td className="title1">{e.status}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardBody>
+                  </TabPane>
+                  <TabPane tabId="2">
+                    <Form>
+                      <br />
+                      <br />
+                      <Row>
+                        <Col xs="4">
                           <div
                             style={{
                               display: 'flex',
-                              width: '180px',
-                              justifyContent: 'space-between'
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              flexDirection: 'column'
                             }}
                           >
-                            {errorTechnicalSkillMessage == '' &&
-                            formError.fullname == '' &&
-                            formError.phone == '' &&
-                            formError.email == '' ? (
-                              <Button
-                                color="success"
-                                onClick={this.handleSubmit}
-                              >
-                                Submit
-                              </Button>
-                            ) : (
-                              <Button
-                                color="success"
-                                onClick={this.handleErrorMessage}
-                              >
-                                Submit
-                              </Button>
-                            )}
-                            <Button
-                              onClick={() => this.backToPreviousPage()}
-                              color="secondary"
-                            >
-                              Back
-                            </Button>
+                            <img
+                              src="/admin/img/Default-avatar.png"
+                              style={{ width: '200px' }}
+                            />
+                            <br />
+                            <Input
+                              type="file"
+                              name="image"
+                              style={{ padding: '5px' }}
+                              onChange={this.handleChange}
+                            />
                           </div>
-                        </FormGroup>
-                      </Form>
-                    </TabPane>
-                  </TabContent>
-                </Row>
-              </Container>
-              {this.state.activeTab == '1' && (
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '20px'
-                  }}
+                        </Col>
+                        <Col xs="8">
+                          <FormGroup>
+                            <Label className="title-input" for="exampleName">
+                              Fullname
+                            </Label>
+                            <Input
+                              type="text"
+                              name="editFullname"
+                              onChange={this.handleChange}
+                              value={this.state.editFullname}
+                            />
+                            {formError.fullname !== '' &&
+                              this.state.showErrorMessage && (
+                                <span style={{ color: 'red' }}>
+                                  {formError.fullname}
+                                </span>
+                              )}
+                          </FormGroup>
+                          <FormGroup>
+                            <Label
+                              className="title-input"
+                              for="exampleDescription"
+                            >
+                              Email
+                            </Label>
+                            <Input
+                              type="email"
+                              name="editEmail"
+                              onChange={this.handleChange}
+                              value={this.state.editEmail}
+                            />
+                            {formError.email !== '' &&
+                              this.state.showErrorMessage && (
+                                <span style={{ color: 'red' }}>
+                                  {formError.email}
+                                </span>
+                              )}
+                          </FormGroup>
+                          <FormGroup>
+                            <Label
+                              className="title-input"
+                              for="exampleDescription"
+                            >
+                              Phone
+                            </Label>
+                            <Input
+                              type="text"
+                              name="editPhone"
+                              onChange={this.handleChange}
+                              value={this.state.editPhone}
+                            />
+
+                            {formError.phone !== '' &&
+                              this.state.showErrorMessage && (
+                                <span style={{ color: 'red' }}>
+                                  {formError.phone}
+                                </span>
+                              )}
+                          </FormGroup>
+                          <FormGroup>
+                            <Label
+                              className="title-input"
+                              for="exampleDescription"
+                            >
+                              Address
+                            </Label>
+                            <Input
+                              type="text"
+                              name="editAddress"
+                              value={this.state.editAddress}
+                              onChange={this.handleChange}
+                            />
+                          </FormGroup>
+                          <FormGroup>
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center'
+                              }}
+                            >
+                              <Label
+                                className="title-input"
+                                for="exampleDescription"
+                              >
+                                Technical skill{' '}
+                                <Button
+                                  onClick={() => this.createTechnicalSkill()}
+                                  style={{
+                                    fontSize: '15px',
+                                    padding: '0px 6px',
+                                    marginLeft: '10px'
+                                  }}
+                                >
+                                  +
+                                </Button>
+                              </Label>
+                            </div>
+                            {this.state.arrayTechnicalSkillComponents.map(
+                              e => e
+                            )}
+                            {errorTechnicalSkillMessage != '' &&
+                              this.state.showErrorMessage && (
+                                <span style={{ color: 'red' }}>
+                                  {errorTechnicalSkillMessage}
+                                </span>
+                              )}
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <br />
+                      <FormGroup
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'flex-end'
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            width: '160px',
+                            justifyContent: 'space-between'
+                          }}
+                        >
+                          {errorTechnicalSkillMessage == '' &&
+                          formError.fullname == '' &&
+                          formError.phone == '' &&
+                          formError.email == '' ? (
+                            <Button color="success" onClick={this.handleSubmit}>
+                              Submit
+                            </Button>
+                          ) : (
+                            <Button
+                              color="success"
+                              onClick={this.handleErrorMessage}
+                            >
+                              Submit
+                            </Button>
+                          )}
+                          <Button
+                            onClick={() => this.backToPreviousPage()}
+                            color="secondary"
+                          >
+                            Back
+                          </Button>
+                        </div>
+                      </FormGroup>
+                    </Form>
+                  </TabPane>
+                </TabContent>
+              </Row>
+            </Container>
+            {this.state.activeTab == '1' && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: '20px'
+                }}
+              >
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
                 >
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
-                  >
-                    Back
-                  </Button>
-                </div>
-              )}
-            </CardBody>
-          )}
-        </Card>
-      </div>
+                  Back
+                </Button>
+              </div>
+            )}
+          </CardBody>
+        )}
+      </Card>
     );
   }
 }

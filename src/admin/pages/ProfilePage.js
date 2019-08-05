@@ -12,7 +12,7 @@ import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText,
 import './ProfilePage.css';
 import {Link,Redirect} from 'react-router-dom';
 import TabInformation from '../components/TabInformation';
-import { ClipLoader} from 'react-spinners';
+import { PulseLoader} from 'react-spinners';
 
 /*-------Regex----------*/
 const fullNameRegex = /^[a-zA-Z\s]+$/;
@@ -445,9 +445,9 @@ export default class ProfilePage extends Component {
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />

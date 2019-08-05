@@ -14,7 +14,8 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  ModalFooter
+  ModalFooter,
+  Label
 } from 'reactstrap';
 import { PulseLoader } from 'react-spinners';
 import DropDownTable from '../components/DropDownTable.js';
@@ -22,11 +23,10 @@ import { Link } from 'react-router-dom';
 import ModalEditFormat from '../components/ModalEditFormat';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import { MdCancel, MdPageview } from 'react-icons/md';
-
+import PaginationComponent from '../components/Pagination.js';
 export default class FormatPage extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       listDeleteName: [],
       listDeleteId: [],
@@ -37,7 +37,8 @@ export default class FormatPage extends Component {
       listId: [],
       loading: true,
       modalDeleteError: false,
-      modalDeleteSuccess: false
+      modalDeleteSuccess: false,
+      checkRole: false
     };
     this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
     this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
@@ -193,7 +194,8 @@ export default class FormatPage extends Component {
   }
 
   render() {
-    var i = 0;
+    const { totalItems, activePage } = this.state;
+    var i = (activePage - 1) * 10;
     return (
       <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
@@ -202,7 +204,10 @@ export default class FormatPage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalDeleteSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalDeleteSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -222,11 +227,14 @@ export default class FormatPage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalDeleteError}>
+          <ModalHeader
+            toggle={this.toggleModalDeleteError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            <span style={{ color: 'red' }}>Cannot delete this job</span>
+            <span style={{ color: 'red' }}>Cannot delete this template</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalDeleteError}>
@@ -236,17 +244,7 @@ export default class FormatPage extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <CardHeader
-          className="card-header-custom"
-          style={{ display: 'flex', justifyContent: 'space-between' }}
-        >
-          Format Management
-          <div className="icon-cancle">
-            <Link to="/dashboard/article">
-              <MdCancel />
-            </Link>
-          </div>
-        </CardHeader>
+        <CardHeader className="card-header-custom">Templates</CardHeader>
         {this.state.loading ? (
           <div
             style={{
@@ -276,108 +274,153 @@ export default class FormatPage extends Component {
 
                     {this.state.listDeleteId.length != 0 && (
                       <ModalRemoveItem
-                        itemName="these formats"
+                        itemName="these templates"
                         buttonLabel="Delete"
                         function={() => this.removeManyItems()}
                       />
                     )}
                   </div>
                 </Col>
-                <Col sm="12" md="6" className="role-form-search">
-                  <Row style={{}}>
-                    <Col sm="12" md="5">
-                      <FormGroup>
-                        <Input type="select" name="select" id="exampleSelect">
-                          <option>Show 10 entries</option>
-                          <option>Show 20 entries</option>
-                          <option>Show 50 entries</option>
-                          <option>Show 100 entries</option>
-                        </Input>
-                      </FormGroup>
-                    </Col>
-                    <Col sm="12" md="7">
-                      <InputGroup className="role-input-group-search">
-                        <Input className="role-input-search" />
-                        <InputGroupAddon addonType="append">
-                          <Button className="role-btn-search" color="success">
-                            Search
-                          </Button>
-                        </InputGroupAddon>
-                      </InputGroup>
-                    </Col>
-                  </Row>
+              </Row>
+              <br />
+              <Row>
+                <Col>
+                  <div className="header-table-custom">
+                    <FormGroup>
+                      <Label>Show entries</Label>
+                      <Input
+                        type="select"
+                        name="selectPerPage"
+                        id="exampleSelect"
+                        value={this.state.selectPerPage}
+                        onChange={this.handleChangePerPage}
+                      >
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </Input>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>Search</Label>
+                      <Input
+                        className="role-input-search"
+                        name="keyword"
+                        value={this.state.keyword}
+                        onChange={this.handleChangeKeyWord}
+                      />
+                    </FormGroup>
+                  </div>
                 </Col>
               </Row>
             </Container>
-            <div className="table-rm">
-              <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
-                <thead className="thead-light">
-                  <tr>
-                    <th style={{ width: '5%' }}>
-                      <input type="checkbox" />
-                    </th>
-                    <th style={{ width: '5%' }}>#</th>
-                    <th>Title</th>
-                    {/* <th>Created At</th>
+            {this.state.loadData ? (
+              <div
+                style={{
+                  marginTop: '100px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginBottom: '250px'
+                }}
+                className="sweet-loading"
+              >
+                <PulseLoader
+                  sizeUnit={'px'}
+                  size={15}
+                  color={'#45b649'}
+                  loading={this.state.loadData}
+                />
+              </div>
+            ) : (
+              <div className="table-rm">
+                <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
+                  <thead className="thead-light">
+                    <tr>
+                      <th style={{ width: '5%' }}>
+                        <input type="checkbox" />
+                      </th>
+                      <th style={{ width: '5%' }}>#</th>
+                      <th>Title</th>
+                      {/* <th>Created At</th>
                   <th>Updated At</th> */}
-                    <th style={{ width: '180px' }}>
-                      <div className="action">Action</div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.rows.map(e => {
-                    i++;
-                    let url = '/dashboard/format/' + e.id;
-                    return (
-                      <tr key={e.id}>
-                        <td>
-                          <input
-                            type="checkbox"
-                            onChange={() => this.handleCheckChange(e)}
-                          />
-                        </td>
-                        <td>{i}</td>
-                        <td>{e.title}</td>
-                        {/* <td>{e.created_at}</td>
+                      <th style={{ width: '180px' }}>
+                        <div className="action">Action</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.rows.map(e => {
+                      i++;
+                      let url = '/dashboard/format/' + e.id;
+                      return (
+                        <tr key={e.id}>
+                          <td>
+                            <input
+                              type="checkbox"
+                              onChange={() => this.handleCheckChange(e)}
+                            />
+                          </td>
+                          <td>{i}</td>
+                          <td>{e.title}</td>
+                          {/* <td>{e.created_at}</td>
                       <td>{e.updated_at}</td> */}
-                        <td>
-                          <div className="action">
-                            <div className="action-item">
-                              <ModalEditFormat
-                                icon
-                                id={e.id}
-                                name={e.name}
-                                color="warning"
-                                buttonLabel="Edit"
-                                getUpdate={this.getUpdate.bind(this)}
-                                // function={this.editRole.bind(this)}
-                              />
+                          <td>
+                            <div className="action">
+                              <div className="action-item">
+                                <ModalEditFormat
+                                  icon
+                                  id={e.id}
+                                  name={e.name}
+                                  color="warning"
+                                  buttonLabel="Edit"
+                                  getUpdate={this.getUpdate.bind(this)}
+                                  // function={this.editRole.bind(this)}
+                                />
+                              </div>
+                              <div className="action-item">
+                                <Link style={{ width: 'auto' }} to={url}>
+                                  <Button
+                                    className="view-button"
+                                    color="primary"
+                                  >
+                                    <MdPageview />
+                                  </Button>
+                                </Link>
+                              </div>
+                              <div className="action-item">
+                                <ModalRemoveItem
+                                  function={() => this.removeItem(e.id)}
+                                  itemName="this template"
+                                />
+                              </div>
                             </div>
-                            <div className="action-item">
-                              <Link style={{ width: 'auto' }} to={url}>
-                                <Button className="view-button" color="primary">
-                                  <MdPageview />
-                                </Button>
-                              </Link>
+                            <div className="action-mobile">
+                              <DropDownTable />
                             </div>
-                            <div className="action-item">
-                              <ModalRemoveItem
-                                function={() => this.removeItem(e.id)}
-                                itemName="this format"
-                              />
-                            </div>
-                          </div>
-                          <div className="action-mobile">
-                            <DropDownTable />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <br />
+                <PaginationComponent
+                  activePage={this.state.activePage}
+                  itemsCountPerPage={this.state.perPage}
+                  totalItemsCount={totalItems}
+                  pageRangeDisplayed={5}
+                  onChange={this.handlePageChange}
+                  totalItems={this.state.totalItems}
+                  activePage={this.state.activePage}
+                />
+                <br />
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Link to="/dashboard/article">
+                    <Button>Back</Button>
+                  </Link>
+                </div>
+              </div>
+            )}
           </CardBody>
         )}
       </Card>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   Card,
   CardBody,
-  CardTitle,
   Button,
   Row,
   Container,
@@ -10,11 +9,12 @@ import {
   TabPane,
   Nav,
   NavItem,
-  NavLink
+  NavLink,
+  CardHeader
 } from 'reactstrap';
 import { MdMap, MdBook, MdCancel, MdPageview } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import classnames from 'classnames';
 
 export default class JobDetail extends Component {
@@ -79,32 +79,28 @@ export default class JobDetail extends Component {
     var j = 0;
     const { formError } = this.state;
     return (
-      <div className="profile-card">
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Interview Information
-            <Link to="/dashboard/interview">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          {this.state.loading ? (
-            <div
-              style={{
-                marginTop: '100px',
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: '100px'
-              }}
-              className="sweet-loading"
-            >
-              <ClipLoader
-                sizeUnit={'px'}
-                size={200}
-                color={'#45b649'}
-                loading={this.state.loading}
-              />
-            </div>
+      <Card className="dashboard-card">
+        <CardHeader className="card-header-custom">
+          interview's information
+        </CardHeader>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <PulseLoader
+              sizeUnit={'px'}
+              size={15}
+              color={'#45b649'}
+              loading={this.state.loading}
+            />
+          </div>
+
           ) : (
             <CardBody>
               <Container>
@@ -288,7 +284,6 @@ export default class JobDetail extends Component {
             </CardBody>
           )}
         </Card>
-      </div>
     );
   }
 }

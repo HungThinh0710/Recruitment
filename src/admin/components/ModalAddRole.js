@@ -16,7 +16,7 @@ import './ModalConfirmPassword.css';
 import '../pages/RolesPage.css';
 import CollapsePermission from '../components/CollapsePermission';
 import { MDBBtn } from 'mdbreact';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 
 const roleNameRegex = /^[a-zA-Z0-9\s]+$/;
 
@@ -56,7 +56,7 @@ export default class ModalAddRole extends Component {
     var url = 'https://api.enclavei3dev.tk/api/permission?page=1';
 
     const data = await fetch(url, {
-      method:'POST',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
