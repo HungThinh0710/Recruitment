@@ -178,7 +178,6 @@ export default class JobDetail extends Component {
                     activeTab={this.state.activeTab}
                   >
                     <TabPane tabId="1">
-                      <Row>
                         <CardBody style = {{paddingLeft: 0, paddingRight: 0}}>
                           <div className="table-test">
                             <table style={{ width: '100%' }}>
@@ -214,13 +213,11 @@ export default class JobDetail extends Component {
                             <br />
                           </div>
                         </CardBody>
-                      </Row>
                     </TabPane>
                     <TabPane tabId="2">
-                      <Row>
-                        <CardBody>
+                        <CardBody style = {{paddingLeft: 0, paddingRight: 0}}>
                           <div className="table-test">
-                            <table>
+                            <table style={{ width: '100%' }}>
                               <thead>
                                 <tr
                                   style={{
@@ -229,14 +226,11 @@ export default class JobDetail extends Component {
                                     color: 'white'
                                   }}
                                 >
-                                  <th>#</th>
-                                  <th>Fullname</th>
-                                  <th>Email</th>
-                                  <th>Phone</th>
-                                  <th>Status</th>
-                                  <th style={{ width: '100px' }}>
-                                    <div className="action">Action</div>
-                                  </th>
+                                  <th className ="title1">#</th>
+                                  <th className ="title1">Fullname</th>
+                                  <th className ="title1">Email</th>
+                                  <th className ="title1">Phone</th>
+                                  <th className ="title1">Status</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -259,27 +253,12 @@ export default class JobDetail extends Component {
                                   j++;
                                   let url = '/dashboard/interview/' + e.id;
                                   return (
-                                    <tr key={e.id}>
-                                      <td>{j}</td>
-                                      <td>{e.fullname}</td>
-                                      <td>{e.email}</td>
-                                      <td>{e.phone}</td>
-                                      <td>{e.status}</td>
-                                      <td>
-                                        <div className="action">
-                                          <Link
-                                            style={{ width: 'auto' }}
-                                            to={'/dashboard/candidate/' + e.id}
-                                          >
-                                            <Button
-                                              className="view-button"
-                                              color="primary"
-                                            >
-                                              <MdPageview />
-                                            </Button>
-                                          </Link>
-                                        </div>
-                                      </td>
+                                    <tr style={{ textAlign: 'center' }} key={e.id}>
+                                      <td className ="title1">{j}</td>
+                                      <td className ="title1">{e.fullname}</td>
+                                      <td className ="title1">{e.email}</td>
+                                      <td className ="title1">{e.phone}</td>
+                                      <td className ="title1">{e.status}</td>
                                     </tr>
                                   );
                                 })}
@@ -288,7 +267,6 @@ export default class JobDetail extends Component {
                             <br />
                           </div>
                         </CardBody>
-                      </Row>
                     </TabPane>
                   </TabContent>
                 </Row>
