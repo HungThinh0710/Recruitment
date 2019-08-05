@@ -5,201 +5,118 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Form,
   FormGroup,
+  Form,
   Label,
   Input,
   InputGroupAddon,
   InputGroupText,
-  InputGroup,
-  Card,
-  CardTitle,
-  CardBody
+  InputGroup
 } from 'reactstrap';
+import { MdEdit } from 'react-icons/md';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import './AddNewJobPage.css';
-import { MdCancel } from 'react-icons/md';
-import { Link } from 'react-router-dom';
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
 const animatedComponents = makeAnimated();
 
-export default class AddNewJobPage extends Component {
+const cutStringSalary = (s, i) => {
+  return s.substr(0, i);
+};
+const removeStringSalary = (s, i) => {
+  return s.substr(i + 4);
+};
+
+export default class ModalEditJob extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
       description: '',
-      address: '453-455 Hoang Dieu',
+      category: '',
+      address: '',
       position: '',
-      category: 'Internship',
+      salary: '',
       salaryBegin: '',
       salaryEnd: '',
-      status: 'Full-time',
-      experience: '1 year',
-      amount: 0,
+      experience: '',
+      amount: '',
       publishedOn: '',
       deadline: '',
       formError: {
-        name: 'Name is required',
-        position: 'Position is required',
-        salary: 'Salary is required',
-        publishedOn: 'Published date is required',
-        deadline: 'Closed date is required',
-        amount: 'Amount is required',
-        salaryBegin: 'Starting salary is required',
+        name: '',
+        position: '',
+        salary: '',
+        publishedOn: '',
+        deadline: '',
+        amount: '',
+        salaryBegin: '',
         salaryEnd: ''
       },
+      modal: false,
       modalError: false,
       modalSuccess: false,
       errorData: '',
-      showErrorMessage: false,
-      urlJob: ''
+      showErrorMessage: false
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
+    this.toggle = this.toggle.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
+    this.handleErrorMessage = this.handleErrorMessage.bind(this);
   }
-  componentWillMount() {
-    if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/dashboard/login');
+
+  async componentDidMount() {
+    const { id } = this.props;
+    var url = 'https://api.enclavei3dev.tk/api/job/' + id;
+    const data = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    if (data.message !== 'Unauthenticated.') {
+      const n = data.salary.indexOf('$');
+      const stringSalary2 = removeStringSalary(data.salary, n);
+      const m = stringSalary2.indexOf('$');
+      setTimeout(() => {
+        this.setState({
+          name: data.name,
+          description: data.description,
+          category: data.category,
+          address: data.address,
+          position: data.position,
+          salaryBegin: cutStringSalary(data.salary, n),
+          salaryEnd: cutStringSalary(stringSalary2, m),
+          status: data.status,
+          experience: data.experience,
+          amount: data.amount,
+          publishedOn: new Date(data.publishedOn),
+          deadline: new Date(data.deadline)
+        });
+      }, 500);
     }
   }
 
-  backToPreviousPage = () => {
-    this.props.history.push('/dashboard/job');
-  };
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
 
   toggleModalSuccess() {
     this.setState(prevState => ({
       modalSuccess: !prevState.modalSuccess
     }));
   }
+
   toggleModalError() {
     this.setState(prevState => ({
       modalError: !prevState.modalError
     }));
-  }
-  handlePossitiveNumber(event) {
-    const keyCode = event.keyCode || event.which;
-    const keyValue = String.fromCharCode(keyCode);
-    if (/\+|-/.test(keyValue)) event.preventDefault();
-  }
-  handleSubmit = () => {
-    const {
-      name,
-      description,
-      address,
-      position,
-      salaryBegin,
-      salaryEnd,
-      status,
-      category,
-      experience,
-      amount,
-      publishedOn,
-      deadline
-    } = this.state;
-
-    const publishedOnFormat = moment(publishedOn).format();
-    const deadlineFormat = moment(deadline).format();
-    const i = publishedOnFormat.indexOf('T');
-    const j = deadlineFormat.indexOf('T');
-    const newDateString = (s, i) => {
-      return s.substr(0, i) + ' ' + s.substr(i + 1, 8);
-    };
-    var salary = '';
-    var exp = 0;
-    if (salaryEnd !== '') {
-      if (salaryBegin === salaryEnd) {
-        salary = salaryBegin + '$';
-      } else {
-        salary = salaryBegin + '$ - ' + salaryEnd + '$';
-      }
-    } else {
-      salary = salaryBegin + '$';
-    }
-
-    switch (experience) {
-      case '1 year':
-        exp = 1;
-        break;
-      case '2 years':
-        exp = 2;
-        break;
-      case '3 years':
-        exp = 3;
-        break;
-      case '4 years':
-        exp = 4;
-        break;
-      case '5 years':
-        exp = 5;
-        break;
-      case 'More than 5 years':
-        exp = 6;
-        break;
-    }
-    var url = 'https://api.enclavei3dev.tk/api/job';
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({
-        name: name,
-        description: description,
-        address: address,
-        position: position,
-        salary: salary,
-        status: status,
-        category: category,
-        experience: exp,
-        amount: amount,
-        publishedOn: newDateString(publishedOnFormat, i),
-        deadline: newDateString(deadlineFormat, j)
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    })
-      .then(res => {
-        if (res.status === 401) {
-          alert('Add Failed');
-        }
-        if (res.status === 422) {
-          this.toggleModalError();
-          res.json().then(data => {
-            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
-            this.setState({
-              errorData: dataArray
-            });
-          });
-        }
-        if (res.status === 200) {
-          this.toggleModalSuccess();
-          res.json().then(data => {
-            this.setState({
-              urlJob: '/dashboard/job/' + data.job.id
-            });
-          });
-        }
-      })
-      .catch(error => console.error('Error:', error));
-  };
-
-  handleChangeDatePublishPicker(date) {
-    this.setState({
-      publishedOn: date
-    });
-  }
-  handleChangeDateDeadlinePicker(date) {
-    this.setState({
-      deadline: date
-    });
   }
 
   handleChange(event) {
@@ -279,16 +196,133 @@ export default class AddNewJobPage extends Component {
       }
     });
   }
+
+  handleSubmit() {
+    const { id } = this.props;
+    const {
+      name,
+      description,
+      address,
+      position,
+      salaryEnd,
+      salaryBegin,
+      status,
+      experience,
+      amount,
+      publishedOn,
+      deadline
+    } = this.state;
+    const publishedOnFormat = moment(publishedOn).format();
+    const deadlineFormat = moment(deadline).format();
+    const i = publishedOnFormat.indexOf('T');
+    const j = deadlineFormat.indexOf('T');
+    const newDateString = (s, i) => {
+      return s.substr(0, i) + ' ' + s.substr(i + 1, 8);
+    };
+
+    var salary = '';
+    var exp = 0;
+    if (salaryEnd !== '') {
+      if (salaryBegin === salaryEnd) {
+        salary = salaryBegin + '$';
+      } else {
+        salary = salaryBegin + '$ - ' + salaryEnd + '$';
+      }
+    } else {
+      salary = salaryBegin + '$';
+    }
+    switch (experience) {
+      case '1 year':
+        exp = 1;
+        break;
+      case '2 years':
+        exp = 2;
+        break;
+      case '3 years':
+        exp = 3;
+        break;
+      case '4 years':
+        exp = 4;
+        break;
+      case '5 years':
+        exp = 5;
+        break;
+      case 'More than 5 years':
+        exp = 6;
+        break;
+    }
+    var url = 'https://api.enclavei3dev.tk/api/job/' + id;
+    fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify({
+        name: name,
+        description: description,
+        address: address,
+        position: position,
+        salary: salary,
+        status: status,
+        experience: exp,
+        amount: amount,
+        publishedOn: newDateString(publishedOnFormat, i),
+        deadline: newDateString(deadlineFormat, j)
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    })
+      .then(res => {
+        if (res.status === 401) {
+          alert('Update Failed');
+        }
+        if (res.status === 422) {
+          this.toggleModalError();
+          res.json().then(data => {
+            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
+            this.setState({
+              errorData: dataArray
+            });
+          });
+        }
+        if (res.status === 200) {
+          var update = true;
+          this.toggleModalSuccess();
+          this.props.getUpdate(update);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+
+  handlePossitiveNumber(event) {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    if (/\+|-/.test(keyValue)) event.preventDefault();
+  }
+
+  handleChangeDatePublishPicker(date) {
+    this.setState({
+      publishedOn: date
+    });
+  }
+
   handleErrorMessage = () => {
     this.setState({
       showErrorMessage: true
     });
   };
+
+  handleChangeDateDeadlinePicker(date) {
+    this.setState({
+      deadline: date
+    });
+  }
+
   render() {
     var i = 0;
-    const { formError, urlJob } = this.state;
+    const { formError } = this.state;
     return (
-      <div className="profile-card">
+      <div>
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -299,11 +333,7 @@ export default class AddNewJobPage extends Component {
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            <Link to={urlJob}>
-              <span style={{ color: '#45b649' }}>
-                Successfully! Click to see the detail of the new job
-              </span>
-            </Link>
+            <span style={{ color: '#45b649' }}>Update Successfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -312,7 +342,6 @@ export default class AddNewJobPage extends Component {
           </ModalFooter>
         </Modal>
         {/*--------Modal-Success-----*/}
-
         {/*--------Modal-Error-----*/}
         <Modal
           isOpen={this.state.modalError}
@@ -342,53 +371,87 @@ export default class AddNewJobPage extends Component {
             </Button>
           </ModalFooter>
         </Modal>
-
         {/*--------Modal-Error-----*/}
-
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Create A New Job
-            <Link to="/dashboard/job">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          <CardBody>
+        {this.props.icon ? (
+          <Button
+            className="button-first"
+            color={this.props.color}
+            onClick={this.toggle}
+          >
+            <MdEdit />
+          </Button>
+        ) : (
+          <Button
+            className="button-first"
+            color={this.props.color}
+            onClick={this.toggle}
+          >
+            Edit
+          </Button>
+        )}
+        <Modal
+          size="lg"
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggle}>
+            <span className="dashboard-modal-header">Update Job</span>
+          </ModalHeader>
+          <ModalBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup>
                 <Label
-                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  style={{
+                    fontSize: '18px',
+                    fontWeight: 'bold'
+                  }}
                   for="Name"
                 >
                   Name
                 </Label>
-                <Input type="text" name="name" onChange={this.handleChange} />
+                <Input
+                  type="text"
+                  name="name"
+                  onChange={this.handleChange}
+                  value={this.state.name}
+                />
                 {formError.name !== '' && this.state.showErrorMessage && (
                   <span style={{ color: 'red' }}>{formError.name}</span>
                 )}
               </FormGroup>
               <FormGroup>
                 <Label
-                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  style={{
+                    fontSize: '18px',
+                    fontWeight: 'bold'
+                  }}
                   for="Description"
                 >
                   Description
                 </Label>
                 <textarea
-                  style={{ width: '100%' }}
+                  className="dashboard-textarea-input"
                   name="description"
                   onChange={this.handleChange}
+                  value={this.state.description}
                 />
               </FormGroup>
               <FormGroup>
                 <Label
-                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  style={{
+                    fontSize: '18px',
+                    fontWeight: 'bold'
+                  }}
                   for="time"
                 >
                   Time
                 </Label>
                 <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                  }}
                 >
                   <div style={{ width: '45%' }}>
                     <Label for="Published">From</Label>
@@ -435,14 +498,18 @@ export default class AddNewJobPage extends Component {
                   </div>
                 </div>
               </FormGroup>
-
               <FormGroup
-                style={{ display: 'flex', justifyContent: 'space-between' }}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
               >
                 <div style={{ width: '45%' }}>
                   <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    for="Salary"
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold'
+                    }}
                     for="Address"
                   >
                     Address
@@ -450,7 +517,7 @@ export default class AddNewJobPage extends Component {
                   <Input
                     type="select"
                     name="address"
-                    id="exampleSelect"
+                    value={this.state.address}
                     onChange={this.handleChange}
                   >
                     <option>453-455 Hoang Dieu</option>
@@ -459,8 +526,10 @@ export default class AddNewJobPage extends Component {
                 </div>
                 <div style={{ width: '45%' }}>
                   <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    for="Salary"
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold'
+                    }}
                     for="Category"
                   >
                     Category
@@ -468,7 +537,7 @@ export default class AddNewJobPage extends Component {
                   <Input
                     type="select"
                     name="category"
-                    id="exampleSelect"
+                    value={this.state.category}
                     onChange={this.handleChange}
                   >
                     <option>Internship</option>
@@ -476,13 +545,18 @@ export default class AddNewJobPage extends Component {
                   </Input>
                 </div>
               </FormGroup>
-              <FormGroup />
               <FormGroup
-                style={{ display: 'flex', justifyContent: 'space-between' }}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
               >
                 <div style={{ width: '45%' }}>
                   <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold'
+                    }}
                     for="Position"
                   >
                     Position
@@ -491,6 +565,7 @@ export default class AddNewJobPage extends Component {
                     type="text"
                     name="position"
                     onChange={this.handleChange}
+                    value={this.state.position}
                   />
                   {formError.position !== '' && this.state.showErrorMessage && (
                     <span style={{ color: 'red' }}>{formError.position}</span>
@@ -498,7 +573,10 @@ export default class AddNewJobPage extends Component {
                 </div>
                 <div style={{ width: '45%' }}>
                   <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold'
+                    }}
                     for="Status"
                   >
                     Status
@@ -506,7 +584,7 @@ export default class AddNewJobPage extends Component {
                   <Input
                     type="select"
                     name="status"
-                    id="exampleSelect"
+                    value={this.state.status}
                     onChange={this.handleChange}
                   >
                     <option>Full-time</option>
@@ -516,13 +594,19 @@ export default class AddNewJobPage extends Component {
               </FormGroup>
               <FormGroup>
                 <Label
-                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  style={{
+                    fontSize: '18px',
+                    fontWeight: 'bold'
+                  }}
                   for="Salary"
                 >
                   Salary
                 </Label>
                 <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                  }}
                 >
                   <div style={{ width: '45%' }}>
                     <Label for="SalaryBegin">From</Label>
@@ -531,7 +615,7 @@ export default class AddNewJobPage extends Component {
                         type="number"
                         name="salaryBegin"
                         onChange={this.handleChange}
-                        min="0"
+                        value={this.state.salaryBegin}
                         onKeyPress={this.handlePossitiveNumber.bind(this)}
                       />
                       <InputGroupAddon addonType="append">
@@ -554,7 +638,7 @@ export default class AddNewJobPage extends Component {
                         type="number"
                         name="salaryEnd"
                         onChange={this.handleChange}
-                        min="0"
+                        value={this.state.salaryEnd}
                         onKeyPress={this.handlePossitiveNumber.bind(this)}
                       />
                       <InputGroupAddon addonType="append">
@@ -573,11 +657,17 @@ export default class AddNewJobPage extends Component {
                 </div>
               </FormGroup>
               <FormGroup
-                style={{ display: 'flex', justifyContent: 'space-between' }}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
               >
                 <div style={{ width: '45%' }}>
                   <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold'
+                    }}
                     for="Status"
                   >
                     Experience
@@ -585,7 +675,7 @@ export default class AddNewJobPage extends Component {
                   <Input
                     type="select"
                     name="experience"
-                    id="exampleSelect"
+                    value={this.state.experience}
                     onChange={this.handleChange}
                   >
                     <option>1 year</option>
@@ -598,7 +688,10 @@ export default class AddNewJobPage extends Component {
                 </div>
                 <div style={{ width: '45%' }}>
                   <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold'
+                    }}
                     for="Amount"
                   >
                     Amount
@@ -607,7 +700,7 @@ export default class AddNewJobPage extends Component {
                     type="number"
                     name="amount"
                     onChange={this.handleChange}
-                    min="1"
+                    value={this.state.amount}
                     onKeyPress={this.handlePossitiveNumber.bind(this)}
                   />
                   {formError.amount !== '' && this.state.showErrorMessage && (
@@ -615,14 +708,17 @@ export default class AddNewJobPage extends Component {
                   )}
                 </div>
               </FormGroup>
-
+              <br />
               <FormGroup
-                style={{ display: 'flex', justifyContent: 'flex-end' }}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end'
+                }}
               >
                 <div
                   style={{
-                    display: 'flex',
                     width: '180px',
+                    display: 'flex',
                     justifyContent: 'space-between'
                   }}
                 >
@@ -639,17 +735,14 @@ export default class AddNewJobPage extends Component {
                       Submit
                     </Button>
                   )}
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
-                  >
+                  <Button onClick={this.toggle} color="secondary">
                     Back
                   </Button>
                 </div>
               </FormGroup>
             </Form>
-          </CardBody>
-        </Card>
+          </ModalBody>
+        </Modal>
       </div>
     );
   }

@@ -5,83 +5,87 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Card,
-  CardBody,
-  CardTitle,
   FormGroup,
   Form,
   Label,
   Input
 } from 'reactstrap';
-import { MdCancel } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { MdEdit } from 'react-icons/md';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 const animatedComponents = makeAnimated();
 
 const roleNameRegex = /^[a-zA-Z0-9\s]+$/;
 
-export default class AddNewRolePage extends Component {
+export default class ModalEditRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
       role: '',
       description: '',
-      errorRoleMessage: "Role's name is required",
+      errorRoleMessage: '',
       errorData: '',
       modalError: false,
+      modal: false,
       modalSuccess: false,
       showErrorMessage: false,
-      errorPermissionMessage: "Role's permissions cannot be empty",
       optionPermission: [],
-      selectedPermissionOption: null,
-      urlRole: ''
+      selectedPermissionOption: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
+    this.toggle = this.toggle.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
     this.handleErrorMessage = this.handleErrorMessage.bind(this);
   }
-  componentWillMount() {
-    if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/dashboard/login');
-    }
-  }
-  async componentDidMount() {
-    var { optionPermission } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/permission';
 
-    const data = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({
-        all: 1
-      }),
+  async componentDidMount() {
+    var { optionPermission, selectedPermissionOption } = this.state;
+    const { id, dataPermissions } = this.props;
+    var url1 = 'https://api.enclavei3dev.tk/api/role/' + id;
+    const data1 = await fetch(url1, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-
-    data.map(e => {
+    data1.permissions.map(e => {
+      var currentPermission = { id: e.id, value: e.name, label: e.name };
+      selectedPermissionOption.push(currentPermission);
+      return selectedPermissionOption;
+    });
+    dataPermissions.map(e => {
       var permission = { id: e.id, value: e.name, label: e.name };
       optionPermission.push(permission);
       return optionPermission;
     });
-
     this.setState({
-      optionPermission: optionPermission
+      role: data1.name,
+      description: data1.description,
+      optionPermission: optionPermission,
+      selectedPermissionOption: selectedPermissionOption
     });
   }
 
-  backToPreviousPage = () => {
-    this.props.history.push('/dashboard/role');
-  };
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
 
-  handleSelectPermissionChange = selectedPermissionOption => {
-    this.setState({ selectedPermissionOption });
-  };
+  toggleModalSuccess() {
+    this.setState(prevState => ({
+      modalSuccess: !prevState.modalSuccess
+    }));
+  }
+
+  toggleModalError() {
+    this.setState(prevState => ({
+      modalError: !prevState.modalError
+    }));
+  }
 
   handleChange(event) {
     var { errorRoleMessage } = this.state;
@@ -100,34 +104,30 @@ export default class AddNewRolePage extends Component {
       errorRoleMessage: errorRoleMessage
     });
   }
-
   handleErrorMessage = () => {
     this.setState({
       showErrorMessage: true
     });
   };
 
-  toggleModalSuccess() {
-    this.setState(prevState => ({
-      modalSuccess: !prevState.modalSuccess
-    }));
-  }
-  toggleModalError() {
-    this.setState(prevState => ({
-      modalError: !prevState.modalError
-    }));
-  }
+  handleSelectPermissionChange = selectedPermissionOption => {
+    if (selectedPermissionOption == null) {
+      selectedPermissionOption = [];
+    }
+    this.setState({ selectedPermissionOption });
+  };
 
   handleSubmit() {
     const { role, selectedPermissionOption, description } = this.state;
+    const { id } = this.props;
     var array = [];
     selectedPermissionOption.map(e => {
       array.push(e.id);
       return array;
     });
-    var url = 'https://api.enclavei3dev.tk/api/role';
+    var url = 'https://api.enclavei3dev.tk/api/role/' + id;
     fetch(url, {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({
         name: role,
         description: description,
@@ -141,7 +141,7 @@ export default class AddNewRolePage extends Component {
     })
       .then(res => {
         if (res.status === 401) {
-          alert('Add Failed');
+          alert('Edit Failed');
         }
         if (res.status === 422) {
           this.toggleModalError();
@@ -153,12 +153,9 @@ export default class AddNewRolePage extends Component {
           });
         }
         if (res.status === 200) {
+          var update = true;
           this.toggleModalSuccess();
-          res.json().then(data => {
-            this.setState({
-              urlRole: '/dashboard/role/' + data.role.id
-            });
-          });
+          this.props.getUpdate(update);
         }
       })
       .catch(error => console.error('Error:', error));
@@ -166,9 +163,8 @@ export default class AddNewRolePage extends Component {
 
   render() {
     var i = 0;
-    const { errorRoleMessage, urlRole } = this.state;
     return (
-      <div className="profile-card" style={{ marginBottom: '250px' }}>
+      <div>
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -179,11 +175,7 @@ export default class AddNewRolePage extends Component {
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            <Link to={urlRole}>
-              <span style={{ color: '#45b649' }}>
-                Successfully! Click to see the detail of the new role
-              </span>
-            </Link>
+            <span style={{ color: '#45b649' }}>Update Successfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -224,36 +216,62 @@ export default class AddNewRolePage extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
+        {this.props.icon ? (
+          <Button
+            className="button-first"
+            color={this.props.color}
+            onClick={this.toggle}
+          >
+            <MdEdit />
+          </Button>
+        ) : (
+          <Button
+            className="button-first"
+            color={this.props.color}
+            onClick={this.toggle}
+          >
+            Edit
+          </Button>
+        )}
 
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Create A New Role
-            <Link to="/dashboard/role">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          <CardBody>
+        <Modal
+          size="lg"
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggle}>
+            {' '}
+            <span className="dashboard-modal-header">Update role</span>{' '}
+          </ModalHeader>
+          <ModalBody>
             <Form>
               <FormGroup>
-                <Label className="title-input" for="exampleName">
-                  Name
+                <Label for="roleName" className="title-input">
+                  Role:
                 </Label>
-                <Input type="text" name="role" onChange={this.handleChange} />
-                {errorRoleMessage !== '' && this.state.showErrorMessage && (
+                <Input
+                  type="text"
+                  name="role"
+                  onChange={this.handleChange}
+                  value={this.state.role}
+                />
+              </FormGroup>
+              {this.state.errorRoleMessage !== '' &&
+                this.state.showErrorMessage && (
                   <span style={{ color: 'red' }}>
                     {this.state.errorRoleMessage}
                   </span>
                 )}
-              </FormGroup>
               <FormGroup>
                 <Label className="title-input" for="exampleDescription">
                   Description
                 </Label>
                 <textarea
-                  style={{ width: '100% ' }}
+                  className="dashboard-textarea-input"
                   name="description"
                   onChange={this.handleChange}
+                  value={this.state.description}
                 />
               </FormGroup>
               <FormGroup>
@@ -266,7 +284,7 @@ export default class AddNewRolePage extends Component {
                   defaultValue={this.state.selectedPermissionOption}
                   options={this.state.optionPermission}
                 />
-                {!this.state.selectedPermissionOption &&
+                {this.state.selectedPermissionOption.length === 0 &&
                   this.state.showErrorMessage && (
                     <span style={{ color: 'red' }}>
                       Permissions are required
@@ -285,7 +303,7 @@ export default class AddNewRolePage extends Component {
                   }}
                 >
                   {this.state.errorRoleMessage == '' &&
-                  this.state.selectedPermissionOption ? (
+                  this.state.selectedPermissionOption.length !== 0 ? (
                     <Button color="success" onClick={this.handleSubmit}>
                       Submit
                     </Button>
@@ -294,17 +312,14 @@ export default class AddNewRolePage extends Component {
                       Submit
                     </Button>
                   )}
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
-                  >
+                  <Button onClick={this.toggle} color="secondary">
                     Back
                   </Button>
                 </div>
               </FormGroup>
             </Form>
-          </CardBody>
-        </Card>
+          </ModalBody>
+        </Modal>
       </div>
     );
   }

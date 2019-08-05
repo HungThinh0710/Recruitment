@@ -33,8 +33,6 @@ export default class ArticleDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkedRole: false,
-      activeRole: false,
       activeTab: '1',
       title: '',
       content: '',
@@ -64,7 +62,8 @@ export default class ArticleDetail extends Component {
       optionsFormat: [],
       isDisabled: false,
       showJobError: false,
-      loading: true
+      loading: true,
+      image: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
@@ -104,6 +103,7 @@ export default class ArticleDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+
     const data2 = await fetch(url2, {
       method: 'POST',
       body: JSON.stringify({
@@ -525,7 +525,7 @@ export default class ArticleDetail extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalSuccess}>
-            Notification
+            <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
             <span style={{ color: '#45b649' }}>Update successfully</span>
@@ -544,7 +544,9 @@ export default class ArticleDetail extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>Notification</ModalHeader>
+          <ModalHeader toggle={this.toggleModalError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
           <ModalBody>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.state.errorData !== undefined &&

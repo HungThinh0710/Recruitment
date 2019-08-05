@@ -10,23 +10,13 @@ import {
   TabPane,
   Nav,
   NavItem,
-  NavLink,
-
+  NavLink
 } from 'reactstrap';
-import {  MdMap, MdBook, MdCancel,MdPageview } from 'react-icons/md';
+import { MdMap, MdBook, MdCancel, MdPageview } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import classnames from 'classnames';
-import ModalRemoveRole from './interviewer/ModalDeleteInterviewer';
-import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
-import './JobDetail.css';
-const cutStringSalary = (s, i) => {
-  return s.substr(0, i);
-};
-const removeStringSalary = (s, i) => {
-  return s.substr(i + 4);
-};
+
 export default class JobDetail extends Component {
   constructor(props) {
     super(props);
@@ -39,9 +29,8 @@ export default class JobDetail extends Component {
       timeStart: '',
       candidates: [],
       interviewers: [],
-      loading: true,
+      loading: true
     };
-    // this.handleChangePassword = this.handleChangePassword.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -58,20 +47,20 @@ export default class JobDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    
-      setTimeout(() => {
-        this.setState({
-          name: data.name,
-          address: data.address,
-          status: data.status,
-          timeEnd: data.timeEnd,
-          timeStart: data.timeStart,
-          candidates: data.candidates,
-          interviewers: data.interviewers,
-          loading: false
-        });
-      }, 500);
-    }
+
+    setTimeout(() => {
+      this.setState({
+        name: data.name,
+        address: data.address,
+        status: data.status,
+        timeEnd: data.timeEnd,
+        timeStart: data.timeStart,
+        candidates: data.candidates,
+        interviewers: data.interviewers,
+        loading: false
+      });
+    }, 500);
+  }
 
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -87,6 +76,7 @@ export default class JobDetail extends Component {
 
   render() {
     var i = 0;
+    var j = 0;
     const { formError } = this.state;
     return (
       <div className="profile-card">
@@ -134,7 +124,7 @@ export default class JobDetail extends Component {
                           <td className="job-title">Start</td>
                           <td>{this.state.timeStart}</td>
                         </tr>
-                        
+
                         <tr key={4}>
                           <td className="job-title">End</td>
                           <td>{this.state.timeEnd}</td>
@@ -189,7 +179,7 @@ export default class JobDetail extends Component {
                   >
                     <TabPane tabId="1">
                       <Row>
-                      <CardBody>
+                        <CardBody>
                           <div className="table-test">
                             <table>
                               <thead>
@@ -221,12 +211,17 @@ export default class JobDetail extends Component {
                                       <td>{e.phone}</td>
                                       <td>
                                         <div className="action">
-                                          <Link style={{ width: 'auto' }} to={'/dashboard/candidate/'+ e.id}>
-                                            <Button className="view-button" color="primary">
+                                          <Link
+                                            style={{ width: 'auto' }}
+                                            to={'/dashboard/candidate/' + e.id}
+                                          >
+                                            <Button
+                                              className="view-button"
+                                              color="primary"
+                                            >
                                               <MdPageview />
                                             </Button>
                                           </Link>
-                                          
                                         </div>
                                       </td>
                                     </tr>
@@ -235,15 +230,13 @@ export default class JobDetail extends Component {
                               </tbody>
                             </table>
                             <br />
-
                           </div>
                         </CardBody>
                       </Row>
                     </TabPane>
                     <TabPane tabId="2">
                       <Row>
-
-                      <CardBody>
+                        <CardBody>
                           <div className="table-test">
                             <table>
                               <thead>
@@ -266,34 +259,40 @@ export default class JobDetail extends Component {
                               </thead>
                               <tbody>
                                 {this.state.candidates.map(e => {
-                                    if(e.status == '1'){
-                                      e.status = 'Pending';
+                                  if (e.status == '1') {
+                                    e.status = 'Pending';
                                   }
-                                  if(e.status == '2'){
+                                  if (e.status == '2') {
                                     e.status = 'Deny';
                                   }
-                                  if(e.status == '3'){
+                                  if (e.status == '3') {
                                     e.status = 'Approve Application';
                                   }
-                                  if(e.status == '4'){
+                                  if (e.status == '4') {
                                     e.status = 'Passed';
                                   }
-                                  if(e.status == '5'){
+                                  if (e.status == '5') {
                                     e.status = 'Failed';
                                   }
-                                  i++;
+                                  j++;
                                   let url = '/dashboard/interview/' + e.id;
                                   return (
                                     <tr key={e.id}>
-                                      <td>{i}</td>
+                                      <td>{j}</td>
                                       <td>{e.fullname}</td>
                                       <td>{e.email}</td>
                                       <td>{e.phone}</td>
                                       <td>{e.status}</td>
                                       <td>
                                         <div className="action">
-                                          <Link style={{ width: 'auto' }} to={'/dashboard/candidate/'+ e.id}>
-                                            <Button className="view-button" color="primary">
+                                          <Link
+                                            style={{ width: 'auto' }}
+                                            to={'/dashboard/candidate/' + e.id}
+                                          >
+                                            <Button
+                                              className="view-button"
+                                              color="primary"
+                                            >
                                               <MdPageview />
                                             </Button>
                                           </Link>
@@ -305,7 +304,6 @@ export default class JobDetail extends Component {
                               </tbody>
                             </table>
                             <br />
-
                           </div>
                         </CardBody>
                       </Row>

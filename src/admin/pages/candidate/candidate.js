@@ -4,19 +4,13 @@ import { MdPageview } from 'react-icons/md';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
+import ModalEditItem from '../../components/ModalEditItem';
 import ModalRemoveItem from '../../components/ModalRemoveItem';
 // import './Roles.css'
 import { ClipLoader } from 'react-spinners';
 const styleFont = {
   fontSize: '200%',
   fontWeight: 'bold'
-};
-const styleCard = {
-  width: '80%',
-  marginTop: '5%',
-  alignSelf: 'center',
-  marginBottom: '8%',
-  loading: true
 };
 export default class UsersPage extends Component {
   constructor(props) {
@@ -80,7 +74,7 @@ export default class UsersPage extends Component {
     });
   }
   removeItem(id) {
-    const { activePage} = this.state;
+    const { activePage } = this.state;
     var array = [];
     array.push(id);
     var url = 'https://api.enclavei3dev.tk/api/candidate';
@@ -96,14 +90,17 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-candidate?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      fetch(
+        'https://api.enclavei3dev.tk/api/list-candidate?page=' + activePage,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
         }
-      }).then(res => {
+      ).then(res => {
         res.json().then(data => {
           data.data.forEach(function(e) {
             delete e.created_at;
@@ -111,7 +108,7 @@ export default class UsersPage extends Component {
           });
           this.setState({
             rows: data.data,
-            totalItems: data.total,
+            totalItems: data.total
           });
         });
       });
@@ -161,14 +158,17 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-candidate?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      fetch(
+        'https://api.enclavei3dev.tk/api/list-candidate?page=' + activePage,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('access_token')
+          }
         }
-      }).then(res => {
+      ).then(res => {
         res.json().then(data => {
           this.setState({
             rows: data.data,
@@ -183,7 +183,7 @@ export default class UsersPage extends Component {
   render() {
     var i = 0;
     return (
-      <Card style={styleCard}>
+      <Card className="dashboard-card">
         <CardHeader style={styleFont}>Candidate Management</CardHeader>
         {this.state.loading ? (
           <div
@@ -204,7 +204,7 @@ export default class UsersPage extends Component {
           </div>
         ) : (
           <CardBody>
-             {this.state.listDeleteId.length != 0 && (
+            {this.state.listDeleteId.length != 0 && (
               <ModalRemoveItem
                 itemName="this candidate"
                 buttonLabel="Delete"
@@ -229,7 +229,7 @@ export default class UsersPage extends Component {
                     <th style={{ textOverflow: 'ellipsis' }}>Email</th>
                     <th>Status</th>
                     <th>Phone</th>
-                    <th style={{ marginHorizontal: '10px' }}>
+                    <th style={{ width: '180px' }}>
                       <div className="action">Action</div>
                     </th>
                   </tr>
@@ -256,7 +256,10 @@ export default class UsersPage extends Component {
                     return (
                       <tr key={e.id}>
                         <td>
-                          <input type="checkbox"  onChange={() => this.handleCheckChange(e)} />
+                          <input
+                            type="checkbox"
+                            onChange={() => this.handleCheckChange(e)}
+                          />
                         </td>
                         <td>{i}</td>
                         <td>{e.fullname}</td>
@@ -273,15 +276,23 @@ export default class UsersPage extends Component {
                         <td>{e.phone}</td>
                         <td>
                           <div className="action">
+                            <ModalEditItem
+                              icon
+                              // id={listId[index]}
+                              name={e.name}
+                              color="success"
+                              buttonLabel="Edit"
+                              // function={this.editRole.bind(this)}
+                            />
                             <Link style={{ width: 'auto' }} to={url}>
                               <Button className="view-button" color="primary">
                                 <MdPageview />
                               </Button>
                             </Link>
-                            <ModalRemoveItem                               
-                                itemName="this candidate"
-                                function={() => this.removeItem(e.id)}
-                              />
+                            <ModalRemoveItem
+                              itemName="this candidate"
+                              function={() => this.removeItem(e.id)}
+                            />
                           </div>
                         </td>
                       </tr>

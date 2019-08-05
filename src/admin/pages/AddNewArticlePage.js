@@ -345,7 +345,7 @@ export default class AddNewArticlePage extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalSuccess}>
-            Notification
+            <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
             <Link to={urlArticle}>
@@ -368,7 +368,9 @@ export default class AddNewArticlePage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>Notification</ModalHeader>
+          <ModalHeader toggle={this.toggleModalError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
           <ModalBody>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {this.state.errorData !== undefined &&
