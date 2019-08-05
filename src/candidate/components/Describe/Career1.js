@@ -151,6 +151,7 @@ export default class Careers extends Component {
     //  list.insertBefore('<meta property=\"fb:app_id\" content=\"2309010198\"/>', list.childNodes[0]);
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
     $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
+    // $(metastring).insertAfter($('meta[name=fb-id]'))
     // $("<meta property=\"og:description\" content=\"Find your dream job in our company\" />").appendTo($('meta[property=og:description]'))
 
 

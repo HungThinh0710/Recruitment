@@ -42,9 +42,6 @@ ul#nav li .smoothscroll:focus { color: #fff;
         .post-preview > a > .post-title {
           font-size: 36px;
         }
-        .modal-content {
-          margin-top: 80px !important;
-        }
       }
       
       @media only screen and (max-width: 767px) {
@@ -52,10 +49,6 @@ ul#nav li .smoothscroll:focus { color: #fff;
         header.masthead .post-heading,
         header#myTopnav {
           padding: 80px 0;
-        }
-        .modal-content {
-          display: inline-block;
-          margin-top: 80px;
         }
       }
       @media only screen and (max-width: 767px) {
