@@ -513,44 +513,44 @@ export default class JobDetail extends Component {
                               </thead>
                               <tbody>
                                 {this.state.interviews.map(e => {
-                                  if (e.status == '1') {
+                                  if (e.status === '1') {
                                     e.status = 'Pending';
                                   }
-                                  if (e.status == '2') {
+                                  if (e.status === '2') {
                                     e.status = 'Opening';
                                   }
-                                  if (e.status == '3') {
+                                  if (e.status === '3') {
                                     e.status = 'Closed';
                                   }
-                                  if (e.address == '2-1') {
+                                  if (e.address === '2-1') {
                                     e.address =
                                       'Floor 2 - 453-455 Hoang Dieu Str';
                                   }
-                                  if (e.address == '3-1') {
+                                  if (e.address === '3-1') {
                                     e.address =
                                       'Floor 3 - 453-455 Hoang Dieu Str';
                                   }
-                                  if (e.address == '4-1') {
+                                  if (e.address === '4-1') {
                                     e.address =
                                       'Floor 4 - 453-455 Hoang Dieu Str';
                                   }
-                                  if (e.address == '5-1') {
+                                  if (e.address === '5-1') {
                                     e.address =
                                       'Floor 5 - 453-455 Hoang Dieu Str';
                                   }
-                                  if (e.address == '2-2') {
+                                  if (e.address === '2-2') {
                                     e.address =
                                       'Floor 2 - 117 Nguyen Huu Tho Str';
                                   }
-                                  if (e.address == '3-2') {
+                                  if (e.address === '3-2') {
                                     e.address =
                                       'Floor 3 - 117 Nguyen Huu Tho Str';
                                   }
-                                  if (e.address == '4-2') {
+                                  if (e.address === '4-2') {
                                     e.address =
                                       'Floor 4 - 117 Nguyen Huu Tho Str';
                                   }
-                                  if (e.address == '5-2') {
+                                  if (e.address === '5-2') {
                                     e.address =
                                       'Floor 5 - 117 Nguyen Huu Tho Str';
                                   }
