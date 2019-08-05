@@ -71,3 +71,7 @@ ul#nav li .smoothscroll:focus { color: #fff;
       .site-menu-toggle {
         font-family: none !important;
       }
+      .nav-brand .row .site-logo a img {
+        margin-bottom: 0;
+    z-index: 99999;
+      }
