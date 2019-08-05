@@ -6,10 +6,17 @@ import {
   CardBody,
   CardHeader,
   Button,
+  InputGroupAddon,
+  InputGroup,
+  Input,
+  Container,
+  Row,
+  Col,
+  FormGroup,
   Modal,
   ModalBody,
-  ModalFooter,
-  ModalHeader
+  ModalHeader,
+  ModalFooter
 } from 'reactstrap';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalEditArticle from '../components/ModalEditArticle';
@@ -18,11 +25,8 @@ import Pagination from '../components/Pagination.js';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import './ArticlesPage.css';
-import { ClipLoader } from 'react-spinners';
-const styleFont = {
-  fontSize: '200%',
-  fontWeight: 'bold'
-};
+import { PulseLoader } from 'react-spinners';
+import DropDownTable from '../components/DropDownTable.js';
 
 export default class ArticlesPage extends Component {
   constructor(props) {
@@ -308,52 +312,85 @@ export default class ArticlesPage extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <CardHeader style={styleFont}>Articles Management</CardHeader>
+        <CardHeader className="card-header-custom">
+          Articles Management
+        </CardHeader>
         {this.state.loading ? (
           <div
             style={{
               marginTop: '100px',
               display: 'flex',
               justifyContent: 'center',
-              marginBottom: '100px'
+              marginBottom: '250px'
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
         ) : (
           <CardBody>
-            <div className="area-btn-header">
-              <Link to="/dashboard/create-article">
-                <Button color="success">Create A New Article</Button>
-              </Link>
-              <Link to="/dashboard/format">
-                <Button color="primary">Format</Button>
-              </Link>
-            </div>
-            <br />
-            {this.state.listDeleteId.length != 0 && (
-              <ModalRemoveItem
-                itemName="this articles"
-                buttonLabel="Delete"
-                function={() => this.removeManyItems()}
-              />
-            )}
-            <div className="table-test">
-              <table>
-                <thead>
-                  <tr
+            <Container fluid={true} className="role-container-head-row">
+              <Row className="role-head-row">
+                <Col sm="12" md="6" className="role-form-create">
+                  <div
                     style={{
-                      background:
-                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                      color: 'white'
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '282px'
                     }}
                   >
+                    <div className="form-header-area-button">
+                      <Link to="/dashboard/create-article">
+                        <Button color="success">Create</Button>
+                      </Link>
+                      <Link to="/dashboard/format">
+                        <Button color="primary">Format</Button>
+                      </Link>
+                    </div>
+                    {this.state.listDeleteId.length != 0 && (
+                      <ModalRemoveItem
+                        itemName="this articles"
+                        buttonLabel="Delete"
+                        function={() => this.removeManyItems()}
+                      />
+                    )}
+                  </div>
+                </Col>
+                <Col sm="12" md="6" className="role-form-search">
+                  <Row style={{}}>
+                    <Col sm="12" md="5">
+                      <FormGroup>
+                        <Input type="select" name="select" id="exampleSelect">
+                          <option>Show 10 entries</option>
+                          <option>Show 20 entries</option>
+                          <option>Show 50 entries</option>
+                          <option>Show 100 entries</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                    <Col sm="12" md="7">
+                      <InputGroup className="role-input-group-search">
+                        <Input className="role-input-search" />
+                        <InputGroupAddon addonType="append">
+                          <Button className="role-btn-search" color="success">
+                            Search
+                          </Button>
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Container>
+            <div className="table-rm">
+              <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
+                <thead className="thead-light">
+                  <tr>
                     <th>
                       <input type="checkbox" />
                     </th>
@@ -385,7 +422,7 @@ export default class ArticlesPage extends Component {
                         <td>{e.title}</td>
                         {e.job ? <td>{e.job.name}</td> : <td />}
                         {e.isPublic === 1 ? (
-                          <td>Publised</td>
+                          <td>Published</td>
                         ) : (
                           <td>Not published</td>
                         )}
@@ -395,27 +432,36 @@ export default class ArticlesPage extends Component {
                       <td>{e.updated_at}</td> */}
                         <td>
                           <div className="action">
-                            <ModalEditArticle
-                              icon
-                              id={e.id}
-                              getUpdate={this.getUpdate.bind(this)}
-                              dataJob={this.state.dataJob}
-                              dataFormat={this.state.dataFormat}
-                              dataCategory={this.state.dataCategory}
-                              name={e.name}
-                              color="success"
-                              buttonLabel="Edit"
-                              // function={this.editRole.bind(this)}
-                            />
-                            <Link style={{ width: 'auto' }} to={url}>
-                              <Button className="view-button" color="primary">
-                                <MdPageview />
-                              </Button>
-                            </Link>
-                            <ModalRemoveItem
-                              itemName="this article"
-                              function={() => this.removeItem(e.id)}
-                            />
+                            <div className="action-item">
+                              <ModalEditArticle
+                                icon
+                                id={e.id}
+                                getUpdate={this.getUpdate.bind(this)}
+                                dataJob={this.state.dataJob}
+                                dataFormat={this.state.dataFormat}
+                                dataCategory={this.state.dataCategory}
+                                name={e.name}
+                                color="warning"
+                                buttonLabel="Edit"
+                                // function={this.editRole.bind(this)}
+                              />
+                            </div>
+                            <div className="action-item">
+                              <Link style={{ width: 'auto' }} to={url}>
+                                <Button className="view-button" color="primary">
+                                  <MdPageview />
+                                </Button>
+                              </Link>
+                            </div>
+                            <div className="action-item">
+                              <ModalRemoveItem
+                                itemName="this article"
+                                function={() => this.removeItem(e.id)}
+                              />
+                            </div>
+                          </div>
+                          <div className="action-mobile">
+                            <DropDownTable />
                           </div>
                         </td>
                       </tr>

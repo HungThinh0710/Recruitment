@@ -4,22 +4,24 @@ import {
   CardBody,
   CardHeader,
   Button,
+  InputGroupAddon,
+  InputGroup,
+  Input,
+  Container,
+  Row,
+  Col,
+  FormGroup,
   Modal,
   ModalBody,
-  ModalFooter,
-  ModalHeader
+  ModalHeader,
+  ModalFooter
 } from 'reactstrap';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
+import DropDownTable from '../components/DropDownTable.js';
 import { Link } from 'react-router-dom';
 import ModalEditFormat from '../components/ModalEditFormat';
 import ModalRemoveItem from '../components/ModalRemoveItem';
 import { MdCancel, MdPageview } from 'react-icons/md';
-const styleFont = {
-  fontSize: '200%',
-  display: 'flex',
-  justifyContent: 'space-between',
-  fontWeight: 'bold'
-};
 
 export default class FormatPage extends Component {
   constructor(props) {
@@ -234,7 +236,10 @@ export default class FormatPage extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <CardHeader style={styleFont}>
+        <CardHeader
+          className="card-header-custom"
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
           Format Management
           <div className="icon-cancle">
             <Link to="/dashboard/article">
@@ -248,42 +253,66 @@ export default class FormatPage extends Component {
               marginTop: '100px',
               display: 'flex',
               justifyContent: 'center',
-              marginBottom: '100px'
+              marginBottom: '250px'
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
         ) : (
           <CardBody>
-            <div className="area-btn-header">
-              <Link to="/dashboard/create-format">
-                <Button color="success">Create A New Format</Button>
-              </Link>
-            </div>
-            <br />
-            {this.state.listDeleteId.length != 0 && (
-              <ModalRemoveItem
-                itemName="this formats"
-                buttonLabel="DELETE"
-                function={() => this.removeManyItems()}
-              />
-            )}
-            <div className="table-test">
-              <table>
-                <thead>
-                  <tr
-                    style={{
-                      background:
-                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                      color: 'white'
-                    }}
-                  >
+            <Container fluid={true} className="role-container-head-row">
+              <Row className="role-head-row">
+                <Col sm="12" md="6" className="role-form-create">
+                  <div className="form-header-area-button">
+                    <Link to="/dashboard/create-format">
+                      <Button color="success">Create</Button>
+                    </Link>
+
+                    {this.state.listDeleteId.length != 0 && (
+                      <ModalRemoveItem
+                        itemName="this formats"
+                        buttonLabel="Delete"
+                        function={() => this.removeManyItems()}
+                      />
+                    )}
+                  </div>
+                </Col>
+                <Col sm="12" md="6" className="role-form-search">
+                  <Row style={{}}>
+                    <Col sm="12" md="5">
+                      <FormGroup>
+                        <Input type="select" name="select" id="exampleSelect">
+                          <option>Show 10 entries</option>
+                          <option>Show 20 entries</option>
+                          <option>Show 50 entries</option>
+                          <option>Show 100 entries</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                    <Col sm="12" md="7">
+                      <InputGroup className="role-input-group-search">
+                        <Input className="role-input-search" />
+                        <InputGroupAddon addonType="append">
+                          <Button className="role-btn-search" color="success">
+                            Search
+                          </Button>
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Container>
+            <div className="table-rm">
+              <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
+                <thead className="thead-light">
+                  <tr>
                     <th style={{ width: '5%' }}>
                       <input type="checkbox" />
                     </th>
@@ -314,24 +343,33 @@ export default class FormatPage extends Component {
                       <td>{e.updated_at}</td> */}
                         <td>
                           <div className="action">
-                            <ModalEditFormat
-                              icon
-                              id={e.id}
-                              name={e.name}
-                              color="success"
-                              buttonLabel="Edit"
-                              getUpdate={this.getUpdate.bind(this)}
-                              // function={this.editRole.bind(this)}
-                            />
-                            <Link style={{ width: 'auto' }} to={url}>
-                              <Button className="view-button" color="primary">
-                                <MdPageview />
-                              </Button>
-                            </Link>
-                            <ModalRemoveItem
-                              function={() => this.removeItem(e.id)}
-                              itemName="this format"
-                            />
+                            <div className="action-item">
+                              <ModalEditFormat
+                                icon
+                                id={e.id}
+                                name={e.name}
+                                color="warning"
+                                buttonLabel="Edit"
+                                getUpdate={this.getUpdate.bind(this)}
+                                // function={this.editRole.bind(this)}
+                              />
+                            </div>
+                            <div className="action-item">
+                              <Link style={{ width: 'auto' }} to={url}>
+                                <Button className="view-button" color="primary">
+                                  <MdPageview />
+                                </Button>
+                              </Link>
+                            </div>
+                            <div className="action-item">
+                              <ModalRemoveItem
+                                function={() => this.removeItem(e.id)}
+                                itemName="this format"
+                              />
+                            </div>
+                          </div>
+                          <div className="action-mobile">
+                            <DropDownTable />
                           </div>
                         </td>
                       </tr>

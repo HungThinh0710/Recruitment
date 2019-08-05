@@ -6,7 +6,7 @@ export default class PaginationComponent extends Component {
     return (
       <div className="pagination-area">
         <span className="text-total-paginate">
-          Showing [] to [] of [] entries 
+          Showing [] to [] of [] entries
         </span>
 
         <Pagination
