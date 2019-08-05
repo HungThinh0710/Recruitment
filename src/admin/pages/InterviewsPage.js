@@ -15,7 +15,6 @@ import ModalRemoveItem from '../components/ModalRemoveItem';
 import ModalEditItem from '../components/ModalEditItem';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination.js';
-import ModalRemoveItem from '../components/ModalRemoveItem';
 import { ClipLoader } from 'react-spinners';
 const styleFont = {
   fontSize: '200%',
