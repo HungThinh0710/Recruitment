@@ -13,6 +13,7 @@ import { Head } from 'react-static';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { HeadProvider, Meta, Title } from 'react-head';
 import ReactDOM from 'react-dom';
+import $ from 'jquery';
 import axios from 'axios';
 
 const emailRegex = RegExp(
@@ -134,8 +135,11 @@ export default class Careers extends Component {
       content: data.content
     });
     //gia tri thay doi
-    document.getElementsByTagName("META")[5].content = "This is title by Hung Thinh";
-    document.getElementsByTagName("META")[6].content = "his is descrip by Hung Thinh";
+  //  var list = document.getElementsByTagName('head');
+  //  list.insertBefore('<meta property=\"fb:app_id\" content=\"2309010198\"/>', list.childNodes[0]);
+    $("<meta property=\"fb:app_id\" content=\"2309010198\"/>").appendTo($('meta[name=application-name]'))
+    $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").appendTo($('meta[name=application-name]'))
+    $("<meta property=\"og:description\" content=\"Find your dream job in our company\" />").appendTo($('meta[name=application-name]'))
 
 
     // const head = document.getElementsByTagName('head')[0];
