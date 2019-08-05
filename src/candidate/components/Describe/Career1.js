@@ -134,7 +134,7 @@ export default class Careers extends Component {
       content: data.content
     });
     //gia tri thay doi
-    const head = document.getElementsByTagName('head')[0];
+    const head = document.getElementsByTagName('head')[5];
     const listMeta =  [];
     var metaApp = '<meta property="fb:app_id" content="2309010198"/>';
     
