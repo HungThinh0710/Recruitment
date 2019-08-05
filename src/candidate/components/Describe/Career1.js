@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
-import { Button, Modal, ModalFooter, Form, ModalBody, FormGroup } from 'reactstrap';
+import { Button, Modal, ModalFooter, Form, ModalBody, FormGroup , Label, ModalHeader} from 'reactstrap';
 import './Career1.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
@@ -15,7 +15,7 @@ import { HeadProvider, Meta, Title } from 'react-head';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import axios from 'axios';
-
+import TechnicalSkill from '../TechnicalSkill'
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
@@ -62,7 +62,19 @@ export default class Careers extends Component {
       addressed: '',
       content: '',
       selectedFile: '',
-
+      amountTechnicalSkills: 1,
+      arrayTechnicalSkillComponents: [
+        <TechnicalSkill
+          key={0}
+          function={this.getDataTechnicalSkill.bind(this)}
+          functionGetElement={this.removeTechnicalSkill.bind(this)}
+          id={0}
+          isDeleted={true}
+        />
+      ],
+      errorData: '',
+      urlInterviewer: '',
+      dataTechnicalSkills: [],
       active: false,
       description: null,
       technicalSkill: null,
@@ -135,8 +147,8 @@ export default class Careers extends Component {
       content: data.content
     });
     //gia tri thay doi
-  //  var list = document.getElementsByTagName('head');
-  //  list.insertBefore('<meta property=\"fb:app_id\" content=\"2309010198\"/>', list.childNodes[0]);
+    //  var list = document.getElementsByTagName('head');
+    //  list.insertBefore('<meta property=\"fb:app_id\" content=\"2309010198\"/>', list.childNodes[0]);
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
     $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
     // $("<meta property=\"og:description\" content=\"Find your dream job in our company\" />").appendTo($('meta[property=og:description]'))
@@ -145,7 +157,7 @@ export default class Careers extends Component {
     // const head = document.getElementsByTagName('head')[0];
     // const listMeta =  [];
     // var metaApp = '<meta property="fb:app_id" content="2309010198"/>';
-    
+
     // metaApp += '<meta property="og:title" content="Enclave Recruitment System" />'
     // metaApp += '<meta property="og:type" content="article" />'
     // metaApp += '<meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"/>'
@@ -177,8 +189,14 @@ export default class Careers extends Component {
       description,
       address,
       CV,
-      technicalSkill } = this.state;
-
+      dataTechnicalSkills } = this.state;
+    var array = [];
+    dataTechnicalSkills.map(e => {
+      if (typeof e == 'string') array.push(e);
+      return array;
+    });
+    var arrayString = array.toString();
+    console.log(arrayString);
     let configs = { header: { 'Content-Type': 'multipart/form-data' } }
     const formData = new FormData();
     formData.set('fullname', this.state.fullName);
@@ -186,10 +204,10 @@ export default class Careers extends Component {
     formData.set('phone', this.state.phone);
     formData.set('address', this.state.address);
     formData.set('description', this.state.description);
-    formData.set('technicalSkill', this.state.technicalSkill);
+    formData.set('technicalSkill', arrayString);
     formData.append('file', this.state.selectedFile);
     var url = 'https://api.enclavei3dev.tk/api/candidate';
-    axios.post(url, formData, {}, configs
+    const data = axios.post(url, formData, {}, configs
     )
       .then(res => {
         if (res.status === 401) {
@@ -200,7 +218,8 @@ export default class Careers extends Component {
           res.json().then(data => {
             const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
             this.setState({
-              errorData: dataArray
+              errorData: dataArray,
+              
             });
           });
         }
@@ -210,7 +229,9 @@ export default class Careers extends Component {
             modalisOpen: !prevState.modalisOpen,
             modalError: false,
             modalSuccess: true
-          }));
+          }
+          
+          ));
 
         }
 
@@ -282,9 +303,75 @@ export default class Careers extends Component {
 
     this.setState({ formErrors, [e.target.name]: value }, () => console.log(this.state.fullName, this.state.email));
   };
-  render() {
-    const { formErrors } = this.state;
+  getDataTechnicalSkill(technicalskill, year, id) {
+    var { dataTechnicalSkills } = this.state;
 
+    if (technicalskill && year) {
+      var tech = technicalskill.value + '-' + year;
+      // dataTechnicalSkills.splice(id, 1);
+
+      if (!dataTechnicalSkills[id]) {
+        dataTechnicalSkills.push(tech);
+      } else {
+        dataTechnicalSkills[id] = tech;
+      }
+      // var array = dataTechnicalSkills
+      //   .slice(0, id)
+      //   .concat(tech.concat(dataTechnicalSkills.slice(id + 1)));
+      // console.log(array);
+      this.setState({
+        dataTechnicalSkills: dataTechnicalSkills
+      });
+    }
+  }
+
+  removeTechnicalSkill(element, id) {
+    var {
+      dataTechnicalSkills,
+      arrayTechnicalSkillComponents,
+      amountTechnicalSkills
+    } = this.state;
+    dataTechnicalSkills.splice(id, 1, 0);
+    element.remove();
+    this.setState({
+      dataTechnicalSkills: dataTechnicalSkills,
+      arrayTechnicalSkillComponents: arrayTechnicalSkillComponents,
+      amountTechnicalSkills: amountTechnicalSkills
+    });
+  }
+
+  createTechnicalSkill = () => {
+    var { amountTechnicalSkills, arrayTechnicalSkillComponents } = this.state;
+    amountTechnicalSkills = amountTechnicalSkills + 1;
+    arrayTechnicalSkillComponents = [];
+    for (var j = 0; j < amountTechnicalSkills; j++) {
+      arrayTechnicalSkillComponents.push(
+        <TechnicalSkill
+          key={j}
+          function={this.getDataTechnicalSkill.bind(this)}
+          functionGetElement={this.removeTechnicalSkill.bind(this)}
+          id={j}
+          isDeleted={true}
+        />
+      );
+    }
+    this.setState({
+      amountTechnicalSkills: amountTechnicalSkills,
+      arrayTechnicalSkillComponents: arrayTechnicalSkillComponents
+    });
+  };
+  render() {
+    var i=0;
+    const { formErrors, dataTechnicalSkills, urlInterviewer } = this.state;
+    var array = [];
+    dataTechnicalSkills.map(e => {
+      if (typeof e == 'string') array.push(e);
+      return array;
+    });
+    var errorTechnicalSkillMessage = '';
+    array.length === 0
+      ? (errorTechnicalSkillMessage = 'Technical skill is required')
+      : (errorTechnicalSkillMessage = '');
 
 
     const { id } = this.props.match.params;
@@ -308,6 +395,61 @@ export default class Careers extends Component {
 
             <RouterURL />
           </div>
+          {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalSuccess}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            
+              <span style={{ color: '#45b649' }}>
+                Successfully! Thank you for your application !
+              </span>
+            
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggleModalError}>
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {this.state.errorData !== undefined &&
+                this.state.errorData.length !== 0 &&
+                this.state.errorData.map(e => {
+                  i++;
+                  return (
+                    <span key={i} style={{ color: 'red' }}>
+                      {e[0]}
+                    </span>
+                  );
+                })}
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
         </header>
         <div>
           <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/back5.jpg")' }} id="career1">
@@ -355,11 +497,11 @@ export default class Careers extends Component {
                       <Button color="danger" className="close"
                         onClick={this.toggleModal.bind(this)}>{this.props.buttonLabel}
                       </Button>
-                      <Modal isOpen={this.state.modalisOpen}
+                      <Modal id="articleModal" isOpen={this.state.modalisOpen}
                         toggle={this.toggleModal.bind(this)} className={this.props.className} external={externalCloseBtn}
                       >
                         <p></p>
-                        <h3 className="modal-title" id="myModallabel">Application form</h3>
+                        <h3 className="modal-title" id="myModallabel" style={{fontSize: 24}}>APPLICATION FORM</h3>
                         <ModalBody>
                           <Form encType="multipart/form-data" onSubmit={this.handleSubmit} noValidate>
                             <FormGroup>
@@ -469,7 +611,7 @@ export default class Careers extends Component {
                               </div>
                             </FormGroup>
                             <FormGroup>
-                              <label class="col-form-label">Technical skill</label>
+                              {/* <label class="col-form-label">Technical skill</label>
                               <select
                                 class="form-control"
                                 className={formErrors.technicalSkill.length > 0 ? 'error' : null}
@@ -488,12 +630,36 @@ export default class Careers extends Component {
                               </select>
                               {formErrors.technicalSkill.length > 0 && (
                                 <span className="errorMessage">{formErrors.technicalSkill}</span>
-                              )}
+                              )} */}
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Label className="title-input" for="exampleDescription">
+                                  Technical skill{' '}
+                                  <Button
+                                    onClick={() => this.createTechnicalSkill()}
+                                    style={{
+                                      fontSize: '15px',
+                                      padding: '0px 6px',
+                                      marginLeft: '10px'
+                                    }}
+                                  >
+                                    +
+                                </Button>
+                                </Label>
+                              </div>
+
+                              {this.state.arrayTechnicalSkillComponents.map(e => e)}
+
+                              {errorTechnicalSkillMessage != '' &&
+                                this.state.showErrorMessage && (
+                                  <span style={{ color: 'red' }}>
+                                    {errorTechnicalSkillMessage}
+                                  </span>
+                                )}
                             </FormGroup>
                           </Form>
                         </ModalBody>
                         <ModalFooter>
-                          <Button id="abc" type="submit" color="info" className="primary ml-auto" onClick={this.toggleModal.bind(this)} onClick={e => this.handleSubmit(e)}>Apply</Button>{' '}
+                          <Button id="abc" type="submit" color="success" className="success ml-auto" onClick={this.toggleModal.bind(this)} onClick={e => this.handleSubmit(e)}>Apply</Button>{' '}
                           <Button id="abc" type="Button" className="second" onClick={this.toggleModal.bind(this)}>Close</Button>
                         </ModalFooter>
                       </Modal>
@@ -532,7 +698,10 @@ export default class Careers extends Component {
                     <div className="bg-light p-3 border rounded">
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="px-3 text-center">
-                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-facebook" /></NavLink>
+                      <div class="fb-share-button"
+                          data-href={"https://enclavei3dev.tk/article/" + id}
+                          data-layout="button_count">
+                        </div>
                         <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-skype" /></NavLink>
@@ -581,7 +750,7 @@ export default class Careers extends Component {
                           data-href={"https://enclavei3dev.tk/article/" + id}
                           data-layout="button_count">
                         </div>
-                        
+
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink>
@@ -592,6 +761,7 @@ export default class Careers extends Component {
               </div>
             </div>
           </section>
+          <Footer />
         </div>
       </div>
     )
