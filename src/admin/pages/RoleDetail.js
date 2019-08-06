@@ -168,7 +168,7 @@ export default class RoleDetail extends Component {
                     icon
                     dataPermissions={this.state.dataPermissions}
                     id={id}
-                    color="success"
+                    color="warning"
                     getUpdate={this.getUpdate.bind(this)}
                   />
                   <br />

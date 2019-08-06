@@ -23,8 +23,8 @@ const UserCard = ({
     <Card inverse className={classes} {...restProps}>
       <CardBody className="d-flex justify-content-center align-items-center flex-column">
         <Avatar src={avatar} size={avatarSize} className="mb-2" />
-        <CardTitle>{title}</CardTitle>
-        <CardSubtitle>{subtitle}</CardSubtitle>
+        <CardTitle style={{ fontWeight: 'bold' }}>{title}</CardTitle>
+        <CardSubtitle style={{ fontWeight: 'bold' }}>{subtitle}</CardSubtitle>
         <CardText>
           <small>{text}</small>
         </CardText>
@@ -40,11 +40,11 @@ UserCard.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
   text: PropTypes.string,
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 UserCard.defaultProps = {
-  avatarSize: 80,
+  avatarSize: 80
 };
 
 export default UserCard;
