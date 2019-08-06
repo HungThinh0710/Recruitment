@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Card,
   CardBody,
-  CardTitle,
+  CardHeader,
   Button,
   Row,
   Col,
@@ -163,14 +163,17 @@ export default class AddNewFormatPage extends Component {
   render() {
     var i = 0;
     return (
-      <div className="profile-card">
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -190,7 +193,10 @@ export default class AddNewFormatPage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -224,7 +230,7 @@ export default class AddNewFormatPage extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalPreview}>
-            Name: {this.state.editTitle}
+            Title: {this.state.editTitle}
           </ModalHeader>
           <ModalBody>{renderHTML(this.state.editContent)}</ModalBody>
           <ModalFooter>
@@ -235,162 +241,140 @@ export default class AddNewFormatPage extends Component {
         </Modal>
         {/*--------Modal-Preview-----*/}
 
-        <Card className="card-body">
-          <CardTitle
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '35px'
-            }}
-          >
-            <MdCancel className="hidden" />
-            <span
-              style={{
-                color: '#45b649',
-                fontWeight: 'bold',
-                fontSize: '45px'
-              }}
-            >
-              Detail Format
-            </span>
-            <div className="icon-cancle">
-              <Link to="/dashboard/format">
-                <MdCancel />
-              </Link>
-            </div>
-          </CardTitle>
-          <CardBody>
-            <Row>
-              <Col>
-                <Nav tabs>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        tabactive: this.state.activeTab === '1'
-                      })}
-                      onClick={() => {
-                        this.toggle('1');
-                      }}
-                    >
-                      <MdBook style={{ marginRight: '5px' }} />
-                      Detail
-                    </NavLink>
-                  </NavItem>
+        <CardHeader className="card-header-custom">
+          Template's information
+        </CardHeader>
+        <CardBody>
+          <Row>
+            <Col>
+              <Nav tabs>
+                <NavItem>
+                  <NavLink
+                    className={classnames({
+                      tabactive: this.state.activeTab === '1'
+                    })}
+                    onClick={() => {
+                      this.toggle('1');
+                    }}
+                  >
+                    <MdBook style={{ marginRight: '5px' }} />
+                    Detail
+                  </NavLink>
+                </NavItem>
 
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        tabactive: this.state.activeTab === '2'
-                      })}
-                      onClick={() => {
-                        this.toggle('2');
+                <NavItem>
+                  <NavLink
+                    className={classnames({
+                      tabactive: this.state.activeTab === '2'
+                    })}
+                    onClick={() => {
+                      this.toggle('2');
+                    }}
+                  >
+                    <MdSettings style={{ marginRight: '5px' }} />
+                    Update
+                  </NavLink>
+                </NavItem>
+              </Nav>
+            </Col>
+          </Row>
+          <br />
+          <br />
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId="1">
+              <Row>
+                <Col xs="2" style={{ display: 'flex', alignItems: 'center' }}>
+                  <span style={{ fontSize: '20px', fontWeight: 'bold' }}>
+                    Name:
+                  </span>
+                </Col>
+                <Col style={{ display: 'flex', alignItems: 'center' }}>
+                  <span>{this.state.title}</span>
+                </Col>
+              </Row>
+              <br />
+              <Row>
+                <Col xs="2">
+                  <span style={{ fontSize: '20px', fontWeight: 'bold' }}>
+                    Content:
+                  </span>
+                </Col>
+                <Col>{renderHTML(this.state.content)}</Col>
+              </Row>
+            </TabPane>
+            <TabPane tabId="2">
+              <Row>
+                <Col>
+                  <Form onSubmit={this.handleSubmit}>
+                    <FormGroup>
+                      <Label for="Name">Name</Label>
+                      <Input
+                        className="input-title"
+                        type="text"
+                        name="editTitle"
+                        onChange={this.handleChange}
+                        value={this.state.editTitle}
+                      />
+                      {this.state.errorTitle !== '' &&
+                        this.state.showErrorMessage && (
+                          <span style={{ color: 'red' }}>
+                            {this.state.errorTitle}
+                          </span>
+                        )}
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="Content">Content</Label>
+                      <ReactQuill
+                        onChange={this.handleEditorChange}
+                        value={this.state.editContent}
+                        modules={AddNewFormatPage.modules}
+                        formats={AddNewFormatPage.formats}
+                        bounds={'.app'}
+                      />
+                    </FormGroup>
+                    <FormGroup
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end'
                       }}
                     >
-                      <MdSettings style={{ marginRight: '5px' }} />
-                      Update
-                    </NavLink>
-                  </NavItem>
-                </Nav>
-              </Col>
-            </Row>
-            <br />
-            <br />
-            <TabContent activeTab={this.state.activeTab}>
-              <TabPane tabId="1">
-                <Row>
-                  <Col xs="2" style={{ display: 'flex', alignItems: 'center' }}>
-                    <span style={{ fontSize: '20px', fontWeight: 'bold' }}>
-                      Name:
-                    </span>
-                  </Col>
-                  <Col style={{ display: 'flex', alignItems: 'center' }}>
-                    <span>{this.state.title}</span>
-                  </Col>
-                </Row>
-                <br />
-                <Row>
-                  <Col xs="2">
-                    <span style={{ fontSize: '20px', fontWeight: 'bold' }}>
-                      Content:
-                    </span>
-                  </Col>
-                  <Col>{renderHTML(this.state.content)}</Col>
-                </Row>
-              </TabPane>
-              <TabPane tabId="2">
-                <Row>
-                  <Col>
-                    <Form onSubmit={this.handleSubmit}>
-                      <FormGroup>
-                        <Label for="Name">Name</Label>
-                        <Input
-                          className="input-title"
-                          type="text"
-                          name="editTitle"
-                          onChange={this.handleChange}
-                          value={this.state.editTitle}
-                        />
-                        {this.state.errorTitle !== '' &&
-                          this.state.showErrorMessage && (
-                            <span style={{ color: 'red' }}>
-                              {this.state.errorTitle}
-                            </span>
-                          )}
-                      </FormGroup>
-                      <FormGroup>
-                        <Label for="Content">Content</Label>
-                        <ReactQuill
-                          onChange={this.handleEditorChange}
-                          value={this.state.editContent}
-                          modules={AddNewFormatPage.modules}
-                          formats={AddNewFormatPage.formats}
-                          bounds={'.app'}
-                        />
-                      </FormGroup>
-                      <FormGroup
+                      <div
                         style={{
                           display: 'flex',
-                          justifyContent: 'flex-end'
+                          justifyContent: 'space-between',
+                          width: '260px'
                         }}
                       >
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            width: '300px'
-                          }}
-                        >
-                          {this.state.errorTitle == '' ? (
-                            <Button color="success" onClick={this.handleSubmit}>
-                              Submit
-                            </Button>
-                          ) : (
-                            <Button
-                              color="success"
-                              onClick={this.handleErrorMessage.bind(this)}
-                            >
-                              Submit
-                            </Button>
-                          )}
-                          <Button
-                            color="primary"
-                            onClick={this.toggleModalPreview}
-                          >
-                            Preview
+                        {this.state.errorTitle == '' ? (
+                          <Button color="success" onClick={this.handleSubmit}>
+                            Submit
                           </Button>
-                          <Link to="/dashboard/format">
-                            <Button>Back</Button>
-                          </Link>
-                        </div>
-                      </FormGroup>
-                    </Form>
-                  </Col>
-                </Row>
-              </TabPane>
-            </TabContent>
-          </CardBody>
-        </Card>
-      </div>
+                        ) : (
+                          <Button
+                            color="success"
+                            onClick={this.handleErrorMessage.bind(this)}
+                          >
+                            Submit
+                          </Button>
+                        )}
+                        <Button
+                          color="primary"
+                          onClick={this.toggleModalPreview}
+                        >
+                          Preview
+                        </Button>
+                        <Link to="/dashboard/format">
+                          <Button>Back</Button>
+                        </Link>
+                      </div>
+                    </FormGroup>
+                  </Form>
+                </Col>
+              </Row>
+            </TabPane>
+          </TabContent>
+        </CardBody>
+      </Card>
     );
   }
 }

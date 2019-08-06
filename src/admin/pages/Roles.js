@@ -4,8 +4,7 @@ import {
   CardBody,
   CardHeader,
   Button,
-  InputGroupAddon,
-  InputGroup,
+  Label,
   Input,
   Container,
   Row,
@@ -42,77 +41,102 @@ export default class Roles extends Component {
       dataPermissions: '',
       modalDeleteError: false,
       modalDeleteSuccess: false,
-      checkRole: 0
+      checkRole: false,
+      selectPerPage: '10',
+      loadData: false,
+      keyword: '',
+      perPage: 10
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.removeManyItems = this.removeManyItems.bind(this);
     this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
     this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
+    this.handleChangePerPage = this.handleChangePerPage.bind(this);
+    this.handleChangeKeyWord = this.handleChangeKeyWord.bind(this);
   }
 
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
       this.props.history.push('/dashboard/login');
+    }
+  }
+  async componentDidMount(perPage, keyword) {
+    const { activePage } = this.state;
+    var url1 = '';
+    if (!perPage) perPage = 10;
+    var body = '';
+
+    if (keyword != '') {
+      body = {
+        keyword: keyword
+      };
+      url1 = 'https://api.enclavei3dev.tk/api/list-role';
     } else {
-      const checkId = window.name;
-      if (checkId == 1) {
-        this.setState({
-          checkRole: true
-        });
-      } else {
+      body = '';
+      url1 =
+        'https://api.enclavei3dev.tk/api/list-role?page=' +
+        activePage +
+        '&perpage=' +
+        perPage;
+    }
+    var url2 = 'https://api.enclavei3dev.tk/api/permission';
+
+    var data1 = '';
+    fetch(url1, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      if (res.status === 403) {
         this.setState({
           checkRole: false
         });
       }
-    }
-  }
-  async componentDidMount() {
-    const { activePage, checkRole } = this.state;
-    // var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
-    var url1 = 'https://api.enclavei3dev.tk/api/list-role?page=' + activePage;
-    var url2 = 'https://api.enclavei3dev.tk/api/permission';
-    // var i = 0;
-    // var listRoles = [];
-    if (checkRole == true) {
-      const data1 = await fetch(url1, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => res.json());
-      const data2 = await fetch(url2, {
-        method: 'POST',
-        body: JSON.stringify({
-          all: 1
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => res.json());
-      setTimeout(() => {
-        this.setState({
-          currentPage: data1.currentPage,
-          totalItems: data1.total,
-          rows: data1.data,
-          loading: false,
-          dataPermissions: data2
+      if (res.status === 200) {
+        res.json().then(response => {
+          data1 = response;
+          console.log(response);
+          this.setState({
+            checkRole: true
+          });
         });
-      }, 500);
-    } else {
+      }
+    });
+
+    const data2 = await fetch(url2, {
+      method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    setTimeout(() => {
       this.setState({
-        loading: false
+        currentPage: data1.currentPage,
+        totalItems: data1.total,
+        rows: data1.data,
+        perPage: parseInt(data1.per_page),
+        loading: false,
+        dataPermissions: data2,
+        loadData: false,
+        activePage: data1.current_page
       });
-    }
+    }, 500);
   }
 
   getUpdate(update) {
+    const { perPage, keyword } = this.state;
     if ((update = true)) {
-      this.componentDidMount();
+      this.componentDidMount(perPage, keyword);
     }
   }
 
@@ -128,11 +152,9 @@ export default class Roles extends Component {
   }
 
   removeItem(id) {
-    const { activePage, listDeleteId } = this.state;
+    const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var index = listDeleteId.indexOf(id);
-    listDeleteId.splice(index, 1);
     var url = 'https://api.enclavei3dev.tk/api/role';
     fetch(url, {
       method: 'DELETE',
@@ -145,44 +167,49 @@ export default class Roles extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-role?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => {
-        if (res.status === 200) {
-          this.toggleModalDeleteSuccess();
-          res.json().then(data => {
-            data.data.forEach(function(e) {
-              delete e.created_at;
-              delete e.updated_at;
-            });
-            this.setState({
-              rows: data.data,
-              totalItems: data.total,
-              listDeleteId: listDeleteId,
-              listDeleteName: []
-            });
-          });
-        } else {
-          this.toggleModalDeleteError();
-        }
-      });
+      if (res.status == 200) {
+        this.toggleModalDeleteSuccess();
+        this.componentDidMount(perPage, keyword);
+      } else {
+        this.toggleModalDeleteError();
+      }
     });
   }
 
-  addRole(data) {
-    this.setState({
-      rows: data.data,
-      totalItems: data.total
+  removeManyItems() {
+    const { listDeleteId, perPage, keyword } = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/role';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        roleId: listDeleteId
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      if (res.status == 200) {
+        this.toggleModalDeleteSuccess();
+        this.componentDidMount(perPage, keyword);
+        this.setState({
+          listDeleteId: [],
+          listDeleteName: []
+        });
+      } else {
+        this.toggleModalDeleteError();
+      }
     });
   }
 
   handlePageChange(pageNumber) {
-    var url = 'https://api.enclavei3dev.tk/api/list-role?page=' + pageNumber;
+    const { perPage } = this.state;
+    var url =
+      'https://api.enclavei3dev.tk/api/list-role?page=' +
+      pageNumber +
+      '&perpage=' +
+      perPage;
     fetch(url, {
       method: 'POST',
       headers: {
@@ -199,6 +226,7 @@ export default class Roles extends Component {
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
+          perPage: parseInt(data.per_page),
           rows: data.data,
           activePage: pageNumber
         });
@@ -236,48 +264,42 @@ export default class Roles extends Component {
     });
   }
 
-  removeManyItems() {
-    const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/role';
-    fetch(url, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        roleId: listDeleteId
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-role?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => {
-        if (res.status === 200) {
-          this.toggleModalDeleteSuccess();
-          res.json().then(data => {
-            this.setState({
-              rows: data.data,
-              totalItems: data.total,
-              listDeleteId: [],
-              listDeleteName: []
-            });
-          });
-        } else {
-          this.toggleModalDeleteError();
-        }
-      });
+  handleChangePerPage = e => {
+    const { keyword } = this.state;
+    var perPage = 0;
+    switch (e.target.value) {
+      case '10':
+        perPage = 10;
+        break;
+      case '20':
+        perPage = 20;
+        break;
+      case '50':
+        perPage = 50;
+        break;
+      case '100':
+        perPage = 100;
+        break;
+    }
+    this.setState({
+      perPage: perPage,
+      [e.target.name]: e.target.value,
+      loadData: true
     });
-  }
+    this.componentDidMount(perPage, keyword);
+  };
+
+  handleChangeKeyWord = e => {
+    const { perPage } = this.state;
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+    this.componentDidMount(perPage, e.target.value);
+  };
 
   render() {
-    const { totalItems } = this.state;
-    var i = 0;
+    const { totalItems, activePage } = this.state;
+    var i = (activePage - 1) * 10;
     return (
       <Card className="dashboard-card" style={{ marginBottom: '330px' }}>
         {/*--------Modal-Success-----*/}
@@ -286,7 +308,10 @@ export default class Roles extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalDeleteSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalDeleteSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -306,7 +331,10 @@ export default class Roles extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalDeleteError}>
+          <ModalHeader
+            toggle={this.toggleModalDeleteError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -359,128 +387,150 @@ export default class Roles extends Component {
                         )}
                       </div>
                     </Col>
-                    <Col sm="12" md="6" className="role-form-search">
-                      <Row style={{}}>
-                        <Col sm="12" md="5">
-                          <FormGroup>
-                            <Input
-                              type="select"
-                              name="select"
-                              id="exampleSelect"
-                            >
-                              <option>Show 10 entries</option>
-                              <option>Show 20 entries</option>
-                              <option>Show 50 entries</option>
-                              <option>Show 100 entries</option>
-                            </Input>
-                          </FormGroup>
-                        </Col>
-                        <Col sm="12" md="7">
-                          <InputGroup className="role-input-group-search">
-                            <Input className="role-input-search" />
-                            <InputGroupAddon addonType="append">
-                              <Button
-                                className="role-btn-search"
-                                color="success"
-                              >
-                                Search
-                              </Button>
-                            </InputGroupAddon>
-                          </InputGroup>
-                        </Col>
-                      </Row>
+                  </Row>
+                  <br />
+                  <Row>
+                    <Col>
+                      <div className="header-table-custom">
+                        <FormGroup>
+                          <Label>Show entries</Label>
+                          <Input
+                            type="select"
+                            name="selectPerPage"
+                            id="exampleSelect"
+                            value={this.state.selectPerPage}
+                            onChange={this.handleChangePerPage}
+                          >
+                            <option>10</option>
+                            <option>20</option>
+                            <option>50</option>
+                            <option>100</option>
+                          </Input>
+                        </FormGroup>
+                        <FormGroup>
+                          <Label>Search</Label>
+                          <Input
+                            className="role-input-search"
+                            name="keyword"
+                            value={this.state.keyword}
+                            onChange={this.handleChangeKeyWord}
+                          />
+                        </FormGroup>
+                      </div>
                     </Col>
                   </Row>
                 </Container>
-                <div className="table-rm">
-                  <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
-                    <thead className="thead-light">
-                      <tr>
-                        <th>
-                          <input type="checkbox" />
-                        </th>
-                        <th>#</th>
-                        <th>Role</th>
-                        <th>Description</th>
-                        <th style={{ width: '180px' }}>Action</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {this.state.rows.map(e => {
-                        i++;
-                        let url = '/dashboard/role/' + e.id;
-                        return (
-                          <tr key={e.id}>
-                            <td>
-                              <input
-                                type="checkbox"
-                                onChange={() =>
-                                  this.handleCheckChange(e.name, e.id)
-                                }
-                              />
-                            </td>
-                            <td>{i}</td>
-                            <td>
-                              {e.name.toLowerCase() == 'admin' ? (
-                                <Badge color="danger" pill>
-                                  {e.name}
-                                </Badge>
-                              ) : (
-                                <Badge color="primary" pill>
-                                  {e.name}
-                                </Badge>
-                              )}
-                            </td>
-                            <td>{e.description}</td>
-                            <td>
-                              <div className="action">
-                                <div className="action-item">
-                                  <ModalEditRole
-                                    icon
-                                    dataPermissions={this.state.dataPermissions}
-                                    id={e.id}
-                                    name={e.name}
-                                    color="warning"
-                                    getUpdate={this.getUpdate.bind(this)}
-                                  />
+                {this.state.loadData ? (
+                  <div
+                    style={{
+                      marginTop: '100px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      marginBottom: '250px'
+                    }}
+                    className="sweet-loading"
+                  >
+                    <PulseLoader
+                      sizeUnit={'px'}
+                      size={15}
+                      color={'#45b649'}
+                      loading={this.state.loadData}
+                    />
+                  </div>
+                ) : (
+                  <div className="table-rm">
+                    <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
+                      <thead className="thead-light">
+                        <tr>
+                          <th style={{ width: '70px' }}>
+                            <input type="checkbox" />
+                          </th>
+                          <th style={{ width: '70px' }}>#</th>
+                          <th>Role</th>
+                          <th style={{ width: '1000px' }}>Description</th>
+                          <th style={{ width: '180px' }}>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.rows.map(e => {
+                          i++;
+                          let url = '/dashboard/role/' + e.id;
+                          return (
+                            <tr key={e.id}>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={() =>
+                                    this.handleCheckChange(e.name, e.id)
+                                  }
+                                />
+                              </td>
+                              <td>{i}</td>
+                              <td>
+                                {e.name.toLowerCase() == 'admin' ? (
+                                  <Badge color="danger" pill>
+                                    {e.name}
+                                  </Badge>
+                                ) : (
+                                  <Badge color="primary" pill>
+                                    {e.name}
+                                  </Badge>
+                                )}
+                              </td>
+                              <td>{e.description}</td>
+                              <td>
+                                <div className="action">
+                                  <div className="action-item">
+                                    <ModalEditRole
+                                      icon
+                                      dataPermissions={
+                                        this.state.dataPermissions
+                                      }
+                                      id={e.id}
+                                      name={e.name}
+                                      color="warning"
+                                      getUpdate={this.getUpdate.bind(this)}
+                                    />
+                                  </div>
+                                  <div className="action-item">
+                                    <Link style={{ width: 'auto' }} to={url}>
+                                      <Button
+                                        className="view-button"
+                                        color="primary"
+                                      >
+                                        <MdPageview />
+                                      </Button>
+                                    </Link>
+                                  </div>
+                                  <div className="action-item">
+                                    <ModalRemoveItem
+                                      item={e}
+                                      itemName="this role"
+                                      function={() => this.removeItem(e.id)}
+                                    />
+                                  </div>
                                 </div>
-                                <div className="action-item">
-                                  <Link style={{ width: 'auto' }} to={url}>
-                                    <Button
-                                      className="view-button"
-                                      color="primary"
-                                    >
-                                      <MdPageview />
-                                    </Button>
-                                  </Link>
+                                <div className="action-mobile">
+                                  <DropDownTable />
                                 </div>
-                                <div className="action-item">
-                                  <ModalRemoveItem
-                                    item={e}
-                                    itemName="this role"
-                                    function={() => this.removeItem(e.id)}
-                                  />
-                                </div>
-                              </div>
-                              <div className="action-mobile">
-                                <DropDownTable />
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                  <br />
-                  <PaginationComponent
-                    activePage={this.state.activePage}
-                    itemsCountPerPage={10}
-                    totalItemsCount={totalItems}
-                    pageRangeDisplayed={5}
-                    onChange={this.handlePageChange}
-                  />
-                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                    <br />
+                    <PaginationComponent
+                      activePage={this.state.activePage}
+                      itemsCountPerPage={this.state.perPage}
+                      totalItemsCount={totalItems}
+                      pageRangeDisplayed={5}
+                      onChange={this.handlePageChange}
+                      totalItems={this.state.totalItems}
+                      activePage={this.state.activePage}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <div>

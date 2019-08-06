@@ -142,7 +142,10 @@ export default class ModalEditFormat extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -162,7 +165,10 @@ export default class ModalEditFormat extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -232,7 +238,7 @@ export default class ModalEditFormat extends Component {
         >
           <ModalHeader toggle={this.toggle}>
             {' '}
-            <span className="dashboard-modal-header">Update format</span>{' '}
+            <span className="dashboard-modal-header">Update template</span>{' '}
           </ModalHeader>
           <ModalBody>
             <Form onSubmit={this.handleSubmit}>

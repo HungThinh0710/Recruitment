@@ -13,7 +13,8 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  ModalFooter
+  ModalFooter,
+  CardHeader
 } from 'reactstrap';
 import Select from 'react-select';
 import ReactQuill from 'react-quill';
@@ -21,7 +22,6 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import renderHTML from 'react-render-html';
 import PropTypes from 'prop-types';
-import { MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import './AddNewArticlePage.css';
 
@@ -337,7 +337,7 @@ export default class AddNewArticlePage extends Component {
       check = true;
     }
     return (
-      <div className="profile-card" style={{ marginBottom: '300px' }}>
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -368,7 +368,10 @@ export default class AddNewArticlePage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -401,7 +404,10 @@ export default class AddNewArticlePage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalPreview}>
+          <ModalHeader
+            toggle={this.toggleModalPreview}
+            className="card-header-custom"
+          >
             Title: {this.state.title}
           </ModalHeader>
           <ModalBody>{renderHTML(this.state.content)}</ModalBody>
@@ -413,184 +419,175 @@ export default class AddNewArticlePage extends Component {
         </Modal>
         {/*--------Modal-Preview-----*/}
 
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Create A New Article
-            <Link to="/dashboard/article">
-              <MdCancel />
-            </Link>
-          </CardTitle>
+        <CardHeader className="card-header-custom">
+          Create a new article
+        </CardHeader>
 
-          <CardBody>
-            <Row>
-              <Col>
-                <Row>
-                  <div style={{ width: '100%' }}>
-                    {/* <Form onSubmit={this.handleSubmit}> */}
-                    <Form>
-                      <FormGroup>
-                        <Label className="title-input" for="Name">
-                          Title
-                        </Label>
-                        <Input
-                          className="title-add-new-article"
-                          type="text"
-                          name="title"
-                          onChange={this.handleChange}
-                        />
-                        {this.state.errorTitle !== '' &&
-                          this.state.showErrorMessage && (
-                            <span style={{ color: 'red' }}>
-                              {this.state.errorTitle}
-                            </span>
-                          )}
-                      </FormGroup>
-                      <FormGroup>
-                        <Label className="title-input" for="Category">
-                          Category
+        <CardBody>
+          <Row>
+            <Col>
+              <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ width: '90%' }}>
+                  {/* <Form onSubmit={this.handleSubmit}> */}
+                  <Form>
+                    <FormGroup>
+                      <Label className="title-input" for="Name">
+                        Title
+                      </Label>
+                      <Input
+                        className="title-add-new-article"
+                        type="text"
+                        name="title"
+                        onChange={this.handleChange}
+                      />
+                      {this.state.errorTitle !== '' &&
+                        this.state.showErrorMessage && (
+                          <span style={{ color: 'red' }}>
+                            {this.state.errorTitle}
+                          </span>
+                        )}
+                    </FormGroup>
+                    <FormGroup>
+                      <Label className="title-input" for="Category">
+                        Category
+                      </Label>
+                      <Select
+                        className="create-article-input"
+                        value={this.state.selectedCategoryOption}
+                        onChange={this.handleSelectCategoryChange.bind(this)}
+                        options={this.state.optionsCategory}
+                      />
+                      {!this.state.selectedCategoryOption &&
+                        this.state.showErrorMessage && (
+                          <span style={{ color: 'red' }}>
+                            Category is required
+                          </span>
+                        )}
+                    </FormGroup>
+                    <FormGroup
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <div style={{ width: '45%' }}>
+                        <Label className="title-input" for="Job">
+                          Job
                         </Label>
                         <Select
                           className="create-article-input"
-                          value={this.state.selectedCategoryOption}
-                          onChange={this.handleSelectCategoryChange.bind(this)}
-                          options={this.state.optionsCategory}
+                          value={this.state.selectedJobOption}
+                          onChange={this.handleSelectJobChange.bind(this)}
+                          options={this.state.optionsJob}
+                          isDisabled={this.state.isDisabled}
                         />
-                        {!this.state.selectedCategoryOption &&
+                        {!this.state.selectedJobOption &&
+                          this.state.showJobError &&
                           this.state.showErrorMessage && (
                             <span style={{ color: 'red' }}>
-                              Category is required
+                              Job is required
                             </span>
                           )}
-                      </FormGroup>
-                      <FormGroup
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between'
-                        }}
-                      >
-                        <div style={{ width: '45%' }}>
-                          <Label className="title-input" for="Job">
-                            Job
-                          </Label>
-                          <Select
-                            className="create-article-input"
-                            value={this.state.selectedJobOption}
-                            onChange={this.handleSelectJobChange.bind(this)}
-                            options={this.state.optionsJob}
-                            isDisabled={this.state.isDisabled}
-                          />
-                          {!this.state.selectedJobOption &&
-                            this.state.showJobError &&
-                            this.state.showErrorMessage && (
-                              <span style={{ color: 'red' }}>
-                                Job is required
-                              </span>
-                            )}
-                        </div>
+                      </div>
 
-                        <div style={{ width: '45%' }}>
-                          <Label className="title-input" for="Category">
-                            Format
-                          </Label>
-                          <Select
-                            className="create-article-input"
-                            value={this.state.selectedFormatOption}
-                            onChange={this.handleSelectFormatChange.bind(this)}
-                            options={this.state.optionsFormat}
-                          />
-                        </div>
-                      </FormGroup>
-                      {/* {this.state.content && ( */}
-                      <FormGroup>
-                        <Label className="title-input" for="Content">
-                          Content
+                      <div style={{ width: '45%' }}>
+                        <Label className="title-input" for="Category">
+                          Format
                         </Label>
-                        <ReactQuill
-                          onChange={this.handleEditorChange}
-                          value={this.state.content}
-                          modules={AddNewArticlePage.modules}
-                          formats={AddNewArticlePage.formats}
-                          bounds={'.app'}
-                          placeholder={this.props.placeholder}
+                        <Select
+                          className="create-article-input"
+                          value={this.state.selectedFormatOption}
+                          onChange={this.handleSelectFormatChange.bind(this)}
+                          options={this.state.optionsFormat}
                         />
-                        {this.state.content == '' &&
-                          this.state.showErrorMessage && (
-                            <span style={{ color: 'red' }}>
-                              Content is required
-                            </span>
-                          )}
-                      </FormGroup>
-                      {/* )} */}
-                      <br />
-                      <FormGroup
+                      </div>
+                    </FormGroup>
+                    {/* {this.state.content && ( */}
+                    <FormGroup>
+                      <Label className="title-input" for="Content">
+                        Content
+                      </Label>
+                      <ReactQuill
+                        onChange={this.handleEditorChange}
+                        value={this.state.content}
+                        modules={AddNewArticlePage.modules}
+                        formats={AddNewArticlePage.formats}
+                        bounds={'.app'}
+                        placeholder={this.props.placeholder}
+                      />
+                      {this.state.content == '' &&
+                        this.state.showErrorMessage && (
+                          <span style={{ color: 'red' }}>
+                            Content is required
+                          </span>
+                        )}
+                    </FormGroup>
+                    {/* )} */}
+                    <br />
+                    <FormGroup
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end'
+                      }}
+                    >
+                      <div
                         style={{
                           display: 'flex',
-                          justifyContent: 'flex-end'
+                          justifyContent: 'space-between',
+                          width: '350px'
                         }}
                       >
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            width: '350px'
-                          }}
+                        <Button
+                          onClick={this.toggleModalPreview}
+                          color="primary"
                         >
-                          <Button
-                            onClick={this.toggleModalPreview}
-                            color="primary"
-                          >
-                            Preview
+                          Preview
+                        </Button>
+                        {this.state.errorTitle == '' &&
+                        check &&
+                        this.state.selectedFormatOption &&
+                        this.state.selectedCategoryOption ? (
+                          <Button color="success" onClick={this.handlePublish}>
+                            Publish
                           </Button>
-                          {this.state.errorTitle == '' &&
-                          check &&
-                          this.state.selectedFormatOption &&
-                          this.state.selectedCategoryOption ? (
-                            <Button
-                              color="success"
-                              onClick={this.handlePublish}
-                            >
-                              Publish
-                            </Button>
-                          ) : (
-                            <Button
-                              color="success"
-                              onClick={this.handleErrorMessage.bind(this)}
-                            >
-                              Publish
-                            </Button>
-                          )}
-                          {this.state.errorTitle == '' &&
-                          check &&
-                          this.state.selectedFormatOption &&
-                          this.state.selectedCategoryOption ? (
-                            <Button onClick={this.handleSave} color="warning">
-                              Save
-                            </Button>
-                          ) : (
-                            <Button
-                              onClick={this.handleErrorMessage.bind(this)}
-                              color="warning"
-                            >
-                              Save
-                            </Button>
-                          )}
+                        ) : (
                           <Button
-                            onClick={() => this.backToPreviousPage()}
-                            color="secondary"
+                            color="success"
+                            onClick={this.handleErrorMessage.bind(this)}
                           >
-                            Back
+                            Publish
                           </Button>
-                        </div>
-                      </FormGroup>
-                    </Form>
-                  </div>
-                </Row>
-              </Col>
-            </Row>
-          </CardBody>
-        </Card>
-      </div>
+                        )}
+                        {this.state.errorTitle == '' &&
+                        check &&
+                        this.state.selectedFormatOption &&
+                        this.state.selectedCategoryOption ? (
+                          <Button onClick={this.handleSave} color="warning">
+                            Save
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={this.handleErrorMessage.bind(this)}
+                            color="warning"
+                          >
+                            Save
+                          </Button>
+                        )}
+                        <Button
+                          onClick={() => this.backToPreviousPage()}
+                          color="secondary"
+                        >
+                          Back
+                        </Button>
+                      </div>
+                    </FormGroup>
+                  </Form>
+                </div>
+              </Row>
+            </Col>
+          </Row>
+        </CardBody>
+      </Card>
     );
   }
 }

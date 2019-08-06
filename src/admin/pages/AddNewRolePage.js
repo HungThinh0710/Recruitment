@@ -7,7 +7,7 @@ import {
   ModalFooter,
   Card,
   CardBody,
-  CardTitle,
+  CardHeader,
   FormGroup,
   Form,
   Label,
@@ -17,6 +17,7 @@ import { MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { PulseLoader } from 'react-spinners';
 const animatedComponents = makeAnimated();
 
 const roleNameRegex = /^[a-zA-Z0-9\s]+$/;
@@ -35,7 +36,9 @@ export default class AddNewRolePage extends Component {
       errorPermissionMessage: "Role's permissions cannot be empty",
       optionPermission: [],
       selectedPermissionOption: null,
-      urlRole: ''
+      urlRole: '',
+      checkRole: false,
+      loading: true
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -51,7 +54,7 @@ export default class AddNewRolePage extends Component {
   async componentDidMount() {
     var { optionPermission } = this.state;
     var url = 'https://api.enclavei3dev.tk/api/permission';
-
+    var url2 = 'https://api.enclavei3dev.tk/api/role/1';
     const data = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -63,6 +66,27 @@ export default class AddNewRolePage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+
+    await fetch(url2, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      if (res.status === 403) {
+        this.setState({
+          checkRole: false,
+          loading: false
+        });
+      }
+      if (res.status === 200) {
+        this.setState({
+          checkRole: true,
+          loading: false
+        });
+      }
+    });
 
     data.map(e => {
       var permission = { id: e.id, value: e.name, label: e.name };
@@ -168,14 +192,17 @@ export default class AddNewRolePage extends Component {
     var i = 0;
     const { errorRoleMessage, urlRole } = this.state;
     return (
-      <div className="profile-card" style={{ marginBottom: '250px' }}>
+      <Card className="dashboard-card" style={{ marginBottom: '300px' }}>
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -199,7 +226,10 @@ export default class AddNewRolePage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -225,87 +255,109 @@ export default class AddNewRolePage extends Component {
 
         {/*--------Modal-Error-----*/}
 
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Create A New Role
-            <Link to="/dashboard/role">
-              <MdCancel />
-            </Link>
-          </CardTitle>
+        <CardHeader className="card-header-custom">
+          Create A New Role
+        </CardHeader>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <PulseLoader
+              sizeUnit={'px'}
+              size={15}
+              color={'#45b649'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
           <CardBody>
-            <Form>
-              <FormGroup>
-                <Label className="title-input" for="exampleName">
-                  Name
-                </Label>
-                <Input type="text" name="role" onChange={this.handleChange} />
-                {errorRoleMessage !== '' && this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>
-                    {this.state.errorRoleMessage}
-                  </span>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input" for="exampleDescription">
-                  Description
-                </Label>
-                <textarea
-                  style={{ width: '100% ' }}
-                  name="description"
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input">Permissions</Label>
-                <Select
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  onChange={this.handleSelectPermissionChange.bind(this)}
-                  defaultValue={this.state.selectedPermissionOption}
-                  options={this.state.optionPermission}
-                />
-                {!this.state.selectedPermissionOption &&
-                  this.state.showErrorMessage && (
+            {this.state.checkRole ? (
+              <Form>
+                <FormGroup>
+                  <Label className="title-input" for="exampleName">
+                    Name
+                  </Label>
+                  <Input type="text" name="role" onChange={this.handleChange} />
+                  {errorRoleMessage !== '' && this.state.showErrorMessage && (
                     <span style={{ color: 'red' }}>
-                      Permissions are required
+                      {this.state.errorRoleMessage}
                     </span>
                   )}
-              </FormGroup>
-              <br />
-              <FormGroup
-                style={{ display: 'flex', justifyContent: 'flex-end' }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    width: '180px',
-                    justifyContent: 'space-between'
-                  }}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="exampleDescription">
+                    Description
+                  </Label>
+                  <textarea
+                    style={{ width: '100% ' }}
+                    name="description"
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input">Permissions</Label>
+                  <Select
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    onChange={this.handleSelectPermissionChange.bind(this)}
+                    defaultValue={this.state.selectedPermissionOption}
+                    options={this.state.optionPermission}
+                  />
+                  {!this.state.selectedPermissionOption &&
+                    this.state.showErrorMessage && (
+                      <span style={{ color: 'red' }}>
+                        Permissions are required
+                      </span>
+                    )}
+                </FormGroup>
+                <br />
+                <FormGroup
+                  style={{ display: 'flex', justifyContent: 'flex-end' }}
                 >
-                  {this.state.errorRoleMessage == '' &&
-                  this.state.selectedPermissionOption ? (
-                    <Button color="success" onClick={this.handleSubmit}>
-                      Submit
-                    </Button>
-                  ) : (
-                    <Button color="success" onClick={this.handleErrorMessage}>
-                      Submit
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
+                  <div
+                    style={{
+                      display: 'flex',
+                      width: '160px',
+                      justifyContent: 'space-between'
+                    }}
                   >
-                    Back
-                  </Button>
-                </div>
-              </FormGroup>
-            </Form>
+                    {this.state.errorRoleMessage == '' &&
+                    this.state.selectedPermissionOption ? (
+                      <Button color="success" onClick={this.handleSubmit}>
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button color="success" onClick={this.handleErrorMessage}>
+                        Submit
+                      </Button>
+                    )}
+                    <Button
+                      onClick={() => this.backToPreviousPage()}
+                      color="secondary"
+                    >
+                      Back
+                    </Button>
+                  </div>
+                </FormGroup>
+              </Form>
+            ) : (
+              <div>
+                <h3 style={{ color: 'red' }}>
+                  {' '}
+                  You don't have permission to access this page
+                </h3>
+              </div>
+            )}
           </CardBody>
-        </Card>
-      </div>
+        )}
+      </Card>
     );
   }
 }
