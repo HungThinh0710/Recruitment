@@ -211,7 +211,7 @@ export default class JobDetail extends Component {
                               }}
                             >
                               <th className="title1">#</th>
-                              <th className="title1">Fullname</th>
+                              <th className="title1">Name</th>
                               <th className="title1">Address</th>
                               <th className="title1">Start</th>
                               <th className="title1">Status</th>
