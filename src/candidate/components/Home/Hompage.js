@@ -159,30 +159,21 @@ export default class Homepage extends Component {
       
     });
   }
-  
-    // this.setState({activePage: pageNumber});
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value
     })
-  
   }
   addActiveClass(event) {
     this.setState({[event.target.name]: !event.target.value
-    })
-    
+    })  
 }
   handleActive(index) {
     this.setState({
       activeItem: index
     })
   }
-  
-
   render() {
     const {active} = this.state;
-    
-
-    
     return (
       <section id="Home">
         <div className="site-wrap" >
@@ -216,9 +207,6 @@ export default class Homepage extends Component {
           <section className="site-section">
             <div className="container">
               <div className="row mb-5 justify-content-center">
-                {/* <div className="col-md-7 text-center">
-                  <h2 className="section-title mb-2">Job Opening</h2>
-                </div> */}
               </div>
               <div class="row">
                 <aside class="col-sm-3 sidebar-nav career-sidebar">
@@ -243,7 +231,6 @@ export default class Homepage extends Component {
                       <p class="list-group-title">
                         Job opening
                       </p>
-                      
                       <ul  class="site-nemu list-group navbar-nav" id="myLink">
                         <li key={1} className={this.state.activeItem === 1 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 1)}  onClick={()=>this.handleFilter('')} name="All">
                           <Link key={1} className={this.state.activeItem === 1 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 1)}  to="/" exact  >All</Link>
@@ -261,7 +248,6 @@ export default class Homepage extends Component {
                           <Link key={5} className={this.state.activeItem === 5 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 5)} to="/" exact  >Developer</Link>
                         </li>
                       </ul>
-                      
                     </li>
                   </ul>
                 </aside>
@@ -314,7 +300,6 @@ export default class Homepage extends Component {
                           </thead>
                           <tbody class="transistion">
                             {this.state.listjob.map(p => {
-
                               return <tr class="transfer">
                                 <td data-th="Position">
                                   <div>

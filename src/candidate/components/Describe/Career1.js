@@ -146,33 +146,9 @@ export default class Careers extends Component {
       addressed: data.job.address,
       content: data.content
     });
-    //gia tri thay doi
-    //  var list = document.getElementsByTagName('head');
-    //  list.insertBefore('<meta property=\"fb:app_id\" content=\"2309010198\"/>', list.childNodes[0]);
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
     $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
-    // $(metastring).insertAfter($('meta[name=fb-id]'))
-    // $("<meta property=\"og:description\" content=\"Find your dream job in our company\" />").appendTo($('meta[property=og:description]'))
-
-
-    // const head = document.getElementsByTagName('head')[0];
-    // const listMeta =  [];
-    // var metaApp = '<meta property="fb:app_id" content="2309010198"/>';
-
-    // metaApp += '<meta property="og:title" content="Enclave Recruitment System" />'
-    // metaApp += '<meta property="og:type" content="article" />'
-    // metaApp += '<meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"/>'
-    // metaApp += '<meta property="og:url" content="https://enclavei3dev.tk/article/6" />'
-    // metaApp += '<meta property="og:description" content="Find your dream job in our company" />'
-
-    // listMeta.push(metaApp);
-    // head.innerHTML = listMeta + head.innerHTML;
-
-    // this.updateHead();
-    // console.log(this.state.jobID)
   }
-
-
   updateHead() {
     const link = document.createElement('meta');
     link.property = "og:title";
@@ -180,10 +156,6 @@ export default class Careers extends Component {
     document.getElementsByTagName('head')[0].append(link);
   }
   handleSubmit() {
-
-    // const formData = new FormData();
-
-    // formData.append('file', this.state.CV, this.state.CV.name)
     const { fullName,
       email,
       phone,
@@ -230,26 +202,18 @@ export default class Careers extends Component {
             modalisOpen: !prevState.modalisOpen,
             modalError: false,
             modalSuccess: true
-          }
-          
+          }  
           ));
-
         }
-
       })
       .catch(error => console.error('Error:', error));
   };
   handleFile = event => {
     this.setState({
       CV: event.target.files[0],
-    }, () => { console.log(this.state.CV) })
-
+    })
   }
   handleFilechange = e => {
-    // let files = e.target.files || e.dataTransfer.files;
-    //   if (!files.length)
-    //         return;
-    //   this.createImage(files[0]);
     this.setState({
       selectedFile: e.target.files[0],
       loaded: 0,
@@ -257,29 +221,9 @@ export default class Careers extends Component {
 
 
   }
-  createImage(file) {
-    // let reader = new FileReader();
-    // reader.onload = (e) => {
-    //   this.setState({
-    //     CV: e.target.result
-    //   },
-    //   () => {console.log(this.state.CV)})
-    // };
-    // reader.readAsBinaryString(file);
-
-
-  }
-
-
-
   handleChange(e) {
-
-    // const target = e.target;
-    // const value = target.type === 'checkbox' ? target.checked : target.value;
-
     const value = e.target.value;
     let { formErrors } = this.state;
-
     switch (e.target.name) {
       case 'fullName':
         formErrors.fullName =
@@ -301,7 +245,6 @@ export default class Careers extends Component {
       default:
         break;
     }
-
     this.setState({ formErrors, [e.target.name]: value }, () => console.log(this.state.fullName, this.state.email));
   };
   getDataTechnicalSkill(technicalskill, year, id) {
@@ -309,23 +252,16 @@ export default class Careers extends Component {
 
     if (technicalskill && year) {
       var tech = technicalskill.value + '-' + year;
-      // dataTechnicalSkills.splice(id, 1);
-
       if (!dataTechnicalSkills[id]) {
         dataTechnicalSkills.push(tech);
       } else {
         dataTechnicalSkills[id] = tech;
       }
-      // var array = dataTechnicalSkills
-      //   .slice(0, id)
-      //   .concat(tech.concat(dataTechnicalSkills.slice(id + 1)));
-      // console.log(array);
       this.setState({
         dataTechnicalSkills: dataTechnicalSkills
       });
     }
   }
-
   removeTechnicalSkill(element, id) {
     var {
       dataTechnicalSkills,
@@ -340,7 +276,6 @@ export default class Careers extends Component {
       amountTechnicalSkills: amountTechnicalSkills
     });
   }
-
   createTechnicalSkill = () => {
     var { amountTechnicalSkills, arrayTechnicalSkillComponents } = this.state;
     amountTechnicalSkills = amountTechnicalSkills + 1;
@@ -373,13 +308,10 @@ export default class Careers extends Component {
     array.length === 0
       ? (errorTechnicalSkillMessage = 'Technical skill is required')
       : (errorTechnicalSkillMessage = '');
-
-
     const { id } = this.props.match.params;
     const { jobID } = this.state;
     const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggleModal.bind(this)}>&times;</button>;
     return (
-
       <div className="site-wrap">
         <div className="site-mobile-menu site-navbar-target">
           <div className="site-mobile-menu-header">
@@ -390,10 +322,8 @@ export default class Careers extends Component {
           <div className="site-mobile-menu-body" />
         </div> {/* .site-mobile-menu */}
         {/* NAVBAR */}
-
         <header className="site-navbar mt-3">
           <div className="container-fluid">
-
             <RouterURL />
           </div>
           {/*--------Modal-Success-----*/}
@@ -406,11 +336,9 @@ export default class Careers extends Component {
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            
               <span style={{ color: '#45b649' }}>
                 Successfully! Thank you for your application !
               </span>
-            
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -469,9 +397,7 @@ export default class Careers extends Component {
                     <div className="border p-2 d-inline-block mr-3 rounded">
                       <img src="/candidate/images/featured-listing-5.jpg" alt="Free Website Template By Free-Template.co" />
                     </div>
-
                     <div>
-
                       <h2 className="modify-title">{this.state.title}</h2>
                       <div class="show-line">
                         <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />{this.state.position}</span>
@@ -490,10 +416,8 @@ export default class Careers extends Component {
                 <div className="col-lg-4">
                   <div className="row">
                     <div className="col-6">
-
                     </div>
                     <div className="col-sm-6">
-
                       <Button block={true} color="success" onClick={this.toggleModal.bind(this)} >Apply Now</Button>
                       <Button color="danger" className="close"
                         onClick={this.toggleModal.bind(this)}>{this.props.buttonLabel}
@@ -522,7 +446,6 @@ export default class Careers extends Component {
                                 )}
                               </div>
                             </FormGroup>
-
                             <FormGroup>
                               <div className="email">
                                 <label class="col-form-label">Email</label>
@@ -612,26 +535,6 @@ export default class Careers extends Component {
                               </div>
                             </FormGroup>
                             <FormGroup>
-                              {/* <label class="col-form-label">Technical skill</label>
-                              <select
-                                class="form-control"
-                                className={formErrors.technicalSkill.length > 0 ? 'error' : null}
-                                placeholder="Write your technicalSkill skill here"
-                                type="text"
-                                name="technicalSkill"
-                                noValidate
-                                onChange={this.handleChange}
-                              >
-                                <option>Java</option>
-                                <option>.NET</option>
-                                <option>Python</option>
-                                <option>Ruby</option>
-                                <option>C++</option>
-                                <option>Other</option>
-                              </select>
-                              {formErrors.technicalSkill.length > 0 && (
-                                <span className="errorMessage">{formErrors.technicalSkill}</span>
-                              )} */}
                               <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <Label className="title-input" for="exampleDescription">
                                   Technical skill{' '}
@@ -647,9 +550,7 @@ export default class Careers extends Component {
                                 </Button>
                                 </Label>
                               </div>
-
                               {this.state.arrayTechnicalSkillComponents.map(e => e)}
-
                               {errorTechnicalSkillMessage != '' &&
                                 this.state.showErrorMessage && (
                                   <span style={{ color: 'red' }}>
@@ -744,14 +645,12 @@ export default class Careers extends Component {
                       </ul>
                     </div>
                     <div className="bg-light p-3 border rounded">
-                      {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="text-center">
                         {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
                         <div class="fb-share-button"
                           data-href={"https://enclavei3dev.tk/article/" + id}
                           data-layout="button_count">
                         </div>
-
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink>
