@@ -89,6 +89,7 @@ export default class JobDetail extends Component {
       dataTechnicalSkills.push(e.name + '-' + e.year);
       return dataTechnicalSkills;
     });
+    
     setTimeout(() => {
       this.setState({
         fullname: data.fullname,

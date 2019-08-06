@@ -107,6 +107,8 @@ export default class JobDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    console.log(data);
+    
     if (data.message !== 'Unauthenticated.') {
       const n = data.salary.indexOf('$');
       const stringSalary2 = removeStringSalary(data.salary, n);
