@@ -81,7 +81,7 @@ export default class Roles extends Component {
         perPage;
     }
     var url2 = 'https://api.enclavei3dev.tk/api/permission';
-
+    var url3 = 'https://api.enclavei3dev.tk/api/session/user-information';
     var data1 = '';
     fetch(url1, {
       method: 'POST',
@@ -100,7 +100,6 @@ export default class Roles extends Component {
       if (res.status === 200) {
         res.json().then(response => {
           data1 = response;
-          console.log(response);
           this.setState({
             checkRole: true
           });
@@ -119,6 +118,7 @@ export default class Roles extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+
     setTimeout(() => {
       this.setState({
         currentPage: data1.currentPage,

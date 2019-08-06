@@ -20,9 +20,7 @@ import { Link } from 'react-router-dom';
 import TechnicalSkill from '../components/TechnicalSkill';
 
 const fullNameRegex = /^[a-zA-Z\s]+$/;
-const emailRegex = RegExp(
-  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-);
+const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 export default class AddNewInterviewerPage extends Component {
   constructor(props) {
     super(props);

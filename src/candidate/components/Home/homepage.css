@@ -17,7 +17,6 @@
   }
   .career-sidebar .list-group {
     /* padding: 0 20px; */
-    border: 1px solid #e1e1e1;
     margin-bottom: 30px;
 }
   .form-control-lg::-moz-placeholder {
@@ -239,12 +238,26 @@
 .colorbottomline {
   text-decoration-color: black !important;
 }
- .nav-item > .smoothscroll:hover,
- .nav-item > .smoothscroll.active,
- .nav-item > .smoothscroll.active:hover {
+ .list-group-item > .item:hover,
+ .list-group-item > .item.active,
+ .list-group-item > .item.active:hover {
   border-color: green;
   font-weight: bold !important;
+  border-bottom: #45b649;
 }
-.nav-item > .smoothscroll.active > a {
-  color: red !important;
+.list-group-item.active {
+  border-color: #45b649;
+}
+.list-group-item > .item {
+  margin-bottom: 0px;
+}
+.Searchtype {
+  margin-bottom: 10px !important;
+}
+.list-group-wrap .list-group {
+  border-radius: 0!important;
+}
+
+.list-group-item{
+  border-radius: 0!important;
 }

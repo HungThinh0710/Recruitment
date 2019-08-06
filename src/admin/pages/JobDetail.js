@@ -512,11 +512,19 @@ export default class JobDetail extends Component {
                       </tr>
                       <tr className="job-title3" key={10}>
                         <td className="job-title">Publised On</td>
-                        <td className="job-title1">{this.state.publishedOn}</td>
+                        <td className="job-title1">
+                          {moment(this.state.publishedOn).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </td>
                       </tr>
                       <tr className="job-title3" key={11}>
                         <td className="job-title">Deadline</td>
-                        <td className="job-title1">{this.state.deadline}</td>
+                        <td className="job-title1">
+                          {moment(this.state.deadline).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

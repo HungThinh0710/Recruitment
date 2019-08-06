@@ -29,6 +29,7 @@ import { PulseLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import './JobDetail.css';
+import moment from 'moment';
 export default class ArticleDetail extends Component {
   constructor(props) {
     super(props);
@@ -651,11 +652,19 @@ export default class ArticleDetail extends Component {
                       </tr>
                       <tr className="job-title3" key={6}>
                         <td className="job-title">Created At</td>
-                        <td className="job-title1">{this.state.created_at}</td>
+                        <td className="job-title1">
+                          {moment(this.state.created_at).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </td>
                       </tr>
                       <tr className="job-title3" key={7}>
                         <td className="job-title">Updated At</td>
-                        <td className="job-title1">{this.state.updated_at}</td>
+                        <td className="job-title1">
+                          {moment(this.state.updated_at).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
