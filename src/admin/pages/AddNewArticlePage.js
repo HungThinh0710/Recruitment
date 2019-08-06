@@ -145,7 +145,9 @@ export default class AddNewArticlePage extends Component {
         selectedCategoryOption,
         isDisabled: true,
         showJobError: false,
-        selectedJobOption: null
+        selectedJobOption: null,
+        selectedFormatOption: null,
+        content: ''
       });
     } else {
       this.setState({
@@ -499,6 +501,7 @@ export default class AddNewArticlePage extends Component {
                           value={this.state.selectedFormatOption}
                           onChange={this.handleSelectFormatChange.bind(this)}
                           options={this.state.optionsFormat}
+                          isDisabled={this.state.isDisabled}
                         />
                       </div>
                     </FormGroup>
@@ -545,7 +548,6 @@ export default class AddNewArticlePage extends Component {
                         </Button>
                         {this.state.errorTitle == '' &&
                         check &&
-                        this.state.selectedFormatOption &&
                         this.state.selectedCategoryOption ? (
                           <Button color="success" onClick={this.handlePublish}>
                             Publish
@@ -560,7 +562,6 @@ export default class AddNewArticlePage extends Component {
                         )}
                         {this.state.errorTitle == '' &&
                         check &&
-                        this.state.selectedFormatOption &&
                         this.state.selectedCategoryOption ? (
                           <Button onClick={this.handleSave} color="warning">
                             Save

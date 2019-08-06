@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText, 
   Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,
-  FormGroup,Label,Input,Modal,ModalBody,ModalFooter, ModalHeader
+  FormGroup,Label,Input,Modal,ModalBody,ModalFooter, ModalHeader,CardHeader
 } from 'reactstrap';
   import classnames from 'classnames';
   import {  NumberWidget } from '../components/Widget';
@@ -342,7 +342,7 @@ export default class ProfilePage extends Component {
     var i = 0;
     const {name,fullName,email,phone,address,formError,password,password_confirmation,old_password,formErrorPassword} = this.state;
     return (
-      <div className="profile-card">
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -415,24 +415,13 @@ export default class ProfilePage extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <Card className="card-body">
-        {/* <CardTitle className="title">
-            <MdCancel className="first" />
-            My Profile
-            <Link to="/dashboard/role">
-              <MdCancel />
-            </Link>
-          </CardTitle> */}
-          <CardTitle style={{display:'flex',justifyContent:'space-between',fontSize:'35px'}}>
-          <MdCancel className="hidden" />
-            <span style={{color:'#45b649',fontWeight:'bolder',fontSize:'45px'}}>Profile</span>
-            <div className="icon-cancle">
-            <Link to="/dashboard/role">
-              <MdCancel />
-            </Link>
-            </div>
-            
-          </CardTitle>
+        <CardHeader
+          className="card-header-custom"
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          User's Information
+        </CardHeader>
+          
           {this.state.loading ? (
           <div
             style={{
@@ -746,7 +735,7 @@ export default class ProfilePage extends Component {
               </div>
           </CardBody>)}
         </Card>
-        </div>
+
     )
   }
 }
