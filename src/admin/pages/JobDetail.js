@@ -54,10 +54,12 @@ export default class JobDetail extends Component {
       address: '',
       position: '',
       salary: '',
+      candidates: '',
       status: '',
       experience: '',
       amount: '',
       publishedOn: '',
+      articles: '',
       deadline: '',
       editname: '',
       editdescription: '',
@@ -107,6 +109,8 @@ export default class JobDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    console.log(data);
+    
     if (data.message !== 'Unauthenticated.') {
       const n = data.salary.indexOf('$');
       const stringSalary2 = removeStringSalary(data.salary, n);
@@ -120,6 +124,8 @@ export default class JobDetail extends Component {
           position: data.position,
           salary: data.salary,
           status: data.status,
+          articles: data.articles,
+          candidates: data.candidates,
           experience: data.experience,
           amount: data.amount,
           publishedOn: data.publishedOn,
@@ -136,7 +142,7 @@ export default class JobDetail extends Component {
           editamount: data.amount,
           editpublishedOn: new Date(data.publishedOn),
           editdeadline: new Date(data.deadline),
-          loading: false
+          loading: false,
         });
       }, 500);
     }
@@ -380,6 +386,7 @@ export default class JobDetail extends Component {
 
   render() {
     var i = 0;
+    var j  = 0;
     const { formError } = this.state;
     return (
       <Card className="dashboard-card">
@@ -577,120 +584,86 @@ export default class JobDetail extends Component {
                   activeTab={this.state.activeTab}
                 >
                   <TabPane tabId="1">
-                    <Row>
-                      <Col>
-                        <Card>
-                          <CardImg
-                            top
-                            width="100%"
-                            src="https://loremflickr.com/320/240"
-                            alt="Card image cap"
-                          />
-                          <CardBody>
-                            <CardTitle>Card title</CardTitle>
-                            <CardSubtitle>Card subtitle</CardSubtitle>
-                            <CardText>
-                              Some quick example text to build on the card title
-                              and make up the bulk of the card's content.
-                            </CardText>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                      <Col>
-                        <Card>
-                          <CardImg
-                            top
-                            width="100%"
-                            src="https://loremflickr.com/320/240/paris"
-                            alt="Card image cap"
-                          />
-                          <CardBody>
-                            <CardTitle>Card title</CardTitle>
-                            <CardSubtitle>Card subtitle</CardSubtitle>
-                            <CardText>
-                              Some quick example text to build on the card title
-                              and make up the bulk of the card's content.
-                            </CardText>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                      <Col>
-                        <Card>
-                          <CardImg
-                            top
-                            width="100%"
-                            src="https://loremflickr.com/320/240/brazil"
-                            alt="Card image cap"
-                          />
-                          <CardBody>
-                            <CardTitle>Card title</CardTitle>
-                            <CardSubtitle>Card subtitle</CardSubtitle>
-                            <CardText>
-                              Some quick example text to build on the card title
-                              and make up the bulk of the card's content.
-                            </CardText>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    </Row>
+                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Title</th>
+                              <th className="title1">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.articles.map(e => {
+                              i++;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{i}</td>
+                                  <td className="title1">{e.title}</td>
+                                  {e.isPublic === 1 ? (
+                                      <td className="title1">Published</td>
+                                    ) : (
+                                      <td className="title1">Closed</td>
+                                  )}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                        <br />
+                      </div>
+                    </CardBody>
                   </TabPane>
                   <TabPane tabId="2">
-                    <Row>
-                      <Col>
-                        <Card>
-                          <CardImg
-                            top
-                            width="100%"
-                            src="https://loremflickr.com/320/240/dog"
-                            alt="Card image cap"
-                          />
-                          <CardBody>
-                            <CardTitle>Card title</CardTitle>
-                            <CardSubtitle>Card subtitle</CardSubtitle>
-                            <CardText>
-                              Some quick example text to build on the card title
-                              and make up the bulk of the card's content.
-                            </CardText>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                      <Col>
-                        <Card>
-                          <CardImg
-                            top
-                            width="100%"
-                            src="https://loremflickr.com/320/240/cat"
-                            alt="Card image cap"
-                          />
-                          <CardBody>
-                            <CardTitle>Card title</CardTitle>
-                            <CardSubtitle>Card subtitle</CardSubtitle>
-                            <CardText>
-                              Some quick example text to build on the card title
-                              and make up the bulk of the card's content.
-                            </CardText>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                      <Col>
-                        <Card>
-                          <CardImg
-                            top
-                            width="100%"
-                            src="https://loremflickr.com/320/240/rio"
-                            alt="Card image cap"
-                          />
-                          <CardBody>
-                            <CardTitle>Card title</CardTitle>
-                            <CardSubtitle>Card subtitle</CardSubtitle>
-                            <CardText>
-                              Some quick example text to build on the card title
-                              and make up the bulk of the card's content.
-                            </CardText>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    </Row>
+                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Name</th>
+                              <th className="title1">Email</th>
+                              <th className="title1">Phone</th>
+                              <th className="title1">Status</th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.candidates.map(e => {
+                              j++
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{j}</td>
+                                  <td className="title1">{e.fullname}</td>
+                                  <td className="title1">{e.email}</td>
+                                  <td className="title1">{e.phone}</td>
+                                  {e.isPublic === 1 ? (
+                                      <td className="title1">Published</td>
+                                    ) : (
+                                      <td className="title1">Closed</td>
+                                  )}
+                                 
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                        <br />
+                      </div>
+                    </CardBody>
                   </TabPane>
                   <TabPane tabId="3">
                     <Row>
