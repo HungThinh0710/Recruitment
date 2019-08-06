@@ -10,6 +10,7 @@ import {
   Input,
   Container,
   Row,
+  Badge,
   Col,
   FormGroup,
   Modal,
@@ -431,7 +432,7 @@ export default class UsersPage extends Component {
                           <td>{i}</td>
                           <td>{e.name}</td>
                           <td>{e.address}</td>
-                          <td>{e.status}</td>
+                          {e.status == 'Pending' ?  <td><Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:70}} pill>{e.status}</Badge></td> :  <td ><Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:70}} pill>{e.status}</Badge></td> }
                           <td>
                             {moment(e.timeStart).format(
                               'MMMM Do YYYY, h:mm:ss a'
