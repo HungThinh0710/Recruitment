@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 import PaginationComponent from '../components/Pagination.js';
 import { PulseLoader } from 'react-spinners';
 import DropDownTable from '../components/DropDownTable.js';
-
+import moment from 'moment';
 export default class JobsPage extends Component {
   constructor(props) {
     super(props);
@@ -411,7 +411,7 @@ export default class JobsPage extends Component {
                         <input type="checkbox" />
                       </th>
                       <th style={{ width: '70px' }}>#</th>
-                      <th style={{ width: '550px' }}>Name</th>
+                      <th style={{ width: '500px' }}>Name</th>
                       <th style={{ width: '180px' }}>Position</th>
                       <th style={{ width: '180px' }}>Salary</th>
                       <th>Deadline</th>
@@ -436,7 +436,11 @@ export default class JobsPage extends Component {
                           <td>{e.name}</td>
                           <td>{e.position}</td>
                           <td>{e.salary}</td>
-                          <td>{e.deadline}</td>
+                          <td>
+                            {moment(e.deadline).format(
+                              'MMMM Do YYYY, h:mm:ss a'
+                            )}
+                          </td>
                           <td>
                             <div className="action">
                               <div className="action-item">

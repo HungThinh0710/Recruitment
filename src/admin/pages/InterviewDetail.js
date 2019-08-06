@@ -16,7 +16,7 @@ import { MdMap, MdBook, MdCancel, MdPageview } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import classnames from 'classnames';
-
+import moment from 'moment';
 export default class JobDetail extends Component {
   constructor(props) {
     super(props);
@@ -117,12 +117,20 @@ export default class JobDetail extends Component {
                       </tr>
                       <tr className="job-title3" key={3}>
                         <td className="job-title">Start</td>
-                        <td className="job-title1">{this.state.timeStart}</td>
+                        <td className="job-title1">
+                          {moment(this.state.timeStart).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </td>
                       </tr>
 
                       <tr className="job-title3" key={4}>
                         <td className="job-title">End</td>
-                        <td className="job-title1">{this.state.timeEnd}</td>
+                        <td className="job-title1">
+                          {moment(this.state.timeEnd).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </td>
                       </tr>
                       <tr className="job-title3" key={5}>
                         <td className="job-title">Status</td>
@@ -298,8 +306,8 @@ export default class JobDetail extends Component {
                 marginTop: '20px'
               }}
             >
-              <Link>
-                <Button to="/dashboard/interview">Back</Button>
+              <Link to="/dashboard/interview">
+                <Button>Back</Button>
               </Link>
             </div>
           </CardBody>

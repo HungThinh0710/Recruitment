@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 import PaginationComponent from '../components/Pagination.js';
 import { PulseLoader } from 'react-spinners';
 import DropDownTable from '../components/DropDownTable.js';
-
+import moment from 'moment';
 export default class UsersPage extends Component {
   constructor(props) {
     super(props);
@@ -432,8 +432,16 @@ export default class UsersPage extends Component {
                           <td>{e.name}</td>
                           <td>{e.address}</td>
                           <td>{e.status}</td>
-                          <td>{e.timeStart}</td>
-                          <td>{e.timeEnd}</td>
+                          <td>
+                            {moment(e.timeStart).format(
+                              'MMMM Do YYYY, h:mm:ss a'
+                            )}
+                          </td>
+                          <td>
+                            {moment(e.timeEnd).format(
+                              'MMMM Do YYYY, h:mm:ss a'
+                            )}
+                          </td>
                           <td>
                             <div className="action">
                               <div className="action-item">
