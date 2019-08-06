@@ -239,7 +239,7 @@ export default class Homepage extends Component {
                         <li key={2} className={this.state.activeItem === 2 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 2)} onClick={()=>this.handleFilter('Internship')} name="internship">
                           <Link key={2} className={this.state.activeItem === 2 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 2)}  to="/" exact  >Internship</Link>
                         </li>
-                        <li key={3} className={this.state.activeItem === 3 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 3)} onClick={()=>this.handleFilter('Desginer')} name="designer">
+                        <li key={3} className={this.state.activeItem === 3 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 3)} onClick={()=>this.handleFilter('Designer')} name="designer">
                           <Link key={3} className={this.state.activeItem === 3 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 3)} to="/" exact  >Designer</Link>
                         </li>
                         <li key={4} className={this.state.activeItem === 4 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 4)} onClick={()=>this.handleFilter('Tester')} name="tester">
