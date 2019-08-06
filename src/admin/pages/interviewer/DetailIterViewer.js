@@ -11,6 +11,7 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Badge,
   Col,
   Form,
   FormGroup,
@@ -27,6 +28,7 @@ import { PulseLoader } from 'react-spinners';
 import 'react-datepicker/dist/react-datepicker.css';
 import classnames from 'classnames';
 import '../JobDetail.css';
+import moment from 'moment';
 import TechnicalSkill from '../../components/TechnicalSkill';
 const fullNameRegex = /^[a-zA-Z\s]+$/;
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -503,21 +505,20 @@ export default class JobDetail extends Component {
                               }}
                             >
                               <th className="title1">#</th>
-                              <th className="title1">Fullname</th>
+                              <th className="title1">Name</th>
                               <th className="title1">Address</th>
                               <th className="title1">Start</th>
                               <th className="title1">Status</th>
                             </tr>
                           </thead>
                           <tbody>
+                            
                             {this.state.interviews.map(e => {
+                              
                               if (e.status == '1') {
                                 e.status = 'Pending';
                               }
                               if (e.status == '2') {
-                                e.status = 'Opening';
-                              }
-                              if (e.status == '3') {
                                 e.status = 'Closed';
                               }
                               if (e.address == '2-1') {
@@ -551,8 +552,11 @@ export default class JobDetail extends Component {
                                   <td className="title1">{i}</td>
                                   <td className="title1">{e.name}</td>
                                   <td className="title1">{e.address}</td>
-                                  <td className="title1">{e.timeStart}</td>
-                                  <td className="title1">{e.status}</td>
+                                  <td className="title1">{moment(e.timeStart).format(
+                                          'MMMM Do YYYY, h:mm:ss a'
+                                           )}
+                                           </td>
+                                  {e.status == 'Pending' ? (<td className="title1"> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff'}} color="#f59a92" pill>{e.status}</Badge></td> ) : e.status == 'Closed' ? (<td className="title1"><Badge style = {{backgroundColor: '#dd2c00', color: '#fff'}} color="#f59a92" pill>{e.status}</Badge></td>) : ( '') }
                                 </tr>
                               );
                             })}
