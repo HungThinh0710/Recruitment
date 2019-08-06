@@ -30,7 +30,7 @@ import {
 } from 'reactstrap';
 import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import classnames from 'classnames';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -440,9 +440,8 @@ export default class JobDetail extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-
         <CardHeader className="card-header-custom">
-          Job's information
+          job's information
         </CardHeader>
         {this.state.loading ? (
           <div
@@ -454,9 +453,9 @@ export default class JobDetail extends Component {
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />
@@ -466,51 +465,51 @@ export default class JobDetail extends Component {
             <Container>
               <Row style={{ justifyContent: 'center' }}>
                 <div className="table-test" style={{ width: '100%' }}>
-                  <table>
-                    <tbody>
-                      <tr key={1}>
+                  <table style={{ width: '100%' }}>
+                    <tbody style={{ width: '100%' }}>
+                      <tr className="job-title3" key={1}>
                         <td className="job-title">Name</td>
-                        <td>{this.state.name}</td>
+                        <td className="job-title1">{this.state.name}</td>
                       </tr>
-                      <tr key={2}>
+                      <tr className="job-title3" key={2}>
                         <td className="job-title">Description</td>
-                        <td>{this.state.description}</td>
+                        <td className="job-title1">{this.state.description}</td>
                       </tr>
-                      <tr key={3}>
+                      <tr className="job-title3" key={3}>
                         <td className="job-title">Address</td>
-                        <td>{this.state.address}</td>
+                        <td className="job-title1">{this.state.address}</td>
                       </tr>
-                      <tr key={4}>
+                      <tr className="job-title3" key={4}>
                         <td className="job-title">Category</td>
-                        <td>{this.state.category}</td>
+                        <td className="job-title1">{this.state.category}</td>
                       </tr>
-                      <tr key={5}>
+                      <tr className="job-title3" key={5}>
                         <td className="job-title">Position</td>
-                        <td>{this.state.position}</td>
+                        <td className="job-title1">{this.state.position}</td>
                       </tr>
-                      <tr key={6}>
+                      <tr className="job-title3" key={6}>
                         <td className="job-title">Salary</td>
-                        <td>{this.state.salary}</td>
+                        <td className="job-title1">{this.state.salary}</td>
                       </tr>
-                      <tr key={7}>
+                      <tr className="job-title3" key={7}>
                         <td className="job-title">Status</td>
-                        <td>{this.state.status}</td>
+                        <td className="job-title1">{this.state.status}</td>
                       </tr>
-                      <tr key={8}>
+                      <tr className="job-title3" key={8}>
                         <td className="job-title">Experience</td>
-                        <td>{this.state.experience}</td>
+                        <td className="job-title1">{this.state.experience}</td>
                       </tr>
-                      <tr key={9}>
+                      <tr className="job-title3" key={9}>
                         <td className="job-title">Amount</td>
-                        <td>{this.state.amount}</td>
+                        <td className="job-title1">{this.state.amount}</td>
                       </tr>
-                      <tr key={10}>
+                      <tr className="job-title3" key={10}>
                         <td className="job-title">Publised On</td>
-                        <td>{this.state.publishedOn}</td>
+                        <td className="job-title1">{this.state.publishedOn}</td>
                       </tr>
-                      <tr key={11}>
+                      <tr className="job-title3" key={11}>
                         <td className="job-title">Deadline</td>
-                        <td>{this.state.deadline}</td>
+                        <td className="job-title1">{this.state.deadline}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -688,382 +687,378 @@ export default class JobDetail extends Component {
                   <TabPane tabId="3">
                     <Row>
                       <Col>
-                        <Card>
-                          <CardBody>
-                            <Form onSubmit={this.handleSubmit}>
-                              <FormGroup>
-                                <Label
-                                  style={{
-                                    fontSize: '18px',
-                                    fontWeight: 'bold'
-                                  }}
-                                  for="Name"
-                                >
-                                  Name
-                                </Label>
-                                <Input
-                                  type="text"
-                                  name="editname"
-                                  onChange={this.handleChange}
-                                  value={this.state.editname}
-                                />
-                                {formError.name !== '' &&
+                        <Form onSubmit={this.handleSubmit}>
+                          <FormGroup>
+                            <Label
+                              style={{
+                                fontSize: '18px',
+                                fontWeight: 'bold'
+                              }}
+                              for="Name"
+                            >
+                              Name
+                            </Label>
+                            <Input
+                              type="text"
+                              name="editname"
+                              onChange={this.handleChange}
+                              value={this.state.editname}
+                            />
+                            {formError.name !== '' &&
+                              this.state.showErrorMessage && (
+                                <span style={{ color: 'red' }}>
+                                  {formError.name}
+                                </span>
+                              )}
+                          </FormGroup>
+                          <FormGroup>
+                            <Label
+                              style={{
+                                fontSize: '18px',
+                                fontWeight: 'bold'
+                              }}
+                              for="Description"
+                            >
+                              Description
+                            </Label>
+                            <textarea
+                              style={{ width: '100%' }}
+                              name="editdescription"
+                              onChange={this.handleChange}
+                              value={this.state.editdescription}
+                            />
+                          </FormGroup>
+                          <FormGroup>
+                            <Label
+                              style={{
+                                fontSize: '18px',
+                                fontWeight: 'bold'
+                              }}
+                              for="time"
+                            >
+                              Time
+                            </Label>
+                            <div
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                              }}
+                            >
+                              <div style={{ width: '45%' }}>
+                                <Label for="Published">From</Label>
+                                <div className="input-calendar">
+                                  <DatePicker
+                                    selected={this.state.editpublishedOn}
+                                    onChange={this.handleChangeDatePublishPicker.bind(
+                                      this
+                                    )}
+                                    showTimeSelect
+                                    timeFormat="HH:mm"
+                                    timeIntervals={15}
+                                    dateFormat="MMMM d, yyyy h:mm aa"
+                                    timeCaption="time"
+                                  />
+                                </div>
+
+                                {formError.publishedOn !== '' &&
                                   this.state.showErrorMessage && (
                                     <span style={{ color: 'red' }}>
-                                      {formError.name}
+                                      {formError.publishedOn}
                                     </span>
                                   )}
-                              </FormGroup>
-                              <FormGroup>
-                                <Label
-                                  style={{
-                                    fontSize: '18px',
-                                    fontWeight: 'bold'
-                                  }}
-                                  for="Description"
-                                >
-                                  Description
-                                </Label>
-                                <textarea
-                                  style={{ width: '100%' }}
-                                  name="editdescription"
-                                  onChange={this.handleChange}
-                                  value={this.state.editdescription}
-                                />
-                              </FormGroup>
-                              <FormGroup>
-                                <Label
-                                  style={{
-                                    fontSize: '18px',
-                                    fontWeight: 'bold'
-                                  }}
-                                  for="time"
-                                >
-                                  Time
-                                </Label>
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                  }}
-                                >
-                                  <div style={{ width: '45%' }}>
-                                    <Label for="Published">From</Label>
-                                    <div className="input-calendar">
-                                      <DatePicker
-                                        selected={this.state.editpublishedOn}
-                                        onChange={this.handleChangeDatePublishPicker.bind(
-                                          this
-                                        )}
-                                        showTimeSelect
-                                        timeFormat="HH:mm"
-                                        timeIntervals={15}
-                                        dateFormat="MMMM d, yyyy h:mm aa"
-                                        timeCaption="time"
-                                      />
-                                    </div>
-
-                                    {formError.publishedOn !== '' &&
-                                      this.state.showErrorMessage && (
-                                        <span style={{ color: 'red' }}>
-                                          {formError.publishedOn}
-                                        </span>
-                                      )}
-                                  </div>
-                                  <div style={{ width: '45%' }}>
-                                    <Label for="Deadline">To</Label>
-                                    <div className="input-calendar">
-                                      <DatePicker
-                                        selected={this.state.editdeadline}
-                                        onChange={this.handleChangeDateDeadlinePicker.bind(
-                                          this
-                                        )}
-                                        showTimeSelect
-                                        timeFormat="HH:mm"
-                                        timeIntervals={15}
-                                        dateFormat="MMMM d, yyyy h:mm aa"
-                                        timeCaption="time"
-                                      />
-                                    </div>
-                                    {formError.deadline !== '' &&
-                                      this.state.showErrorMessage && (
-                                        <span style={{ color: 'red' }}>
-                                          {formError.deadline}
-                                        </span>
-                                      )}
-                                  </div>
-                                </div>
-                              </FormGroup>
-                              <FormGroup
-                                style={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between'
-                                }}
-                              >
-                                <div style={{ width: '45%' }}>
-                                  <Label
-                                    style={{
-                                      fontSize: '18px',
-                                      fontWeight: 'bold'
-                                    }}
-                                    for="Address"
-                                  >
-                                    Address
-                                  </Label>
-                                  <Input
-                                    type="select"
-                                    name="editaddress"
-                                    value={this.state.editaddress}
-                                    onChange={this.handleChange}
-                                  >
-                                    <option>453-455 Hoang Dieu</option>
-                                    <option>117 Nguyen Huu Tho</option>
-                                  </Input>
-                                </div>
-                                <div style={{ width: '45%' }}>
-                                  <Label
-                                    style={{
-                                      fontSize: '18px',
-                                      fontWeight: 'bold'
-                                    }}
-                                    for="Category"
-                                  >
-                                    Category
-                                  </Label>
-                                  <Input
-                                    type="select"
-                                    name="editcategory"
-                                    value={this.state.editcategory}
-                                    onChange={this.handleChange}
-                                  >
-                                    <option>Internship</option>
-                                    <option>Engineer</option>
-                                  </Input>
-                                </div>
-                              </FormGroup>
-                              <FormGroup
-                                style={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between'
-                                }}
-                              >
-                                <div style={{ width: '45%' }}>
-                                  <Label
-                                    style={{
-                                      fontSize: '18px',
-                                      fontWeight: 'bold'
-                                    }}
-                                    for="Position"
-                                  >
-                                    Position
-                                  </Label>
-                                  <Input
-                                    type="text"
-                                    name="editposition"
-                                    onChange={this.handleChange}
-                                    value={this.state.editposition}
-                                  />
-                                  {formError.position !== '' &&
-                                    this.state.showErrorMessage && (
-                                      <span style={{ color: 'red' }}>
-                                        {formError.position}
-                                      </span>
+                              </div>
+                              <div style={{ width: '45%' }}>
+                                <Label for="Deadline">To</Label>
+                                <div className="input-calendar">
+                                  <DatePicker
+                                    selected={this.state.editdeadline}
+                                    onChange={this.handleChangeDateDeadlinePicker.bind(
+                                      this
                                     )}
+                                    showTimeSelect
+                                    timeFormat="HH:mm"
+                                    timeIntervals={15}
+                                    dateFormat="MMMM d, yyyy h:mm aa"
+                                    timeCaption="time"
+                                  />
                                 </div>
-                                <div style={{ width: '45%' }}>
-                                  <Label
-                                    style={{
-                                      fontSize: '18px',
-                                      fontWeight: 'bold'
-                                    }}
-                                    for="Status"
-                                  >
-                                    Status
-                                  </Label>
-                                  <Input
-                                    type="select"
-                                    name="editstatus"
-                                    value={this.state.editstatus}
-                                    onChange={this.handleChange}
-                                  >
-                                    <option>Full-time</option>
-                                    <option>Part-time</option>
-                                  </Input>
-                                </div>
-                              </FormGroup>
-                              <FormGroup>
-                                <Label
-                                  style={{
-                                    fontSize: '18px',
-                                    fontWeight: 'bold'
-                                  }}
-                                  for="Salary"
-                                >
-                                  Salary
-                                </Label>
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                  }}
-                                >
-                                  <div style={{ width: '45%' }}>
-                                    <Label for="SalaryBegin">From</Label>
-                                    <InputGroup>
-                                      <Input
-                                        type="number"
-                                        name="editsalaryBegin"
-                                        onChange={this.handleChange}
-                                        value={this.state.editsalaryBegin}
-                                        onKeyPress={this.handlePossitiveNumber.bind(
-                                          this
-                                        )}
-                                      />
-                                      <InputGroupAddon addonType="append">
-                                        <InputGroupText
-                                          style={{ marginTop: '-1px' }}
-                                        >
-                                          $
-                                        </InputGroupText>
-                                      </InputGroupAddon>
-                                    </InputGroup>
-                                    {formError.salaryBegin !== '' &&
-                                      this.state.showErrorMessage && (
-                                        <span style={{ color: 'red' }}>
-                                          {formError.salaryBegin}
-                                        </span>
-                                      )}
-                                  </div>
-                                  <div style={{ width: '45%' }}>
-                                    <Label for="SalaryEnd">To</Label>
-                                    <InputGroup>
-                                      <Input
-                                        type="number"
-                                        name="editsalaryEnd"
-                                        onChange={this.handleChange}
-                                        value={this.state.editsalaryEnd}
-                                        onKeyPress={this.handlePossitiveNumber.bind(
-                                          this
-                                        )}
-                                      />
-                                      <InputGroupAddon addonType="append">
-                                        <InputGroupText
-                                          style={{ marginTop: '-1px' }}
-                                        >
-                                          $
-                                        </InputGroupText>
-                                      </InputGroupAddon>
-                                    </InputGroup>
-                                    {formError.salaryEnd !== '' &&
-                                      this.state.showErrorMessage && (
-                                        <span style={{ color: 'red' }}>
-                                          {formError.salaryEnd}
-                                        </span>
-                                      )}
-                                  </div>
-                                </div>
-                              </FormGroup>
-                              <FormGroup
+                                {formError.deadline !== '' &&
+                                  this.state.showErrorMessage && (
+                                    <span style={{ color: 'red' }}>
+                                      {formError.deadline}
+                                    </span>
+                                  )}
+                              </div>
+                            </div>
+                          </FormGroup>
+                          <FormGroup
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between'
+                            }}
+                          >
+                            <div style={{ width: '45%' }}>
+                              <Label
                                 style={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between'
+                                  fontSize: '18px',
+                                  fontWeight: 'bold'
                                 }}
+                                for="Address"
                               >
-                                <div style={{ width: '45%' }}>
-                                  <Label
-                                    style={{
-                                      fontSize: '18px',
-                                      fontWeight: 'bold'
-                                    }}
-                                    for="Status"
-                                  >
-                                    Experience
-                                  </Label>
-                                  <Input
-                                    type="select"
-                                    name="editexperience"
-                                    value={this.state.editexperience}
-                                    onChange={this.handleChange}
-                                  >
-                                    <option>1 year</option>
-                                    <option>2 years</option>
-                                    <option>3 years</option>
-                                    <option>4 years</option>
-                                    <option>5 years</option>
-                                    <option>More than 5 years</option>
-                                  </Input>
-                                </div>
-                                <div style={{ width: '45%' }}>
-                                  <Label
-                                    style={{
-                                      fontSize: '18px',
-                                      fontWeight: 'bold'
-                                    }}
-                                    for="Amount"
-                                  >
-                                    Amount
-                                  </Label>
+                                Address
+                              </Label>
+                              <Input
+                                type="select"
+                                name="editaddress"
+                                value={this.state.editaddress}
+                                onChange={this.handleChange}
+                              >
+                                <option>453-455 Hoang Dieu</option>
+                                <option>117 Nguyen Huu Tho</option>
+                              </Input>
+                            </div>
+                            <div style={{ width: '45%' }}>
+                              <Label
+                                style={{
+                                  fontSize: '18px',
+                                  fontWeight: 'bold'
+                                }}
+                                for="Category"
+                              >
+                                Category
+                              </Label>
+                              <Input
+                                type="select"
+                                name="editcategory"
+                                value={this.state.editcategory}
+                                onChange={this.handleChange}
+                              >
+                                <option>Internship</option>
+                                <option>Engineer</option>
+                              </Input>
+                            </div>
+                          </FormGroup>
+                          <FormGroup
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between'
+                            }}
+                          >
+                            <div style={{ width: '45%' }}>
+                              <Label
+                                style={{
+                                  fontSize: '18px',
+                                  fontWeight: 'bold'
+                                }}
+                                for="Position"
+                              >
+                                Position
+                              </Label>
+                              <Input
+                                type="text"
+                                name="editposition"
+                                onChange={this.handleChange}
+                                value={this.state.editposition}
+                              />
+                              {formError.position !== '' &&
+                                this.state.showErrorMessage && (
+                                  <span style={{ color: 'red' }}>
+                                    {formError.position}
+                                  </span>
+                                )}
+                            </div>
+                            <div style={{ width: '45%' }}>
+                              <Label
+                                style={{
+                                  fontSize: '18px',
+                                  fontWeight: 'bold'
+                                }}
+                                for="Status"
+                              >
+                                Status
+                              </Label>
+                              <Input
+                                type="select"
+                                name="editstatus"
+                                value={this.state.editstatus}
+                                onChange={this.handleChange}
+                              >
+                                <option>Full-time</option>
+                                <option>Part-time</option>
+                              </Input>
+                            </div>
+                          </FormGroup>
+                          <FormGroup>
+                            <Label
+                              style={{
+                                fontSize: '18px',
+                                fontWeight: 'bold'
+                              }}
+                              for="Salary"
+                            >
+                              Salary
+                            </Label>
+                            <div
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                              }}
+                            >
+                              <div style={{ width: '45%' }}>
+                                <Label for="SalaryBegin">From</Label>
+                                <InputGroup>
                                   <Input
                                     type="number"
-                                    name="editamount"
+                                    name="editsalaryBegin"
                                     onChange={this.handleChange}
-                                    value={this.state.editamount}
+                                    value={this.state.editsalaryBegin}
                                     onKeyPress={this.handlePossitiveNumber.bind(
                                       this
                                     )}
                                   />
-                                  {formError.amount !== '' &&
-                                    this.state.showErrorMessage && (
-                                      <span style={{ color: 'red' }}>
-                                        {formError.amount}
-                                      </span>
-                                    )}
-                                </div>
-                              </FormGroup>
-                              <br />
-                              <FormGroup
-                                style={{
-                                  display: 'flex',
-                                  justifyContent: 'flex-end'
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    width: '180px',
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                  }}
-                                >
-                                  {formError.name == '' &&
-                                  formError.position == '' &&
-                                  formError.amount == '' &&
-                                  formError.salaryBegin == '' &&
-                                  formError.salaryEnd == '' ? (
-                                    <Button
-                                      color="success"
-                                      onClick={this.handleSubmit}
+                                  <InputGroupAddon addonType="append">
+                                    <InputGroupText
+                                      style={{ marginTop: '-1px' }}
                                     >
-                                      Submit
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      color="success"
-                                      onClick={this.handleErrorMessage}
-                                    >
-                                      Submit
-                                    </Button>
+                                      $
+                                    </InputGroupText>
+                                  </InputGroupAddon>
+                                </InputGroup>
+                                {formError.salaryBegin !== '' &&
+                                  this.state.showErrorMessage && (
+                                    <span style={{ color: 'red' }}>
+                                      {formError.salaryBegin}
+                                    </span>
                                   )}
-                                  <Button
-                                    onClick={() => this.backToPreviousPage()}
-                                    color="secondary"
-                                  >
-                                    Back
-                                  </Button>
-                                </div>
-                              </FormGroup>
-                            </Form>
-                          </CardBody>
-                        </Card>
+                              </div>
+                              <div style={{ width: '45%' }}>
+                                <Label for="SalaryEnd">To</Label>
+                                <InputGroup>
+                                  <Input
+                                    type="number"
+                                    name="editsalaryEnd"
+                                    onChange={this.handleChange}
+                                    value={this.state.editsalaryEnd}
+                                    onKeyPress={this.handlePossitiveNumber.bind(
+                                      this
+                                    )}
+                                  />
+                                  <InputGroupAddon addonType="append">
+                                    <InputGroupText
+                                      style={{ marginTop: '-1px' }}
+                                    >
+                                      $
+                                    </InputGroupText>
+                                  </InputGroupAddon>
+                                </InputGroup>
+                                {formError.salaryEnd !== '' &&
+                                  this.state.showErrorMessage && (
+                                    <span style={{ color: 'red' }}>
+                                      {formError.salaryEnd}
+                                    </span>
+                                  )}
+                              </div>
+                            </div>
+                          </FormGroup>
+                          <FormGroup
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between'
+                            }}
+                          >
+                            <div style={{ width: '45%' }}>
+                              <Label
+                                style={{
+                                  fontSize: '18px',
+                                  fontWeight: 'bold'
+                                }}
+                                for="Status"
+                              >
+                                Experience
+                              </Label>
+                              <Input
+                                type="select"
+                                name="editexperience"
+                                value={this.state.editexperience}
+                                onChange={this.handleChange}
+                              >
+                                <option>1 year</option>
+                                <option>2 years</option>
+                                <option>3 years</option>
+                                <option>4 years</option>
+                                <option>5 years</option>
+                                <option>More than 5 years</option>
+                              </Input>
+                            </div>
+                            <div style={{ width: '45%' }}>
+                              <Label
+                                style={{
+                                  fontSize: '18px',
+                                  fontWeight: 'bold'
+                                }}
+                                for="Amount"
+                              >
+                                Amount
+                              </Label>
+                              <Input
+                                type="number"
+                                name="editamount"
+                                onChange={this.handleChange}
+                                value={this.state.editamount}
+                                onKeyPress={this.handlePossitiveNumber.bind(
+                                  this
+                                )}
+                              />
+                              {formError.amount !== '' &&
+                                this.state.showErrorMessage && (
+                                  <span style={{ color: 'red' }}>
+                                    {formError.amount}
+                                  </span>
+                                )}
+                            </div>
+                          </FormGroup>
+                          <br />
+                          <FormGroup
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'flex-end'
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: '160px',
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                              }}
+                            >
+                              {formError.name == '' &&
+                              formError.position == '' &&
+                              formError.amount == '' &&
+                              formError.salaryBegin == '' &&
+                              formError.salaryEnd == '' ? (
+                                <Button
+                                  color="success"
+                                  onClick={this.handleSubmit}
+                                >
+                                  Submit
+                                </Button>
+                              ) : (
+                                <Button
+                                  color="success"
+                                  onClick={this.handleErrorMessage}
+                                >
+                                  Submit
+                                </Button>
+                              )}
+                              <Button
+                                onClick={() => this.backToPreviousPage()}
+                                color="secondary"
+                              >
+                                Back
+                              </Button>
+                            </div>
+                          </FormGroup>
+                        </Form>
                       </Col>
                     </Row>
                   </TabPane>

@@ -25,7 +25,7 @@ import Select from 'react-select';
 import ReactQuill from 'react-quill';
 import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
 import classnames from 'classnames';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import './JobDetail.css';
@@ -594,9 +594,8 @@ export default class ArticleDetail extends Component {
           </ModalFooter>
         </Modal>
         {/*--------Modal-Preview-----*/}
-
         <CardHeader className="card-header-custom">
-          Article's Information
+          Article's information
         </CardHeader>
         {this.state.loading ? (
           <div
@@ -608,9 +607,9 @@ export default class ArticleDetail extends Component {
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />
@@ -620,48 +619,50 @@ export default class ArticleDetail extends Component {
             <Container>
               <Row style={{ justifyContent: 'center' }}>
                 <div className="table-test" style={{ width: '100%' }}>
-                  <table>
-                    <tbody>
-                      <tr key={1}>
+                  <table style={{ width: '100%' }}>
+                    <tbody style={{ width: '100%' }}>
+                      <tr className="job-title3" key={1}>
                         <td className="job-title">Title</td>
-                        <td>{this.state.title}</td>
+                        <td className="job-title1">{this.state.title}</td>
                       </tr>
 
-                      <tr key={2}>
+                      <tr className="job-title3" key={2}>
                         <td className="job-title">Status</td>
-                        <td>{this.state.status}</td>
+                        <td className="job-title1">{this.state.status}</td>
                       </tr>
 
-                      <tr key={3}>
+                      <tr className="job-title3" key={3}>
                         <td className="job-title">Category</td>
-                        <td>{this.state.catName}</td>
+                        <td className="job-title1">{this.state.catName}</td>
                       </tr>
                       {this.state.jobName !== '' && (
-                        <tr key={4}>
+                        <tr className="job-title3" key={4}>
                           <td className="job-title">Job</td>
-                          <td>
+                          <td className="job-title1">
                             <Link to={url1}>{this.state.jobName}</Link>
                           </td>
                         </tr>
                       )}
-                      <tr key={5}>
+                      <tr className="job-title3" key={5}>
                         <td className="job-title">Created By</td>
-                        <td>
+                        <td className="job-title1">
                           <Link to={url2}>{this.state.userName}</Link>
                         </td>
                       </tr>
-                      <tr key={6}>
+                      <tr className="job-title3" key={6}>
                         <td className="job-title">Created At</td>
-                        <td>{this.state.created_at}</td>
+                        <td className="job-title1">{this.state.created_at}</td>
                       </tr>
-                      <tr key={7}>
+                      <tr className="job-title3" key={7}>
                         <td className="job-title">Updated At</td>
-                        <td>{this.state.updated_at}</td>
+                        <td className="job-title1">{this.state.updated_at}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </Row>
+              <br />
+              <br />
               <Row>
                 <div className="job-tabs">
                   <Nav tabs>

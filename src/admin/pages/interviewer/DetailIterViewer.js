@@ -23,7 +23,7 @@ import {
 } from 'reactstrap';
 import { MdBook, MdCancel, MdPageview, MdSettings } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import 'react-datepicker/dist/react-datepicker.css';
 import classnames from 'classnames';
 import '../JobDetail.css';
@@ -412,9 +412,9 @@ export default class JobDetail extends Component {
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />
@@ -424,28 +424,28 @@ export default class JobDetail extends Component {
             <Container>
               <Row style={{ justifyContent: 'center' }}>
                 <div className="table-test" style={{ width: '100%' }}>
-                  <table>
-                    <tbody>
-                      <tr key={1}>
+                  <table style={{ width: '100%' }}>
+                    <tbody style={{ width: '100%' }}>
+                      <tr className="job-title3" key={1}>
                         <td className="job-title">Fullname</td>
-                        <td>{this.state.fullname}</td>
+                        <td className="job-title1">{this.state.fullname}</td>
                       </tr>
-                      <tr key={2}>
+                      <tr className="job-title3" key={2}>
                         <td className="job-title">Address</td>
-                        <td>{this.state.address}</td>
+                        <td className="job-title1">{this.state.address}</td>
                       </tr>
-                      <tr key={3}>
+                      <tr className="job-title3" key={3}>
                         <td className="job-title">Email</td>
-                        <td>{this.state.email}</td>
+                        <td className="job-title1">{this.state.email}</td>
                       </tr>
 
-                      <tr key={4}>
+                      <tr className="job-title3" key={4}>
                         <td className="job-title">Phone</td>
-                        <td>{this.state.phone}</td>
+                        <td className="job-title1">{this.state.phone}</td>
                       </tr>
-                      <tr key={7}>
-                        <td className="job-title">Technical Skill</td>
-                        <td>
+                      <tr className="job-title3" key={5}>
+                        <td className="job-title">Skill</td>
+                        <td className="job-title1">
                           <span>{newString}</span>
                         </td>
                       </tr>
@@ -492,104 +492,75 @@ export default class JobDetail extends Component {
                   activeTab={this.state.activeTab}
                 >
                   <TabPane tabId="1">
-                    <Row>
-                      <CardBody>
-                        <div className="table-test">
-                          <table>
-                            <thead>
-                              <tr
-                                style={{
-                                  background:
-                                    '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                  color: 'white'
-                                }}
-                              >
-                                <th>#</th>
-                                <th>Fullname</th>
-                                <th>Address</th>
-                                <th>Start</th>
-                                <th>Status</th>
-                                <th style={{ width: '100px' }}>
-                                  <div className="action">Action</div>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {this.state.interviews.map(e => {
-                                if (e.status == '1') {
-                                  e.status = 'Pending';
-                                }
-                                if (e.status == '2') {
-                                  e.status = 'Opening';
-                                }
-                                if (e.status == '3') {
-                                  e.status = 'Closed';
-                                }
-                                if (e.address == '2-1') {
-                                  e.address =
-                                    'Floor 2 - 453-455 Hoang Dieu Str';
-                                }
-                                if (e.address == '3-1') {
-                                  e.address =
-                                    'Floor 3 - 453-455 Hoang Dieu Str';
-                                }
-                                if (e.address == '4-1') {
-                                  e.address =
-                                    'Floor 4 - 453-455 Hoang Dieu Str';
-                                }
-                                if (e.address == '5-1') {
-                                  e.address =
-                                    'Floor 5 - 453-455 Hoang Dieu Str';
-                                }
-                                if (e.address == '2-2') {
-                                  e.address =
-                                    'Floor 2 - 117 Nguyen Huu Tho Str';
-                                }
-                                if (e.address == '3-2') {
-                                  e.address =
-                                    'Floor 3 - 117 Nguyen Huu Tho Str';
-                                }
-                                if (e.address == '4-2') {
-                                  e.address =
-                                    'Floor 4 - 117 Nguyen Huu Tho Str';
-                                }
-                                if (e.address == '5-2') {
-                                  e.address =
-                                    'Floor 5 - 117 Nguyen Huu Tho Str';
-                                }
-                                i++;
-                                let url = '/dashboard/candidate/' + e.id;
-                                return (
-                                  <tr key={e.id}>
-                                    <td>{i}</td>
-                                    <td>{e.name}</td>
-                                    <td>{e.address}</td>
-                                    <td>{e.timeStart}</td>
-                                    <td>{e.status}</td>
-                                    <td>
-                                      <div className="action">
-                                        <Link
-                                          style={{ width: 'auto' }}
-                                          to={'/dashboard/interview/' + e.id}
-                                        >
-                                          <Button
-                                            className="view-button"
-                                            color="primary"
-                                          >
-                                            <MdPageview />
-                                          </Button>
-                                        </Link>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
-                          <br />
-                        </div>
-                      </CardBody>
-                    </Row>
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Fullname</th>
+                              <th className="title1">Address</th>
+                              <th className="title1">Start</th>
+                              <th className="title1">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.interviews.map(e => {
+                              if (e.status == '1') {
+                                e.status = 'Pending';
+                              }
+                              if (e.status == '2') {
+                                e.status = 'Opening';
+                              }
+                              if (e.status == '3') {
+                                e.status = 'Closed';
+                              }
+                              if (e.address == '2-1') {
+                                e.address = 'Floor 2 - 453-455 Hoang Dieu Str';
+                              }
+                              if (e.address == '3-1') {
+                                e.address = 'Floor 3 - 453-455 Hoang Dieu Str';
+                              }
+                              if (e.address == '4-1') {
+                                e.address = 'Floor 4 - 453-455 Hoang Dieu Str';
+                              }
+                              if (e.address == '5-1') {
+                                e.address = 'Floor 5 - 453-455 Hoang Dieu Str';
+                              }
+                              if (e.address == '2-2') {
+                                e.address = 'Floor 2 - 117 Nguyen Huu Tho Str';
+                              }
+                              if (e.address == '3-2') {
+                                e.address = 'Floor 3 - 117 Nguyen Huu Tho Str';
+                              }
+                              if (e.address == '4-2') {
+                                e.address = 'Floor 4 - 117 Nguyen Huu Tho Str';
+                              }
+                              if (e.address == '5-2') {
+                                e.address = 'Floor 5 - 117 Nguyen Huu Tho Str';
+                              }
+                              i++;
+                              let url = '/dashboard/candidate/' + e.id;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{i}</td>
+                                  <td className="title1">{e.name}</td>
+                                  <td className="title1">{e.address}</td>
+                                  <td className="title1">{e.timeStart}</td>
+                                  <td className="title1">{e.status}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardBody>
                   </TabPane>
                   <TabPane tabId="2">
                     <Form>
@@ -737,7 +708,7 @@ export default class JobDetail extends Component {
                         <div
                           style={{
                             display: 'flex',
-                            width: '180px',
+                            width: '160px',
                             justifyContent: 'space-between'
                           }}
                         >
