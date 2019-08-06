@@ -4,8 +4,7 @@ import {
   CardBody,
   CardHeader,
   Button,
-  InputGroupAddon,
-  InputGroup,
+  Label,
   Input,
   Container,
   Row,
@@ -14,15 +13,14 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  ModalFooter,
-  Label
+  ModalFooter
 } from 'reactstrap';
 import { PulseLoader } from 'react-spinners';
 import DropDownTable from '../components/DropDownTable.js';
 import { Link } from 'react-router-dom';
 import ModalEditFormat from '../components/ModalEditFormat';
 import ModalRemoveItem from '../components/ModalRemoveItem';
-import { MdCancel, MdPageview } from 'react-icons/md';
+import { MdPageview } from 'react-icons/md';
 import PaginationComponent from '../components/Pagination.js';
 export default class FormatPage extends Component {
   constructor(props) {
@@ -38,7 +36,11 @@ export default class FormatPage extends Component {
       loading: true,
       modalDeleteError: false,
       modalDeleteSuccess: false,
-      checkRole: false
+      checkRole: false,
+      selectPerPage: '10',
+      loadData: false,
+      keyword: '',
+      perPage: 10
     };
     this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
     this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
@@ -50,7 +52,7 @@ export default class FormatPage extends Component {
     }
   }
   async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    var url = 'https://api.enclavei3dev.tk/api/format-article?numberRecord=10';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -60,8 +62,10 @@ export default class FormatPage extends Component {
     }).then(res => res.json());
     setTimeout(() => {
       this.setState({
-        rows: data,
-        loading: false
+        rows: data.data,
+        loading: false,
+        totalItems: data.total,
+        activePage: data.current_page
       });
     }, 500);
   }
@@ -279,37 +283,6 @@ export default class FormatPage extends Component {
                         function={() => this.removeManyItems()}
                       />
                     )}
-                  </div>
-                </Col>
-              </Row>
-              <br />
-              <Row>
-                <Col>
-                  <div className="header-table-custom">
-                    <FormGroup>
-                      <Label>Show entries</Label>
-                      <Input
-                        type="select"
-                        name="selectPerPage"
-                        id="exampleSelect"
-                        value={this.state.selectPerPage}
-                        onChange={this.handleChangePerPage}
-                      >
-                        <option>10</option>
-                        <option>20</option>
-                        <option>50</option>
-                        <option>100</option>
-                      </Input>
-                    </FormGroup>
-                    <FormGroup>
-                      <Label>Search</Label>
-                      <Input
-                        className="role-input-search"
-                        name="keyword"
-                        value={this.state.keyword}
-                        onChange={this.handleChangeKeyWord}
-                      />
-                    </FormGroup>
                   </div>
                 </Col>
               </Row>
