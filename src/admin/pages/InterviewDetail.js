@@ -4,6 +4,7 @@ import {
   CardBody,
   Button,
   Row,
+  Badge,
   Container,
   TabContent,
   TabPane,
