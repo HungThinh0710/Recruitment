@@ -464,51 +464,51 @@ export default class JobDetail extends Component {
               <Container>
                 <Row style={{ justifyContent: 'center' }}>
                   <div className="table-test" style={{ width: '100%' }}>
-                    <table>
-                      <tbody>
-                        <tr key={1}>
+                    <table  style={{ width: '100%' }}>
+                      <tbody  style={{ width: '100%' }}>
+                        <tr className = 'job-title3' key={1}>
                           <td className="job-title">Name</td>
-                          <td>{this.state.name}</td>
+                          <td className = 'job-title1'>{this.state.name}</td>
                         </tr>
-                        <tr key={2}>
+                        <tr className = 'job-title3' key={2}>
                           <td className="job-title">Description</td>
-                          <td>{this.state.description}</td>
+                          <td className = 'job-title1'>{this.state.description}</td>
                         </tr>
-                        <tr key={3}>
+                        <tr className = 'job-title3' key={3}>
                           <td className="job-title">Address</td>
-                          <td>{this.state.address}</td>
+                          <td className = 'job-title1'>{this.state.address}</td>
                         </tr>
-                        <tr key={4}>
+                        <tr className = 'job-title3' key={4}>
                           <td className="job-title">Category</td>
-                          <td>{this.state.category}</td>
+                          <td className = 'job-title1'>{this.state.category}</td>
                         </tr>
-                        <tr key={5}>
+                        <tr className = 'job-title3' key={5}>
                           <td className="job-title">Position</td>
-                          <td>{this.state.position}</td>
+                          <td className = 'job-title1'>{this.state.position}</td>
                         </tr>
-                        <tr key={6}>
+                        <tr className = 'job-title3' key={6}>
                           <td className="job-title">Salary</td>
-                          <td>{this.state.salary}</td>
+                          <td className = 'job-title1'>{this.state.salary}</td>
                         </tr>
-                        <tr key={7}>
+                        <tr className = 'job-title3' key={7}>
                           <td className="job-title">Status</td>
-                          <td>{this.state.status}</td>
+                          <td className = 'job-title1'>{this.state.status}</td>
                         </tr>
-                        <tr key={8}>
+                        <tr className = 'job-title3' key={8}>
                           <td className="job-title">Experience</td>
-                          <td>{this.state.experience}</td>
+                          <td className = 'job-title1'>{this.state.experience}</td>
                         </tr>
-                        <tr key={9}>
+                        <tr className = 'job-title3' key={9}>
                           <td className="job-title">Amount</td>
-                          <td>{this.state.amount}</td>
+                          <td className = 'job-title1'>{this.state.amount}</td>
                         </tr>
-                        <tr key={10}>
+                        <tr className = 'job-title3' key={10}>
                           <td className="job-title">Publised On</td>
-                          <td>{this.state.publishedOn}</td>
+                          <td className = 'job-title1'>{this.state.publishedOn}</td>
                         </tr>
-                        <tr key={11}>
+                        <tr className = 'job-title3' key={11}>
                           <td className="job-title">Deadline</td>
-                          <td>{this.state.deadline}</td>
+                          <td className = 'job-title1'>{this.state.deadline}</td>
                         </tr>
                       </tbody>
                     </table>
