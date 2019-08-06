@@ -5,6 +5,7 @@ import { Button, Modal, ModalFooter, Form, ModalBody, FormGroup , Label, ModalHe
 import './Career1.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
+import Newfooter from '../Newfooter';
 import { IntlProvider, FormattedDate } from 'react-intl';
 import renderHTML from 'react-render-html';
 import { FacebookShareButton, FacebookIcon } from 'react-share';
@@ -661,7 +662,7 @@ export default class Careers extends Component {
               </div>
             </div>
           </section>
-          <Footer />
+          <Newfooter />
         </div>
       </div>
     )

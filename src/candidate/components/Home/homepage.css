@@ -255,5 +255,9 @@
   margin-bottom: 10px !important;
 }
 .list-group-wrap .list-group {
-  border-radius: 0px !important;
+  border-radius: 0!important;
+}
+
+.list-group-item{
+  border-radius: 0!important;
 }

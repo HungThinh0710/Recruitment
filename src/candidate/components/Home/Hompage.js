@@ -3,6 +3,7 @@ import RouterURL from '../RouterURL';
 import './homepage.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
+import Newfooter from '../Newfooter';
 import axios from 'axios';
 import careerdata from '../data/careerdata.json';
 import Pagination from '../Pagination.js';
@@ -231,7 +232,7 @@ export default class Homepage extends Component {
                       <p class="list-group-title">
                         Job opening
                       </p>
-                      <ul  class="site-nemu list-group navbar-nav" id="myLink">
+                      <ul  class="site-menu list-group navbar-nav candi-no-border" id="myLink">
                         <li key={1} className={this.state.activeItem === 1 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 1)}  onClick={()=>this.handleFilter('')} name="All">
                           <Link key={1} className={this.state.activeItem === 1 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 1)}  to="/" exact  >All</Link>
                         </li>
@@ -376,7 +377,7 @@ export default class Homepage extends Component {
               </div>
             </div>
           </section>
-          <Footer />
+          <Newfooter />
         </div>
       </section>
     )
