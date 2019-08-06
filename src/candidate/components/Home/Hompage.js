@@ -3,6 +3,7 @@ import RouterURL from '../RouterURL';
 import './homepage.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
+import Footer_cindy from '../footer_cindy';
 import axios from 'axios';
 import careerdata from '../data/careerdata.json';
 import Pagination from '../Pagination.js';
@@ -366,7 +367,7 @@ export default class Homepage extends Component {
               </div>
             </div>
           </section>
-          <Footer />
+          <Footer_cindy />
         </div>
       </section>
     )
