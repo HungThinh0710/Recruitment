@@ -298,8 +298,8 @@ export default class JobDetail extends Component {
                 marginTop: '20px'
               }}
             >
-              <Link>
-                <Button to="/dashboard/interview">Back</Button>
+              <Link to="/dashboard/interview">
+                <Button>Back</Button>
               </Link>
             </div>
           </CardBody>
