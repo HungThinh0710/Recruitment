@@ -4,13 +4,11 @@ import './homepage.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
 import Newfooter from '../Newfooter';
+import {FormGroup} from 'reactstrap';
 import axios from 'axios';
 import careerdata from '../data/careerdata.json';
 import Pagination from '../Pagination.js';
 import { IntlProvider, FormattedDate } from 'react-intl';
-// function searchingFor(term) {
-//   return
-// }
 
 export default class Homepage extends Component {
   constructor(props) {
@@ -31,14 +29,16 @@ export default class Homepage extends Component {
       developer: false,
       status: '',
       activeItem: 1,
-      
-
+      perPage: 10,
+      loadData: false,
+      selectPerPage: '10',
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.addActiveClass= this.addActiveClass.bind(this);
+    this.addActiveClass = this.addActiveClass.bind(this);
+    this.handleChangePerPage =this.handleChangePerPage.bind(this);
   }
-  
+
 
   to_slug = (str) => {
     // Chuyển hết sang chữ thường
@@ -68,21 +68,25 @@ export default class Homepage extends Component {
     // return
     return str;
   }
-  async componentDidMount() {
-   
+  async componentDidMount(perPage) {
+    const { activePage } = this.state;
+    if (!perPage) perPage = 10;
     let headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
     }
-
     let body = {
       "keyword": this.state.keyword,
       "position": "",
       "location": "",
+      "category": "Recruitment",
       "experience": "",
       "orderby": "asc"
     }
-    const data = await fetch('https://api.enclavei3dev.tk/api/article-web?page=1', {
+    var  url = 'https://api.enclavei3dev.tk/api/article-web?page=' +activePage +
+        '&perpage=' +
+        perPage;
+    const data = await fetch(url, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(body)
@@ -91,59 +95,27 @@ export default class Homepage extends Component {
       this.setState({
         listjob: data.data,
         totalItems: data.total,
+        perPage: parseInt(data.per_page),
         loading: false,
+        activePage: data.current_page
       });
     }, 500);
   }
   handleFilter(keyword, pageNumber) {
+    const {perPage} = this.state;
     let headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
     }
-
     let body = {
       "keyword": "",
       "position": keyword,
       "location": "",
       "experience": "",
-      "orderby": "asc"
+      "orderby": "asc",
+      "category": "Recruitment",
     }
-    var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber;
-    fetch(url, {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(body)
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          currentPage: data.currentPage,
-          totalItems: data.total,
-          listjob: data.data,
-          activePage: pageNumber,
-        }); 
-      });
-      
-    });
-  }
-  
-  handlePageChange(pageNumber, keyword, location, status) {
-    keyword = this.state.keyword;
-    location = this.state.location;
-    status = this.state.status;
-    // const {keyword, location, status} = this.state;
-    let headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-    }
-    let body = {
-      "keyword": keyword,
-      "position": "",
-      "location": location,
-      "catelogy": "",
-      "status": status,
-      "orderby": "asc"
-    }
-    var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber;
+    var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber + '&perpage=' + perPage;
     fetch(url, {
       method: 'POST',
       headers: headers,
@@ -155,26 +127,91 @@ export default class Homepage extends Component {
           totalItems: data.total,
           listjob: data.data,
           activePage: data.current_page,
-        }); 
+          perPage: parseInt(data.per_page)
+        });
       });
-      
+
     });
   }
+  handlePageChange(pageNumber, keyword, location, status) {
+    const { perPage} = this.state;
+    keyword = this.state.keyword;
+    location = this.state.location;
+    status = this.state.status;
+    let headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    }
+    let body = {
+      "keyword": keyword,
+      "position": "",
+      "location": location,
+      "category": "Recruitment",
+      "status": status,
+      "orderby": "asc"
+    }
+    var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber + '&perpage=' +
+    perPage;
+    fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body)
+    }).then(res => {
+      res.json().then(data => {
+        console.log(data)
+        this.setState({
+          currentPage: data.currentPage,
+          totalItems: data.total,
+          listjob: data.data,
+          activePage: data.current_page,
+          perPage: parseInt(data.per_page)
+        });
+      });
+
+    });
+  }
+  handleChangePerPage = e => {
+    const { keyword } = this.state;
+    var perPage = 0;
+    switch (e.target.value) {
+      case '10':
+        perPage = 10;
+        break;
+      case '20':
+        perPage = 20;
+        break;
+      case '50':
+        perPage = 50;
+        break;
+      case '100':
+        perPage = 100;
+        break;
+    }
+    this.setState({
+      perPage: perPage,
+      [e.target.name]: e.target.value,
+      loadData: true
+    });
+    this.componentDidMount(perPage);
+  };
   handleChange(event) {
-    this.setState({[event.target.name]: event.target.value
+    this.setState({
+      [event.target.name]: event.target.value
     })
   }
   addActiveClass(event) {
-    this.setState({[event.target.name]: !event.target.value
-    })  
-}
+    this.setState({
+      [event.target.name]: !event.target.value
+    })
+  }
   handleActive(index) {
     this.setState({
       activeItem: index
     })
   }
   render() {
-    const {active} = this.state;
+    const { activePage,listjob } = this.state;
+    var i = (activePage-1)*10;
     return (
       <section id="Home">
         <div className="site-wrap" >
@@ -212,7 +249,7 @@ export default class Homepage extends Component {
               <div class="row">
                 <aside class="col-sm-3 sidebar-nav career-sidebar">
                   <ul class="list-group-wrap">
-                    <li id="view" class="list-group-block">
+                    {/* <li id="view" class="list-group-block">
                       <p class="list-group-title">
                         Information
                       </p>
@@ -227,25 +264,25 @@ export default class Homepage extends Component {
                           <NavLink className="item" to={"#"}>Flat model</NavLink>
                         </li>
                       </ul>
-                    </li>
+                    </li> */}
                     <li>
                       <p class="list-group-title">
                         Job opening
                       </p>
-                      <ul  class="site-menu list-group navbar-nav candi-no-border" id="myLink">
-                        <li key={1} className={this.state.activeItem === 1 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 1)}  onClick={()=>this.handleFilter('')} name="All">
-                          <Link key={1} className={this.state.activeItem === 1 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 1)}  to="/" exact  >All</Link>
+                      <ul class="site-menu list-group navbar-nav candi-no-border" id="myLink">
+                        <li key={1} className={this.state.activeItem === 1 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 1)} onClick={() => this.handleFilter('')} name="All">
+                          <Link key={1} className={this.state.activeItem === 1 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 1)} to="/" exact  >All</Link>
                         </li>
-                        <li key={2} className={this.state.activeItem === 2 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 2)} onClick={()=>this.handleFilter('Internship')} name="internship">
-                          <Link key={2} className={this.state.activeItem === 2 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 2)}  to="/" exact  >Internship</Link>
+                        <li key={2} className={this.state.activeItem === 2 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 2)} onClick={() => this.handleFilter('Internship')} name="internship">
+                          <Link key={2} className={this.state.activeItem === 2 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 2)} to="/" exact  >Internship</Link>
                         </li>
-                        <li key={3} className={this.state.activeItem === 3 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 3)} onClick={()=>this.handleFilter('Designer')} name="designer">
+                        <li key={3} className={this.state.activeItem === 3 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 3)} onClick={() => this.handleFilter('Designer')} name="designer">
                           <Link key={3} className={this.state.activeItem === 3 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 3)} to="/" exact  >Designer</Link>
                         </li>
-                        <li key={4} className={this.state.activeItem === 4 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 4)} onClick={()=>this.handleFilter('Tester')} name="tester">
+                        <li key={4} className={this.state.activeItem === 4 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 4)} onClick={() => this.handleFilter('Tester')} name="tester">
                           <Link key={4} className={this.state.activeItem === 4 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 4)} to="/" exact  >Tester</Link>
                         </li>
-                        <li key={5} className={this.state.activeItem === 5 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 5)} onClick={()=>this.handleFilter('Developer')} name="developer">
+                        <li key={5} className={this.state.activeItem === 5 ? 'list-group-item active' : 'list-group-item'} onClick={this.handleActive.bind(this, 5)} onClick={() => this.handleFilter('Developer')} name="developer">
                           <Link key={5} className={this.state.activeItem === 5 ? 'item active' : 'item'} onClick={this.handleActive.bind(this, 5)} to="/" exact  >Developer</Link>
                         </li>
                       </ul>
@@ -255,13 +292,13 @@ export default class Homepage extends Component {
                 <div class="col-sm-9 main-content career-section">
                   <div class="section-content">
                     <div class="panel career-search-form">
-                      <div class="panel-title">Search & apply</div>
+                      <div class="panel-title">Search</div>
                       <div class="panel-body wrap-form border">
                         <form method="post" className="search-jobs-form">
                           <div className="row mb-5 Searchtype">
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                              <label>Position</label>
-                              <input name="keyword" value={this.state.keyword} onChange={this.handleChange} type="text" className="form-control form-control-lg-2" ref="search" placeholder="Search" />
+                              <label>Search</label>
+                              <input name="keyword" value={this.state.keyword} onChange={this.handleChange} type="text" className="form-control form-control-lg-2" ref="search" placeholder="keyword..." />
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>Location</label>
@@ -291,8 +328,31 @@ export default class Homepage extends Component {
                         <h2 class="panel-title">
                           Job Opening
                         </h2>
+                        <div class="col-sm-4 ml-auto showentries">
+                          <label className="col-sm-8 ml-auto labelshow text-right">Show entries:</label>
+                        <select class="col-sm-4 ml-auto selectshow" type="select"
+                        name="selectPerPage"
+                        id="exampleSelect"
+                        value={this.state.selectPerPage}
+                        onChange={this.handleChangePerPage}>
+                          <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                        <option>100</option>
+                        </select>
+                        </div>
+                        {/* <Input
+                        type="select"
+                        name="selectPerPage"
+                        id="exampleSelect"
+                        value={this.state.selectPerPage}
+                        onChange={this.handleChangePerPage}
+                      >
+                        
+                      </Input> */}
                         <table class="table rwd-table border article-table">
                           <thead>
+                            <th>#</th>
                             <th>Position</th>
                             <th>Category</th>
                             <th>Location</th>
@@ -300,8 +360,19 @@ export default class Homepage extends Component {
                             <th>Day expired</th>
                           </thead>
                           <tbody class="transistion">
-                            {this.state.listjob.map(p => {
+                            {this.state.listjob.map((p, index) => {
+                              i++;
                               return <tr class="transfer">
+                                <td data-th="number">
+                                  <div>
+                                    <p class="number-id">
+                                      <p class="number-title">
+                                        {i}
+                                      </p>
+                                      
+                                    </p>
+                                  </div>
+                                </td>
                                 <td data-th="Position">
                                   <div>
                                     <Link to={"/article/" + p.id} className="colorbottomline">
@@ -319,6 +390,7 @@ export default class Homepage extends Component {
                                       <p class="category-title">
                                         {p.job.position}
                                       </p>
+                                      
                                     </p>
                                   </div>
                                 </td>
@@ -358,13 +430,14 @@ export default class Homepage extends Component {
                               </tr>
                             })}
                             <tr class="table-pagination-nav">
-                              <td colspan="5">
+                              <td colspan="6">
                                 <Pagination
                                   activePage={this.state.activePage}
-                                  itemsCountPerPage={10}
+                                  itemsCountPerPage={this.state.perPage}
                                   totalItemsCount={this.state.totalItems}
                                   pageRangeDisplayed={5}
-                                  onChange={this.handlePageChange.bind(this)}
+                                  onChange={this.handlePageChange}
+                                  totalItems={this.state.totalItems}
                                 />
                               </td>
                             </tr>
