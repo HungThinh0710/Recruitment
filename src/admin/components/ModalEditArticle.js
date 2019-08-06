@@ -180,7 +180,7 @@ export default class ModalEditArticle extends Component {
   handleSelectFormatChange = selectedFormatOption => {
     this.setState({
       selectedFormatOption,
-      editContent: selectedFormatOption.content
+      content: selectedFormatOption.content
     });
   };
   handleChange(event) {
