@@ -8,7 +8,7 @@ import {
   Button,
   Card,
   CardBody,
-  CardTitle,
+  CardHeader,
   Form,
   Container,
   FormGroup,
@@ -517,14 +517,17 @@ export default class ArticleDetail extends Component {
     }
 
     return (
-      <div className="profile-card">
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -544,7 +547,10 @@ export default class ArticleDetail extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -588,338 +594,331 @@ export default class ArticleDetail extends Component {
           </ModalFooter>
         </Modal>
         {/*--------Modal-Preview-----*/}
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Article Information
-            <Link to="/dashboard/article">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          {this.state.loading ? (
-            <div
-              style={{
-                marginTop: '100px',
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: '100px'
-              }}
-              className="sweet-loading"
-            >
-              <ClipLoader
-                sizeUnit={'px'}
-                size={200}
-                color={'#45b649'}
-                loading={this.state.loading}
-              />
-            </div>
-          ) : (
-            <CardBody>
-              <Container>
-                <Row style={{ justifyContent: 'center' }}>
-                  <div className="table-test" style={{ width: '100%' }}>
-                    <table>
-                      <tbody>
-                        <tr key={1}>
-                          <td className="job-title">Title</td>
-                          <td>{this.state.title}</td>
-                        </tr>
 
-                        <tr key={2}>
-                          <td className="job-title">Status</td>
-                          <td>{this.state.status}</td>
-                        </tr>
+        <CardHeader className="card-header-custom">
+          Article's Information
+        </CardHeader>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'#45b649'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
+          <CardBody>
+            <Container>
+              <Row style={{ justifyContent: 'center' }}>
+                <div className="table-test" style={{ width: '100%' }}>
+                  <table>
+                    <tbody>
+                      <tr key={1}>
+                        <td className="job-title">Title</td>
+                        <td>{this.state.title}</td>
+                      </tr>
 
-                        <tr key={3}>
-                          <td className="job-title">Category</td>
-                          <td>{this.state.catName}</td>
-                        </tr>
-                        {this.state.jobName !== '' && (
-                          <tr key={4}>
-                            <td className="job-title">Job</td>
-                            <td>
-                              <Link to={url1}>{this.state.jobName}</Link>
-                            </td>
-                          </tr>
-                        )}
-                        <tr key={5}>
-                          <td className="job-title">Created By</td>
+                      <tr key={2}>
+                        <td className="job-title">Status</td>
+                        <td>{this.state.status}</td>
+                      </tr>
+
+                      <tr key={3}>
+                        <td className="job-title">Category</td>
+                        <td>{this.state.catName}</td>
+                      </tr>
+                      {this.state.jobName !== '' && (
+                        <tr key={4}>
+                          <td className="job-title">Job</td>
                           <td>
-                            <Link to={url2}>{this.state.userName}</Link>
+                            <Link to={url1}>{this.state.jobName}</Link>
                           </td>
                         </tr>
-                        <tr key={6}>
-                          <td className="job-title">Created At</td>
-                          <td>{this.state.created_at}</td>
-                        </tr>
-                        <tr key={7}>
-                          <td className="job-title">Updated At</td>
-                          <td>{this.state.updated_at}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </Row>
-                <Row>
-                  <div className="job-tabs">
-                    <Nav tabs>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '1'
-                          })}
-                          onClick={() => {
-                            this.toggle('1');
-                          }}
-                        >
-                          <MdBook style={{ marginRight: '5px' }} />
-                          Content
-                        </NavLink>
-                      </NavItem>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '2'
-                          })}
-                          onClick={() => {
-                            this.toggle('2');
-                          }}
-                        >
-                          <MdSettings style={{ marginRight: '5px' }} />
-                          Update
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
-                </Row>
-
-                <br />
-                <br />
-                <Row>
-                  <TabContent
-                    style={{ width: '100%' }}
-                    activeTab={this.state.activeTab}
-                  >
-                    <TabPane tabId="1">
-                      <Row>
-                        <Col>{renderHTML(this.state.content)}</Col>
-                        {/* <Col>{this.state.content}</Col> */}
-                      </Row>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'flex-end',
-                          marginTop: '20px'
+                      )}
+                      <tr key={5}>
+                        <td className="job-title">Created By</td>
+                        <td>
+                          <Link to={url2}>{this.state.userName}</Link>
+                        </td>
+                      </tr>
+                      <tr key={6}>
+                        <td className="job-title">Created At</td>
+                        <td>{this.state.created_at}</td>
+                      </tr>
+                      <tr key={7}>
+                        <td className="job-title">Updated At</td>
+                        <td>{this.state.updated_at}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Row>
+              <Row>
+                <div className="job-tabs">
+                  <Nav tabs>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '1'
+                        })}
+                        onClick={() => {
+                          this.toggle('1');
                         }}
                       >
-                        <Button
-                          onClick={() => this.backToPreviousPage()}
-                          color="secondary"
-                        >
-                          Back
-                        </Button>
-                      </div>
-                    </TabPane>
-                    <TabPane tabId="2">
-                      <Row>
-                        <Col>
-                          <Form>
-                            <FormGroup>
-                              <Label className="title-input" for="Name">
-                                Title
-                              </Label>
-                              <Input
-                                className="title-add-new-article"
-                                type="text"
-                                name="editTitle"
-                                value={this.state.editTitle}
-                                onChange={this.handleChange}
-                              />
-                              {this.state.errorTitle !== '' &&
-                                this.state.showErrorMessage && (
-                                  <span style={{ color: 'red' }}>
-                                    {this.state.errorTitle}
-                                  </span>
-                                )}
-                            </FormGroup>
-                            <FormGroup>
-                              <Label className="title-input" for="Category">
-                                Category
+                        <MdBook style={{ marginRight: '5px' }} />
+                        Content
+                      </NavLink>
+                    </NavItem>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '2'
+                        })}
+                        onClick={() => {
+                          this.toggle('2');
+                        }}
+                      >
+                        <MdSettings style={{ marginRight: '5px' }} />
+                        Update
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                </div>
+              </Row>
+
+              <br />
+              <br />
+              <Row>
+                <TabContent
+                  style={{ width: '100%' }}
+                  activeTab={this.state.activeTab}
+                >
+                  <TabPane tabId="1">
+                    <Row>
+                      <Col>{renderHTML(this.state.content)}</Col>
+                      {/* <Col>{this.state.content}</Col> */}
+                    </Row>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginTop: '20px'
+                      }}
+                    >
+                      <Button
+                        onClick={() => this.backToPreviousPage()}
+                        color="secondary"
+                      >
+                        Back
+                      </Button>
+                    </div>
+                  </TabPane>
+                  <TabPane tabId="2">
+                    <Row>
+                      <Col>
+                        <Form>
+                          <FormGroup>
+                            <Label className="title-input" for="Name">
+                              Title
+                            </Label>
+                            <Input
+                              className="title-add-new-article"
+                              type="text"
+                              name="editTitle"
+                              value={this.state.editTitle}
+                              onChange={this.handleChange}
+                            />
+                            {this.state.errorTitle !== '' &&
+                              this.state.showErrorMessage && (
+                                <span style={{ color: 'red' }}>
+                                  {this.state.errorTitle}
+                                </span>
+                              )}
+                          </FormGroup>
+                          <FormGroup>
+                            <Label className="title-input" for="Category">
+                              Category
+                            </Label>
+                            <Select
+                              className="create-article-input"
+                              value={this.state.selectedCategoryOption}
+                              onChange={this.handleSelectCategoryChange.bind(
+                                this
+                              )}
+                              options={this.state.optionsCategory}
+                            />
+                            {!this.state.selectedCategoryOption &&
+                              this.state.showErrorMessage && (
+                                <span style={{ color: 'red' }}>
+                                  Category is required
+                                </span>
+                              )}
+                          </FormGroup>
+                          <FormGroup
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between'
+                            }}
+                          >
+                            <div style={{ width: '45%' }}>
+                              <Label className="title-input" for="Job">
+                                Job
                               </Label>
                               <Select
                                 className="create-article-input"
-                                value={this.state.selectedCategoryOption}
-                                onChange={this.handleSelectCategoryChange.bind(
-                                  this
-                                )}
-                                options={this.state.optionsCategory}
+                                value={this.state.selectedJobOption}
+                                onChange={this.handleSelectJobChange.bind(this)}
+                                options={this.state.optionsJob}
+                                isDisabled={this.state.isDisabled}
                               />
-                              {!this.state.selectedCategoryOption &&
+                              {!this.state.selectedJobOption &&
+                                this.state.showJobError &&
                                 this.state.showErrorMessage && (
                                   <span style={{ color: 'red' }}>
-                                    Category is required
+                                    Job is required
                                   </span>
                                 )}
-                            </FormGroup>
-                            <FormGroup
-                              style={{
-                                display: 'flex',
-                                justifyContent: 'space-between'
-                              }}
-                            >
-                              <div style={{ width: '45%' }}>
-                                <Label className="title-input" for="Job">
-                                  Job
-                                </Label>
-                                <Select
-                                  className="create-article-input"
-                                  value={this.state.selectedJobOption}
-                                  onChange={this.handleSelectJobChange.bind(
-                                    this
-                                  )}
-                                  options={this.state.optionsJob}
-                                  isDisabled={this.state.isDisabled}
-                                />
-                                {!this.state.selectedJobOption &&
-                                  this.state.showJobError &&
-                                  this.state.showErrorMessage && (
-                                    <span style={{ color: 'red' }}>
-                                      Job is required
-                                    </span>
-                                  )}
-                              </div>
+                            </div>
 
-                              <div style={{ width: '45%' }}>
-                                <Label className="title-input" for="Category">
-                                  Format
-                                </Label>
-                                <Select
-                                  className="create-article-input"
-                                  value={this.state.selectedFormatOption}
-                                  onChange={this.handleSelectFormatChange.bind(
-                                    this
-                                  )}
-                                  options={this.state.optionsFormat}
-                                />
-                              </div>
+                            <div style={{ width: '45%' }}>
+                              <Label className="title-input" for="Category">
+                                Format
+                              </Label>
+                              <Select
+                                className="create-article-input"
+                                value={this.state.selectedFormatOption}
+                                onChange={this.handleSelectFormatChange.bind(
+                                  this
+                                )}
+                                options={this.state.optionsFormat}
+                              />
+                            </div>
+                          </FormGroup>
+                          {this.state.content && (
+                            <FormGroup>
+                              <Label className="title-input" for="Content">
+                                Content
+                              </Label>
+                              <ReactQuill
+                                onChange={this.handleEditorChange}
+                                value={this.state.editContent}
+                                modules={ArticleDetail.modules}
+                                formats={ArticleDetail.formats}
+                                bounds={'.app'}
+                                placeholder={this.props.placeholder}
+                              />
                             </FormGroup>
-                            {this.state.content && (
-                              <FormGroup>
-                                <Label className="title-input" for="Content">
-                                  Content
-                                </Label>
-                                <ReactQuill
-                                  onChange={this.handleEditorChange}
-                                  value={this.state.editContent}
-                                  modules={ArticleDetail.modules}
-                                  formats={ArticleDetail.formats}
-                                  bounds={'.app'}
-                                  placeholder={this.props.placeholder}
-                                />
-                              </FormGroup>
-                            )}
-                            <br />
-                            <FormGroup
+                          )}
+                          <br />
+                          <FormGroup
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'flex-end'
+                            }}
+                          >
+                            <div
                               style={{
                                 display: 'flex',
-                                justifyContent: 'flex-end'
+                                justifyContent: 'space-between',
+                                width: '350px'
                               }}
                             >
-                              <div
-                                style={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between',
-                                  width: '350px'
-                                }}
+                              <Button
+                                onClick={this.toggleModalPreview}
+                                color="primary"
                               >
+                                Preview
+                              </Button>
+                              {this.state.errorTitle == '' &&
+                              check &&
+                              this.state.selectedCategoryOption ? (
                                 <Button
-                                  onClick={this.toggleModalPreview}
-                                  color="primary"
+                                  color="success"
+                                  onClick={this.handleSubmit}
                                 >
-                                  Preview
+                                  Update
                                 </Button>
-                                {this.state.errorTitle == '' &&
-                                check &&
-                                this.state.selectedCategoryOption ? (
-                                  <Button
-                                    color="success"
-                                    onClick={this.handleSubmit}
-                                  >
-                                    Update
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    color="success"
-                                    onClick={this.handleErrorMessage.bind(this)}
-                                  >
-                                    Update
-                                  </Button>
-                                )}
-                                {this.state.editStatus === 1 ? (
-                                  <div>
-                                    {this.state.errorTitle == '' &&
-                                    check &&
-                                    this.state.selectedCategoryOption ? (
-                                      <Button
-                                        onClick={this.handleChangeStatus}
-                                        color="warning"
-                                      >
-                                        Close
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        onClick={this.handleErrorMessage.bind(
-                                          this
-                                        )}
-                                        color="warning"
-                                      >
-                                        Close
-                                      </Button>
-                                    )}
-                                  </div>
-                                ) : (
-                                  <div>
-                                    {this.state.errorTitle == '' &&
-                                    check &&
-                                    this.state.selectedCategoryOption ? (
-                                      <Button
-                                        onClick={this.handleChangeStatus}
-                                        color="warning"
-                                      >
-                                        Publish
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        onClick={this.handleErrorMessage.bind(
-                                          this
-                                        )}
-                                        color="warning"
-                                      >
-                                        Publish
-                                      </Button>
-                                    )}
-                                  </div>
-                                )}
+                              ) : (
+                                <Button
+                                  color="success"
+                                  onClick={this.handleErrorMessage.bind(this)}
+                                >
+                                  Update
+                                </Button>
+                              )}
+                              {this.state.editStatus === 1 ? (
+                                <div>
+                                  {this.state.errorTitle == '' &&
+                                  check &&
+                                  this.state.selectedCategoryOption ? (
+                                    <Button
+                                      onClick={this.handleChangeStatus}
+                                      color="warning"
+                                    >
+                                      Close
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      onClick={this.handleErrorMessage.bind(
+                                        this
+                                      )}
+                                      color="warning"
+                                    >
+                                      Close
+                                    </Button>
+                                  )}
+                                </div>
+                              ) : (
+                                <div>
+                                  {this.state.errorTitle == '' &&
+                                  check &&
+                                  this.state.selectedCategoryOption ? (
+                                    <Button
+                                      onClick={this.handleChangeStatus}
+                                      color="warning"
+                                    >
+                                      Publish
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      onClick={this.handleErrorMessage.bind(
+                                        this
+                                      )}
+                                      color="warning"
+                                    >
+                                      Publish
+                                    </Button>
+                                  )}
+                                </div>
+                              )}
 
-                                <Button
-                                  onClick={() => this.backToPreviousPage()}
-                                  color="secondary"
-                                >
-                                  Back
-                                </Button>
-                              </div>
-                            </FormGroup>
-                          </Form>
-                        </Col>
-                      </Row>
-                    </TabPane>
-                  </TabContent>
-                </Row>
-              </Container>
-            </CardBody>
-          )}
-        </Card>
-      </div>
+                              <Button
+                                onClick={() => this.backToPreviousPage()}
+                                color="secondary"
+                              >
+                                Back
+                              </Button>
+                            </div>
+                          </FormGroup>
+                        </Form>
+                      </Col>
+                    </Row>
+                  </TabPane>
+                </TabContent>
+              </Row>
+            </Container>
+          </CardBody>
+        )}
+      </Card>
     );
   }
 }

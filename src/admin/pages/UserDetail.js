@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import { Card,CardBody,CardTitle,CardSubtitle,CardImg,Button,CardText, 
+import { Card,CardBody,CardHeader,CardTitle,CardSubtitle,CardImg,Button,CardText, 
 Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input,Modal,
 ModalHeader,
 ModalBody,
@@ -12,7 +12,7 @@ import {
 } from 'react-icons/md';
 import {  NumberWidget } from '../components/Widget';
 import { MDBDataTable } from 'mdbreact';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import {Link} from 'react-router-dom';
 import './UserDetail.css';
 const fullNameRegex = /^[a-zA-Z\s]+$/;
@@ -71,6 +71,7 @@ export default class UserDetail extends Component {
         errorData: '',
         showErrorMessage: false,
         errorRoleMessage: "",
+        checkRole: false
       };
       this.toggle = this.toggle.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -96,75 +97,95 @@ export default class UserDetail extends Component {
   async componentDidMount(){
     
     const {id} = this.props.match.params;
-    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
-    const data = await fetch(url, {
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
-      }
-    }).then(res => res.json()) 
-    console.log(data);
-      
-    await this.setState({
-      name : data.name,
-      fullName: data.fullname,
-      email: data.email,
-      phone: data.phone,
-      address: data.address,
-      image: data.image,
-      roles: data.roles,
-      editFullName: data.fullname,
-      editEmail: data.email,
-      editPhone: data.phone,
-      editAddress: data.address,
-      editImage: data.image,
-    })
     const columns = this.state.listRoles.columns;
     let {editRoles} = this.state;
-    var url2 = 'https://api.enclavei3dev.tk/api/list-role?page=1';
-    const data2 = await fetch(url2, {
-      method:'POST',
+    var check = true;
+    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
+    await fetch(url, {
       headers:{
         'Content-Type': 'application/json',
         'Accept' : 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
       }
-    }).then(res => res.json()) ;
-    if (data2.message !== 'Unauthenticated.'){
-      data2.data.map((e)=>{
-        delete e.created_at;
-        delete e.updated_at;
-        var {listId} = this.state;
-        listId.push(e.id);
-        var index=listId.indexOf(e.id);
-        delete e.id;
-        const {roles} = this.state;
-        var found = roles.find(currentRole => {
-          return currentRole.name===e.name;
+    }).then(res => {
+      if (res.status === 403) {
+        check = false;
+        this.setState({
+          checkRole: false,
+          loading: false
+        });
+      }
+      if (res.status === 200) {
+        res.json().then(response => {
+          var data = response;
+          check=true;
+          this.setState({
+            name : data.name,
+            fullName: data.fullname,
+            email: data.email,
+            phone: data.phone,
+            address: data.address,
+            image: data.image,
+            roles: data.roles,
+            editFullName: data.fullname,
+            editEmail: data.email,
+            editPhone: data.phone,
+            editAddress: data.address,
+            editImage: data.image,
+            checkRole: true
+          })
         })
-        if (found) {
-          editRoles.push(listId[index]);
-          return e.action= <input type='checkbox' defaultChecked={true} 
-          onChange={() => this.handleCheck(listId[index],editRoles)} />
+      }
+    }) 
+      
+    if (check == true){
+      var url2 = 'https://api.enclavei3dev.tk/api/list-role';
+      const data2 = await fetch(url2, {
+        method:'POST',
+        body:JSON.stringify({
+          all : 1
+        }),
+        headers:{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
         }
-        
-        else { return e.action = <input type='checkbox'  
-        onChange={() => this.handleCheck(listId[index],editRoles)} />}
-        
-      })
-      
-      
-      setTimeout(() => {
-      this.setState({
-        listRoles : {
-          columns: columns,
-          rows: data2.data,
-        },
-        loading: false,
-        editRoles: editRoles
-      })}, 500);   
+      }).then(res => res.json()) ;
+      if (data2.message !== 'Unauthenticated.'){
+        data2.map((e)=>{
+          delete e.created_at;
+          delete e.updated_at;
+          var {listId} = this.state;
+          listId.push(e.id);
+          var index=listId.indexOf(e.id);
+          delete e.id;
+          const {roles} = this.state;
+          var found = roles.find(currentRole => {
+            return currentRole.name===e.name;
+          })
+          if (found) {
+            editRoles.push(listId[index]);
+            return e.action= <input type='checkbox' defaultChecked={true} 
+            onChange={() => this.handleCheck(listId[index],editRoles)} />
+          }
+          
+          else { return e.action = <input type='checkbox'  
+          onChange={() => this.handleCheck(listId[index],editRoles)} />}
+          
+        })
+
+        setTimeout(() => {
+        this.setState({
+          listRoles : {
+            columns: columns,
+            rows: data2,
+          },
+          loading: false,
+          editRoles: editRoles
+        })}, 500);   
+      }
     }
+    
     
   }
   
@@ -359,7 +380,7 @@ export default class UserDetail extends Component {
     const {name,fullName,email,phone,address,
       formError} = this.state;
     return (
-        <div className="profile-card">
+      <Card className="dashboard-card">
           {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -411,14 +432,13 @@ export default class UserDetail extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <Card className="card-body">
-          <CardTitle className="title">
-              <MdCancel className='first'/>
-            User Profile
-            <Link to="/dashboard/user">
-              <MdCancel />
-            </Link>
-          </CardTitle>
+        
+        <CardHeader
+                  className="card-header-custom"
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  User's Information
+                </CardHeader>
           {this.state.loading ? (
           <div
             style={{
@@ -429,15 +449,17 @@ export default class UserDetail extends Component {
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
         ) : (
           <CardBody >
+            {this.state.checkRole ? (
+            <div>
             <Container style={{marginTop:'5%'}}>
             <Row>
               <Col xs="4">
@@ -722,9 +744,15 @@ export default class UserDetail extends Component {
                 Back
               </Button>
             </div>
+            </div>
+            ):(<div>
+                    <h3 style={{ color: 'red' }}>
+                      {' '}
+                      You don't have permission to access this page
+                    </h3>
+                  </div>)} 
           </CardBody>)}
         </Card>
-        </div>
       
     )
   }

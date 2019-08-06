@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   Card,
   CardBody,
+  CardHeader,
   CardTitle,
   CardSubtitle,
   CardImg,
@@ -90,7 +91,6 @@ export default class JobDetail extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
-    // this.handleChangePassword = this.handleChangePassword.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -382,14 +382,17 @@ export default class JobDetail extends Component {
     var i = 0;
     const { formError } = this.state;
     return (
-      <div className="profile-card">
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="dashboard-modal-header"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -409,7 +412,10 @@ export default class JobDetail extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="dashboard-modal-header"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -434,666 +440,655 @@ export default class JobDetail extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Job Information
-            <Link to="/dashboard/job">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          {this.state.loading ? (
-            <div
-              style={{
-                marginTop: '100px',
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: '100px'
-              }}
-              className="sweet-loading"
-            >
-              <ClipLoader
-                sizeUnit={'px'}
-                size={200}
-                color={'#45b649'}
-                loading={this.state.loading}
-              />
-            </div>
-          ) : (
-            <CardBody>
-              <Container>
-                <Row style={{ justifyContent: 'center' }}>
-                  <div className="table-test" style={{ width: '100%' }}>
-                    <table>
-                      <tbody>
-                        <tr key={1}>
-                          <td className="job-title">Name</td>
-                          <td>{this.state.name}</td>
-                        </tr>
-                        <tr key={2}>
-                          <td className="job-title">Description</td>
-                          <td>{this.state.description}</td>
-                        </tr>
-                        <tr key={3}>
-                          <td className="job-title">Address</td>
-                          <td>{this.state.address}</td>
-                        </tr>
-                        <tr key={4}>
-                          <td className="job-title">Category</td>
-                          <td>{this.state.category}</td>
-                        </tr>
-                        <tr key={5}>
-                          <td className="job-title">Position</td>
-                          <td>{this.state.position}</td>
-                        </tr>
-                        <tr key={6}>
-                          <td className="job-title">Salary</td>
-                          <td>{this.state.salary}</td>
-                        </tr>
-                        <tr key={7}>
-                          <td className="job-title">Status</td>
-                          <td>{this.state.status}</td>
-                        </tr>
-                        <tr key={8}>
-                          <td className="job-title">Experience</td>
-                          <td>{this.state.experience}</td>
-                        </tr>
-                        <tr key={9}>
-                          <td className="job-title">Amount</td>
-                          <td>{this.state.amount}</td>
-                        </tr>
-                        <tr key={10}>
-                          <td className="job-title">Publised On</td>
-                          <td>{this.state.publishedOn}</td>
-                        </tr>
-                        <tr key={11}>
-                          <td className="job-title">Deadline</td>
-                          <td>{this.state.deadline}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </Row>
-                <br />
-                <Row>
-                  <div className="job-tabs">
-                    <Nav tabs>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '1'
-                          })}
-                          onClick={() => {
-                            this.toggle('1');
-                          }}
-                        >
-                          <MdBook style={{ marginRight: '5px' }} />
-                          Articles
-                        </NavLink>
-                      </NavItem>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '2'
-                          })}
-                          onClick={() => {
-                            this.toggle('2');
-                          }}
-                        >
-                          <MdMap style={{ marginRight: '5px' }} />
-                          Candidates
-                        </NavLink>
-                      </NavItem>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '3'
-                          })}
-                          onClick={() => {
-                            this.toggle('3');
-                          }}
-                        >
-                          <MdSettings style={{ marginRight: '5px' }} />
-                          Update
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
-                </Row>
-                <br />
-                <br />
-                <Row>
-                  <TabContent
-                    style={{ width: '100%' }}
-                    activeTab={this.state.activeTab}
-                  >
-                    <TabPane tabId="1">
-                      <Row>
-                        <Col>
-                          <Card>
-                            <CardImg
-                              top
-                              width="100%"
-                              src="https://loremflickr.com/320/240"
-                              alt="Card image cap"
-                            />
-                            <CardBody>
-                              <CardTitle>Card title</CardTitle>
-                              <CardSubtitle>Card subtitle</CardSubtitle>
-                              <CardText>
-                                Some quick example text to build on the card
-                                title and make up the bulk of the card's
-                                content.
-                              </CardText>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                        <Col>
-                          <Card>
-                            <CardImg
-                              top
-                              width="100%"
-                              src="https://loremflickr.com/320/240/paris"
-                              alt="Card image cap"
-                            />
-                            <CardBody>
-                              <CardTitle>Card title</CardTitle>
-                              <CardSubtitle>Card subtitle</CardSubtitle>
-                              <CardText>
-                                Some quick example text to build on the card
-                                title and make up the bulk of the card's
-                                content.
-                              </CardText>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                        <Col>
-                          <Card>
-                            <CardImg
-                              top
-                              width="100%"
-                              src="https://loremflickr.com/320/240/brazil"
-                              alt="Card image cap"
-                            />
-                            <CardBody>
-                              <CardTitle>Card title</CardTitle>
-                              <CardSubtitle>Card subtitle</CardSubtitle>
-                              <CardText>
-                                Some quick example text to build on the card
-                                title and make up the bulk of the card's
-                                content.
-                              </CardText>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </Row>
-                    </TabPane>
-                    <TabPane tabId="2">
-                      <Row>
-                        <Col>
-                          <Card>
-                            <CardImg
-                              top
-                              width="100%"
-                              src="https://loremflickr.com/320/240/dog"
-                              alt="Card image cap"
-                            />
-                            <CardBody>
-                              <CardTitle>Card title</CardTitle>
-                              <CardSubtitle>Card subtitle</CardSubtitle>
-                              <CardText>
-                                Some quick example text to build on the card
-                                title and make up the bulk of the card's
-                                content.
-                              </CardText>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                        <Col>
-                          <Card>
-                            <CardImg
-                              top
-                              width="100%"
-                              src="https://loremflickr.com/320/240/cat"
-                              alt="Card image cap"
-                            />
-                            <CardBody>
-                              <CardTitle>Card title</CardTitle>
-                              <CardSubtitle>Card subtitle</CardSubtitle>
-                              <CardText>
-                                Some quick example text to build on the card
-                                title and make up the bulk of the card's
-                                content.
-                              </CardText>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                        <Col>
-                          <Card>
-                            <CardImg
-                              top
-                              width="100%"
-                              src="https://loremflickr.com/320/240/rio"
-                              alt="Card image cap"
-                            />
-                            <CardBody>
-                              <CardTitle>Card title</CardTitle>
-                              <CardSubtitle>Card subtitle</CardSubtitle>
-                              <CardText>
-                                Some quick example text to build on the card
-                                title and make up the bulk of the card's
-                                content.
-                              </CardText>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </Row>
-                    </TabPane>
-                    <TabPane tabId="3">
-                      <Row>
-                        <Col>
-                          <Card>
-                            <CardBody>
-                              <Form onSubmit={this.handleSubmit}>
-                                <FormGroup>
+
+        <CardHeader className="card-header-custom">
+          Job's information
+        </CardHeader>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <ClipLoader
+              sizeUnit={'px'}
+              size={200}
+              color={'#45b649'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
+          <CardBody>
+            <Container>
+              <Row style={{ justifyContent: 'center' }}>
+                <div className="table-test" style={{ width: '100%' }}>
+                  <table>
+                    <tbody>
+                      <tr key={1}>
+                        <td className="job-title">Name</td>
+                        <td>{this.state.name}</td>
+                      </tr>
+                      <tr key={2}>
+                        <td className="job-title">Description</td>
+                        <td>{this.state.description}</td>
+                      </tr>
+                      <tr key={3}>
+                        <td className="job-title">Address</td>
+                        <td>{this.state.address}</td>
+                      </tr>
+                      <tr key={4}>
+                        <td className="job-title">Category</td>
+                        <td>{this.state.category}</td>
+                      </tr>
+                      <tr key={5}>
+                        <td className="job-title">Position</td>
+                        <td>{this.state.position}</td>
+                      </tr>
+                      <tr key={6}>
+                        <td className="job-title">Salary</td>
+                        <td>{this.state.salary}</td>
+                      </tr>
+                      <tr key={7}>
+                        <td className="job-title">Status</td>
+                        <td>{this.state.status}</td>
+                      </tr>
+                      <tr key={8}>
+                        <td className="job-title">Experience</td>
+                        <td>{this.state.experience}</td>
+                      </tr>
+                      <tr key={9}>
+                        <td className="job-title">Amount</td>
+                        <td>{this.state.amount}</td>
+                      </tr>
+                      <tr key={10}>
+                        <td className="job-title">Publised On</td>
+                        <td>{this.state.publishedOn}</td>
+                      </tr>
+                      <tr key={11}>
+                        <td className="job-title">Deadline</td>
+                        <td>{this.state.deadline}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Row>
+              <br />
+              <Row>
+                <div className="job-tabs">
+                  <Nav tabs>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '1'
+                        })}
+                        onClick={() => {
+                          this.toggle('1');
+                        }}
+                      >
+                        <MdBook style={{ marginRight: '5px' }} />
+                        Articles
+                      </NavLink>
+                    </NavItem>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '2'
+                        })}
+                        onClick={() => {
+                          this.toggle('2');
+                        }}
+                      >
+                        <MdMap style={{ marginRight: '5px' }} />
+                        Candidates
+                      </NavLink>
+                    </NavItem>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '3'
+                        })}
+                        onClick={() => {
+                          this.toggle('3');
+                        }}
+                      >
+                        <MdSettings style={{ marginRight: '5px' }} />
+                        Update
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                </div>
+              </Row>
+              <br />
+              <br />
+              <Row>
+                <TabContent
+                  style={{ width: '100%' }}
+                  activeTab={this.state.activeTab}
+                >
+                  <TabPane tabId="1">
+                    <Row>
+                      <Col>
+                        <Card>
+                          <CardImg
+                            top
+                            width="100%"
+                            src="https://loremflickr.com/320/240"
+                            alt="Card image cap"
+                          />
+                          <CardBody>
+                            <CardTitle>Card title</CardTitle>
+                            <CardSubtitle>Card subtitle</CardSubtitle>
+                            <CardText>
+                              Some quick example text to build on the card title
+                              and make up the bulk of the card's content.
+                            </CardText>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                      <Col>
+                        <Card>
+                          <CardImg
+                            top
+                            width="100%"
+                            src="https://loremflickr.com/320/240/paris"
+                            alt="Card image cap"
+                          />
+                          <CardBody>
+                            <CardTitle>Card title</CardTitle>
+                            <CardSubtitle>Card subtitle</CardSubtitle>
+                            <CardText>
+                              Some quick example text to build on the card title
+                              and make up the bulk of the card's content.
+                            </CardText>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                      <Col>
+                        <Card>
+                          <CardImg
+                            top
+                            width="100%"
+                            src="https://loremflickr.com/320/240/brazil"
+                            alt="Card image cap"
+                          />
+                          <CardBody>
+                            <CardTitle>Card title</CardTitle>
+                            <CardSubtitle>Card subtitle</CardSubtitle>
+                            <CardText>
+                              Some quick example text to build on the card title
+                              and make up the bulk of the card's content.
+                            </CardText>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </TabPane>
+                  <TabPane tabId="2">
+                    <Row>
+                      <Col>
+                        <Card>
+                          <CardImg
+                            top
+                            width="100%"
+                            src="https://loremflickr.com/320/240/dog"
+                            alt="Card image cap"
+                          />
+                          <CardBody>
+                            <CardTitle>Card title</CardTitle>
+                            <CardSubtitle>Card subtitle</CardSubtitle>
+                            <CardText>
+                              Some quick example text to build on the card title
+                              and make up the bulk of the card's content.
+                            </CardText>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                      <Col>
+                        <Card>
+                          <CardImg
+                            top
+                            width="100%"
+                            src="https://loremflickr.com/320/240/cat"
+                            alt="Card image cap"
+                          />
+                          <CardBody>
+                            <CardTitle>Card title</CardTitle>
+                            <CardSubtitle>Card subtitle</CardSubtitle>
+                            <CardText>
+                              Some quick example text to build on the card title
+                              and make up the bulk of the card's content.
+                            </CardText>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                      <Col>
+                        <Card>
+                          <CardImg
+                            top
+                            width="100%"
+                            src="https://loremflickr.com/320/240/rio"
+                            alt="Card image cap"
+                          />
+                          <CardBody>
+                            <CardTitle>Card title</CardTitle>
+                            <CardSubtitle>Card subtitle</CardSubtitle>
+                            <CardText>
+                              Some quick example text to build on the card title
+                              and make up the bulk of the card's content.
+                            </CardText>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </TabPane>
+                  <TabPane tabId="3">
+                    <Row>
+                      <Col>
+                        <Card>
+                          <CardBody>
+                            <Form onSubmit={this.handleSubmit}>
+                              <FormGroup>
+                                <Label
+                                  style={{
+                                    fontSize: '18px',
+                                    fontWeight: 'bold'
+                                  }}
+                                  for="Name"
+                                >
+                                  Name
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="editname"
+                                  onChange={this.handleChange}
+                                  value={this.state.editname}
+                                />
+                                {formError.name !== '' &&
+                                  this.state.showErrorMessage && (
+                                    <span style={{ color: 'red' }}>
+                                      {formError.name}
+                                    </span>
+                                  )}
+                              </FormGroup>
+                              <FormGroup>
+                                <Label
+                                  style={{
+                                    fontSize: '18px',
+                                    fontWeight: 'bold'
+                                  }}
+                                  for="Description"
+                                >
+                                  Description
+                                </Label>
+                                <textarea
+                                  style={{ width: '100%' }}
+                                  name="editdescription"
+                                  onChange={this.handleChange}
+                                  value={this.state.editdescription}
+                                />
+                              </FormGroup>
+                              <FormGroup>
+                                <Label
+                                  style={{
+                                    fontSize: '18px',
+                                    fontWeight: 'bold'
+                                  }}
+                                  for="time"
+                                >
+                                  Time
+                                </Label>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between'
+                                  }}
+                                >
+                                  <div style={{ width: '45%' }}>
+                                    <Label for="Published">From</Label>
+                                    <div className="input-calendar">
+                                      <DatePicker
+                                        selected={this.state.editpublishedOn}
+                                        onChange={this.handleChangeDatePublishPicker.bind(
+                                          this
+                                        )}
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={15}
+                                        dateFormat="MMMM d, yyyy h:mm aa"
+                                        timeCaption="time"
+                                      />
+                                    </div>
+
+                                    {formError.publishedOn !== '' &&
+                                      this.state.showErrorMessage && (
+                                        <span style={{ color: 'red' }}>
+                                          {formError.publishedOn}
+                                        </span>
+                                      )}
+                                  </div>
+                                  <div style={{ width: '45%' }}>
+                                    <Label for="Deadline">To</Label>
+                                    <div className="input-calendar">
+                                      <DatePicker
+                                        selected={this.state.editdeadline}
+                                        onChange={this.handleChangeDateDeadlinePicker.bind(
+                                          this
+                                        )}
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={15}
+                                        dateFormat="MMMM d, yyyy h:mm aa"
+                                        timeCaption="time"
+                                      />
+                                    </div>
+                                    {formError.deadline !== '' &&
+                                      this.state.showErrorMessage && (
+                                        <span style={{ color: 'red' }}>
+                                          {formError.deadline}
+                                        </span>
+                                      )}
+                                  </div>
+                                </div>
+                              </FormGroup>
+                              <FormGroup
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between'
+                                }}
+                              >
+                                <div style={{ width: '45%' }}>
                                   <Label
                                     style={{
                                       fontSize: '18px',
                                       fontWeight: 'bold'
                                     }}
-                                    for="Name"
+                                    for="Address"
                                   >
-                                    Name
+                                    Address
+                                  </Label>
+                                  <Input
+                                    type="select"
+                                    name="editaddress"
+                                    value={this.state.editaddress}
+                                    onChange={this.handleChange}
+                                  >
+                                    <option>453-455 Hoang Dieu</option>
+                                    <option>117 Nguyen Huu Tho</option>
+                                  </Input>
+                                </div>
+                                <div style={{ width: '45%' }}>
+                                  <Label
+                                    style={{
+                                      fontSize: '18px',
+                                      fontWeight: 'bold'
+                                    }}
+                                    for="Category"
+                                  >
+                                    Category
+                                  </Label>
+                                  <Input
+                                    type="select"
+                                    name="editcategory"
+                                    value={this.state.editcategory}
+                                    onChange={this.handleChange}
+                                  >
+                                    <option>Internship</option>
+                                    <option>Engineer</option>
+                                  </Input>
+                                </div>
+                              </FormGroup>
+                              <FormGroup
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between'
+                                }}
+                              >
+                                <div style={{ width: '45%' }}>
+                                  <Label
+                                    style={{
+                                      fontSize: '18px',
+                                      fontWeight: 'bold'
+                                    }}
+                                    for="Position"
+                                  >
+                                    Position
                                   </Label>
                                   <Input
                                     type="text"
-                                    name="editname"
+                                    name="editposition"
                                     onChange={this.handleChange}
-                                    value={this.state.editname}
+                                    value={this.state.editposition}
                                   />
-                                  {formError.name !== '' &&
+                                  {formError.position !== '' &&
                                     this.state.showErrorMessage && (
                                       <span style={{ color: 'red' }}>
-                                        {formError.name}
+                                        {formError.position}
                                       </span>
                                     )}
-                                </FormGroup>
-                                <FormGroup>
+                                </div>
+                                <div style={{ width: '45%' }}>
                                   <Label
                                     style={{
                                       fontSize: '18px',
                                       fontWeight: 'bold'
                                     }}
-                                    for="Description"
+                                    for="Status"
                                   >
-                                    Description
+                                    Status
                                   </Label>
-                                  <textarea
-                                    style={{ width: '100%' }}
-                                    name="editdescription"
+                                  <Input
+                                    type="select"
+                                    name="editstatus"
+                                    value={this.state.editstatus}
                                     onChange={this.handleChange}
-                                    value={this.state.editdescription}
-                                  />
-                                </FormGroup>
-                                <FormGroup>
+                                  >
+                                    <option>Full-time</option>
+                                    <option>Part-time</option>
+                                  </Input>
+                                </div>
+                              </FormGroup>
+                              <FormGroup>
+                                <Label
+                                  style={{
+                                    fontSize: '18px',
+                                    fontWeight: 'bold'
+                                  }}
+                                  for="Salary"
+                                >
+                                  Salary
+                                </Label>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between'
+                                  }}
+                                >
+                                  <div style={{ width: '45%' }}>
+                                    <Label for="SalaryBegin">From</Label>
+                                    <InputGroup>
+                                      <Input
+                                        type="number"
+                                        name="editsalaryBegin"
+                                        onChange={this.handleChange}
+                                        value={this.state.editsalaryBegin}
+                                        onKeyPress={this.handlePossitiveNumber.bind(
+                                          this
+                                        )}
+                                      />
+                                      <InputGroupAddon addonType="append">
+                                        <InputGroupText
+                                          style={{ marginTop: '-1px' }}
+                                        >
+                                          $
+                                        </InputGroupText>
+                                      </InputGroupAddon>
+                                    </InputGroup>
+                                    {formError.salaryBegin !== '' &&
+                                      this.state.showErrorMessage && (
+                                        <span style={{ color: 'red' }}>
+                                          {formError.salaryBegin}
+                                        </span>
+                                      )}
+                                  </div>
+                                  <div style={{ width: '45%' }}>
+                                    <Label for="SalaryEnd">To</Label>
+                                    <InputGroup>
+                                      <Input
+                                        type="number"
+                                        name="editsalaryEnd"
+                                        onChange={this.handleChange}
+                                        value={this.state.editsalaryEnd}
+                                        onKeyPress={this.handlePossitiveNumber.bind(
+                                          this
+                                        )}
+                                      />
+                                      <InputGroupAddon addonType="append">
+                                        <InputGroupText
+                                          style={{ marginTop: '-1px' }}
+                                        >
+                                          $
+                                        </InputGroupText>
+                                      </InputGroupAddon>
+                                    </InputGroup>
+                                    {formError.salaryEnd !== '' &&
+                                      this.state.showErrorMessage && (
+                                        <span style={{ color: 'red' }}>
+                                          {formError.salaryEnd}
+                                        </span>
+                                      )}
+                                  </div>
+                                </div>
+                              </FormGroup>
+                              <FormGroup
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between'
+                                }}
+                              >
+                                <div style={{ width: '45%' }}>
                                   <Label
                                     style={{
                                       fontSize: '18px',
                                       fontWeight: 'bold'
                                     }}
-                                    for="time"
+                                    for="Status"
                                   >
-                                    Time
+                                    Experience
                                   </Label>
-                                  <div
-                                    style={{
-                                      display: 'flex',
-                                      justifyContent: 'space-between'
-                                    }}
+                                  <Input
+                                    type="select"
+                                    name="editexperience"
+                                    value={this.state.editexperience}
+                                    onChange={this.handleChange}
                                   >
-                                    <div style={{ width: '45%' }}>
-                                      <Label for="Published">From</Label>
-                                      <div className="input-calendar">
-                                        <DatePicker
-                                          selected={this.state.editpublishedOn}
-                                          onChange={this.handleChangeDatePublishPicker.bind(
-                                            this
-                                          )}
-                                          showTimeSelect
-                                          timeFormat="HH:mm"
-                                          timeIntervals={15}
-                                          dateFormat="MMMM d, yyyy h:mm aa"
-                                          timeCaption="time"
-                                        />
-                                      </div>
-
-                                      {formError.publishedOn !== '' &&
-                                        this.state.showErrorMessage && (
-                                          <span style={{ color: 'red' }}>
-                                            {formError.publishedOn}
-                                          </span>
-                                        )}
-                                    </div>
-                                    <div style={{ width: '45%' }}>
-                                      <Label for="Deadline">To</Label>
-                                      <div className="input-calendar">
-                                        <DatePicker
-                                          selected={this.state.editdeadline}
-                                          onChange={this.handleChangeDateDeadlinePicker.bind(
-                                            this
-                                          )}
-                                          showTimeSelect
-                                          timeFormat="HH:mm"
-                                          timeIntervals={15}
-                                          dateFormat="MMMM d, yyyy h:mm aa"
-                                          timeCaption="time"
-                                        />
-                                      </div>
-                                      {formError.deadline !== '' &&
-                                        this.state.showErrorMessage && (
-                                          <span style={{ color: 'red' }}>
-                                            {formError.deadline}
-                                          </span>
-                                        )}
-                                    </div>
-                                  </div>
-                                </FormGroup>
-                                <FormGroup
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                  }}
-                                >
-                                  <div style={{ width: '45%' }}>
-                                    <Label
-                                      style={{
-                                        fontSize: '18px',
-                                        fontWeight: 'bold'
-                                      }}
-                                      for="Address"
-                                    >
-                                      Address
-                                    </Label>
-                                    <Input
-                                      type="select"
-                                      name="editaddress"
-                                      value={this.state.editaddress}
-                                      onChange={this.handleChange}
-                                    >
-                                      <option>453-455 Hoang Dieu</option>
-                                      <option>117 Nguyen Huu Tho</option>
-                                    </Input>
-                                  </div>
-                                  <div style={{ width: '45%' }}>
-                                    <Label
-                                      style={{
-                                        fontSize: '18px',
-                                        fontWeight: 'bold'
-                                      }}
-                                      for="Category"
-                                    >
-                                      Category
-                                    </Label>
-                                    <Input
-                                      type="select"
-                                      name="editcategory"
-                                      value={this.state.editcategory}
-                                      onChange={this.handleChange}
-                                    >
-                                      <option>Internship</option>
-                                      <option>Engineer</option>
-                                    </Input>
-                                  </div>
-                                </FormGroup>
-                                <FormGroup
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                  }}
-                                >
-                                  <div style={{ width: '45%' }}>
-                                    <Label
-                                      style={{
-                                        fontSize: '18px',
-                                        fontWeight: 'bold'
-                                      }}
-                                      for="Position"
-                                    >
-                                      Position
-                                    </Label>
-                                    <Input
-                                      type="text"
-                                      name="editposition"
-                                      onChange={this.handleChange}
-                                      value={this.state.editposition}
-                                    />
-                                    {formError.position !== '' &&
-                                      this.state.showErrorMessage && (
-                                        <span style={{ color: 'red' }}>
-                                          {formError.position}
-                                        </span>
-                                      )}
-                                  </div>
-                                  <div style={{ width: '45%' }}>
-                                    <Label
-                                      style={{
-                                        fontSize: '18px',
-                                        fontWeight: 'bold'
-                                      }}
-                                      for="Status"
-                                    >
-                                      Status
-                                    </Label>
-                                    <Input
-                                      type="select"
-                                      name="editstatus"
-                                      value={this.state.editstatus}
-                                      onChange={this.handleChange}
-                                    >
-                                      <option>Full-time</option>
-                                      <option>Part-time</option>
-                                    </Input>
-                                  </div>
-                                </FormGroup>
-                                <FormGroup>
+                                    <option>1 year</option>
+                                    <option>2 years</option>
+                                    <option>3 years</option>
+                                    <option>4 years</option>
+                                    <option>5 years</option>
+                                    <option>More than 5 years</option>
+                                  </Input>
+                                </div>
+                                <div style={{ width: '45%' }}>
                                   <Label
                                     style={{
                                       fontSize: '18px',
                                       fontWeight: 'bold'
                                     }}
-                                    for="Salary"
+                                    for="Amount"
                                   >
-                                    Salary
+                                    Amount
                                   </Label>
-                                  <div
-                                    style={{
-                                      display: 'flex',
-                                      justifyContent: 'space-between'
-                                    }}
-                                  >
-                                    <div style={{ width: '45%' }}>
-                                      <Label for="SalaryBegin">From</Label>
-                                      <InputGroup>
-                                        <Input
-                                          type="number"
-                                          name="editsalaryBegin"
-                                          onChange={this.handleChange}
-                                          value={this.state.editsalaryBegin}
-                                          onKeyPress={this.handlePossitiveNumber.bind(
-                                            this
-                                          )}
-                                        />
-                                        <InputGroupAddon addonType="append">
-                                          <InputGroupText
-                                            style={{ marginTop: '-1px' }}
-                                          >
-                                            $
-                                          </InputGroupText>
-                                        </InputGroupAddon>
-                                      </InputGroup>
-                                      {formError.salaryBegin !== '' &&
-                                        this.state.showErrorMessage && (
-                                          <span style={{ color: 'red' }}>
-                                            {formError.salaryBegin}
-                                          </span>
-                                        )}
-                                    </div>
-                                    <div style={{ width: '45%' }}>
-                                      <Label for="SalaryEnd">To</Label>
-                                      <InputGroup>
-                                        <Input
-                                          type="number"
-                                          name="editsalaryEnd"
-                                          onChange={this.handleChange}
-                                          value={this.state.editsalaryEnd}
-                                          onKeyPress={this.handlePossitiveNumber.bind(
-                                            this
-                                          )}
-                                        />
-                                        <InputGroupAddon addonType="append">
-                                          <InputGroupText
-                                            style={{ marginTop: '-1px' }}
-                                          >
-                                            $
-                                          </InputGroupText>
-                                        </InputGroupAddon>
-                                      </InputGroup>
-                                      {formError.salaryEnd !== '' &&
-                                        this.state.showErrorMessage && (
-                                          <span style={{ color: 'red' }}>
-                                            {formError.salaryEnd}
-                                          </span>
-                                        )}
-                                    </div>
-                                  </div>
-                                </FormGroup>
-                                <FormGroup
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                  }}
-                                >
-                                  <div style={{ width: '45%' }}>
-                                    <Label
-                                      style={{
-                                        fontSize: '18px',
-                                        fontWeight: 'bold'
-                                      }}
-                                      for="Status"
-                                    >
-                                      Experience
-                                    </Label>
-                                    <Input
-                                      type="select"
-                                      name="editexperience"
-                                      value={this.state.editexperience}
-                                      onChange={this.handleChange}
-                                    >
-                                      <option>1 year</option>
-                                      <option>2 years</option>
-                                      <option>3 years</option>
-                                      <option>4 years</option>
-                                      <option>5 years</option>
-                                      <option>More than 5 years</option>
-                                    </Input>
-                                  </div>
-                                  <div style={{ width: '45%' }}>
-                                    <Label
-                                      style={{
-                                        fontSize: '18px',
-                                        fontWeight: 'bold'
-                                      }}
-                                      for="Amount"
-                                    >
-                                      Amount
-                                    </Label>
-                                    <Input
-                                      type="number"
-                                      name="editamount"
-                                      onChange={this.handleChange}
-                                      value={this.state.editamount}
-                                      onKeyPress={this.handlePossitiveNumber.bind(
-                                        this
-                                      )}
-                                    />
-                                    {formError.amount !== '' &&
-                                      this.state.showErrorMessage && (
-                                        <span style={{ color: 'red' }}>
-                                          {formError.amount}
-                                        </span>
-                                      )}
-                                  </div>
-                                </FormGroup>
-                                <br />
-                                <FormGroup
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'flex-end'
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      width: '180px',
-                                      display: 'flex',
-                                      justifyContent: 'space-between'
-                                    }}
-                                  >
-                                    {formError.name == '' &&
-                                    formError.position == '' &&
-                                    formError.amount == '' &&
-                                    formError.salaryBegin == '' &&
-                                    formError.salaryEnd == '' ? (
-                                      <Button
-                                        color="success"
-                                        onClick={this.handleSubmit}
-                                      >
-                                        Submit
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        color="success"
-                                        onClick={this.handleErrorMessage}
-                                      >
-                                        Submit
-                                      </Button>
+                                  <Input
+                                    type="number"
+                                    name="editamount"
+                                    onChange={this.handleChange}
+                                    value={this.state.editamount}
+                                    onKeyPress={this.handlePossitiveNumber.bind(
+                                      this
                                     )}
+                                  />
+                                  {formError.amount !== '' &&
+                                    this.state.showErrorMessage && (
+                                      <span style={{ color: 'red' }}>
+                                        {formError.amount}
+                                      </span>
+                                    )}
+                                </div>
+                              </FormGroup>
+                              <br />
+                              <FormGroup
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'flex-end'
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    width: '180px',
+                                    display: 'flex',
+                                    justifyContent: 'space-between'
+                                  }}
+                                >
+                                  {formError.name == '' &&
+                                  formError.position == '' &&
+                                  formError.amount == '' &&
+                                  formError.salaryBegin == '' &&
+                                  formError.salaryEnd == '' ? (
                                     <Button
-                                      onClick={() => this.backToPreviousPage()}
-                                      color="secondary"
+                                      color="success"
+                                      onClick={this.handleSubmit}
                                     >
-                                      Back
+                                      Submit
                                     </Button>
-                                  </div>
-                                </FormGroup>
-                              </Form>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </Row>
-                    </TabPane>
-                  </TabContent>
-                </Row>
-              </Container>
-              {this.state.activeTab !== '3' && (
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '20px'
-                  }}
+                                  ) : (
+                                    <Button
+                                      color="success"
+                                      onClick={this.handleErrorMessage}
+                                    >
+                                      Submit
+                                    </Button>
+                                  )}
+                                  <Button
+                                    onClick={() => this.backToPreviousPage()}
+                                    color="secondary"
+                                  >
+                                    Back
+                                  </Button>
+                                </div>
+                              </FormGroup>
+                            </Form>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </TabPane>
+                </TabContent>
+              </Row>
+            </Container>
+            {this.state.activeTab !== '3' && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: '20px'
+                }}
+              >
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
                 >
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
-                  >
-                    Back
-                  </Button>
-                </div>
-              )}
-            </CardBody>
-          )}
-        </Card>
-      </div>
+                  Back
+                </Button>
+              </div>
+            )}
+          </CardBody>
+        )}
+      </Card>
     );
   }
 }

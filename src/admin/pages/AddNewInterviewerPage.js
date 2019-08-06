@@ -7,7 +7,7 @@ import {
   ModalFooter,
   Card,
   CardBody,
-  CardTitle,
+  CardHeader,
   FormGroup,
   Form,
   Label,
@@ -259,10 +259,7 @@ export default class AddNewInterviewerPage extends Component {
       ? (errorTechnicalSkillMessage = 'Technical skill is required')
       : (errorTechnicalSkillMessage = '');
     return (
-      <div
-        className="profile-card"
-        style={{ marginBottom: '250px', width: '80%', marginTop: '3%' }}
-      >
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -319,156 +316,145 @@ export default class AddNewInterviewerPage extends Component {
 
         {/*--------Modal-Error-----*/}
 
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Create An New Interviewer
-            <Link to="/dashboard/interviewer">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          <CardBody>
-            <Form>
-              <Row>
-                <Col xs="4">
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      flexDirection: 'column'
-                    }}
-                  >
-                    <img
-                      src="/admin/img/Default-avatar.png"
-                      style={{ width: '200px' }}
-                    />
-                    <br />
-                    <Input
-                      type="file"
-                      name="image"
-                      style={{ padding: '5px' }}
-                      onChange={this.handleChange}
-                    />
-                  </div>
-                </Col>
-                <Col xs="8">
-                  <FormGroup>
-                    <Label className="title-input" for="exampleName">
-                      Fullname
-                    </Label>
-                    <Input
-                      type="text"
-                      name="fullname"
-                      onChange={this.handleChange}
-                    />
-                    {formError.fullname !== '' &&
-                      this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>
-                          {formError.fullname}
-                        </span>
-                      )}
-                  </FormGroup>
-                  <FormGroup>
-                    <Label className="title-input" for="exampleDescription">
-                      Email
-                    </Label>
-                    <Input
-                      type="email"
-                      name="email"
-                      onChange={this.handleChange}
-                    />
-                    {formError.email !== '' && this.state.showErrorMessage && (
-                      <span style={{ color: 'red' }}>{formError.email}</span>
-                    )}
-                  </FormGroup>
-                  <FormGroup>
-                    <Label className="title-input" for="exampleDescription">
-                      Phone
-                    </Label>
-                    <Input
-                      type="text"
-                      name="phone"
-                      onChange={this.handleChange}
-                    />
-                    {formError.phone !== '' && this.state.showErrorMessage && (
-                      <span style={{ color: 'red' }}>{formError.phone}</span>
-                    )}
-                  </FormGroup>
-                  <FormGroup>
-                    <Label className="title-input" for="exampleDescription">
-                      Address
-                    </Label>
-                    <Input
-                      type="text"
-                      name="address"
-                      onChange={this.handleChange}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Label className="title-input" for="exampleDescription">
-                        Technical skill{' '}
-                        <Button
-                          onClick={() => this.createTechnicalSkill()}
-                          style={{
-                            fontSize: '15px',
-                            padding: '0px 6px',
-                            marginLeft: '10px'
-                          }}
-                        >
-                          +
-                        </Button>
-                      </Label>
-                    </div>
-
-                    {this.state.arrayTechnicalSkillComponents.map(e => e)}
-
-                    {errorTechnicalSkillMessage != '' &&
-                      this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>
-                          {errorTechnicalSkillMessage}
-                        </span>
-                      )}
-                  </FormGroup>
-                </Col>
-              </Row>
-
-              <br />
-              <FormGroup
-                style={{ display: 'flex', justifyContent: 'flex-end' }}
-              >
+        <CardHeader className="card-header-custom">
+          Create a new interviewer
+        </CardHeader>
+        <CardBody>
+          <Form>
+            <Row>
+              <Col xs="4">
                 <div
                   style={{
                     display: 'flex',
-                    width: '180px',
-                    justifyContent: 'space-between'
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column'
                   }}
                 >
-                  {errorTechnicalSkillMessage == '' &&
-                  formError.fullname == '' &&
-                  formError.phone == '' &&
-                  formError.email == '' ? (
-                    <Button color="success" onClick={this.handleSubmit}>
-                      Submit
-                    </Button>
-                  ) : (
-                    <Button color="success" onClick={this.handleErrorMessage}>
-                      Submit
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
-                  >
-                    Back
-                  </Button>
+                  <img
+                    src="/admin/img/Default-avatar.png"
+                    style={{ width: '200px' }}
+                  />
+                  <br />
+                  <Input
+                    type="file"
+                    name="image"
+                    style={{ padding: '5px' }}
+                    onChange={this.handleChange}
+                  />
                 </div>
-              </FormGroup>
-            </Form>
-          </CardBody>
-        </Card>
-      </div>
+              </Col>
+              <Col xs="8">
+                <FormGroup>
+                  <Label className="title-input" for="exampleName">
+                    Fullname
+                  </Label>
+                  <Input
+                    type="text"
+                    name="fullname"
+                    onChange={this.handleChange}
+                  />
+                  {formError.fullname !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.fullname}</span>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="exampleDescription">
+                    Email
+                  </Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    onChange={this.handleChange}
+                  />
+                  {formError.email !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.email}</span>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="exampleDescription">
+                    Phone
+                  </Label>
+                  <Input
+                    type="text"
+                    name="phone"
+                    onChange={this.handleChange}
+                  />
+                  {formError.phone !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.phone}</span>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="exampleDescription">
+                    Address
+                  </Label>
+                  <Input
+                    type="text"
+                    name="address"
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Label className="title-input" for="exampleDescription">
+                      Technical skill{' '}
+                      <Button
+                        onClick={() => this.createTechnicalSkill()}
+                        style={{
+                          fontSize: '15px',
+                          padding: '0px 6px',
+                          marginLeft: '10px'
+                        }}
+                      >
+                        +
+                      </Button>
+                    </Label>
+                  </div>
+
+                  {this.state.arrayTechnicalSkillComponents.map(e => e)}
+
+                  {errorTechnicalSkillMessage != '' &&
+                    this.state.showErrorMessage && (
+                      <span style={{ color: 'red' }}>
+                        {errorTechnicalSkillMessage}
+                      </span>
+                    )}
+                </FormGroup>
+              </Col>
+            </Row>
+
+            <br />
+            <FormGroup style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '160px',
+                  justifyContent: 'space-between'
+                }}
+              >
+                {errorTechnicalSkillMessage == '' &&
+                formError.fullname == '' &&
+                formError.phone == '' &&
+                formError.email == '' ? (
+                  <Button color="success" onClick={this.handleSubmit}>
+                    Submit
+                  </Button>
+                ) : (
+                  <Button color="success" onClick={this.handleErrorMessage}>
+                    Submit
+                  </Button>
+                )}
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
+                >
+                  Back
+                </Button>
+              </div>
+            </FormGroup>
+          </Form>
+        </CardBody>
+      </Card>
     );
   }
 }

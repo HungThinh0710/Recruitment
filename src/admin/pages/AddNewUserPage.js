@@ -8,16 +8,16 @@ import {
   Label,
   Input,
   Card,
-  CardTitle,
+  CardHeader,
   CardBody,
   FormGroup,
   Form
 } from 'reactstrap';
-import CollapsePermission from '../components/CollapsePermission';
 import { MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { PulseLoader } from 'react-spinners';
 const animatedComponents = makeAnimated();
 /*-------Regex----------*/
 const nameRegex = /^[a-zA-Z0-9]+$/;
@@ -57,7 +57,9 @@ export default class AddNewUserPage extends Component {
       showErrorMessage: false,
       urlUser: '',
       optionRole: [],
-      selectedRoleOption: [{ id: 2, value: 'User', label: 'User' }]
+      selectedRoleOption: [{ id: 2, value: 'User', label: 'User' }],
+      loading: true,
+      checkRole: false
     };
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
@@ -73,7 +75,7 @@ export default class AddNewUserPage extends Component {
   async componentDidMount() {
     var { optionRole } = this.state;
     var url = 'https://api.enclavei3dev.tk/api/list-role';
-    const data = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         all: 1
@@ -83,14 +85,28 @@ export default class AddNewUserPage extends Component {
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json());
-    data.map(e => {
-      var role = { id: e.id, value: e.name, label: e.name };
-      optionRole.push(role);
-      return optionRole;
-    });
-    this.setState({
-      optionRole: optionRole
+    }).then(res => {
+      if (res.status === 403) {
+        this.setState({
+          checkRole: false,
+          loading: false
+        });
+      }
+      if (res.status === 200) {
+        res.json().then(response => {
+          var data = response;
+          data.map(e => {
+            var role = { id: e.id, value: e.name, label: e.name };
+            optionRole.push(role);
+            return optionRole;
+          });
+          this.setState({
+            optionRole: optionRole,
+            checkRole: true,
+            loading: false
+          });
+        });
+      }
     });
   }
 
@@ -273,25 +289,19 @@ export default class AddNewUserPage extends Component {
 
   render() {
     var i = 0;
-    const {
-      formError,
-      name,
-      fullname,
-      email,
-      phone,
-      password,
-      passwordConfirm,
-      urlUser
-    } = this.state;
+    const { formError, urlUser } = this.state;
     return (
-      <div className="profile-card" style={{ marginBottom: '150px' }}>
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -315,7 +325,10 @@ export default class AddNewUserPage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -341,147 +354,178 @@ export default class AddNewUserPage extends Component {
 
         {/*--------Modal-Error-----*/}
 
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Create A New User
-            <Link to="/dashboard/user">
-              <MdCancel />
-            </Link>
-          </CardTitle>
+        <CardHeader className="card-header-custom">
+          Create A New Role
+        </CardHeader>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <PulseLoader
+              sizeUnit={'px'}
+              size={15}
+              color={'#45b649'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
           <CardBody>
-            <Form onSubmit={this.handleSubmit}>
-              <FormGroup>
-                <Label className="title-input" for="Name">
-                  Username
-                </Label>
-                <Input type="text" name="name" onChange={this.handleChange} />
-                {formError.name !== '' && this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>{formError.name}</span>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input" for="Fullname">
-                  Fullname
-                </Label>
-                <Input
-                  type="text"
-                  name="fullname"
-                  onChange={this.handleChange}
-                />
-                {formError.fullname !== '' && this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>{formError.fullname}</span>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input" for="Email">
-                  Email
-                </Label>
-                <Input type="email" name="email" onChange={this.handleChange} />
-                {formError.email !== '' && this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>{formError.email}</span>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input" for="Phone">
-                  Phone
-                </Label>
-                <Input type="text" name="phone" onChange={this.handleChange} />
-                {formError.phone !== '' && this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>{formError.phone}</span>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input" for="Fullname">
-                  Address
-                </Label>
-                <Input
-                  type="text"
-                  name="address"
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input" for="Password">
-                  Password
-                </Label>
-                <Input
-                  type="password"
-                  name="password"
-                  onChange={this.handleChange}
-                />
-                {formError.password !== '' && this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>{formError.password}</span>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input" for="ConfirmPassword">
-                  Confirm Password
-                </Label>
-                <Input
-                  type="password"
-                  name="passwordConfirm"
-                  onChange={this.handleChange}
-                />
-                {formError.passwordConfirm !== '' &&
-                  this.state.showErrorMessage && (
-                    <span style={{ color: 'red' }}>
-                      {formError.passwordConfirm}
-                    </span>
+            {this.state.checkRole ? (
+              <Form onSubmit={this.handleSubmit}>
+                <FormGroup>
+                  <Label className="title-input" for="Name">
+                    Username
+                  </Label>
+                  <Input type="text" name="name" onChange={this.handleChange} />
+                  {formError.name !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.name}</span>
                   )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input">Roles</Label>
-                <Select
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  onChange={this.handleSelectRoleChange.bind(this)}
-                  defaultValue={this.state.selectedRoleOption}
-                  options={this.state.optionRole}
-                />
-                {!this.state.selectedRoleOption &&
-                  this.state.showErrorMessage && (
-                    <span style={{ color: 'red' }}>Roles are required</span>
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="Fullname">
+                    Fullname
+                  </Label>
+                  <Input
+                    type="text"
+                    name="fullname"
+                    onChange={this.handleChange}
+                  />
+                  {formError.fullname !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.fullname}</span>
                   )}
-              </FormGroup>
-              <FormGroup
-                style={{ display: 'flex', justifyContent: 'flex-end' }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    width: '180px',
-                    justifyContent: 'space-between'
-                  }}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="Email">
+                    Email
+                  </Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    onChange={this.handleChange}
+                  />
+                  {formError.email !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.email}</span>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="Phone">
+                    Phone
+                  </Label>
+                  <Input
+                    type="text"
+                    name="phone"
+                    onChange={this.handleChange}
+                  />
+                  {formError.phone !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.phone}</span>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="Fullname">
+                    Address
+                  </Label>
+                  <Input
+                    type="text"
+                    name="address"
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="Password">
+                    Password
+                  </Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    onChange={this.handleChange}
+                  />
+                  {formError.password !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.password}</span>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input" for="ConfirmPassword">
+                    Confirm Password
+                  </Label>
+                  <Input
+                    type="password"
+                    name="passwordConfirm"
+                    onChange={this.handleChange}
+                  />
+                  {formError.passwordConfirm !== '' &&
+                    this.state.showErrorMessage && (
+                      <span style={{ color: 'red' }}>
+                        {formError.passwordConfirm}
+                      </span>
+                    )}
+                </FormGroup>
+                <FormGroup>
+                  <Label className="title-input">Roles</Label>
+                  <Select
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    onChange={this.handleSelectRoleChange.bind(this)}
+                    defaultValue={this.state.selectedRoleOption}
+                    options={this.state.optionRole}
+                  />
+                  {!this.state.selectedRoleOption &&
+                    this.state.showErrorMessage && (
+                      <span style={{ color: 'red' }}>Roles are required</span>
+                    )}
+                </FormGroup>
+                <br />
+                <FormGroup
+                  style={{ display: 'flex', justifyContent: 'flex-end' }}
                 >
-                  {formError.name == '' &&
-                  formError.fullname == '' &&
-                  formError.email == '' &&
-                  formError.phone == '' &&
-                  formError.password == '' &&
-                  formError.passwordConfirm == '' &&
-                  this.state.selectedRoleOption ? (
-                    <Button color="success" onClick={this.handleSubmit}>
-                      Submit
-                    </Button>
-                  ) : (
-                    <Button color="success" onClick={this.handleErrorMessage}>
-                      Submit
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
+                  <div
+                    style={{
+                      display: 'flex',
+                      width: '160px',
+                      justifyContent: 'space-between'
+                    }}
                   >
-                    Back
-                  </Button>
-                </div>
-              </FormGroup>
-            </Form>
+                    {formError.name == '' &&
+                    formError.fullname == '' &&
+                    formError.email == '' &&
+                    formError.phone == '' &&
+                    formError.password == '' &&
+                    formError.passwordConfirm == '' &&
+                    this.state.selectedRoleOption ? (
+                      <Button color="success" onClick={this.handleSubmit}>
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button color="success" onClick={this.handleErrorMessage}>
+                        Submit
+                      </Button>
+                    )}
+                    <Button
+                      onClick={() => this.backToPreviousPage()}
+                      color="secondary"
+                    >
+                      Back
+                    </Button>
+                  </div>
+                </FormGroup>
+              </Form>
+            ) : (
+              <div>
+                <h3 style={{ color: 'red' }}>
+                  {' '}
+                  You don't have permission to access this page
+                </h3>
+              </div>
+            )}
           </CardBody>
-        </Card>
-      </div>
+        )}
+      </Card>
     );
   }
 }

@@ -14,6 +14,7 @@ import {
   InputGroup,
   Card,
   CardTitle,
+  CardHeader,
   CardBody
 } from 'reactstrap';
 import DatePicker from 'react-datepicker';
@@ -288,14 +289,17 @@ export default class AddNewJobPage extends Component {
     var i = 0;
     const { formError, urlJob } = this.state;
     return (
-      <div className="profile-card">
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="dashboard-modal-header"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -319,7 +323,10 @@ export default class AddNewJobPage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="dashboard-modal-header"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -345,312 +352,293 @@ export default class AddNewJobPage extends Component {
 
         {/*--------Modal-Error-----*/}
 
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Create A New Job
-            <Link to="/dashboard/job">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          <CardBody>
-            <Form onSubmit={this.handleSubmit}>
-              <FormGroup>
-                <Label
-                  style={{ fontSize: '18px', fontWeight: 'bold' }}
-                  for="Name"
-                >
-                  Name
-                </Label>
-                <Input type="text" name="name" onChange={this.handleChange} />
-                {formError.name !== '' && this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>{formError.name}</span>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Label
-                  style={{ fontSize: '18px', fontWeight: 'bold' }}
-                  for="Description"
-                >
-                  Description
-                </Label>
-                <textarea
-                  style={{ width: '100%' }}
-                  name="description"
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label
-                  style={{ fontSize: '18px', fontWeight: 'bold' }}
-                  for="time"
-                >
-                  Time
-                </Label>
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <div style={{ width: '45%' }}>
-                    <Label for="Published">From</Label>
-                    <div className="input-calendar">
-                      <DatePicker
-                        selected={this.state.publishedOn}
-                        onChange={this.handleChangeDatePublishPicker.bind(this)}
-                        showTimeSelect
-                        timeFormat="HH:mm"
-                        timeIntervals={15}
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        timeCaption="time"
-                      />
-                    </div>
-
-                    {formError.publishedOn !== '' &&
-                      this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>
-                          {formError.publishedOn}
-                        </span>
-                      )}
-                  </div>
-                  <div style={{ width: '45%' }}>
-                    <Label for="Deadline">To</Label>
-                    <div className="input-calendar">
-                      <DatePicker
-                        selected={this.state.deadline}
-                        onChange={this.handleChangeDateDeadlinePicker.bind(
-                          this
-                        )}
-                        showTimeSelect
-                        timeFormat="HH:mm"
-                        timeIntervals={15}
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        timeCaption="time"
-                      />
-                    </div>
-                    {formError.deadline !== '' &&
-                      this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>
-                          {formError.deadline}
-                        </span>
-                      )}
-                  </div>
-                </div>
-              </FormGroup>
-
-              <FormGroup
-                style={{ display: 'flex', justifyContent: 'space-between' }}
+        <CardHeader className="card-header-custom">Create A New Job</CardHeader>
+        <CardBody>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Label
+                style={{ fontSize: '18px', fontWeight: 'bold' }}
+                for="Name"
               >
-                <div style={{ width: '45%' }}>
-                  <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    for="Salary"
-                    for="Address"
-                  >
-                    Address
-                  </Label>
-                  <Input
-                    type="select"
-                    name="address"
-                    id="exampleSelect"
-                    onChange={this.handleChange}
-                  >
-                    <option>453-455 Hoang Dieu</option>
-                    <option>117 Nguyen Huu Tho</option>
-                  </Input>
-                </div>
-                <div style={{ width: '45%' }}>
-                  <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    for="Salary"
-                    for="Category"
-                  >
-                    Category
-                  </Label>
-                  <Input
-                    type="select"
-                    name="category"
-                    id="exampleSelect"
-                    onChange={this.handleChange}
-                  >
-                    <option>Internship</option>
-                    <option>Engineer</option>
-                  </Input>
-                </div>
-              </FormGroup>
-              <FormGroup />
-              <FormGroup
-                style={{ display: 'flex', justifyContent: 'space-between' }}
+                Name
+              </Label>
+              <Input type="text" name="name" onChange={this.handleChange} />
+              {formError.name !== '' && this.state.showErrorMessage && (
+                <span style={{ color: 'red' }}>{formError.name}</span>
+              )}
+            </FormGroup>
+            <FormGroup>
+              <Label
+                style={{ fontSize: '18px', fontWeight: 'bold' }}
+                for="Description"
               >
+                Description
+              </Label>
+              <textarea
+                style={{ width: '100%' }}
+                name="description"
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label
+                style={{ fontSize: '18px', fontWeight: 'bold' }}
+                for="time"
+              >
+                Time
+              </Label>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ width: '45%' }}>
-                  <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    for="Position"
-                  >
-                    Position
-                  </Label>
-                  <Input
-                    type="text"
-                    name="position"
-                    onChange={this.handleChange}
-                  />
-                  {formError.position !== '' && this.state.showErrorMessage && (
-                    <span style={{ color: 'red' }}>{formError.position}</span>
+                  <Label for="Published">From</Label>
+                  <div className="input-calendar">
+                    <DatePicker
+                      selected={this.state.publishedOn}
+                      onChange={this.handleChangeDatePublishPicker.bind(this)}
+                      showTimeSelect
+                      timeFormat="HH:mm"
+                      timeIntervals={15}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      timeCaption="time"
+                    />
+                  </div>
+
+                  {formError.publishedOn !== '' &&
+                    this.state.showErrorMessage && (
+                      <span style={{ color: 'red' }}>
+                        {formError.publishedOn}
+                      </span>
+                    )}
+                </div>
+                <div style={{ width: '45%' }}>
+                  <Label for="Deadline">To</Label>
+                  <div className="input-calendar">
+                    <DatePicker
+                      selected={this.state.deadline}
+                      onChange={this.handleChangeDateDeadlinePicker.bind(this)}
+                      showTimeSelect
+                      timeFormat="HH:mm"
+                      timeIntervals={15}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      timeCaption="time"
+                    />
+                  </div>
+                  {formError.deadline !== '' && this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>{formError.deadline}</span>
                   )}
                 </div>
-                <div style={{ width: '45%' }}>
-                  <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    for="Status"
-                  >
-                    Status
-                  </Label>
-                  <Input
-                    type="select"
-                    name="status"
-                    id="exampleSelect"
-                    onChange={this.handleChange}
-                  >
-                    <option>Full-time</option>
-                    <option>Part-time</option>
-                  </Input>
-                </div>
-              </FormGroup>
-              <FormGroup>
+              </div>
+            </FormGroup>
+
+            <FormGroup
+              style={{ display: 'flex', justifyContent: 'space-between' }}
+            >
+              <div style={{ width: '45%' }}>
                 <Label
                   style={{ fontSize: '18px', fontWeight: 'bold' }}
                   for="Salary"
+                  for="Address"
                 >
-                  Salary
+                  Address
                 </Label>
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                <Input
+                  type="select"
+                  name="address"
+                  id="exampleSelect"
+                  onChange={this.handleChange}
                 >
-                  <div style={{ width: '45%' }}>
-                    <Label for="SalaryBegin">From</Label>
-                    <InputGroup>
-                      <Input
-                        type="number"
-                        name="salaryBegin"
-                        onChange={this.handleChange}
-                        min="0"
-                        onKeyPress={this.handlePossitiveNumber.bind(this)}
-                      />
-                      <InputGroupAddon addonType="append">
-                        <InputGroupText style={{ marginTop: '-1px' }}>
-                          $
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                    {formError.salaryBegin !== '' &&
-                      this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>
-                          {formError.salaryBegin}
-                        </span>
-                      )}
-                  </div>
-                  <div style={{ width: '45%' }}>
-                    <Label for="SalaryEnd">To</Label>
-                    <InputGroup>
-                      <Input
-                        type="number"
-                        name="salaryEnd"
-                        onChange={this.handleChange}
-                        min="0"
-                        onKeyPress={this.handlePossitiveNumber.bind(this)}
-                      />
-                      <InputGroupAddon addonType="append">
-                        <InputGroupText style={{ marginTop: '-1px' }}>
-                          $
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                    {formError.salaryEnd !== '' &&
-                      this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>
-                          {formError.salaryEnd}
-                        </span>
-                      )}
-                  </div>
-                </div>
-              </FormGroup>
-              <FormGroup
-                style={{ display: 'flex', justifyContent: 'space-between' }}
+                  <option>453-455 Hoang Dieu</option>
+                  <option>117 Nguyen Huu Tho</option>
+                </Input>
+              </div>
+              <div style={{ width: '45%' }}>
+                <Label
+                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  for="Salary"
+                  for="Category"
+                >
+                  Category
+                </Label>
+                <Input
+                  type="select"
+                  name="category"
+                  id="exampleSelect"
+                  onChange={this.handleChange}
+                >
+                  <option>Internship</option>
+                  <option>Engineer</option>
+                </Input>
+              </div>
+            </FormGroup>
+            <FormGroup />
+            <FormGroup
+              style={{ display: 'flex', justifyContent: 'space-between' }}
+            >
+              <div style={{ width: '45%' }}>
+                <Label
+                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  for="Position"
+                >
+                  Position
+                </Label>
+                <Input
+                  type="text"
+                  name="position"
+                  onChange={this.handleChange}
+                />
+                {formError.position !== '' && this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>{formError.position}</span>
+                )}
+              </div>
+              <div style={{ width: '45%' }}>
+                <Label
+                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  for="Status"
+                >
+                  Status
+                </Label>
+                <Input
+                  type="select"
+                  name="status"
+                  id="exampleSelect"
+                  onChange={this.handleChange}
+                >
+                  <option>Full-time</option>
+                  <option>Part-time</option>
+                </Input>
+              </div>
+            </FormGroup>
+            <FormGroup>
+              <Label
+                style={{ fontSize: '18px', fontWeight: 'bold' }}
+                for="Salary"
               >
+                Salary
+              </Label>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ width: '45%' }}>
-                  <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    for="Status"
-                  >
-                    Experience
-                  </Label>
-                  <Input
-                    type="select"
-                    name="experience"
-                    id="exampleSelect"
-                    onChange={this.handleChange}
-                  >
-                    <option>1 year</option>
-                    <option>2 years</option>
-                    <option>3 years</option>
-                    <option>4 years</option>
-                    <option>5 years</option>
-                    <option>More than 5 years</option>
-                  </Input>
+                  <Label for="SalaryBegin">From</Label>
+                  <InputGroup>
+                    <Input
+                      type="number"
+                      name="salaryBegin"
+                      onChange={this.handleChange}
+                      min="0"
+                      onKeyPress={this.handlePossitiveNumber.bind(this)}
+                    />
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText style={{ marginTop: '-1px' }}>
+                        $
+                      </InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  {formError.salaryBegin !== '' &&
+                    this.state.showErrorMessage && (
+                      <span style={{ color: 'red' }}>
+                        {formError.salaryBegin}
+                      </span>
+                    )}
                 </div>
                 <div style={{ width: '45%' }}>
-                  <Label
-                    style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    for="Amount"
-                  >
-                    Amount
-                  </Label>
-                  <Input
-                    type="number"
-                    name="amount"
-                    onChange={this.handleChange}
-                    min="1"
-                    onKeyPress={this.handlePossitiveNumber.bind(this)}
-                  />
-                  {formError.amount !== '' && this.state.showErrorMessage && (
-                    <span style={{ color: 'red' }}>{formError.amount}</span>
-                  )}
+                  <Label for="SalaryEnd">To</Label>
+                  <InputGroup>
+                    <Input
+                      type="number"
+                      name="salaryEnd"
+                      onChange={this.handleChange}
+                      min="0"
+                      onKeyPress={this.handlePossitiveNumber.bind(this)}
+                    />
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText style={{ marginTop: '-1px' }}>
+                        $
+                      </InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  {formError.salaryEnd !== '' &&
+                    this.state.showErrorMessage && (
+                      <span style={{ color: 'red' }}>
+                        {formError.salaryEnd}
+                      </span>
+                    )}
                 </div>
-              </FormGroup>
+              </div>
+            </FormGroup>
+            <FormGroup
+              style={{ display: 'flex', justifyContent: 'space-between' }}
+            >
+              <div style={{ width: '45%' }}>
+                <Label
+                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  for="Status"
+                >
+                  Experience
+                </Label>
+                <Input
+                  type="select"
+                  name="experience"
+                  id="exampleSelect"
+                  onChange={this.handleChange}
+                >
+                  <option>1 year</option>
+                  <option>2 years</option>
+                  <option>3 years</option>
+                  <option>4 years</option>
+                  <option>5 years</option>
+                  <option>More than 5 years</option>
+                </Input>
+              </div>
+              <div style={{ width: '45%' }}>
+                <Label
+                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                  for="Amount"
+                >
+                  Amount
+                </Label>
+                <Input
+                  type="number"
+                  name="amount"
+                  onChange={this.handleChange}
+                  min="1"
+                  onKeyPress={this.handlePossitiveNumber.bind(this)}
+                />
+                {formError.amount !== '' && this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>{formError.amount}</span>
+                )}
+              </div>
+            </FormGroup>
 
-              <FormGroup
-                style={{ display: 'flex', justifyContent: 'flex-end' }}
+            <FormGroup style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '160px',
+                  justifyContent: 'space-between'
+                }}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                    width: '180px',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  {formError.name == '' &&
-                  formError.position == '' &&
-                  formError.amount == '' &&
-                  formError.salaryBegin == '' &&
-                  formError.salaryEnd == '' ? (
-                    <Button color="success" onClick={this.handleSubmit}>
-                      Submit
-                    </Button>
-                  ) : (
-                    <Button color="success" onClick={this.handleErrorMessage}>
-                      Submit
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
-                  >
-                    Back
+                {formError.name == '' &&
+                formError.position == '' &&
+                formError.amount == '' &&
+                formError.salaryBegin == '' &&
+                formError.salaryEnd == '' ? (
+                  <Button color="success" onClick={this.handleSubmit}>
+                    Submit
                   </Button>
-                </div>
-              </FormGroup>
-            </Form>
-          </CardBody>
-        </Card>
-      </div>
+                ) : (
+                  <Button color="success" onClick={this.handleErrorMessage}>
+                    Submit
+                  </Button>
+                )}
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
+                >
+                  Back
+                </Button>
+              </div>
+            </FormGroup>
+          </Form>
+        </CardBody>
+      </Card>
     );
   }
 }

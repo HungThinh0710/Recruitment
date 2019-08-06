@@ -3,7 +3,7 @@ import {
   Button,
   Card,
   CardBody,
-  CardTitle,
+  CardHeader,
   Form,
   FormGroup,
   Label,
@@ -127,7 +127,7 @@ export default class AddNewFormatPage extends Component {
   render() {
     var i = 0;
     return (
-      <div className="profile-card">
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -140,7 +140,7 @@ export default class AddNewFormatPage extends Component {
           <ModalBody>
             <Link to={this.state.urlFormat}>
               <span style={{ color: '#45b649' }}>
-                Successfully! Click to see the detail of the new format
+                Successfully! Click to see the detail of the new template
               </span>
             </Link>
           </ModalBody>
@@ -192,7 +192,7 @@ export default class AddNewFormatPage extends Component {
           className={this.props.className}
         >
           <ModalHeader toggle={this.toggleModalPreview}>
-            Name: {this.state.title}
+            Title: {this.state.title}
           </ModalHeader>
           <ModalBody>{renderHTML(this.state.content)}</ModalBody>
           <ModalFooter>
@@ -203,94 +203,69 @@ export default class AddNewFormatPage extends Component {
         </Modal>
         {/*--------Modal-Preview-----*/}
 
-        <Card className="card-body">
-          <CardTitle
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '35px'
-            }}
-          >
-            <MdCancel className="hidden" />
-            <span
+        <CardHeader className="card-header-custom">
+          Create a new template
+        </CardHeader>
+        <CardBody>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Label for="Name">Name</Label>
+              <Input
+                className="input-title"
+                type="text"
+                name="title"
+                onChange={this.handleChange}
+              />
+              {this.state.errorTitle !== '' && this.state.showErrorMessage && (
+                <span style={{ color: 'red' }}>{this.state.errorTitle}</span>
+              )}
+            </FormGroup>
+            <FormGroup>
+              <Label for="Content">Content</Label>
+              <ReactQuill
+                onChange={this.handleEditorChange}
+                value={this.state.content}
+                modules={AddNewFormatPage.modules}
+                formats={AddNewFormatPage.formats}
+                bounds={'.app'}
+              />
+            </FormGroup>
+            <FormGroup
               style={{
-                color: '#45b649',
-                fontWeight: 'bold',
-                fontSize: '45px'
+                display: 'flex',
+                justifyContent: 'flex-end'
               }}
             >
-              Create New Format
-            </span>
-            <div className="icon-cancle">
-              <Link to="/dashboard/format">
-                <MdCancel />
-              </Link>
-            </div>
-          </CardTitle>
-          <CardBody>
-            <Form onSubmit={this.handleSubmit}>
-              <FormGroup>
-                <Label for="Name">Name</Label>
-                <Input
-                  className="input-title"
-                  type="text"
-                  name="title"
-                  onChange={this.handleChange}
-                />
-                {this.state.errorTitle !== '' &&
-                  this.state.showErrorMessage && (
-                    <span style={{ color: 'red' }}>
-                      {this.state.errorTitle}
-                    </span>
-                  )}
-              </FormGroup>
-              <FormGroup>
-                <Label for="Content">Content</Label>
-                <ReactQuill
-                  onChange={this.handleEditorChange}
-                  value={this.state.content}
-                  modules={AddNewFormatPage.modules}
-                  formats={AddNewFormatPage.formats}
-                  bounds={'.app'}
-                />
-              </FormGroup>
-              <FormGroup
+              <div
                 style={{
                   display: 'flex',
-                  justifyContent: 'flex-end'
+                  justifyContent: 'space-between',
+                  width: '260px'
                 }}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '300px'
-                  }}
-                >
-                  {this.state.errorTitle == '' ? (
-                    <Button color="success" onClick={this.handleSubmit}>
-                      Submit
-                    </Button>
-                  ) : (
-                    <Button
-                      color="success"
-                      onClick={this.handleErrorMessage.bind(this)}
-                    >
-                      Submit
-                    </Button>
-                  )}
-                  <Button color="primary" onClick={this.toggleModalPreview}>
-                    Preview
+                {this.state.errorTitle == '' ? (
+                  <Button color="success" onClick={this.handleSubmit}>
+                    Submit
                   </Button>
-                  <Link to="/dashboard/format">
-                    <Button>Back</Button>
-                  </Link>
-                </div>
-              </FormGroup>
-            </Form>
-          </CardBody>
-        </Card>
-      </div>
+                ) : (
+                  <Button
+                    color="success"
+                    onClick={this.handleErrorMessage.bind(this)}
+                  >
+                    Submit
+                  </Button>
+                )}
+                <Button color="primary" onClick={this.toggleModalPreview}>
+                  Preview
+                </Button>
+                <Link to="/dashboard/format">
+                  <Button>Back</Button>
+                </Link>
+              </div>
+            </FormGroup>
+          </Form>
+        </CardBody>
+      </Card>
     );
   }
 }

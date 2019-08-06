@@ -47,7 +47,7 @@ export default class ModalRemoveItem extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggle}>
+          <ModalHeader toggle={this.toggle} className="card-header-custom">
             Are you sure to delete {this.props.itemName}?
           </ModalHeader>
           <ModalFooter>

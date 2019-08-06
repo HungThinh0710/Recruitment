@@ -4,7 +4,7 @@ import { MDBDataTable } from 'mdbreact';
 import ModalEditRole from '../components/ModalEditRole';
 import { MdCancel } from 'react-icons/md';
 import './RoleDetail.css';
-import { ClipLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 const styleFont = {
   fontSize: '200%',
@@ -15,7 +15,7 @@ const styleCard = {
   width: '80%',
   marginTop: '5%',
   alignSelf: 'center',
-  marginBottom: '8%'
+  marginBottom: '300px'
 };
 export default class RoleDetail extends Component {
   constructor(props) {
@@ -44,7 +44,8 @@ export default class RoleDetail extends Component {
         }
       ],
       rows: [],
-      dataPermissions: ''
+      dataPermissions: '',
+      checkRole: false
     };
   }
   componentWillMount() {
@@ -58,13 +59,7 @@ export default class RoleDetail extends Component {
     var listRoles = [];
     var url = 'https://api.enclavei3dev.tk/api/role/' + id;
     var url2 = 'https://api.enclavei3dev.tk/api/permission';
-    const data = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
+    var data = null;
     const data2 = await fetch(url2, {
       method: 'POST',
       body: JSON.stringify({
@@ -76,25 +71,46 @@ export default class RoleDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    if (data.message !== 'Unauthenticated.') {
-      data.permissions.forEach(function(e) {
-        delete e.id;
-        delete e.created_at;
-        delete e.updated_at;
-        delete e.pivot;
-        i++;
-        e = Object.assign({ index: i }, e, { description: '' });
-        listRoles.push(e);
-      });
-      setTimeout(() => {
+
+    fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      if (res.status === 403) {
         this.setState({
-          name: data.name,
-          rows: listRoles,
-          loading: false,
-          dataPermissions: data2
+          checkRole: false,
+          loading: false
         });
-      }, 500);
-    }
+      }
+      if (res.status === 200) {
+        res.json().then(response => {
+          data = response;
+          if (data.message !== 'Unauthenticated.') {
+            data.permissions.forEach(function(e) {
+              delete e.id;
+              delete e.created_at;
+              delete e.updated_at;
+              delete e.pivot;
+              i++;
+              e = Object.assign({ index: i }, e, { description: '' });
+              listRoles.push(e);
+            });
+            setTimeout(() => {
+              this.setState({
+                name: data.name,
+                rows: listRoles,
+                loading: false,
+                dataPermissions: data2,
+                checkRole: true
+              });
+            }, 500);
+          }
+        });
+      }
+    });
   }
 
   backToPreviousPage = () => {
@@ -118,14 +134,9 @@ export default class RoleDetail extends Component {
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {this.state.loading ? (
-          <Card style={styleCard}>
-            <CardHeader style={styleFont}>
+          <Card className="dashboard-card">
+            <CardHeader className="card-header-custom">
               Role's Information
-              <div className="button-exit">
-                <Link to="/dashboard/role">
-                  <MdCancel />
-                </Link>
-              </div>
             </CardHeader>
             <div
               style={{
@@ -136,43 +147,60 @@ export default class RoleDetail extends Component {
               }}
               className="sweet-loading"
             >
-              <ClipLoader
+              <PulseLoader
                 sizeUnit={'px'}
-                size={200}
+                size={15}
                 color={'#45b649'}
                 loading={this.state.loading}
               />
             </div>
           </Card>
         ) : (
-          <Card style={styleCard}>
-            <CardHeader style={styleFont}>
-              {this.state.name}'s Information
-              <div className="button-exit">
-                <Link to="/dashboard/role">
-                  <MdCancel />
-                </Link>
+          <Card className="dashboard-card">
+            {this.state.checkRole ? (
+              <div>
+                <CardHeader className="card-header-custom">
+                  {this.state.name}'s Information
+                </CardHeader>
+
+                <CardBody>
+                  <ModalEditRole
+                    icon
+                    dataPermissions={this.state.dataPermissions}
+                    id={id}
+                    color="success"
+                    getUpdate={this.getUpdate.bind(this)}
+                  />
+                  <br />
+                  <MDBDataTable striped bordered hover data={this.state} />
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button
+                      onClick={() => this.backToPreviousPage()}
+                      color="secondary"
+                    >
+                      Back
+                    </Button>
+                  </div>
+                </CardBody>
               </div>
-            </CardHeader>
-            <CardBody>
-              <ModalEditRole
-                icon
-                dataPermissions={this.state.dataPermissions}
-                id={id}
-                color="success"
-                getUpdate={this.getUpdate.bind(this)}
-              />
-              <br />
-              <MDBDataTable striped bordered hover data={this.state} />
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button
-                  onClick={() => this.backToPreviousPage()}
-                  color="secondary"
+            ) : (
+              <div>
+                <CardHeader
+                  className="card-header-custom"
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
                 >
-                  Back
-                </Button>
+                  Role's Information
+                </CardHeader>
+                <CardBody>
+                  <div>
+                    <h3 style={{ color: 'red' }}>
+                      {' '}
+                      You don't have permission to access this page
+                    </h3>
+                  </div>
+                </CardBody>
               </div>
-            </CardBody>
+            )}
           </Card>
         )}
       </div>

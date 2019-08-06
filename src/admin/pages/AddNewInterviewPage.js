@@ -7,7 +7,7 @@ import {
   ModalFooter,
   Card,
   CardBody,
-  CardTitle,
+  CardHeader,
   FormGroup,
   Form,
   Label,
@@ -210,17 +210,17 @@ export default class AddNewInterviewPage extends Component {
     var i = 0;
     const { errorRoleMessage, urlInterview } = this.state;
     return (
-      <div
-        className="profile-card"
-        style={{ marginBottom: '250px', width: '90%', marginTop: '3%' }}
-      >
+      <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -244,7 +244,10 @@ export default class AddNewInterviewPage extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -270,104 +273,92 @@ export default class AddNewInterviewPage extends Component {
 
         {/*--------Modal-Error-----*/}
 
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Create An New Interview
-            <Link to="/dashboard/role">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          <CardBody>
-            <Form>
-              <FormGroup>
-                <Label className="title-input" for="exampleName">
-                  Name
-                </Label>
-                <Input type="text" name="role" onChange={this.handleChange} />
-                {errorRoleMessage !== '' && this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>
-                    {this.state.errorRoleMessage}
-                  </span>
+        <CardHeader className="card-header-custom">
+          Create A New Interview
+        </CardHeader>
+        <CardBody>
+          <Form>
+            <FormGroup>
+              <Label className="title-input" for="exampleName">
+                Name
+              </Label>
+              <Input type="text" name="role" onChange={this.handleChange} />
+              {errorRoleMessage !== '' && this.state.showErrorMessage && (
+                <span style={{ color: 'red' }}>
+                  {this.state.errorRoleMessage}
+                </span>
+              )}
+            </FormGroup>
+            <FormGroup>
+              <Label className="title-input" for="exampleDescription">
+                Description
+              </Label>
+              <textarea
+                style={{ width: '100% ' }}
+                name="description"
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label className="title-input">Interviewers</Label>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                //onChange={this.handleSelectPermissionChange.bind(this)}
+                defaultValue={this.state.selectedInterviewerOption}
+                options={this.state.optionInterviewer}
+              />
+              {!this.state.selectedPermissionOption &&
+                this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>Permissions are required</span>
                 )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input" for="exampleDescription">
-                  Description
-                </Label>
-                <textarea
-                  style={{ width: '100% ' }}
-                  name="description"
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input">Interviewers</Label>
-                <Select
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  //onChange={this.handleSelectPermissionChange.bind(this)}
-                  defaultValue={this.state.selectedInterviewerOption}
-                  options={this.state.optionInterviewer}
-                />
-                {!this.state.selectedPermissionOption &&
-                  this.state.showErrorMessage && (
-                    <span style={{ color: 'red' }}>
-                      Permissions are required
-                    </span>
-                  )}
-              </FormGroup>
-              <FormGroup>
-                <Label className="title-input">Candidates</Label>
-                <Select
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  //onChange={this.handleSelectPermissionChange.bind(this)}
-                  defaultValue={this.state.selectedCandidateOption}
-                  options={this.state.optionCandidate}
-                />
-                {!this.state.selectedPermissionOption &&
-                  this.state.showErrorMessage && (
-                    <span style={{ color: 'red' }}>
-                      Permissions are required
-                    </span>
-                  )}
-              </FormGroup>
-              <br />
-              <FormGroup
-                style={{ display: 'flex', justifyContent: 'flex-end' }}
+            </FormGroup>
+            <FormGroup>
+              <Label className="title-input">Candidates</Label>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                //onChange={this.handleSelectPermissionChange.bind(this)}
+                defaultValue={this.state.selectedCandidateOption}
+                options={this.state.optionCandidate}
+              />
+              {!this.state.selectedPermissionOption &&
+                this.state.showErrorMessage && (
+                  <span style={{ color: 'red' }}>Permissions are required</span>
+                )}
+            </FormGroup>
+            <br />
+            <FormGroup style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '180px',
+                  justifyContent: 'space-between'
+                }}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                    width: '180px',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  {this.state.errorRoleMessage == '' &&
-                  this.state.selectedPermissionOption ? (
-                    <Button color="success" onClick={this.handleSubmit}>
-                      Submit
-                    </Button>
-                  ) : (
-                    <Button color="success" onClick={this.handleErrorMessage}>
-                      Submit
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => this.backToPreviousPage()}
-                    color="secondary"
-                  >
-                    Back
+                {this.state.errorRoleMessage == '' &&
+                this.state.selectedPermissionOption ? (
+                  <Button color="success" onClick={this.handleSubmit}>
+                    Submit
                   </Button>
-                </div>
-              </FormGroup>
-            </Form>
-          </CardBody>
-        </Card>
-      </div>
+                ) : (
+                  <Button color="success" onClick={this.handleErrorMessage}>
+                    Submit
+                  </Button>
+                )}
+                <Button
+                  onClick={() => this.backToPreviousPage()}
+                  color="secondary"
+                >
+                  Back
+                </Button>
+              </div>
+            </FormGroup>
+          </Form>
+        </CardBody>
+      </Card>
     );
   }
 }

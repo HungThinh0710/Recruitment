@@ -171,7 +171,10 @@ export default class ModalEditRole extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalSuccess}>
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -191,7 +194,10 @@ export default class ModalEditRole extends Component {
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggleModalError}>
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
@@ -299,7 +305,7 @@ export default class ModalEditRole extends Component {
                 <div
                   style={{
                     display: 'flex',
-                    width: '180px',
+                    width: '160px',
                     justifyContent: 'space-between'
                   }}
                 >
