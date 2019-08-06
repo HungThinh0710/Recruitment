@@ -608,13 +608,13 @@ export default class JobDetail extends Component {
                                   <td className="title1">{i}</td>
                                   <td className="title1">{e.title}</td>
                                   {e.isPublic === 1 ? (
-                                    <td className="title1">
-                                      {' '}
+                                    <td className="title1 text-center">
                                       <Badge
                                         style={{
                                           backgroundColor: '#6a82fb',
                                           color: '#fff',
-                                          width: 90
+                                          width: 80,
+                                          borderRadius:4,
                                         }}
                                         pill
                                       >
@@ -622,12 +622,13 @@ export default class JobDetail extends Component {
                                       </Badge>
                                     </td>
                                   ) : (
-                                    <td className="title1">
+                                    <td className="title1 text-center">
                                       <Badge
                                         style={{
-                                          backgroundColor: '#6a82fb',
+                                          backgroundColor: '#dd2c00',
                                           color: '#fff',
-                                          width: 80
+                                          width: 80,
+                                          borderRadius:4,
                                         }}
                                         pill
                                       >
@@ -688,13 +689,13 @@ export default class JobDetail extends Component {
                                   <td className="title1">{e.email}</td>
                                   <td className="title1">{e.phone}</td>
                                   {e.status == 'Pending' ? (
-                                    <td className="title1">
-                                      {' '}
+                                    <td className="title1 text-center">
                                       <Badge
                                         style={{
                                           backgroundColor: '#6a82fb',
                                           color: '#fff',
-                                          width: 80
+                                          width: 80,
+                                          borderRadius:4,
                                         }}
                                         pill
                                       >
@@ -702,12 +703,13 @@ export default class JobDetail extends Component {
                                       </Badge>
                                     </td>
                                   ) : e.status == 'Deny' ? (
-                                    <td className="title1">
+                                    <td className="title1  text-center">
                                       <Badge
                                         style={{
                                           backgroundColor: '#f85032',
                                           color: '#fff',
-                                          width: 80
+                                          width: 80,
+                                          borderRadius:4,
                                         }}
                                         pill
                                       >
@@ -715,12 +717,13 @@ export default class JobDetail extends Component {
                                       </Badge>
                                     </td>
                                   ) : e.status == 'Approve' ? (
-                                    <td className="title1">
+                                    <td className="title1  text-center">
                                       <Badge
                                         style={{
                                           backgroundColor: '#43a047',
                                           color: '#fff',
-                                          width: 80
+                                          width: 80,
+                                          borderRadius:4,
                                         }}
                                         pill
                                       >
@@ -728,12 +731,13 @@ export default class JobDetail extends Component {
                                       </Badge>
                                     </td>
                                   ) : e.status == 'Passed' ? (
-                                    <td className="title1">
+                                    <td className="title1  text-center">
                                       <Badge
                                         style={{
                                           backgroundColor: '#64dd17',
                                           color: '#fff',
-                                          width: 80
+                                          width: 80,
+                                          borderRadius:4,
                                         }}
                                         pill
                                       >
@@ -741,12 +745,13 @@ export default class JobDetail extends Component {
                                       </Badge>
                                     </td>
                                   ) : e.status == 'Failed' ? (
-                                    <td className="title1">
+                                    <td className="title1  text-center">
                                       <Badge
                                         style={{
                                           backgroundColor: '#dd2c00',
                                           color: '#fff',
-                                          width: 80
+                                          width: 80,
+                                          borderRadius:4,
                                         }}
                                         pill
                                       >

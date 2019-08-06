@@ -257,7 +257,13 @@ export default class JobDetail extends Component {
                                   <td className="title1">{e.name}</td>
                                   <td className="title1">{e.address}</td>
                                   <td className="title1">{e.timeStart}</td>
-                                  {e.status == 'Pending' ?  <td className="title1"><Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>{e.status}</Badge></td> :  <td className="title1"><Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80}} pill>{e.status}</Badge></td> }
+                                  {e.status == 'Pending' ?  
+                                  <td className="title1 text-center">
+                                    <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
+                                    </td> :  
+                                    <td className="title1 text-center">
+                                      <Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
+                                      </td> }
                                  
                                 </tr>
                               );

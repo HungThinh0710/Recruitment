@@ -455,7 +455,27 @@ export default class UsersPage extends Component {
                           >
                             {e.email}
                           </td>
-                          {e.status == 'Pending' ? (<td> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>{e.status}</Badge></td> ) : e.status == 'Deny' ? (<td><Badge style = {{backgroundColor: '#f85032', color: '#fff',width:80}} pill>{e.status}</Badge></td>) :  e.status == 'Approve' ? (<td><Badge style = {{backgroundColor: '#43a047', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Passed' ? (<td><Badge style = {{backgroundColor: '#64dd17', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Failed' ? (<td><Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : ( '') }
+                          {e.status == 'Pending' ? (
+                          <td className = "text-center"> 
+                            <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80,borderRadius:4,}} pill>{e.status}</Badge>
+                            </td> 
+                            ) : e.status == 'Deny' ? (
+                            <td className = "text-center">
+                              <Badge style = {{backgroundColor: '#f85032', color: '#fff',width:80,borderRadius:4}} pill>{e.status}</Badge>
+                              </td>
+                              ) :  e.status == 'Approve' ? (
+                              <td className = "text-center">
+                                <Badge style = {{backgroundColor: '#43a047', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
+                                </td>
+                                ) : e.status == 'Passed' ? (
+                                <td className = "text-center">
+                                  <Badge style = {{backgroundColor: '#64dd17', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
+                                  </td>
+                                  ) : e.status == 'Failed' ? (
+                                  <td className = "text-center">
+                                    <Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
+                                    </td>
+                                    ) : ( '') }
                           <td>{e.phone}</td>
                           <td>
                             <div className="action">
