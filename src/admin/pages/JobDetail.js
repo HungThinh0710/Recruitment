@@ -110,8 +110,7 @@ export default class JobDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
-    
+
     if (data.message !== 'Unauthenticated.') {
       const n = data.salary.indexOf('$');
       const stringSalary2 = removeStringSalary(data.salary, n);
@@ -143,7 +142,7 @@ export default class JobDetail extends Component {
           editamount: data.amount,
           editpublishedOn: new Date(data.publishedOn),
           editdeadline: new Date(data.deadline),
-          loading: false,
+          loading: false
         });
       }, 500);
     }
@@ -387,7 +386,7 @@ export default class JobDetail extends Component {
 
   render() {
     var i = 0;
-    var j  = 0;
+    var j = 0;
     const { formError } = this.state;
     return (
       <Card className="dashboard-card">
@@ -585,7 +584,7 @@ export default class JobDetail extends Component {
                   activeTab={this.state.activeTab}
                 >
                   <TabPane tabId="1">
-                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
                       <div className="table-test">
                         <table style={{ width: '100%' }}>
                           <thead>
@@ -609,9 +608,33 @@ export default class JobDetail extends Component {
                                   <td className="title1">{i}</td>
                                   <td className="title1">{e.title}</td>
                                   {e.isPublic === 1 ? (
-                                      <td className="title1"> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:90}} pill>Published</Badge></td>
-                                    ) : (
-                                      <td className="title1"><Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>Closed</Badge></td>
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        Published
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        Closed
+                                      </Badge>
+                                    </td>
                                   )}
                                 </tr>
                               );
@@ -623,7 +646,7 @@ export default class JobDetail extends Component {
                     </CardBody>
                   </TabPane>
                   <TabPane tabId="2">
-                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
                       <div className="table-test">
                         <table style={{ width: '100%' }}>
                           <thead>
@@ -639,7 +662,6 @@ export default class JobDetail extends Component {
                               <th className="title1">Email</th>
                               <th className="title1">Phone</th>
                               <th className="title1">Status</th>
-                              
                             </tr>
                           </thead>
                           <tbody>
@@ -659,15 +681,86 @@ export default class JobDetail extends Component {
                               if (e.status == '5') {
                                 e.status = 'Failed';
                               }
-                              j++
+                              j++;
                               return (
                                 <tr style={{ textAlign: 'center' }} key={e.id}>
                                   <td className="title1">{j}</td>
                                   <td className="title1">{e.fullname}</td>
                                   <td className="title1">{e.email}</td>
                                   <td className="title1">{e.phone}</td>
-                                  {e.status == 'Pending' ? (<td className="title1"> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>{e.status}</Badge></td> ) : e.status == 'Deny' ? (<td className="title1"><Badge style = {{backgroundColor: '#f85032', color: '#fff',width:80}} pill>{e.status}</Badge></td>) :  e.status == 'Approve' ? (<td className="title1"><Badge style = {{backgroundColor: '#43a047', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Passed' ? (<td className="title1"><Badge style = {{backgroundColor: '#64dd17', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Failed' ? (<td className="title1"><Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : ( '') }
-                                 
+                                  {e.status == 'Pending' ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Deny' ? (
+                                    <td className="title1  text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#f85032',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Approve' ? (
+                                    <td className="title1  text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#43a047',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Passed' ? (
+                                    <td className="title1  text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#64dd17',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Failed' ? (
+                                    <td className="title1  text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    ''
+                                  )}
                                 </tr>
                               );
                             })}

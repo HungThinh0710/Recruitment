@@ -556,7 +556,14 @@ export default class JobDetail extends Component {
                                           'MMMM Do YYYY, h:mm:ss a'
                                            )}
                                            </td>
-                                  {e.status == 'Pending' ? (<td className="title1"> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff'}} color="#f59a92" pill>{e.status}</Badge></td> ) : e.status == 'Closed' ? (<td className="title1"><Badge style = {{backgroundColor: '#dd2c00', color: '#fff'}} color="#f59a92" pill>{e.status}</Badge></td>) : ( '') }
+                                  {e.status == 'Pending' ? (
+                                  <td className="title1 text-center"> 
+                                    <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', borderRadius:4,}} color="#f59a92" pill>{e.status}</Badge>
+                                    </td>
+                                     ) : e.status == 'Closed' ? (
+                                     <td className="title1 text-center">
+                                       <Badge style = {{backgroundColor: '#dd2c00', color: '#fff',borderRadius:4,}} color="#f59a92" pill>{e.status}</Badge>
+                                       </td>) : ( '') }
                                 </tr>
                               );
                             })}

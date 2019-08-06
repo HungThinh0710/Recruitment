@@ -10,6 +10,7 @@ import {
   Input,
   Container,
   Row,
+  Badge,
   Col,
   FormGroup,
   Modal,
@@ -18,7 +19,7 @@ import {
   ModalFooter
 } from 'reactstrap';
 import ModalRemoveItem from '../components/ModalRemoveItem';
-import ModalEditItem from '../components/ModalEditItem';
+import ModalEditInterview from '../components/ModalEditInterview';
 import { Link } from 'react-router-dom';
 import PaginationComponent from '../components/Pagination.js';
 import { PulseLoader } from 'react-spinners';
@@ -41,7 +42,9 @@ export default class UsersPage extends Component {
       selectPerPage: '10',
       loadData: false,
       keyword: '',
-      perPage: 10
+      perPage: 10,
+      dataInterviewers: '',
+      dataCandidates: ''
     };
 
     this.handleCheckChange = this.handleCheckChange.bind(this);
@@ -49,6 +52,7 @@ export default class UsersPage extends Component {
     this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
     this.handleChangePerPage = this.handleChangePerPage.bind(this);
     this.handleChangeKeyWord = this.handleChangeKeyWord.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -83,6 +87,30 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    var url1 = 'https://api.enclavei3dev.tk/api/list-interviewer';
+    var url2 = 'https://api.enclavei3dev.tk/api/list-candidate';
+    const data1 = await fetch(url1, {
+      method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    const data2 = await fetch(url2, {
+      method: 'POST',
+      body: JSON.stringify({
+        all: 1
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
     setTimeout(() => {
       this.setState({
         rows: data.data,
@@ -90,7 +118,9 @@ export default class UsersPage extends Component {
         loading: false,
         perPage: parseInt(data.per_page),
         loadData: false,
-        activePage: data.current_page
+        activePage: data.current_page,
+        dataInterviewers: data1,
+        dataCandidates: data2
       });
     }, 500);
   }
@@ -431,7 +461,15 @@ export default class UsersPage extends Component {
                           <td>{i}</td>
                           <td>{e.name}</td>
                           <td>{e.address}</td>
-                          <td>{e.status}</td>
+                          {e.status == 'Pending' ?  
+                              <td className = "text-center">
+                                  <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:70, borderRadius: 4,}} pill>{e.status}</Badge>
+                              </td>
+                               :  
+                              <td className = "text-center">
+                                <Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:70,borderRadius: 4}} pill>{e.status}</Badge>
+                                </td> 
+                              }
                           <td>
                             {moment(e.timeStart).format(
                               'MMMM Do YYYY, h:mm:ss a'
@@ -445,13 +483,14 @@ export default class UsersPage extends Component {
                           <td>
                             <div className="action">
                               <div className="action-item">
-                                <ModalEditItem
+                                <ModalEditInterview
                                   icon
-                                  // id={listId[index]}
+                                  dataInterviewers={this.state.dataInterviewers}
+                                  dataCandidates={this.state.dataCandidates}
+                                  id={e.id}
                                   name={e.name}
                                   color="warning"
-                                  buttonLabel="Edit"
-                                  // function={this.editRole.bind(this)}
+                                  getUpdate={this.getUpdate.bind(this)}
                                 />
                               </div>
                               <div className="action-item">
