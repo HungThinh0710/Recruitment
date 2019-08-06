@@ -10,6 +10,7 @@ import {
   CardText,
   Row,
   Col,
+  Badge,
   Container,
   TabContent,
   TabPane,
@@ -608,9 +609,9 @@ export default class JobDetail extends Component {
                                   <td className="title1">{i}</td>
                                   <td className="title1">{e.title}</td>
                                   {e.isPublic === 1 ? (
-                                      <td className="title1">Published</td>
+                                      <td className="title1"> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:90}} pill>Published</Badge></td>
                                     ) : (
-                                      <td className="title1">Closed</td>
+                                      <td className="title1"><Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>Closed</Badge></td>
                                   )}
                                 </tr>
                               );
@@ -643,6 +644,21 @@ export default class JobDetail extends Component {
                           </thead>
                           <tbody>
                             {this.state.candidates.map(e => {
+                              if (e.status == '1') {
+                                e.status = 'Pending';
+                              }
+                              if (e.status == '2') {
+                                e.status = 'Deny';
+                              }
+                              if (e.status == '3') {
+                                e.status = 'Approve';
+                              }
+                              if (e.status == '4') {
+                                e.status = 'Passed';
+                              }
+                              if (e.status == '5') {
+                                e.status = 'Failed';
+                              }
                               j++
                               return (
                                 <tr style={{ textAlign: 'center' }} key={e.id}>
@@ -650,11 +666,7 @@ export default class JobDetail extends Component {
                                   <td className="title1">{e.fullname}</td>
                                   <td className="title1">{e.email}</td>
                                   <td className="title1">{e.phone}</td>
-                                  {e.isPublic === 1 ? (
-                                      <td className="title1">Published</td>
-                                    ) : (
-                                      <td className="title1">Closed</td>
-                                  )}
+                                  {e.status == 'Pending' ? (<td className="title1"> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>{e.status}</Badge></td> ) : e.status == 'Deny' ? (<td className="title1"><Badge style = {{backgroundColor: '#f85032', color: '#fff',width:80}} pill>{e.status}</Badge></td>) :  e.status == 'Approve' ? (<td className="title1"><Badge style = {{backgroundColor: '#43a047', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Passed' ? (<td className="title1"><Badge style = {{backgroundColor: '#64dd17', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Failed' ? (<td className="title1"><Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : ( '') }
                                  
                                 </tr>
                               );

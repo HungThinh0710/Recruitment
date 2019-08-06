@@ -261,3 +261,16 @@
 .list-group-item{
   border-radius: 0!important;
 }
+.selectshow {
+ height: 35px;
+}
+.labelshow {
+  padding-right: 7px !important;
+  margin-left: 0!important;
+}
+.showentries {
+  padding-right: 0!important;
+  padding-bottom: 10px;
+}
+.list-group-title {
+}

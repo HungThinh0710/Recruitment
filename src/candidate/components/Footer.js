@@ -13,8 +13,8 @@ export default class Footer extends Component {
                   <div class="mb-5 text-center footer-social" id="fixa">
                     <span>Contact us: &nbsp;</span>
                     <NavLink to={"https://www.facebook.com/enclaveit"} className="facebook"><span className="icon-facebook" /></NavLink>
-                    <NavLink to={"#"} className="twitter"><span className="icon-twitter" /></NavLink>
-                    <NavLink to={"#"} className="skype"><span className="icon-skype" /></NavLink>
+                    <NavLink to={"https://twitter.com/EnclaveTexting"} className="twitter"><span className="icon-twitter" /></NavLink>
+                    <NavLink to={"skype:EnclaveIT.COO?chat"} className="skype"><span className="icon-skype" /></NavLink>
                   </div>
                 </div>
       <p className="text-center textbottom"> © 2007 - 2019 TRG-Enclave:12. All Rights Reserved. Terms and Conditions. </p>
