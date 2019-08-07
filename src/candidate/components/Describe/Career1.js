@@ -49,6 +49,7 @@ export default class Careers extends Component {
       modalError: false,
       modalSuccess: false,
       jobID: [],
+      IDapply: '',
       loading: true,
       title: '',
       position: '',
@@ -144,7 +145,8 @@ export default class Careers extends Component {
       salary: data.job.salary,
       status: data.job.status,
       addressed: data.job.address,
-      content: data.content
+      content: data.content,
+      IDapply: data.job.id,
     });
     console.log(this.state.jobID)
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
@@ -163,7 +165,7 @@ export default class Careers extends Component {
       description,
       address,
       CV,
-      dataTechnicalSkills } = this.state;
+      dataTechnicalSkills, IDapply } = this.state;
     var array = [];
     dataTechnicalSkills.map(e => {
       if (typeof e == 'string') array.push(e);
@@ -173,6 +175,7 @@ export default class Careers extends Component {
     console.log(arrayString);
     let configs = { header: { 'Content-Type': 'multipart/form-data' } }
     const formData = new FormData();
+    formData.set('jobId', this.state.IDapply)
     formData.set('fullname', this.state.fullName);
     formData.set('email', this.state.email);
     formData.set('phone', this.state.phone);
@@ -440,12 +443,12 @@ export default class Careers extends Component {
                         toggle={this.toggleModal.bind(this)} className={this.props.className} external={externalCloseBtn}
                       >
                         <p></p>
-                        <h3 className="modal-title" id="myModallabel" style={{ fontSize: 24 }}>APPLICATION FORM</h3>
+                        <h3 className="modal-title" id="myModallabel" style={{ fontSize: 24, fontWeight: "bold" }}>APPLICATION FORM</h3>
                         <ModalBody>
                           <Form encType="multipart/form-data" onSubmit={this.handleSubmit} noValidate>
                             <FormGroup>
                               <div className="fullName">
-                                <label class="col-form-label">Fullname<span style={{ color: 'red' }}>*</span></label>
+                                <label class="col-form-label">Full Name<span style={{ color: 'red' }}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.fullName.length > 0 ? 'error' : null}
