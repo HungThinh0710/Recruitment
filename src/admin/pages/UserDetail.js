@@ -490,11 +490,13 @@ export default class UserDetail extends Component {
                 <Container style={{ marginTop: '5%' }}>
                   <Row>
                     <Col xs="4">
-                      <img
+                      <div style= {{overflow: 'hidden'}}> 
+                        <img
                         className="avatar"
-                        src="/static/media/100_3.6e25d86d.jpg"
+                        src={'https://api.enclavei3dev.tk/upload/images/avatars/'+ `${this.state.image}`}
                         alt="Card image cap"
-                      />
+                      /></div>
+                     
                     </Col>
                     <Col xs="auto" />
                     <Col xs="6">
