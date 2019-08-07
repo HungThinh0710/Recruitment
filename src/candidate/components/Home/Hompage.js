@@ -9,9 +9,6 @@ import axios from 'axios';
 import careerdata from '../data/careerdata.json';
 import Pagination from '../Pagination.js';
 import { IntlProvider, FormattedDate } from 'react-intl';
-// function searchingFor(term) {
-//   return
-// }
 
 export default class Homepage extends Component {
   constructor(props) {
@@ -35,9 +32,6 @@ export default class Homepage extends Component {
       perPage: 10,
       loadData: false,
       selectPerPage: '10',
-
-
-
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -74,45 +68,6 @@ export default class Homepage extends Component {
     // return
     return str;
   }
-  // async componentDidMount(perPage, keyword) {
-  //   const { activePage } = this.state;
-  //   if (!perPage) perPage = 10;
-  //   var body = '';
-  //   var url = '';
-  //   if (keyword != '') {
-  //     body = {
-  //       keyword: keyword,
-  //       category: Recruitment,
-  //     };
-  //     url = 'https://api.enclavei3dev.tk/api/article-web';
-  //   } else {
-  //     body = '';
-  //     url =
-  //       'https://api.enclavei3dev.tk/api/article-web?page=' +
-  //       activePage +
-  //       '&perpage=' +
-  //       perPage;
-  //   }
-  //   const data = await fetch(url, {
-  //     method: 'POST',
-  //     body: JSON.stringify(body),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Accept: 'application/json',
-  //       Authorization: 'Bearer ' + localStorage.getItem('access_token')
-  //     }
-  //   }).then(res => res.json());
-  //   setTimeout(() => {
-  //     this.setState({
-  //       listjob: data.data,
-  //       totalItems: data.total,
-  //       loading: false,
-  //       perPage: parseInt(data.per_page),
-  //       loadData: false,
-  //       activePage: data.current_page
-  //     });
-  //   }, 500);
-  // }
   async componentDidMount(perPage) {
     const { activePage } = this.state;
     if (!perPage) perPage = 10;
@@ -152,7 +107,6 @@ export default class Homepage extends Component {
       "Content-Type": "application/json",
       "Accept": "application/json",
     }
-
     let body = {
       "keyword": "",
       "position": keyword,
@@ -179,13 +133,11 @@ export default class Homepage extends Component {
 
     });
   }
-
   handlePageChange(pageNumber, keyword, location, status) {
     const { perPage} = this.state;
     keyword = this.state.keyword;
     location = this.state.location;
     status = this.state.status;
-    // const {keyword, location, status} = this.state;
     let headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -258,7 +210,8 @@ export default class Homepage extends Component {
     })
   }
   render() {
-    const { active,listjob } = this.state;
+    const { activePage,listjob } = this.state;
+    var i = (activePage-1)*10;
     return (
       <section id="Home">
         <div className="site-wrap" >
@@ -399,6 +352,7 @@ export default class Homepage extends Component {
                       </Input> */}
                         <table class="table rwd-table border article-table">
                           <thead>
+                            <th>#</th>
                             <th>Position</th>
                             <th>Category</th>
                             <th>Location</th>
@@ -407,7 +361,18 @@ export default class Homepage extends Component {
                           </thead>
                           <tbody class="transistion">
                             {this.state.listjob.map((p, index) => {
+                              i++;
                               return <tr class="transfer">
+                                <td data-th="number">
+                                  <div>
+                                    <p class="number-id">
+                                      <p class="number-title">
+                                        {i}
+                                      </p>
+                                      
+                                    </p>
+                                  </div>
+                                </td>
                                 <td data-th="Position">
                                   <div>
                                     <Link to={"/article/" + p.id} className="colorbottomline">
@@ -465,7 +430,7 @@ export default class Homepage extends Component {
                               </tr>
                             })}
                             <tr class="table-pagination-nav">
-                              <td colspan="5">
+                              <td colspan="6">
                                 <Pagination
                                   activePage={this.state.activePage}
                                   itemsCountPerPage={this.state.perPage}
