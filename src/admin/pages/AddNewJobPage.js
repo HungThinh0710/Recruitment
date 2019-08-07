@@ -13,7 +13,6 @@ import {
   InputGroupText,
   InputGroup,
   Card,
-  CardTitle,
   CardHeader,
   CardBody
 } from 'reactstrap';
@@ -21,11 +20,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import './AddNewJobPage.css';
-import { MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
-const animatedComponents = makeAnimated();
 
 export default class AddNewJobPage extends Component {
   constructor(props) {
