@@ -49,6 +49,7 @@ export default class UsersPage extends Component {
     this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
     this.handleChangePerPage = this.handleChangePerPage.bind(this);
     this.handleChangeKeyWord = this.handleChangeKeyWord.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
