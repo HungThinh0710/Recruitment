@@ -32,7 +32,7 @@ Avatar.propTypes = {
   circle: PropTypes.bool,
   size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   src: PropTypes.string,
-  style: PropTypes.object,
+  style: PropTypes.object
 };
 
 Avatar.defaultProps = {
@@ -41,7 +41,7 @@ Avatar.defaultProps = {
   circle: true,
   size: 40,
   src: userImage,
-  style: {},
+  style: {}
 };
 
 export default Avatar;

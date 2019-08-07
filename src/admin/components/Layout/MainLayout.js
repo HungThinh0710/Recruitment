@@ -3,7 +3,7 @@ import React from 'react';
 import {
   MdImportantDevices,
   // MdCardGiftcard,
-  MdLoyalty,
+  MdLoyalty
 } from 'react-icons/md';
 import NotificationSystem from 'react-notification-system';
 import { NOTIFICATION_SYSTEM_STYLE } from '../../utils/constants';
@@ -31,10 +31,10 @@ class MainLayout extends React.Component {
 
       this.notificationSystem.addNotification({
         title: <MdImportantDevices />,
-        message: 'Welcome to Dashboard, Admin!',
-        level: 'info',
+        message: 'Welcome to the dashboard!',
+        level: 'info'
       });
-    }, 1500);
+    }, 500);
 
     setTimeout(() => {
       if (!this.notificationSystem) {
@@ -43,11 +43,10 @@ class MainLayout extends React.Component {
 
       this.notificationSystem.addNotification({
         title: <MdLoyalty />,
-        message:
-          'Have a nice day !!!',
-        level: 'info',
+        message: 'Have a nice day !!!',
+        level: 'info'
       });
-    }, 2500);
+    }, 1000);
   }
 
   // close sidebar when
