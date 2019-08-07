@@ -6,7 +6,7 @@ export const NOTIFICATION_SYSTEM_STYLE = {
       alignItems: 'center',
 
       borderRadius: '4px',
-      fontSize: '14px',
+      fontSize: '14px'
     },
 
     success: {
@@ -14,7 +14,7 @@ export const NOTIFICATION_SYSTEM_STYLE = {
       backgroundColor: '#45b649',
       WebkitBoxShadow: 0,
       MozBoxShadow: 0,
-      boxShadow: 0,
+      boxShadow: 0
     },
 
     error: {
@@ -22,7 +22,7 @@ export const NOTIFICATION_SYSTEM_STYLE = {
       backgroundColor: '#f85032',
       WebkitBoxShadow: 0,
       MozBoxShadow: 0,
-      boxShadow: 0,
+      boxShadow: 0
     },
 
     warning: {
@@ -30,16 +30,16 @@ export const NOTIFICATION_SYSTEM_STYLE = {
       backgroundColor: '#ffd700',
       WebkitBoxShadow: 0,
       MozBoxShadow: 0,
-      boxShadow: 0,
+      boxShadow: 0
     },
 
     info: {
       borderTop: 0,
-      background: 'linear-gradient(to right, #6a82fb, red)',
+      background: '#45b649',
       WebkitBoxShadow: 0,
       MozBoxShadow: 0,
-      boxShadow: 0,
-    },
+      boxShadow: 0
+    }
   },
 
   Title: {
@@ -50,19 +50,19 @@ export const NOTIFICATION_SYSTEM_STYLE = {
       color: '#fff',
       display: 'inline-flex',
       fontSize: 20,
-      fontWeight: 'bold',
+      fontWeight: 'bold'
       // left: '15px',
       // position: 'absolute',
       // top: '50%',
-    },
+    }
   },
 
   MessageWrapper: {
     DefaultStyle: {
       display: 'block',
       color: '#fff',
-      width: '100%',
-    },
+      width: '100%'
+    }
   },
 
   Dismiss: {
@@ -85,8 +85,8 @@ export const NOTIFICATION_SYSTEM_STYLE = {
       float: 'none',
       top: 'unset',
       right: 'unset',
-      lineHeight: 'inherit',
-    },
+      lineHeight: 'inherit'
+    }
   },
 
   Action: {
@@ -96,34 +96,34 @@ export const NOTIFICATION_SYSTEM_STYLE = {
       padding: '6px 20px',
       fontWeight: 'bold',
       margin: '10px 0 0 0',
-      border: 0,
+      border: 0
     },
 
     success: {
       backgroundColor: '#45b649',
-      color: '#fff',
+      color: '#fff'
     },
 
     error: {
       backgroundColor: '#f85032',
-      color: '#fff',
+      color: '#fff'
     },
 
     warning: {
       backgroundColor: '#ffd700',
-      color: '#fff',
+      color: '#fff'
     },
 
     info: {
       backgroundColor: '#00c9ff',
-      color: '#fff',
-    },
+      color: '#fff'
+    }
   },
 
   ActionWrapper: {
     DefaultStyle: {
       margin: 0,
-      padding: 0,
-    },
-  },
+      padding: 0
+    }
+  }
 };

@@ -1,5 +1,5 @@
 .card-detail {
-  background: green !important;
+  background: #45b649 !important;
   background-size: cover;
   align-items: center;
 }
@@ -24,7 +24,7 @@
 }
 
 .tabactive {
-  background: green !important;
+  background: #45b649 !important;
   color: white !important;
 }
 
@@ -56,6 +56,6 @@
 }
 
 .first {
-  color: green !important;
-  margin-left: 10px;
+  color: #45b649 !important;
+  /* margin-left: 10px; */
 }

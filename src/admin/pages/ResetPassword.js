@@ -2,20 +2,25 @@ import logo200Image from '../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
-import {Redirect,Link} from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import './LoginPage.css';
 export default class ResetPassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email:'',
-      redirect:false,
-      token:'',
-      password:'',
-      checkToken:false,
-      password_confirmation:'',
-      messenger:'',
-      checked: false
+      email: '',
+      redirect: false,
+      token: '',
+      password: '',
+      checkToken: false,
+      password_confirmation: '',
+      messenger: '',
+      checked: false,
+      showCircleVerifyToken: true,
+      showError: false,
+      circleLoading: false,
+      showSuccess: false,
+      readonly:''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,73 +32,125 @@ export default class ResetPassword extends React.Component {
     });
   }
 
-  componentWillMount(){
+  componentWillMount() {
+    this.setState({ showCircleVerifyToken: true })
     var urlString = window.location.href;
     var url = new URL(urlString);
-    var token = url.searchParams.get("token");
+    var token = url.searchParams.get('token');
     this.verifyToken(token);
   }
 
-  verifyToken(token){
-    var url = 'https://api.enclavei3.tk/api/password/verify/'+token;
+  verifyToken(token) {
+    var url = 'https://api.enclavei3dev.tk/api/password/verify/' + token;
     fetch(url, {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
+        Accept: 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
       }
-    })            
-    .then(response => {
-      if(response.status === 200) {
-        response.json().then(data => {
-          this.setState({
-            token:token,
-            checkToken:true
-          })  
-        })
-      }
     })
-    .catch(error => console.error('Error:', error));
+      .then(response => {
+        if (response.status === 200) {
+          response.json().then(data => {
+            this.setState({
+              token: token,
+              checkToken: true,
+              showCircleVerifyToken: false,
+            });
+          });
+        }
+        else {
+          response.json().then(data => {
+            this.setState({
+              showCircleVerifyToken: false,
+            });
+          });
+        }
+      })
+      .catch(error => console.error('Error:', error));
   }
-  handleSubmit(){
-    const {token,password,password_confirmation} = this.state;
-    var url = 'https://api.enclavei3.tk/api/password/reset'
-    fetch(url, {
-      method: 'POST', 
-      body: JSON.stringify({
-        password: password,
-        password_confirmation: password_confirmation,
-        token: token
-      }), 
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    })            
-    .then(response => {
-      if(response.status === 404) {
-        this.setState({
-          messenger:'Error Token'
+
+  handleSubmit() {
+    const { token, password, password_confirmation } = this.state;
+
+    this.setState({ circleLoading: false, showError: false, showSuccess: false, circleLoading: true, });
+
+    if (password === '' || password_confirmation === '') {
+      this.setState({
+        showError: true,
+        circleLoading: false,
+        messenger: 'Please enter the password or password confirmation.'
+      });
+    }
+
+    else if (password !== password_confirmation) {
+      this.setState({
+        showError: true,
+        circleLoading: false,
+        messenger: 'The password confirmation does not match.'
+      });
+    }
+
+    else if (password != "" && password_confirmation != "") {
+      var url = 'https://api.enclavei3dev.tk/api/password/reset';
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          password: password,
+          password_confirmation: password_confirmation,
+          token: token
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+        .then(response => {
+          if (response.status === 404) {
+            this.setState({
+              messenger: 'Token is not found.',
+              showError: true,
+              showSuccess: false,
+              circleLoading: false,
+            });
+          }
+          if (response.status === 422) {
+            this.setState({
+              showError: true,
+              showSuccess: false,
+              messenger: 'Invalid password.',
+              circleLoading: false,
+            });
+          }
+          if (response.status === 200) {
+            setTimeout(()=>this.backToLoginPage(), 2500);
+            response.json().then(data => {
+              this.setState({
+                showSuccess: true,
+                password: "",
+                password_confirmation: "",
+                messenger: data.message,
+                checked: true,
+                circleLoading: false,
+                readonly:'readonly'
+              });
+              
+            });
+          }
         })
-      }
-      if(response.status === 422) {
-        this.setState({
-          messenger:'Invalid Password'
-        })
-      }
-      if(response.status === 200) {
-        response.json().then(data => {
-          
-          this.setState({
-            messenger:data.message,
-            checked: true
-          })
-        })
-      }
-    })
-    .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error));
+    }
+
   }
+  handleKeyUp = event => {
+    if (event.keyCode === 13) return this.handleSubmit(event);
+  };
+  backToLoginPage = () => {
+    this.props.history.push('/dashboard/login');
+  };
+
+
   render() {
     const {
       showLogo,
@@ -101,65 +158,88 @@ export default class ResetPassword extends React.Component {
       confirmPasswordLabel,
       onLogoClick,
       passwordInputProps,
-      confirmPasswordInputProps,
+      confirmPasswordInputProps
     } = this.props;
 
     return (
-      <Form className='form-login' onSubmit={this.handleSubmit}>
-        {this.state.checkToken ? (
-          <div>
-            {showLogo && (
-              <div className="text-center pb-4" style={{marginBottom:'5%'}}>
-                <img
-                  src={logo200Image}
-                  className="rounded"
-                  style={{ width: '70%', cursor: 'pointer' }}
-                  alt="logo"
-                  onClick={onLogoClick}
-                />
-                <span></span>
-              </div>
-            )}
-            <FormGroup className='input-area'  >
-            {this.state.checked ? (
-              <div style={{display:'flex',flexDirection:'column'}}>
-                <span style={{color:'green'}}>{this.state.messenger}</span>
-                <Link to='/admin'>
-                <span>Click here to Login</span>
-                </Link>
-              </div>
-              
-              
-            ):(
-              <span style={{color:'red'}}>{this.state.messenger}</span>
-            )}
-            </FormGroup>
-            
-            <FormGroup className='input-area' style={{marginBottom:'5%'}}>
-              <Label for={passwordLabel}>{passwordLabel}</Label>
-              <Input {...passwordInputProps}  onChange={this.handleChange}/>
-            </FormGroup>
-            <FormGroup className='input-area' style={{marginBottom:'5%'}}>
-              <Label for={confirmPasswordLabel}>{confirmPasswordLabel}</Label>
-              <Input {...confirmPasswordInputProps}  onChange={this.handleChange}/>
-            </FormGroup>
-            {/* {this.renderRedirect()} */}
-            <Button
-              size="lg"
-              className="btn-login"
-              block
-              onClick={this.handleSubmit}> Submit
-            </Button>
+      <div className="container login-container">
+        <div className="container-frame">
+          <div className="login-form">
+            <div className="login-title">
+              <img
+                src={logo200Image}
+                className="rounded"
+                style={{ width: '70%', cursor: 'pointer' }}
+                alt="logo"
+                onClick={onLogoClick}
+              />
+            </div>
+            <hr />
+            {!this.state.showCircleVerifyToken ? (<div>
+              {this.state.checkToken ? (
+                <div className="login-body">
+                  <div className="form-input" onKeyUp={this.handleKeyUp}>
+                    {!this.state.showError && this.state.showSuccess && <div className="error-message-alert alert alert-success" role="alert">
+                      <div className="text-error">{this.state.messenger + ". You will redirect after 2 seconds."} 
+                      </div>
+                    </div>
+                    }
+                    {this.state.showError && <div className="error-message-alert alert alert-danger" role="alert">
+                      <div className="text-error">{this.state.messenger} </div>
+                    </div>}
+                    <input onChange={this.handleChange} value={this.state.password} name="password" type="password" className='login-input-text' placeholder="Password" />
+                    <input onChange={this.handleChange} value={this.state.password_confirmation} name="password_confirmation" type="password" className="login-input-text" placeholder="Password cofirmation" />
+                  </div>
+                  <div className="form-forgot text-right">
+                  </div>
+                  <div className="form-submit">
+                    
+                    <button className="btn-login-form" onClick={() => this.handleSubmit()} disabled={this.state.circleLoading || this.state.showSuccess}>
+                      {!this.state.circleLoading && <span>Change password</span>}
+
+                      {this.state.circleLoading && (
+                        <div>
+                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                          <span style={{ paddingLeft: '4px' }}>Loading...</span>
+                        </div>)}
+
+                    </button>
+                  </div>
+                </div>)
+                :
+                (<div className="login-body">
+                  <div className="form-input" onKeyUp={this.handleKeyUp}>
+                    <div className="error-message-alert alert alert-danger" role="alert">
+                      <div className="text-error text-center">The link is expired or incorrect.</div>
+                    </div>
+                  </div>
+                  <div className="form-forgot text-right">
+                  </div>
+                  <div className="form-submit">
+                    <button className="btn-login-form" onClick={() => this.backToLoginPage()}>
+                      {!this.state.circleLoading && <span>BACK TO LOGIN</span>}
+                    </button>
+                  </div>
+                </div>)}
+            </div>)
+              : (
+                <div className="login-body">
+                  <div className="form-input" onKeyUp={this.handleKeyUp}>
+                    <div class="spinner-grow text-success" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                  <div className="form-forgot text-right">
+                  </div>
+                </div>)
+            }
+            <hr />
+            <div className="login-footer">
+              <div className="login-footer-text">© 2007 - 2019 - Enclave Recruitment management</div>
+            </div>
           </div>
-            
-        ) : (
-          <FormGroup  style={{display:'flex',justifyContent:'center'}}>
-              <h4 style={{color:'red'}}>Token Is Invalid </h4>
-          </FormGroup>
-        )}
-        
-        
-      </Form>
+        </div>
+      </div>
     );
   }
 }
@@ -172,7 +252,7 @@ ResetPassword.propTypes = {
   passwordInputProps: PropTypes.object,
   confirmPasswordLabel: PropTypes.string,
   confirmPasswordInputProps: PropTypes.object,
-  onLogoClick: PropTypes.func,
+  onLogoClick: PropTypes.func
 };
 
 ResetPassword.defaultProps = {
@@ -180,14 +260,12 @@ ResetPassword.defaultProps = {
   passwordLabel: 'New Password',
   passwordInputProps: {
     type: 'password',
-    name:'password',
-    
+    name: 'password'
   },
   confirmPasswordLabel: 'Confirm New Password',
   confirmPasswordInputProps: {
     type: 'password',
-    name:'password_confirmation'
+    name: 'password_confirmation'
   },
-  onLogoClick: () => {}
+  onLogoClick: () => { }
 };
-

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8" />
     <meta
@@ -8,24 +8,40 @@
     />
     <meta name="theme-color" content="#000000" />
     <meta name="author" content="" />
+    <!-- <meta property="og:title" content="Your Website Title" /> -->
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <meta name="application-name" content="%REACT_APP_NAME%" />
-    <meta name="description" content="%REACT_APP_DESCRIPTION%" />
-    <meta property="og:url" content="%PUBLIC_URL%" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="%REACT_APP_NAME%" />
-    <meta
+    <meta  name="application-name" content="Enclave Recruitment" />
+    <title>Enclave Recruitment</title>
+    <!-- <meta
+      property="og:description"
+      content="Find your dream jobs in our company"
+    /> -->
+    <!-- <meta
       property="og:image"
-      content="%PUBLIC_URL%/img/screenshots/reduction-admin.jpg"
-    />
-    <meta property="og:description" content="%REACT_APP_DESCRIPTION%" />
-    <meta property="og:site_name" content="%REACT_APP_NAME%" />
+      content="https://cdn1.imggmi.com/uploads/2019/8/2/d41154d927fdfda4a3070544e42eba30-full.png"
+    /> -->
+
+    <!-- For Facebook -->
+    <!-- <meta property="fb:app_id" content="2309010198" />
+  <meta property="og:title" content="Enclave Recruitment System" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image"
+    content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+  <meta property="og:url" content="https://enclavei3dev.tk/article/6" />
+  <meta property="og:description" content="Find your dream job in our company" /> -->
+    <!-- <meta property="fb:app_id" content="2309010198" />  
+  <meta property="og:title"       content="$OG_TITLE" />
+  <meta property="og:type" content="$OG_TYPE" />
+  <meta property="og:image"       content="$OG_IMAGE" />
+  <meta property="og:url" content="$OG_URL" />
+  <meta property="og:description" content="$OG_DESCRIPTION" /> -->
+
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:url" content="%PUBLIC_URL%" />
-    <meta name="twitter:title" content="%REACT_APP_NAME%" />
+    <meta name="twitter:title" content="Enclave Recruitment" />
     <meta name="twitter:description" content="%REACT_APP_DESCRIPTION%" />
     <meta
       name="twitter:image"
@@ -128,7 +144,10 @@
     />
     <link rel="stylesheet" href="%PUBLIC_URL%/candidate/css/animate.min.css" />
     <link rel="stylesheet" href="%PUBLIC_URL%/candidate/css/style.css" />
-
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap"
+      rel="stylesheet"
+    />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -138,8 +157,14 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Enclave Recruitment</title>
-
+    <!-- <title>Enclave Recruitment</title>
+<meta property="fb:app_id" content="2309010198" />
+  <meta property="og:title" content="Enclave Recruitment System" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image"
+    content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+  <meta property="og:url" content="https://enclavei3dev.tk/article/6" />
+  <meta property="og:description" content="Find your dream job in our company" /> -->
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
       (function(l) {
@@ -168,11 +193,11 @@
         }
       })(window.location);
     </script>
-
+    
     <!-- End Single Page Apps for GitHub Pages -->
   </head>
 
-  <body>
+  <body style="padding-right: 0px !important">
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
@@ -187,6 +212,19 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    
+    <script>
+      (function(d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src =
+          'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script src="%PUBLIC_URL%/candidate/js/bootstrap.bundle.min.js"></script>

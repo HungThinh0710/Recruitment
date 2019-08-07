@@ -11,16 +11,10 @@ class RouterURL extends Component {
               <nav role="full-horizontal" className="mx-auto site-navigation" id="myTopnav">
                 <ul className="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
                   {/* <li className="navbar-item"><NavLink to={"/"} exact className="smoothscroll" style={{fontSize: 18}}>Home</NavLink></li> */}
-                  <li className="d-lg-none"><Link to={"#"}>Contact Us</Link></li>
+                  
                 </ul>
               </nav>
-              <div className="right-cta-menu text-right d-flex aligin-items-center col-6">
               
-                <div className="ml-auto">
-                  <NavLink to={"#"} className="btn btn-success border-width-2 d-none d-lg-inline-block"><a><span className="mr-2 icon-paper-plane" />Contact Us</a></NavLink>
-                </div>
-                <NavLink to={"#"} className="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3" ><a><span className="icon-menu h3 m-0 p-0 mt-1" /></a></NavLink>
-              </div>
             </div>
             </nav>
             

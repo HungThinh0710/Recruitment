@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito:200,300,400,700");
 .site-navbar {
   margin-bottom: 0px;
-  z-index: 1999;
+  z-index: 1000;
   position: absolute;
   width: 100%;
   top: 2rem; }
@@ -432,13 +432,13 @@ h1, h2, h3, h4 {
 
 .site-section {
   /* padding-top: 7rem; */
-  padding-bottom: 7rem;
+  padding-bottom: 15rem;
   position: relative;
   z-index: 2; }
   @media (max-width: 991.98px) {
     .site-section {
       padding-top: 3rem;
-      padding-bottom: 3rem; } }
+      padding-bottom: 12rem; } }
 
 .text-black {
   color: #000 !important; }
@@ -852,16 +852,18 @@ h1, h2, h3, h4 {
   padding-bottom: 3em; }
 
 .section-hero.overlay, .section-hero.overlay-2 {
-  position: relative; }
+  position: relative;
+  z-index: 1;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.02);
+  background-repeat:no-repeat;
+  background-position: center center; }
   .section-hero.overlay:before, .section-hero.overlay-2:before {
-    z-index: 1;
-    position: absolute;
-    content: "";
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.06); }
+     }
 
 .section-hero.overlay-2:before {
   background: rgba(125, 131, 132, 0.95); }
