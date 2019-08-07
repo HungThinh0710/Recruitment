@@ -72,9 +72,9 @@ export default class AddNewArticlePage extends Component {
   }
   async componentDidMount() {
     var { optionsJob, optionsCategory, optionsFormat } = this.state;
-    var url1 = 'https://api.enclavei3dev.tk/api/list-job';
-    var url2 = 'https://api.enclavei3dev.tk/api/category?page=1';
-    var url3 = 'https://api.enclavei3dev.tk/api/format-article';
+    var url1 = 'https://api.enclavei3.tk/api/list-job';
+    var url2 = 'https://api.enclavei3.tk/api/category?page=1';
+    var url3 = 'https://api.enclavei3.tk/api/format-article';
     const data1 = await fetch(url1, {
       method: 'POST',
       body: JSON.stringify({
@@ -219,7 +219,7 @@ export default class AddNewArticlePage extends Component {
           isPublic: 1
         });
 
-    var url = 'https://api.enclavei3dev.tk/api/article';
+    var url = 'https://api.enclavei3.tk/api/article';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -276,7 +276,7 @@ export default class AddNewArticlePage extends Component {
           isPublic: 0
         });
 
-    var url = 'https://api.enclavei3dev.tk/api/article';
+    var url = 'https://api.enclavei3.tk/api/article';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),

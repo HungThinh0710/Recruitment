@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RouterURL from '../RouterURL';
 import Applyform from './Applyform';
-import { Button, Modal, ModalFooter, Form, ModalBody, FormGroup , Label, ModalHeader} from 'reactstrap';
+import { Button, Modal, ModalFooter, Form, ModalBody, FormGroup, Label, ModalHeader } from 'reactstrap';
 import './Career1.css';
 import { NavLink, Link } from 'react-router-dom';
 import Footer from '../Footer';
@@ -18,7 +18,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import TechnicalSkill from '../TechnicalSkill'
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+const phonevalid = /(09|03|08|07|05|[0|1|2|4|6|8|9])+([0-9]{9})\b/g;
 const formValid = ({ formErrors, ...rest }) => {
   let valid = true;
 
@@ -71,6 +71,7 @@ export default class Careers extends Component {
           isDeleted={true}
         />
       ],
+      listChecked: [],
       errorData: '',
       urlInterviewer: '',
       dataTechnicalSkills: [],
@@ -129,7 +130,7 @@ export default class Careers extends Component {
       "Content-Type": "application/json",
     }
     const { id } = this.props.match.params;
-    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
+    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
       headers: headers,
     }).then(response => response.json())
     await this.setState({
@@ -179,7 +180,7 @@ export default class Careers extends Component {
     formData.set('description', this.state.description);
     formData.set('technicalSkill', arrayString);
     formData.append('file', this.state.selectedFile);
-    var url = 'https://api.enclavei3dev.tk/api/candidate';
+    var url = 'https://api.enclavei3.tk/api/candidate';
     const data = axios.post(url, formData, {}, configs
     )
       .then(res => {
@@ -192,7 +193,8 @@ export default class Careers extends Component {
             const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
             this.setState({
               errorData: dataArray,
-              
+              modalError: true,
+              modalSuccess: false,
             });
           });
         }
@@ -202,7 +204,7 @@ export default class Careers extends Component {
             modalisOpen: !prevState.modalisOpen,
             modalError: false,
             modalSuccess: true
-          }  
+          }
           ));
         }
       })
@@ -227,25 +229,42 @@ export default class Careers extends Component {
     switch (e.target.name) {
       case 'fullName':
         formErrors.fullName =
-          value.length < 3 ? 'minimum 3 characaters required' : '';
+          value.length < 3 ? 'Minimum 3 characaters required' : '';
         break;
       case 'addressed':
         formErrors.addressed =
-          value.length < 3 ? 'minimum 3 characaters required' : '';
+          value.length < 3 ? 'Minimum 3 characaters required' : '';
         break;
       case 'email':
         formErrors.email = emailRegex.test(value)
           ? ''
-          : 'invalid email address';
+          : 'Invalid email address';
         break;
       case 'phone':
-        formErrors.phone =
-          value.length < 10 ? 'minimum 10 characaters required' : '';
+        formErrors.phone = phonevalid.test(value)
+          ? ''
+          : 'Invalid phone number';
         break;
       default:
         break;
     }
-    this.setState({ formErrors, [e.target.name]: value }, () => console.log(this.state.fullName, this.state.email));
+    this.setState({ formErrors, [e.target.name]: value })
+  };
+  handleErrorMessage = () => {
+    var { listChecked } = this.state;
+    var array1 = [...new Set(listChecked)];
+    var array2 = [];
+    array1.map(element => {
+      var count = listChecked.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    this.setState({
+      showErrorMessage: true,
+    });
   };
   getDataTechnicalSkill(technicalskill, year, id) {
     var { dataTechnicalSkills } = this.state;
@@ -297,8 +316,9 @@ export default class Careers extends Component {
     });
   };
   render() {
+
     document.body.scrollTop = document.documentElement.scrollTop = 0;
-    var i=0;
+    var i = 0;
     const { formErrors, dataTechnicalSkills, urlInterviewer } = this.state;
     var array = [];
     dataTechnicalSkills.map(e => {
@@ -328,58 +348,54 @@ export default class Careers extends Component {
             <RouterURL />
           </div>
           {/*--------Modal-Success-----*/}
-        <Modal
-          isOpen={this.state.modalSuccess}
-          toggle={this.toggle}
-          className={this.props.className}
-        >
-          <ModalHeader toggle={this.toggleModalSuccess}>
-            <span className="dashboard-modal-header">Notification</span>
-          </ModalHeader>
-          <ModalBody>
+          <Modal
+            isOpen={this.state.modalSuccess}
+            toggle={this.toggle}
+            className={this.props.className}
+          >
+            <ModalHeader toggle={this.toggleModalSuccess}>
+              <span className="dashboard-modal-header">Notification</span>
+            </ModalHeader>
+            <ModalBody>
               <span style={{ color: '#45b649' }}>
-                Successfully! Thank you for your application !
+                Successfully! Thank you for your application!
               </span>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggleModalSuccess}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
-        {/*--------Modal-Success-----*/}
+            </ModalBody>
 
-        {/*--------Modal-Error-----*/}
-        <Modal
-          isOpen={this.state.modalError}
-          toggle={this.toggle}
-          className={this.props.className}
-        >
-          <ModalHeader toggle={this.toggleModalError}>
-            <span className="dashboard-modal-header">Notification</span>
-          </ModalHeader>
-          <ModalBody>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {this.state.errorData !== undefined &&
-                this.state.errorData.length !== 0 &&
-                this.state.errorData.map(e => {
-                  i++;
-                  return (
-                    <span key={i} style={{ color: 'red' }}>
-                      {e[0]}
-                    </span>
-                  );
-                })}
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggleModalError}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
+          </Modal>
+          {/*--------Modal-Success-----*/}
 
-        {/*--------Modal-Error-----*/}
+          {/*--------Modal-Error-----*/}
+          <Modal
+            isOpen={this.state.modalError}
+            toggle={this.toggle}
+            className={this.props.className}
+          >
+            <ModalHeader toggle={this.toggleModalError}>
+              <span className="dashboard-modal-header">Notification</span>
+            </ModalHeader>
+            <ModalBody>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {this.state.errorData !== undefined &&
+                  this.state.errorData.length !== 0 &&
+                  this.state.errorData.map(e => {
+                    i++;
+                    return (
+                      <span key={i} style={{ color: 'red' }}>
+                        {e[0]}
+                      </span>
+                    );
+                  })}
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={this.toggleModalError}>
+                Cancel
+            </Button>
+            </ModalFooter>
+          </Modal>
+
+          {/*--------Modal-Error-----*/}
         </header>
         <div>
           <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/back5.jpg")' }} id="career1">
@@ -424,12 +440,12 @@ export default class Careers extends Component {
                         toggle={this.toggleModal.bind(this)} className={this.props.className} external={externalCloseBtn}
                       >
                         <p></p>
-                        <h3 className="modal-title" id="myModallabel" style={{fontSize: 24}}>APPLICATION FORM</h3>
+                        <h3 className="modal-title" id="myModallabel" style={{ fontSize: 24 }}>APPLICATION FORM</h3>
                         <ModalBody>
                           <Form encType="multipart/form-data" onSubmit={this.handleSubmit} noValidate>
                             <FormGroup>
                               <div className="fullName">
-                                <label class="col-form-label">Full Name</label>
+                                <label class="col-form-label">Fullname<span style={{ color: 'red' }}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.fullName.length > 0 ? 'error' : null}
@@ -446,7 +462,7 @@ export default class Careers extends Component {
                             </FormGroup>
                             <FormGroup>
                               <div className="email">
-                                <label class="col-form-label">Email</label>
+                                <label class="col-form-label">Email<span style={{ color: 'red' }}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.email.length > 0 ? 'error' : null}
@@ -463,9 +479,7 @@ export default class Careers extends Component {
                             </FormGroup>
                             <FormGroup>
                               <div className="phone">
-                                <label class="col-form-label" className="phone">
-                                  Phone
-                                  </label>
+                                <label class="col-form-label">Phone<span style={{ color: 'red' }}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.phone.length > 0 ? 'error' : null}
@@ -482,7 +496,7 @@ export default class Careers extends Component {
                             </FormGroup>
                             <FormGroup>
                               <div className="address">
-                                <label class="col-form-label">Address</label>
+                                <label class="col-form-label">Address<span style={{ color: 'red' }}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.addressed.length > 0 ? 'error' : null}
@@ -597,15 +611,26 @@ export default class Careers extends Component {
                     </div>
                     <div className="bg-light p-3 border rounded">
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
-                      <div className="px-3 text-center">
-                      <div class="fb-share-button"
-                          data-href={"https://enclavei3dev.tk/article/" + id}
-                          data-layout="button_count">
+                      <div className="row text-center">
+                      <div className="col-6">
+                        <div class="fb-share-button"
+                          data-href={"https://enclavei3.tk/article/" + id}
+                          data-layout="button_count"
+                          data-size="large">
                         </div>
-                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter" /></NavLink>
-                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-instagram" /></NavLink>
-                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-skype" /></NavLink>
-                      </div>
+                        </div>
+                        <p></p>
+                        <div className="col-6">
+                        <a class="twitter-share-button ml-auto"
+                          href={"https://enclavei3.tk/article/" + id}
+                          data-size="large">
+                          Tweet</a>
+                          </div>
+                          </div>
+                        {/* <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter" /></NavLink> */}
+                        {/* <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-instagram" /></NavLink>
+                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-skype" /></NavLink> */}
+                      
                     </div>
                   </div>
                 </div>
@@ -643,25 +668,36 @@ export default class Careers extends Component {
                       </ul>
                     </div>
                     <div className="bg-light p-3 border rounded">
-                      <div className="text-center">
-                        {/* <FacebookShareButton url={"https://enclavei3dev.tk/article/6"}></FacebookShareButton> */}
+                     <div className="row text-center">
+                      <div className="col-6">
                         <div class="fb-share-button"
-                          data-href={"https://enclavei3dev.tk/article/" + id}
-                          data-layout="button_count">
+                          data-href={"https://enclavei3.tk/article/" + id}
+                          data-layout="button_count"
+                          data-size="large">
                         </div>
-                        <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
+                        </div>
+                        <p></p>
+                        <div className="col-6">
+                        <a class="twitter-share-button ml-auto"
+                          href={"https://enclavei3.tk/article/" + id}
+                          data-size="large">
+                          Tweet</a>
+                          </div>
+                          </div>
+                          
+                      {/* <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
-                        <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink>
-                      </div>
-                    </div>
+                        <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink> */}
+                    
                   </div>
                 </div>
               </div>
             </div>
+            </div>
           </section>
-          <Newfooter />
-        </div>
+        <Newfooter />
       </div>
+      </div >
     )
   }
 }

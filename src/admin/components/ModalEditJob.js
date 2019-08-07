@@ -70,7 +70,7 @@ export default class ModalEditJob extends Component {
 
   async componentDidMount() {
     const { id } = this.props;
-    var url = 'https://api.enclavei3dev.tk/api/job/' + id;
+    var url = 'https://api.enclavei3.tk/api/job/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ export default class ModalEditJob extends Component {
         exp = 6;
         break;
     }
-    var url = 'https://api.enclavei3dev.tk/api/job/' + id;
+    var url = 'https://api.enclavei3.tk/api/job/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({

@@ -64,11 +64,11 @@ export default class JobsPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3dev.tk/api/list-job';
+      url = 'https://api.enclavei3.tk/api/list-job';
     } else {
       body = '';
       url =
-        'https://api.enclavei3dev.tk/api/list-job?page=' +
+        'https://api.enclavei3.tk/api/list-job?page=' +
         activePage +
         '&perpage=' +
         perPage;
@@ -119,11 +119,11 @@ export default class JobsPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3dev.tk/api/list-job';
+      url = 'https://api.enclavei3.tk/api/list-job';
     } else {
       body = '';
       url =
-        'https://api.enclavei3dev.tk/api/list-job?page=' +
+        'https://api.enclavei3.tk/api/list-job?page=' +
         pageNumber +
         '&perpage=' +
         perPage;
@@ -153,7 +153,7 @@ export default class JobsPage extends Component {
     const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/job';
+    var url = 'https://api.enclavei3.tk/api/job';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -176,7 +176,7 @@ export default class JobsPage extends Component {
 
   removeManyItems() {
     const { listDeleteId, perPage, keyword } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/job';
+    var url = 'https://api.enclavei3.tk/api/job';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
