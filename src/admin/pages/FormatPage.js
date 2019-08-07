@@ -52,7 +52,7 @@ export default class FormatPage extends Component {
     }
   }
   async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/format-article?numberRecord=10';
+    var url = 'https://api.enclavei3.tk/api/format-article?numberRecord=10';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ export default class FormatPage extends Component {
   }
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    var url = 'https://api.enclavei3.tk/api/format-article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -132,7 +132,7 @@ export default class FormatPage extends Component {
       }
     }).then(res => {
       fetch(
-        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
+        'https://api.enclavei3.tk/api/format-article?page=' + activePage,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ export default class FormatPage extends Component {
     const { activePage } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    var url = 'https://api.enclavei3.tk/api/format-article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -174,7 +174,7 @@ export default class FormatPage extends Component {
       }
     }).then(res => {
       fetch(
-        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
+        'https://api.enclavei3.tk/api/format-article?page=' + activePage,
         {
           headers: {
             'Content-Type': 'application/json',

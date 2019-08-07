@@ -74,20 +74,20 @@ export default class ArticlesPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3dev.tk/api/list-article';
+      url = 'https://api.enclavei3.tk/api/list-article';
     } else {
       body = '';
       url =
-        'https://api.enclavei3dev.tk/api/list-article?page=' +
+        'https://api.enclavei3.tk/api/list-article?page=' +
         activePage +
         '&perpage=' +
         perPage;
     }
 
-    var url2 = 'https://api.enclavei3dev.tk/api/list-job';
-    var url3 = 'https://api.enclavei3dev.tk/api/category?page=1';
-    var url4 = 'https://api.enclavei3dev.tk/api/format-article';
-    var url5 = 'https://api.enclavei3dev.tk/api/role/2';
+    var url2 = 'https://api.enclavei3.tk/api/list-job';
+    var url3 = 'https://api.enclavei3.tk/api/category?page=1';
+    var url4 = 'https://api.enclavei3.tk/api/format-article';
+    var url5 = 'https://api.enclavei3.tk/api/role/2';
     const data = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -186,11 +186,11 @@ export default class ArticlesPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3dev.tk/api/list-article';
+      url = 'https://api.enclavei3.tk/api/list-article';
     } else {
       body = '';
       url =
-        'https://api.enclavei3dev.tk/api/list-article?page=' +
+        'https://api.enclavei3.tk/api/list-article?page=' +
         pageNumber +
         '&perpage=' +
         perPage;
@@ -221,7 +221,7 @@ export default class ArticlesPage extends Component {
     const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/article';
+    var url = 'https://api.enclavei3.tk/api/article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -244,7 +244,7 @@ export default class ArticlesPage extends Component {
 
   removeManyItems() {
     const { listDeleteId, perPage, keyword } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/article';
+    var url = 'https://api.enclavei3.tk/api/article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({

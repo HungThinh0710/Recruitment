@@ -45,7 +45,7 @@ export default class JobDetail extends Component {
   }
   async componentDidMount() {
     const { id } = this.props.match.params;
-    var url = 'https://api.enclavei3dev.tk/api/candidate/' + id;
+    var url = 'https://api.enclavei3.tk/api/candidate/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

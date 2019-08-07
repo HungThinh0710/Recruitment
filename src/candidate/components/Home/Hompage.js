@@ -83,7 +83,7 @@ export default class Homepage extends Component {
       "experience": "",
       "orderby": "asc"
     }
-    var  url = 'https://api.enclavei3dev.tk/api/article-web?page=' +activePage +
+    var  url = 'https://api.enclavei3.tk/api/article-web?page=' +activePage +
         '&perpage=' +
         perPage;
     const data = await fetch(url, {
@@ -115,7 +115,7 @@ export default class Homepage extends Component {
       "orderby": "asc",
       "category": "Recruitment",
     }
-    var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber + '&perpage=' + perPage;
+    var url = 'https://api.enclavei3.tk/api/article-web?page=' + pageNumber + '&perpage=' + perPage;
     fetch(url, {
       method: 'POST',
       headers: headers,
@@ -150,7 +150,7 @@ export default class Homepage extends Component {
       "status": status,
       "orderby": "asc"
     }
-    var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber + '&perpage=' +
+    var url = 'https://api.enclavei3.tk/api/article-web?page=' + pageNumber + '&perpage=' +
     perPage;
     fetch(url, {
       method: 'POST',

@@ -130,7 +130,7 @@ export default class Careers extends Component {
       "Content-Type": "application/json",
     }
     const { id } = this.props.match.params;
-    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
+    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
       headers: headers,
     }).then(response => response.json())
     await this.setState({
@@ -180,7 +180,7 @@ export default class Careers extends Component {
     formData.set('description', this.state.description);
     formData.set('technicalSkill', arrayString);
     formData.append('file', this.state.selectedFile);
-    var url = 'https://api.enclavei3dev.tk/api/candidate';
+    var url = 'https://api.enclavei3.tk/api/candidate';
     const data = axios.post(url, formData, {}, configs
     )
       .then(res => {
@@ -614,7 +614,7 @@ export default class Careers extends Component {
                       <div className="row text-center">
                       <div className="col-6">
                         <div class="fb-share-button"
-                          data-href={"https://enclavei3dev.tk/article/" + id}
+                          data-href={"https://enclavei3.tk/article/" + id}
                           data-layout="button_count"
                           data-size="large">
                         </div>
@@ -622,7 +622,7 @@ export default class Careers extends Component {
                         <p></p>
                         <div className="col-6">
                         <a class="twitter-share-button ml-auto"
-                          href={"https://enclavei3dev.tk/article/" + id}
+                          href={"https://enclavei3.tk/article/" + id}
                           data-size="large">
                           Tweet</a>
                           </div>
@@ -671,7 +671,7 @@ export default class Careers extends Component {
                      <div className="row text-center">
                       <div className="col-6">
                         <div class="fb-share-button"
-                          data-href={"https://enclavei3dev.tk/article/" + id}
+                          data-href={"https://enclavei3.tk/article/" + id}
                           data-layout="button_count"
                           data-size="large">
                         </div>
@@ -679,7 +679,7 @@ export default class Careers extends Component {
                         <p></p>
                         <div className="col-6">
                         <a class="twitter-share-button ml-auto"
-                          href={"https://enclavei3dev.tk/article/" + id}
+                          href={"https://enclavei3.tk/article/" + id}
                           data-size="large">
                           Tweet</a>
                           </div>

@@ -74,7 +74,7 @@ export default class ForgotPasswordPage extends React.Component {
       })
     }
     if(email != ""){
-      var url = 'https://api.enclavei3dev.tk/api/password/forgot';
+      var url = 'https://api.enclavei3.tk/api/password/forgot';
 
       fetch(url, {
         method: 'POST',
