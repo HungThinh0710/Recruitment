@@ -10,7 +10,7 @@ import {
   Input,
   Container,
   Row,
-  Badge,  
+  Badge,
   Col,
   FormGroup,
   Modal,
@@ -533,12 +533,34 @@ export default class ArticlesPage extends Component {
                           <td>{e.title}</td>
                           {e.job ? <td>{e.job.name}</td> : <td />}
                           {e.isPublic === 1 ? (
-                                      <td className="text-center">
-                                         <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80,borderRadius:4,}} pill>Published</Badge>
-                                         </td>
-                                    ) : (
-                                      <td className="text-center"><Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80,borderRadius:4}} pill>Closed</Badge></td>
-                                  )}
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#6a82fb',
+                                  color: '#fff',
+                                  width: 100,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                Published
+                              </Badge>
+                            </td>
+                          ) : (
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#dd2c00',
+                                  color: '#fff',
+                                  width: 100,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                Unpublished
+                              </Badge>
+                            </td>
+                          )}
 
                           <td>{e.user.fullname}</td>
                           {/* <td>{e.created_at}</td>

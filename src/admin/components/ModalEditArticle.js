@@ -575,14 +575,14 @@ export default class ModalEditArticle extends Component {
                           onClick={this.handleChangeStatus}
                           color="warning"
                         >
-                          Close
+                          Unpublish
                         </Button>
                       ) : (
                         <Button
                           onClick={this.handleErrorMessage.bind(this)}
                           color="warning"
                         >
-                          Close
+                          Unpublish
                         </Button>
                       )}
                     </div>

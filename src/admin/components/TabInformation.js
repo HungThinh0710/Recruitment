@@ -120,7 +120,7 @@ export default class TabInformation extends Component {
               <Col className="contact-information">
                 <h6>Username:</h6>
                 <br />
-                <h6>Fullname:</h6>
+                <h6>Full Name:</h6>
                 <br />
               </Col>
               <Col className="contact-information">

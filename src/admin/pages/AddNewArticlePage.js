@@ -55,7 +55,8 @@ export default class AddNewArticlePage extends Component {
       optionsCategory: [],
       optionsFormat: [],
       isDisabled: false,
-      showJobError: false
+      showJobError: false,
+      image: ''
     };
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -506,6 +507,12 @@ export default class AddNewArticlePage extends Component {
                       </div>
                     </FormGroup>
                     {/* {this.state.content && ( */}
+                    <FormGroup>
+                      <Label className="title-input" for="Content">
+                        Image
+                      </Label>
+                      <Input type="file" />
+                    </FormGroup>
                     <FormGroup>
                       <Label className="title-input" for="Content">
                         Content

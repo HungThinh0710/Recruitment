@@ -36,7 +36,7 @@ export default class AddNewInterviewerPage extends Component {
       showErrorMessage: false,
       amountTechnicalSkills: 1,
       formError: {
-        fullname: 'Fullname is required',
+        fullname: 'Full Name is required',
         email: 'Email is required',
         phone: 'Phone is required'
       },
@@ -75,12 +75,12 @@ export default class AddNewInterviewerPage extends Component {
     switch (event.target.name) {
       case 'fullname':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'email':
@@ -345,7 +345,7 @@ export default class AddNewInterviewerPage extends Component {
               <Col xs="8">
                 <FormGroup>
                   <Label className="title-input" for="exampleName">
-                    Fullname
+                    Full Name
                   </Label>
                   <Input
                     type="text"

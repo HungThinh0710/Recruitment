@@ -195,7 +195,7 @@ export default class JobDetail extends Component {
                               }}
                             >
                               <th className="title1">#</th>
-                              <th className="title1">Fullname</th>
+                              <th className="title1">Full Name</th>
                               <th className="title1">Email</th>
                               <th className="title1">Phone</th>
                             </tr>
@@ -232,7 +232,7 @@ export default class JobDetail extends Component {
                               }}
                             >
                               <th className="title1">#</th>
-                              <th className="title1">Fullname</th>
+                              <th className="title1">Full Name</th>
                               <th className="title1">Email</th>
                               <th className="title1">Phone</th>
                               <th className="title1">Status</th>
@@ -270,7 +270,7 @@ export default class JobDetail extends Component {
                                           backgroundColor: '#6a82fb',
                                           color: '#fff',
                                           width: 80,
-                                          borderRadius:4,
+                                          borderRadius: 4
                                         }}
                                         pill
                                       >
@@ -284,7 +284,7 @@ export default class JobDetail extends Component {
                                           backgroundColor: '#f85032',
                                           color: '#fff',
                                           width: 80,
-                                          borderRadius:4,
+                                          borderRadius: 4
                                         }}
                                         pill
                                       >
@@ -298,7 +298,7 @@ export default class JobDetail extends Component {
                                           backgroundColor: '#43a047',
                                           color: '#fff',
                                           width: 80,
-                                          borderRadius:4,
+                                          borderRadius: 4
                                         }}
                                         pill
                                       >
@@ -312,7 +312,7 @@ export default class JobDetail extends Component {
                                           backgroundColor: '#64dd17',
                                           color: '#fff',
                                           width: 80,
-                                          borderRadius:4,
+                                          borderRadius: 4
                                         }}
                                         pill
                                       >
@@ -326,7 +326,7 @@ export default class JobDetail extends Component {
                                           backgroundColor: '#dd2c00',
                                           color: '#fff',
                                           width: 80,
-                                          borderRadius:4,
+                                          borderRadius: 4
                                         }}
                                         pill
                                       >

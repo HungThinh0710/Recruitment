@@ -408,11 +408,11 @@ export default class UsersPage extends Component {
                         <input type="checkbox" />
                       </th>
                       <th style={{ width: '70px' }}>#</th>
-                      <th style={{ width: '370px' }}>Fullname</th>
+                      <th style={{ width: '370px' }}>Full Name</th>
                       <th style={{ width: '370px' }}>Email</th>
                       <th style={{ width: '150px' }}>Status</th>
                       <th>Phone</th>
-                      <th style={{ width: '180px' }}>
+                      <th style={{ width: '130px' }}>
                         <div className="action">Action</div>
                       </th>
                     </tr>
@@ -456,39 +456,81 @@ export default class UsersPage extends Component {
                             {e.email}
                           </td>
                           {e.status == 'Pending' ? (
-                          <td className = "text-center"> 
-                            <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80,borderRadius:4,}} pill>{e.status}</Badge>
-                            </td> 
-                            ) : e.status == 'Deny' ? (
-                            <td className = "text-center">
-                              <Badge style = {{backgroundColor: '#f85032', color: '#fff',width:80,borderRadius:4}} pill>{e.status}</Badge>
-                              </td>
-                              ) :  e.status == 'Approve' ? (
-                              <td className = "text-center">
-                                <Badge style = {{backgroundColor: '#43a047', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
-                                </td>
-                                ) : e.status == 'Passed' ? (
-                                <td className = "text-center">
-                                  <Badge style = {{backgroundColor: '#64dd17', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
-                                  </td>
-                                  ) : e.status == 'Failed' ? (
-                                  <td className = "text-center">
-                                    <Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
-                                    </td>
-                                    ) : ( '') }
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#6a82fb',
+                                  color: '#fff',
+                                  width: 80,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                {e.status}
+                              </Badge>
+                            </td>
+                          ) : e.status == 'Deny' ? (
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#f85032',
+                                  color: '#fff',
+                                  width: 80,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                {e.status}
+                              </Badge>
+                            </td>
+                          ) : e.status == 'Approve' ? (
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#43a047',
+                                  color: '#fff',
+                                  width: 80,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                {e.status}
+                              </Badge>
+                            </td>
+                          ) : e.status == 'Passed' ? (
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#64dd17',
+                                  color: '#fff',
+                                  width: 80,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                {e.status}
+                              </Badge>
+                            </td>
+                          ) : e.status == 'Failed' ? (
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#dd2c00',
+                                  color: '#fff',
+                                  width: 80,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                {e.status}
+                              </Badge>
+                            </td>
+                          ) : (
+                            ''
+                          )}
                           <td>{e.phone}</td>
                           <td>
                             <div className="action">
-                              <div className="action-item">
-                                <ModalEditItem
-                                  icon
-                                  // id={listId[index]}
-                                  name={e.name}
-                                  color="warning"
-                                  buttonLabel="Edit"
-                                  // function={this.editRole.bind(this)}
-                                />
-                              </div>
                               <div className="action-item">
                                 <Link style={{ width: 'auto' }} to={url}>
                                   <Button

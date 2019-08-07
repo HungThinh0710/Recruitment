@@ -61,7 +61,7 @@ export default class ChangeProfilePage extends Component {
         <CardBody>
           <Form id="profile-form" onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="exampleName">Fullname</Label>
+              <Label for="exampleName">Full Name</Label>
               <Input
                 type="text"
                 name="fullname"

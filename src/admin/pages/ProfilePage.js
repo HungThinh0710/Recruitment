@@ -176,12 +176,12 @@ export default class ProfilePage extends Component {
     switch (event.target.name) {
       case 'editFullName':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Fullname is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Fullname cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'editEmail':

@@ -103,12 +103,12 @@ export default class ModalEditUser extends Component {
     switch (event.target.name) {
       case 'fullname':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'email':
@@ -298,7 +298,7 @@ export default class ModalEditUser extends Component {
             <Form>
               <FormGroup>
                 <Label for="fullname" className="title-input">
-                  Fullname:
+                  Full Name:
                 </Label>
                 <Input
                   type="text"
