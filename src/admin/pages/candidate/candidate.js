@@ -425,7 +425,7 @@ export default class UsersPage extends Component {
                         e.status = 'Deny';
                       }
                       if (e.status == '3') {
-                        e.status = 'Approve Application';
+                        e.status = 'Approve';
                       }
                       if (e.status == '4') {
                         e.status = 'Passed';

@@ -8,6 +8,7 @@ import {
   Container,
   TabContent,
   TabPane,
+  Badge,
   Nav,
   NavItem,
   NavLink
@@ -210,7 +211,7 @@ export default class JobDetail extends Component {
                               }}
                             >
                               <th className="title1">#</th>
-                              <th className="title1">Fullname</th>
+                              <th className="title1">Name</th>
                               <th className="title1">Address</th>
                               <th className="title1">Start</th>
                               <th className="title1">Status</th>
@@ -259,7 +260,8 @@ export default class JobDetail extends Component {
                                   <td className="title1">{e.name}</td>
                                   <td className="title1">{e.address}</td>
                                   <td className="title1">{e.timeStart}</td>
-                                  <td className="title1">{e.status}</td>
+                                  {e.status == 'Pending' ?  <td className="title1"><Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>{e.status}</Badge></td> :  <td className="title1"><Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>{e.status}</Badge></td> }
+                                 
                                 </tr>
                               );
                             })}

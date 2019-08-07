@@ -7,6 +7,7 @@ import {
   Container,
   TabContent,
   TabPane,
+  Badge,
   Nav,
   NavItem,
   NavLink,
@@ -134,7 +135,7 @@ export default class JobDetail extends Component {
                       </tr>
                       <tr className="job-title3" key={5}>
                         <td className="job-title">Status</td>
-                        <td className="job-title1">{this.state.status}</td>
+                        <td className="job-title1">{this.state.status}</td>                        
                       </tr>
                     </tbody>
                   </table>
@@ -245,7 +246,7 @@ export default class JobDetail extends Component {
                                 e.status = 'Deny';
                               }
                               if (e.status == '3') {
-                                e.status = 'Approve Application';
+                                e.status = 'Approve';
                               }
                               if (e.status == '4') {
                                 e.status = 'Passed';
@@ -261,7 +262,7 @@ export default class JobDetail extends Component {
                                   <td className="title1">{e.fullname}</td>
                                   <td className="title1">{e.email}</td>
                                   <td className="title1">{e.phone}</td>
-                                  <td className="title1">{e.status}</td>
+                                  {e.status == 'Pending' ? (<td className="title1"> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>{e.status}</Badge></td> ) : e.status == 'Deny' ? (<td className="title1"><Badge style = {{backgroundColor: '#f85032', color: '#fff',width:80}} pill>{e.status}</Badge></td>) :  e.status == 'Approve' ? (<td className="title1"><Badge style = {{backgroundColor: '#43a047', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Passed' ? (<td className="title1"><Badge style = {{backgroundColor: '#64dd17', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Failed' ? (<td className="title1"><Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : ( '') }
                                 </tr>
                               );
                             })}
