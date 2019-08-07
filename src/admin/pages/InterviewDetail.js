@@ -7,6 +7,7 @@ import {
   Container,
   TabContent,
   TabPane,
+  Badge,
   Nav,
   NavItem,
   NavLink,
@@ -176,102 +177,172 @@ export default class JobDetail extends Component {
               </Row>
               <br />
               <br />
-              <TabContent
-                style={{ width: '100%' }}
-                activeTab={this.state.activeTab}
-              >
-                <TabPane tabId="1">
-                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
-                    <div className="table-test">
-                      <table style={{ width: '100%' }}>
-                        <thead>
-                          <tr
-                            style={{
-                              background:
-                                '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                              color: 'white'
-                            }}
-                          >
-                            <th className="title1">#</th>
-                            <th className="title1">Fullname</th>
-                            <th className="title1">Email</th>
-                            <th className="title1">Phone</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {this.state.interviewers.map(e => {
-                            i++;
-                            let url = '/dashboard/interview/' + e.id;
-                            return (
-                              <tr style={{ textAlign: 'center' }} key={e.id}>
-                                <td className="title1">{i}</td>
-                                <td className="title1">{e.fullname}</td>
-                                <td className="title1">{e.email}</td>
-                                <td className="title1">{e.phone}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                      <br />
-                    </div>
-                  </CardBody>
-                </TabPane>
-                <TabPane tabId="2">
-                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
-                    <div className="table-test">
-                      <table style={{ width: '100%' }}>
-                        <thead>
-                          <tr
-                            style={{
-                              background:
-                                '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                              color: 'white'
-                            }}
-                          >
-                            <th className="title1">#</th>
-                            <th className="title1">Fullname</th>
-                            <th className="title1">Email</th>
-                            <th className="title1">Phone</th>
-                            <th className="title1">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {this.state.candidates.map(e => {
-                            if (e.status == '1') {
-                              e.status = 'Pending';
-                            }
-                            if (e.status == '2') {
-                              e.status = 'Deny';
-                            }
-                            if (e.status == '3') {
-                              e.status = 'Approve Application';
-                            }
-                            if (e.status == '4') {
-                              e.status = 'Passed';
-                            }
-                            if (e.status == '5') {
-                              e.status = 'Failed';
-                            }
-                            j++;
-                            let url = '/dashboard/interview/' + e.id;
-                            return (
-                              <tr style={{ textAlign: 'center' }} key={e.id}>
-                                <td className="title1">{j}</td>
-                                <td className="title1">{e.fullname}</td>
-                                <td className="title1">{e.email}</td>
-                                <td className="title1">{e.phone}</td>
-                                <td className="title1">{e.status}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                      <br />
-                    </div>
-                  </CardBody>
-                </TabPane>
-              </TabContent>
+              <Row>
+                <TabContent
+                  style={{ width: '100%' }}
+                  activeTab={this.state.activeTab}
+                >
+                  <TabPane tabId="1">
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Fullname</th>
+                              <th className="title1">Email</th>
+                              <th className="title1">Phone</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.interviewers.map(e => {
+                              i++;
+                              let url = '/dashboard/interview/' + e.id;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{i}</td>
+                                  <td className="title1">{e.fullname}</td>
+                                  <td className="title1">{e.email}</td>
+                                  <td className="title1">{e.phone}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                        <br />
+                      </div>
+                    </CardBody>
+                  </TabPane>
+                  <TabPane tabId="2">
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Fullname</th>
+                              <th className="title1">Email</th>
+                              <th className="title1">Phone</th>
+                              <th className="title1">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.candidates.map(e => {
+                              if (e.status == '1') {
+                                e.status = 'Pending';
+                              }
+                              if (e.status == '2') {
+                                e.status = 'Deny';
+                              }
+                              if (e.status == '3') {
+                                e.status = 'Approve';
+                              }
+                              if (e.status == '4') {
+                                e.status = 'Passed';
+                              }
+                              if (e.status == '5') {
+                                e.status = 'Failed';
+                              }
+                              j++;
+                              let url = '/dashboard/interview/' + e.id;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{j}</td>
+                                  <td className="title1">{e.fullname}</td>
+                                  <td className="title1">{e.email}</td>
+                                  <td className="title1">{e.phone}</td>
+                                  {e.status == 'Pending' ? (
+                                    <td className="title1">
+                                      {' '}
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          width: 80
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Deny' ? (
+                                    <td className="title1">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#f85032',
+                                          color: '#fff',
+                                          width: 80
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Approve' ? (
+                                    <td className="title1">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#43a047',
+                                          color: '#fff',
+                                          width: 80
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Passed' ? (
+                                    <td className="title1">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#64dd17',
+                                          color: '#fff',
+                                          width: 80
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Failed' ? (
+                                    <td className="title1">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          width: 80
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    ''
+                                  )}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                        <br />
+                      </div>
+                    </CardBody>
+                  </TabPane>
+                </TabContent>
+              </Row>
             </Container>
 
             <div

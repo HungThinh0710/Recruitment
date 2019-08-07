@@ -466,17 +466,7 @@ export default class Roles extends Component {
                                 />
                               </td>
                               <td>{i}</td>
-                              <td>
-                                {e.name.toLowerCase() == 'admin' ? (
-                                  <Badge color="danger" pill>
-                                    {e.name}
-                                  </Badge>
-                                ) : (
-                                  <Badge color="primary" pill>
-                                    {e.name}
-                                  </Badge>
-                                )}
-                              </td>
+                              <td>{e.name}</td>
                               <td>{e.description}</td>
                               <td>
                                 <div className="action">
