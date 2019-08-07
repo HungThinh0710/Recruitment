@@ -147,6 +147,7 @@ export default class Careers extends Component {
       addressed: data.job.address,
       content: data.content
     });
+    console.log(this.state.jobID)
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
     $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
   }
@@ -298,6 +299,7 @@ export default class Careers extends Component {
     });
   };
   render() {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     var i=0;
     const { formErrors, dataTechnicalSkills, urlInterviewer } = this.state;
     var array = [];
@@ -395,9 +397,6 @@ export default class Careers extends Component {
               <div className="row align-items-center mb-5">
                 <div className="col-lg-8 mb-4 mb-lg-0" id="view-mobile">
                   <div className="d-flex align-items-center">
-                    <div className="border p-2 d-inline-block mr-3 rounded">
-                      <img src="/candidate/images/featured-listing-5.jpg" alt="Free Website Template By Free-Template.co" />
-                    </div>
                     <div>
                       <h2 className="modify-title">{this.state.title}</h2>
                       <div class="show-line">
