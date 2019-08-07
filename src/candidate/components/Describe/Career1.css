@@ -95,3 +95,7 @@
 #articleModal {
   z-index:100000;
 }
+.text-jobsummary {
+  font-weight: bold;
+  text-transform: uppercase;
+}
