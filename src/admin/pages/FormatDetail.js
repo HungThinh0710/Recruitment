@@ -301,6 +301,16 @@ export default class AddNewFormatPage extends Component {
                 </Col>
                 <Col>{renderHTML(this.state.content)}</Col>
               </Row>
+              <br />
+              <Row>
+                <Col style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Link to="/dashboard/format">
+                    <Button>Back</Button>
+                  </Link>
+                </Col>
+              </Row>
+
+              <br />
             </TabPane>
             <TabPane tabId="2">
               <Row>

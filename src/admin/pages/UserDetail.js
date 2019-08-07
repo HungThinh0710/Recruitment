@@ -1,19 +1,37 @@
-
-import React, { Component } from 'react'
-import { Card,CardBody,CardHeader,CardTitle,CardSubtitle,CardImg,Button,CardText, 
-Row,Col,Container,TabContent, TabPane, Nav, NavItem, NavLink,Form,FormGroup,Label,Input,Modal,
-ModalHeader,
-ModalBody,
-ModalFooter, } from 'reactstrap';
-import classnames from 'classnames';
-import TabInformation from '../components/TabInformation'
+import React, { Component } from 'react';
 import {
-  MdSettings,MdMap,MdBook,MdPermDataSetting,MdCancel
-} from 'react-icons/md';
-import {  NumberWidget } from '../components/Widget';
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  CardSubtitle,
+  CardImg,
+  Button,
+  CardText,
+  Row,
+  Col,
+  Container,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from 'reactstrap';
+import classnames from 'classnames';
+import TabInformation from '../components/TabInformation';
+import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
+import { NumberWidget } from '../components/Widget';
 import { MDBDataTable } from 'mdbreact';
 import { PulseLoader } from 'react-spinners';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './UserDetail.css';
 const fullNameRegex = /^[a-zA-Z\s]+$/;
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -21,24 +39,26 @@ export default class UserDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkedRole:false,
+      checkedRole: false,
       activeRole: false,
-      activeTab: '1',
-        name: '',
-        fullName: '',
-        email: '' ,
-        phone: '' ,
-        address: '',
-        editFullName: '',
-        editEmail: '' ,
-        editPhone: '' ,
-        editAddress: '',
-        image: '',
-        editImage:'',
-        roles:[],
-        editRoles:[],
-        listRoles: {
-          columns:[{
+      // activeTab: '1',
+      activeTab: '3',
+      name: '',
+      fullName: '',
+      email: '',
+      phone: '',
+      address: '',
+      editFullName: '',
+      editEmail: '',
+      editPhone: '',
+      editAddress: '',
+      image: '',
+      editImage: '',
+      roles: [],
+      editRoles: [],
+      listRoles: {
+        columns: [
+          {
             label: 'Name',
             field: 'name',
             sort: 'asc',
@@ -54,33 +74,33 @@ export default class UserDetail extends Component {
             field: 'action',
             sort: 'asc',
             width: 100
-          }],
-          rows:[]
-        },
-        listId:[],
-        loading: true,
-        formError: {
-          fullname: '',
-          email: '',
-          phone: ''
-        },
-        modalError: false,
-        modalSuccess: false,
-        errorData: '',
-        showErrorMessage: false,
-        errorRoleMessage: "",
-        checkRole: false
-      };
-      this.toggle = this.toggle.bind(this);
-      this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-      this.handleChangePassword = this.handleChangePassword.bind(this);
-      this.handleCheck = this.handleCheck.bind(this);
-      this.toggleModalError = this.toggleModalError.bind(this);
-      this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
+          }
+        ],
+        rows: []
+      },
+      listId: [],
+      loading: true,
+      formError: {
+        fullname: '',
+        email: '',
+        phone: ''
+      },
+      modalError: false,
+      modalSuccess: false,
+      errorData: '',
+      showErrorMessage: false,
+      errorRoleMessage: '',
+      checkRole: false
+    };
+    this.toggle = this.toggle.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.handleCheck = this.handleCheck.bind(this);
+    this.toggleModalError = this.toggleModalError.bind(this);
+    this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
   }
   toggle(tab) {
-    
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
@@ -92,18 +112,17 @@ export default class UserDetail extends Component {
       this.props.history.push('/dashboard/login');
     }
   }
-  async componentDidMount(){
-    
-    const {id} = this.props.match.params;
+  async componentDidMount() {
+    const { id } = this.props.match.params;
     const columns = this.state.listRoles.columns;
-    let {editRoles} = this.state;
+    let { editRoles } = this.state;
     var check = true;
-    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
+    var url = 'https://api.enclavei3dev.tk/api/user/' + id;
     await fetch(url, {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
       if (res.status === 403) {
@@ -116,9 +135,9 @@ export default class UserDetail extends Component {
       if (res.status === 200) {
         res.json().then(response => {
           var data = response;
-          check=true;
+          check = true;
           this.setState({
-            name : data.name,
+            name: data.name,
             fullName: data.fullname,
             email: data.email,
             phone: data.phone,
@@ -131,63 +150,70 @@ export default class UserDetail extends Component {
             editAddress: data.address,
             editImage: data.image,
             checkRole: true
-          })
-        })
+          });
+        });
       }
-    }) 
-      
-    if (check == true){
+    });
+
+    if (check == true) {
       var url2 = 'https://api.enclavei3dev.tk/api/list-role';
       const data2 = await fetch(url2, {
-        method:'POST',
-        body:JSON.stringify({
-          all : 1
+        method: 'POST',
+        body: JSON.stringify({
+          all: 1
         }),
-        headers:{
+        headers: {
           'Content-Type': 'application/json',
-          'Accept' : 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
-      }).then(res => res.json()) ;
-      if (data2.message !== 'Unauthenticated.'){
-        data2.map((e)=>{
+      }).then(res => res.json());
+      if (data2.message !== 'Unauthenticated.') {
+        data2.map(e => {
           delete e.created_at;
           delete e.updated_at;
-          var {listId} = this.state;
+          var { listId } = this.state;
           listId.push(e.id);
-          var index=listId.indexOf(e.id);
+          var index = listId.indexOf(e.id);
           delete e.id;
-          const {roles} = this.state;
+          const { roles } = this.state;
           var found = roles.find(currentRole => {
-            return currentRole.name===e.name;
-          })
+            return currentRole.name === e.name;
+          });
           if (found) {
             editRoles.push(listId[index]);
-            return e.action= <input type='checkbox' defaultChecked={true} 
-            onChange={() => this.handleCheck(listId[index],editRoles)} />
+            return (e.action = (
+              <input
+                type="checkbox"
+                defaultChecked={true}
+                onChange={() => this.handleCheck(listId[index], editRoles)}
+              />
+            ));
+          } else {
+            return (e.action = (
+              <input
+                type="checkbox"
+                onChange={() => this.handleCheck(listId[index], editRoles)}
+              />
+            ));
           }
-          
-          else { return e.action = <input type='checkbox'  
-          onChange={() => this.handleCheck(listId[index],editRoles)} />}
-          
-        })
+        });
 
         setTimeout(() => {
-        this.setState({
-          listRoles : {
-            columns: columns,
-            rows: data2,
-          },
-          loading: false,
-          editRoles: editRoles
-        })}, 500);   
+          this.setState({
+            listRoles: {
+              columns: columns,
+              rows: data2
+            },
+            loading: false,
+            editRoles: editRoles
+          });
+        }, 500);
       }
     }
-    
-    
   }
-  
-  handleCheck(id,editRoles){
+
+  handleCheck(id, editRoles) {
     editRoles.push(id);
     var { errorRoleMessage } = this.state;
     var array1 = [...new Set(editRoles)];
@@ -206,7 +232,7 @@ export default class UserDetail extends Component {
     this.setState({
       editRoles: editRoles,
       errorRoleMessage: errorRoleMessage
-    });   
+    });
   }
 
   backToPreviousPage = () => {
@@ -276,81 +302,86 @@ export default class UserDetail extends Component {
   }
 
   handleSubmit = () => {
-    const {id} = this.props.match.params;
-    const {editFullName,editEmail,editPhone,
-      editAddress,editRoles} = this.state;
-    var listEditRoles =[];
+    const { id } = this.props.match.params;
+    const {
+      editFullName,
+      editEmail,
+      editPhone,
+      editAddress,
+      editRoles
+    } = this.state;
+    var listEditRoles = [];
     //Fix the editRoles array => 2: remove 1: select
-    var array1 = [... new Set(editRoles)];
-    var array2 =[];
-    array1.map(element=>{
-      var count = editRoles.filter(e => e===element);
+    var array1 = [...new Set(editRoles)];
+    var array2 = [];
+    array1.map(element => {
+      var count = editRoles.filter(e => e === element);
       var length = count.length;
-      if (length%2!==0) {
+      if (length % 2 !== 0) {
         array2.push(element);
-      } 
+      }
       return array2;
-      });
-    var url = 'https://api.enclavei3dev.tk/api/user/'+id;
+    });
+    var url = 'https://api.enclavei3dev.tk/api/user/' + id;
     fetch(url, {
-      method: 'PUT', 
+      method: 'PUT',
       body: JSON.stringify({
         fullname: editFullName,
         email: editEmail,
         phone: editPhone,
         address: editAddress,
         roles: array2
-      }), 
-      headers:{
+      }),
+      headers: {
         'Content-Type': 'application/json',
-        'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => {
-      if (res.status ===401) {
-        alert('Update Failed')
-      }
-      if (res.status === 422) {
-        this.toggleModalError();
-        res.json().then(data => {
-          const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
-          this.setState({
-            errorData: dataArray
+    })
+      .then(res => {
+        if (res.status === 401) {
+          alert('Update Failed');
+        }
+        if (res.status === 422) {
+          this.toggleModalError();
+          res.json().then(data => {
+            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
+            this.setState({
+              errorData: dataArray
+            });
           });
-        });
-      }
-      if (res.status === 200) {
-        this.toggleModalSuccess();
-        res.json().then(data =>{
-          array2.map(e =>{
-            var url2 = 'https://api.enclavei3dev.tk/api/role/'+e;
-            fetch(url2, {
-              headers:{
-                'Content-Type': 'application/json',
-                'Accept' : 'application/json',
-                'Authorization' : 'Bearer ' + localStorage.getItem('access_token'),
-              }
-            }).then(res => {
-              res.json().then(data => {
-                listEditRoles.push(data);
-              })
-            })
-          })
-          this.setState({
-            fullName: editFullName,
-            email: editEmail,
-            phone: editPhone,
-            address: editAddress,
-            roles: listEditRoles
-          })
-        })
-    }})
-    .catch(error => console.error('Error:', error))
-    
-  }
-  handleChangePassword(){
-    
-  }
+        }
+        if (res.status === 200) {
+          this.toggleModalSuccess();
+          res.json().then(data => {
+            array2.map(e => {
+              var url2 = 'https://api.enclavei3dev.tk/api/role/' + e;
+              fetch(url2, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+                  Authorization:
+                    'Bearer ' + localStorage.getItem('access_token')
+                }
+              }).then(res => {
+                res.json().then(data => {
+                  listEditRoles.push(data);
+                });
+              });
+            });
+            this.setState({
+              fullName: editFullName,
+              email: editEmail,
+              phone: editPhone,
+              address: editAddress,
+              roles: listEditRoles
+            });
+          });
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  };
+  handleChangePassword() {}
   handleErrorMessage = () => {
     var { editRoles, errorRoleMessage } = this.state;
     var array1 = [...new Set(editRoles)];
@@ -372,14 +403,12 @@ export default class UserDetail extends Component {
     });
   };
 
-  
   render() {
     var i = 0;
-    const {name,fullName,email,phone,address,
-      formError} = this.state;
+    const { name, fullName, email, phone, address, formError } = this.state;
     return (
       <Card className="dashboard-card">
-          {/*--------Modal-Success-----*/}
+        {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
           toggle={this.toggle}
@@ -430,14 +459,14 @@ export default class UserDetail extends Component {
         </Modal>
 
         {/*--------Modal-Error-----*/}
-        
+
         <CardHeader
-                  className="card-header-custom"
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  User's Information
-                </CardHeader>
-          {this.state.loading ? (
+          className="card-header-custom"
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          User's Information
+        </CardHeader>
+        {this.state.loading ? (
           <div
             style={{
               marginTop: '100px',
@@ -455,72 +484,40 @@ export default class UserDetail extends Component {
             />
           </div>
         ) : (
-          <CardBody >
+          <CardBody>
             {this.state.checkRole ? (
-            <div>
-            <Container style={{marginTop:'5%'}}>
-            <Row>
-              <Col xs="4">
-              <img className="avatar" src="/static/media/100_3.6e25d86d.jpg" alt="Card image cap" />
-              </Col>
-              <Col xs="auto">
-              </Col>
-              <Col xs="6">
-              <TabInformation name={name} fullName={fullName} phone={phone} email={email} address={address} />
-              </Col>
-            </Row>       
-            <br />
-            <hr />
-            <Row>
-              <Col xs="4">
-              <br />
-              <NumberWidget
-                title="Total Articles"
-                subtitle="This month"
-                number="500"
-                color="primary"
-                progress={{
-                  value: 75,
-                  label: 'Last month',
-                }}
-              
-              />
-              </Col>
-              <Col xs="4">
-              <br />
-              <NumberWidget
-                title="Total Interviews"
-                subtitle="This month"
-                number="9.8k"
-                color="danger"
-                progress={{
-                  value: 80,
-                  label: 'Last month',
-                }}
-              />
-              </Col>
-              <Col xs="4">
-              <br />
-              <NumberWidget
-                title="Total Candidate"
-                subtitle="This month"
-                number="9.8k"
-                color="warning"
-                progress={{
-                  value: 80,
-                  label: 'Last month',
-                }}
-              />
-              </Col>
-              </Row>
-              <br />
-              <br />
-            <Row>
-              <Col>
-                <Nav tabs>
-                  <NavItem>
+              <div>
+                <Container style={{ marginTop: '5%' }}>
+                  <Row>
+                    <Col xs="4">
+                      <img
+                        className="avatar"
+                        src="/static/media/100_3.6e25d86d.jpg"
+                        alt="Card image cap"
+                      />
+                    </Col>
+                    <Col xs="auto" />
+                    <Col xs="6">
+                      <TabInformation
+                        name={name}
+                        fullName={fullName}
+                        phone={phone}
+                        email={email}
+                        address={address}
+                      />
+                    </Col>
+                  </Row>
+                  <br />
+                  <hr />
+
+                  <br />
+                  <br />
+                  <Row>
+                    <Col>
+                      <Nav tabs>
+                        {/* <NavItem>
                     <NavLink
-                      className={classnames({ tabactiveFirst: this.state.activeTab === '1' })}
+                      className={classnames({ tabactive: this.state.activeTab === '1' })}
                       onClick={() => { this.toggle('1'); }}
                     ><MdBook style={{marginRight:'5px'}}/>
                       Articles
@@ -528,36 +525,32 @@ export default class UserDetail extends Component {
                   </NavItem>
                   <NavItem>
                     <NavLink
-                      className={classnames({ tabactiveSecond: this.state.activeTab === '2' })}
+                      className={classnames({ tabactive: this.state.activeTab === '2' })}
                       onClick={() => { this.toggle('2'); }}
                     ><MdMap style={{marginRight:'5px'}}/>
                       Interviews
                     </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ tabactive: this.state.activeTab === '3' })}
-                      onClick={() => { this.toggle('3'); }}
-                    >
-                    <MdPermDataSetting style={{marginRight:'5px'}}/>
-                      Update Profile
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ tabactive: this.state.activeTab === '4' })}
-                      onClick={() => { this.toggle('4'); }}
-                    ><MdSettings style={{marginRight:'5px'}}/>
-                      Update Password
-                    </NavLink>
-                  </NavItem>
-                </Nav>
-                </Col>
-              </Row>
-              <br />
-              <br />
-                <TabContent activeTab={this.state.activeTab}>
-                  <TabPane tabId="1">
+                  </NavItem> */}
+                        <NavItem>
+                          <NavLink
+                            className={classnames({
+                              tabactive: this.state.activeTab === '3'
+                            })}
+                            onClick={() => {
+                              this.toggle('3');
+                            }}
+                          >
+                            <MdSettings style={{ marginRight: '5px' }} />
+                            Update
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                    </Col>
+                  </Row>
+                  <br />
+                  <br />
+                  <TabContent activeTab={this.state.activeTab}>
+                    {/* <TabPane tabId="1">
                       <Row>
                       <Col>
                       <Card>
@@ -624,134 +617,148 @@ export default class UserDetail extends Component {
                     </Card>
                     </Col>
                   </Row>
-                  </TabPane>
-                  <TabPane  tabId="3">
-                  <Row>
-                    <Col>
-                    <Card>
-                    <CardBody>
-                    <Form onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                      <Label for="Fullname">Fullname</Label>
-                      <Input type="text" name="editFullName"  value={this.state.editFullName} onChange={this.handleChange}/>
-                      {formError.fullname !== '' && this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>{formError.fullname}</span>
-                      )}
-                    </FormGroup>
-                    <FormGroup>
-                      <Label for="Email">Email</Label>
-                      <Input type="email" name="editEmail" value={this.state.editEmail} onChange={this.handleChange}/>
-                      {formError.email !== '' && this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>{formError.email}</span>
-                      )}
-                    </FormGroup>
-                    <FormGroup>
-                      <Label for="Phone">Phone</Label>
-                      <Input type="text" name="editPhone" value={this.state.editPhone} onChange={this.handleChange}/>
-                      {formError.phone !== '' && this.state.showErrorMessage && (
-                        <span style={{ color: 'red' }}>{formError.phone}</span>
-                      )}
-                    </FormGroup>
-                    <FormGroup>
-                      <Label for="Fullname">Address</Label>
-                      <Input type="text" name="editAddress" value={this.state.editAddress} onChange={this.handleChange}/>
-                    </FormGroup>
-                    <FormGroup >
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginTop: '20px'
-                      }}>
-                      {
-                      formError.fullname == '' &&
-                      formError.email == '' &&
-                      formError.phone == '' &&
-                      this.state.errorRoleMessage == ''
-                      ? (
-                        <Button color="success" onClick={this.handleSubmit}>
-                          Submit
-                        </Button>
-                      ) : (
-                        <Button color="success" onClick={this.handleErrorMessage}>
-                          Submit
-                        </Button>
-                      )}
-                      </div>
-                    </FormGroup>
-                    </Form>
-                    </CardBody>
-                    </Card>
-                    </Col>
-                    
-                    <Col>
-                      <Card>
-                        <CardBody>
-                        <MDBDataTable
-                          striped
-                          bordered
-                          hover
-                          data={this.state.listRoles}
-                          />
-                          {this.state.errorRoleMessage !== '' &&
-                          this.state.showErrorMessage && (
-                            <span style={{ color: 'red' }}>
-                              User's roles cannot be empty
-                            </span>
-                          )}
-                        </CardBody>
-                      </Card>
-                    </Col>
-                
-                  </Row>
-                  </TabPane>
-                  <TabPane  tabId="4">
-                  <Row>
-                    <Col>
-                    <Card>
-                    <CardBody>
-                    <Form id="change-password-form" onSubmit={this.handleChangePassword}>
-                        <FormGroup>
-                          <Label for="Fullname">Current Password</Label>
-                          <Input type="password" name="old_password" value={this.state.old_password}  onChange={this.handleChange}/>
-                        </FormGroup>
-                        <FormGroup>
-                          <Label for="Email">New Password</Label>
-                          <Input type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
-                        </FormGroup>
-                        <FormGroup>
-                          <Label for="Phone">Confirm New Password</Label>
-                          <Input type="password" name="password_confirmation" value={this.state.password_confirmation} onChange={this.handleChange}/>
-                        </FormGroup>
-                        <FormGroup style={{display:'flex',justifyContent:'flex-end'}}>
-                        <Button  color='success' onClick={this.handleChangePassword}>Submit</Button>
-                        </FormGroup>
-                        </Form>
-                    </CardBody>
-                    </Card>
-                    </Col>
-                    </Row>
+                  </TabPane> */}
+                    <TabPane tabId="3">
+                      <Row>
+                        <Col>
+                          <Card>
+                            <CardBody>
+                              <Form onSubmit={this.handleSubmit}>
+                                <FormGroup>
+                                  <Label for="Fullname">Fullname</Label>
+                                  <Input
+                                    type="text"
+                                    name="editFullName"
+                                    value={this.state.editFullName}
+                                    onChange={this.handleChange}
+                                  />
+                                  {formError.fullname !== '' &&
+                                    this.state.showErrorMessage && (
+                                      <span style={{ color: 'red' }}>
+                                        {formError.fullname}
+                                      </span>
+                                    )}
+                                </FormGroup>
+                                <FormGroup>
+                                  <Label for="Email">Email</Label>
+                                  <Input
+                                    type="email"
+                                    name="editEmail"
+                                    value={this.state.editEmail}
+                                    onChange={this.handleChange}
+                                  />
+                                  {formError.email !== '' &&
+                                    this.state.showErrorMessage && (
+                                      <span style={{ color: 'red' }}>
+                                        {formError.email}
+                                      </span>
+                                    )}
+                                </FormGroup>
+                                <FormGroup>
+                                  <Label for="Phone">Phone</Label>
+                                  <Input
+                                    type="text"
+                                    name="editPhone"
+                                    value={this.state.editPhone}
+                                    onChange={this.handleChange}
+                                  />
+                                  {formError.phone !== '' &&
+                                    this.state.showErrorMessage && (
+                                      <span style={{ color: 'red' }}>
+                                        {formError.phone}
+                                      </span>
+                                    )}
+                                </FormGroup>
+                                <FormGroup>
+                                  <Label for="Fullname">Address</Label>
+                                  <Input
+                                    type="text"
+                                    name="editAddress"
+                                    value={this.state.editAddress}
+                                    onChange={this.handleChange}
+                                  />
+                                </FormGroup>
+                                <FormGroup>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      justifyContent: 'flex-end',
+                                      marginTop: '20px'
+                                    }}
+                                  >
+                                    {formError.fullname == '' &&
+                                    formError.email == '' &&
+                                    formError.phone == '' &&
+                                    this.state.errorRoleMessage == '' ? (
+                                      <Button
+                                        color="success"
+                                        onClick={this.handleSubmit}
+                                      >
+                                        Submit
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        color="success"
+                                        onClick={this.handleErrorMessage}
+                                      >
+                                        Submit
+                                      </Button>
+                                    )}
+                                  </div>
+                                </FormGroup>
+                              </Form>
+                            </CardBody>
+                          </Card>
+                        </Col>
+
+                        <Col>
+                          <Card>
+                            <CardBody>
+                              <MDBDataTable
+                                striped
+                                bordered
+                                hover
+                                data={this.state.listRoles}
+                              />
+                              {this.state.errorRoleMessage !== '' &&
+                                this.state.showErrorMessage && (
+                                  <span style={{ color: 'red' }}>
+                                    User's roles cannot be empty
+                                  </span>
+                                )}
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
                     </TabPane>
-                </TabContent>
-                
-            </Container>
-            <div style={{ display: 'flex', justifyContent: 'flex-end',marginTop:'20px' }}>
-              <Button
-                onClick={() => this.backToPreviousPage()}
-                color="secondary"
-              >
-                Back
-              </Button>
-            </div>
-            </div>
-            ):(<div>
-                    <h3 style={{ color: 'red' }}>
-                      {' '}
-                      You don't have permission to access this page
-                    </h3>
-                  </div>)} 
-          </CardBody>)}
-        </Card>
-      
-    )
+                  </TabContent>
+                </Container>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: '20px'
+                  }}
+                >
+                  <Button
+                    onClick={() => this.backToPreviousPage()}
+                    color="secondary"
+                  >
+                    Back
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h3 style={{ color: 'red' }}>
+                  {' '}
+                  You don't have permission to access this page
+                </h3>
+              </div>
+            )}
+          </CardBody>
+        )}
+      </Card>
+    );
   }
 }
