@@ -358,6 +358,7 @@ export default class JobDetail extends Component {
               }}
             >
               <Button
+              className = "btn-basic"
                 onClick={() => this.backToPreviousPage()}
                 color="secondary"
               >
