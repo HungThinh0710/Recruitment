@@ -12,11 +12,12 @@ import {
   NavLink,
   CardHeader
 } from 'reactstrap';
-import { MdMap, MdBook, MdCancel, MdPageview } from 'react-icons/md';
+import { MdMap, MdBook, MdSettings } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
-import classnames from 'classnames';
 import moment from 'moment';
+import classnames from 'classnames';
+
 export default class JobDetail extends Component {
   constructor(props) {
     super(props);
@@ -175,105 +176,104 @@ export default class JobDetail extends Component {
               </Row>
               <br />
               <br />
-              <Row>
-                <TabContent
-                  style={{ width: '100%' }}
-                  activeTab={this.state.activeTab}
-                >
-                  <TabPane tabId="1">
-                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
-                      <div className="table-test">
-                        <table style={{ width: '100%' }}>
-                          <thead>
-                            <tr
-                              style={{
-                                background:
-                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                color: 'white'
-                              }}
-                            >
-                              <th className="title1">#</th>
-                              <th className="title1">Fullname</th>
-                              <th className="title1">Email</th>
-                              <th className="title1">Phone</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.state.interviewers.map(e => {
-                              i++;
-                              let url = '/dashboard/interview/' + e.id;
-                              return (
-                                <tr style={{ textAlign: 'center' }} key={e.id}>
-                                  <td className="title1">{i}</td>
-                                  <td className="title1">{e.fullname}</td>
-                                  <td className="title1">{e.email}</td>
-                                  <td className="title1">{e.phone}</td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                        <br />
-                      </div>
-                    </CardBody>
-                  </TabPane>
-                  <TabPane tabId="2">
-                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
-                      <div className="table-test">
-                        <table style={{ width: '100%' }}>
-                          <thead>
-                            <tr
-                              style={{
-                                background:
-                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                color: 'white'
-                              }}
-                            >
-                              <th className="title1">#</th>
-                              <th className="title1">Fullname</th>
-                              <th className="title1">Email</th>
-                              <th className="title1">Phone</th>
-                              <th className="title1">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.state.candidates.map(e => {
-                              if (e.status == '1') {
-                                e.status = 'Pending';
-                              }
-                              if (e.status == '2') {
-                                e.status = 'Deny';
-                              }
-                              if (e.status == '3') {
-                                e.status = 'Approve Application';
-                              }
-                              if (e.status == '4') {
-                                e.status = 'Passed';
-                              }
-                              if (e.status == '5') {
-                                e.status = 'Failed';
-                              }
-                              j++;
-                              let url = '/dashboard/interview/' + e.id;
-                              return (
-                                <tr style={{ textAlign: 'center' }} key={e.id}>
-                                  <td className="title1">{j}</td>
-                                  <td className="title1">{e.fullname}</td>
-                                  <td className="title1">{e.email}</td>
-                                  <td className="title1">{e.phone}</td>
-                                  <td className="title1">{e.status}</td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                        <br />
-                      </div>
-                    </CardBody>
-                  </TabPane>
-                </TabContent>
-              </Row>
+              <TabContent
+                style={{ width: '100%' }}
+                activeTab={this.state.activeTab}
+              >
+                <TabPane tabId="1">
+                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <div className="table-test">
+                      <table style={{ width: '100%' }}>
+                        <thead>
+                          <tr
+                            style={{
+                              background:
+                                '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                              color: 'white'
+                            }}
+                          >
+                            <th className="title1">#</th>
+                            <th className="title1">Fullname</th>
+                            <th className="title1">Email</th>
+                            <th className="title1">Phone</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.state.interviewers.map(e => {
+                            i++;
+                            let url = '/dashboard/interview/' + e.id;
+                            return (
+                              <tr style={{ textAlign: 'center' }} key={e.id}>
+                                <td className="title1">{i}</td>
+                                <td className="title1">{e.fullname}</td>
+                                <td className="title1">{e.email}</td>
+                                <td className="title1">{e.phone}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                      <br />
+                    </div>
+                  </CardBody>
+                </TabPane>
+                <TabPane tabId="2">
+                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <div className="table-test">
+                      <table style={{ width: '100%' }}>
+                        <thead>
+                          <tr
+                            style={{
+                              background:
+                                '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                              color: 'white'
+                            }}
+                          >
+                            <th className="title1">#</th>
+                            <th className="title1">Fullname</th>
+                            <th className="title1">Email</th>
+                            <th className="title1">Phone</th>
+                            <th className="title1">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.state.candidates.map(e => {
+                            if (e.status == '1') {
+                              e.status = 'Pending';
+                            }
+                            if (e.status == '2') {
+                              e.status = 'Deny';
+                            }
+                            if (e.status == '3') {
+                              e.status = 'Approve Application';
+                            }
+                            if (e.status == '4') {
+                              e.status = 'Passed';
+                            }
+                            if (e.status == '5') {
+                              e.status = 'Failed';
+                            }
+                            j++;
+                            let url = '/dashboard/interview/' + e.id;
+                            return (
+                              <tr style={{ textAlign: 'center' }} key={e.id}>
+                                <td className="title1">{j}</td>
+                                <td className="title1">{e.fullname}</td>
+                                <td className="title1">{e.email}</td>
+                                <td className="title1">{e.phone}</td>
+                                <td className="title1">{e.status}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                      <br />
+                    </div>
+                  </CardBody>
+                </TabPane>
+              </TabContent>
             </Container>
+
             <div
               style={{
                 display: 'flex',

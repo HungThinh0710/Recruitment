@@ -5,21 +5,19 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Card,
-  CardBody,
-  CardHeader,
   FormGroup,
   Form,
   Label,
   Input
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { MdEdit } from 'react-icons/md';
 import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
 import DatePicker from 'react-datepicker';
+import makeAnimated from 'react-select/animated';
 import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
 const animatedComponents = makeAnimated();
+
+const roleNameRegex = /^[a-zA-Z0-9\s]+$/;
 
 const optionStreet = [
   { id: 1, value: '453-455 Hoang Dieu Str', label: '453-455 Hoang Dieu Str' },
@@ -31,7 +29,7 @@ const optionsFloor = [
   { id: 4, value: 4, label: 4 },
   { id: 5, value: 5, label: 5 }
 ];
-export default class AddNewInterviewPage extends Component {
+export default class ModalEditUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,96 +39,163 @@ export default class AddNewInterviewPage extends Component {
       timeEnd: '',
       errorData: '',
       modalError: false,
-      modalSuccess: false,
+      modal: false,
       modalErrorDate: false,
+      modalSuccess: false,
       showErrorMessage: false,
-
       optionInterviewer: [],
       optionCandidate: [],
+      selectedInterviewerOption: [],
+      selectedCandidateOption: [],
+      errorNameMessage: '',
+      selectedFloorOption: null,
+      selectedStreetOption: null,
       dataCandidate: [],
       dataInterviewer: [],
-      selectedStreetOption: {
-        id: 1,
-        value: '453-455 Hoang Dieu Str',
-        label: '453-455 Hoang Dieu Str'
-      },
-      selectedFloorOption: {
-        id: 2,
-        value: 2,
-        label: 2
-      },
-      selectedInterviewerOption: null,
-      selectedCandidateOption: null,
-      urlInterview: '',
-      errorNameMessage: 'Name is required',
       errorInterviewers: [],
       errorCandidates: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
-    this.toggleModalErrorDate = this.toggleModalErrorDate.bind(this);
+    this.toggle = this.toggle.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
     this.handleErrorMessage = this.handleErrorMessage.bind(this);
+    this.toggleModalErrorDate = this.toggleModalErrorDate.bind(this);
   }
-  componentWillMount() {
-    if (!localStorage.getItem('access_token')) {
-      this.props.history.push('/dashboard/login');
-    }
-  }
+
   async componentDidMount() {
-    var { optionInterviewer, optionCandidate } = this.state;
-    var url1 = 'https://api.enclavei3dev.tk/api/list-interviewer';
-    var url2 = 'https://api.enclavei3dev.tk/api/list-candidate';
+    var {
+      optionInterviewer,
+      selectedInterviewerOption,
+      optionCandidate,
+      selectedCandidateOption,
+      selectedFloorOption,
+      selectedStreetOption
+    } = this.state;
+    const { id, dataInterviewers, dataCandidates } = this.props;
+    var url1 = 'https://api.enclavei3dev.tk/api/interview/' + id;
+
     const data1 = await fetch(url1, {
-      method: 'POST',
-      body: JSON.stringify({
-        all: 1
-      }),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    const data2 = await fetch(url2, {
-      method: 'POST',
-      body: JSON.stringify({
-        all: 1
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
-    data1.map(e => {
-      var interviewer = {
+    switch (data1.address) {
+      case 'Floor 2 - 453-455 Hoang Dieu Str':
+        selectedFloorOption = { id: 2, value: 2, label: 2 };
+        selectedStreetOption = {
+          id: 1,
+          value: '453-455 Hoang Dieu Str',
+          label: '453-455 Hoang Dieu Str'
+        };
+        break;
+      case 'Floor 3 - 453-455 Hoang Dieu Str':
+        selectedFloorOption = { id: 3, value: 3, label: 3 };
+        selectedStreetOption = {
+          id: 1,
+          value: '453-455 Hoang Dieu Str',
+          label: '453-455 Hoang Dieu Str'
+        };
+        break;
+      case 'Floor 4 - 453-455 Hoang Dieu Str':
+        selectedFloorOption = { id: 4, value: 4, label: 4 };
+        selectedStreetOption = {
+          id: 1,
+          value: '453-455 Hoang Dieu Str',
+          label: '453-455 Hoang Dieu Str'
+        };
+        break;
+      case 'Floor 5 - 453-455 Hoang Dieu Str':
+        selectedFloorOption = { id: 5, value: 5, label: 5 };
+        selectedStreetOption = {
+          id: 1,
+          value: '453-455 Hoang Dieu Str',
+          label: '453-455 Hoang Dieu Str'
+        };
+        break;
+      case 'Floor 2 - 117 Nguyen Huu Tho Str':
+        selectedFloorOption = { id: 2, value: 2, label: 2 };
+        selectedStreetOption = {
+          id: 2,
+          value: '117 Nguyen Huu Tho Str',
+          label: '117 Nguyen Huu Tho Str'
+        };
+        break;
+      case 'Floor 3 - 117 Nguyen Huu Tho Str':
+        selectedFloorOption = { id: 3, value: 3, label: 3 };
+        selectedStreetOption = {
+          id: 2,
+          value: '117 Nguyen Huu Tho Str',
+          label: '117 Nguyen Huu Tho Str'
+        };
+        break;
+      case 'Floor 4 - 117 Nguyen Huu Tho Str':
+        selectedFloorOption = { id: 4, value: 4, label: 4 };
+        selectedStreetOption = {
+          id: 2,
+          value: '117 Nguyen Huu Tho Str',
+          label: '117 Nguyen Huu Tho Str'
+        };
+        break;
+      case 'Floor 5 - 117 Nguyen Huu Tho Str':
+        selectedFloorOption = { id: 5, value: 5, label: 5 };
+        selectedStreetOption = {
+          id: 2,
+          value: '117 Nguyen Huu Tho Str',
+          label: '117 Nguyen Huu Tho Str'
+        };
+        break;
+    }
+    data1.interviewers.map(e => {
+      var currentInterviewer = {
         id: e.id,
         value: e.fullname,
         label: e.fullname
       };
+      selectedInterviewerOption.push(currentInterviewer);
+      return selectedInterviewerOption;
+    });
+    data1.candidates.map(e => {
+      var currentCandidate = {
+        id: e.id,
+        value: e.fullname,
+        label: e.fullname
+      };
+      selectedCandidateOption.push(currentCandidate);
+      return selectedCandidateOption;
+    });
+
+    dataInterviewers.map(e => {
+      var interviewer = { id: e.id, value: e.fullname, label: e.fullname };
       optionInterviewer.push(interviewer);
       return optionInterviewer;
     });
-    data2.map(e => {
-      var candidate = {
-        id: e.id,
-        value: e.fullname,
-        label: e.fullname
-      };
+    dataCandidates.map(e => {
+      var candidate = { id: e.id, value: e.fullname, label: e.fullname };
       optionCandidate.push(candidate);
       return optionCandidate;
     });
     this.setState({
+      name: data1.name,
+      timeStart: new Date(data1.timeStart),
+      timeEnd: new Date(data1.timeEnd),
       optionInterviewer: optionInterviewer,
-      optionCandidate: optionCandidate
+      selectedInterviewerOption: selectedInterviewerOption,
+      optionCandidate: optionCandidate,
+      selectedCandidateOption: selectedCandidateOption,
+      selectedFloorOption: selectedFloorOption,
+      selectedStreetOption: selectedStreetOption
     });
   }
 
-  backToPreviousPage = () => {
-    this.props.history.push('/dashboard/interview');
-  };
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
 
   handleSelectStreetChange = selectedStreetOption => {
     this.setState({ selectedStreetOption });
@@ -140,6 +205,9 @@ export default class AddNewInterviewPage extends Component {
   };
   handleSelectInterviewerChange = selectedInterviewerOption => {
     var dataInterviewer = [];
+    if (selectedInterviewerOption == null) {
+      selectedInterviewerOption = [];
+    }
     selectedInterviewerOption.map(e => {
       dataInterviewer.push(e.id);
       return dataInterviewer;
@@ -151,6 +219,9 @@ export default class AddNewInterviewPage extends Component {
   };
   handleSelectCandidateChange = selectedCandidateOption => {
     var dataCandidate = [];
+    if (selectedCandidateOption == null) {
+      selectedCandidateOption = [];
+    }
     selectedCandidateOption.map(e => {
       dataCandidate.push(e.id);
       return dataCandidate;
@@ -207,30 +278,6 @@ export default class AddNewInterviewPage extends Component {
     this.setState(prevState => ({
       modalErrorDate: !prevState.modalErrorDate
     }));
-  }
-
-  async fetchInterviewer(id) {
-    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
-    const data = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
-    return data;
-  }
-
-  async fetchCandidate(id) {
-    var url = 'https://api.enclavei3dev.tk/api/candidate/' + id;
-    const data = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
-    return data;
   }
 
   handleSubmit() {
@@ -364,9 +411,10 @@ export default class AddNewInterviewPage extends Component {
             interviewerId: arrayInterviewer
           };
         }
-        var url = 'https://api.enclavei3dev.tk/api/interview';
+        const { id } = this.props;
+        var url = 'https://api.enclavei3dev.tk/api/interview/' + id;
         fetch(url, {
-          method: 'POST',
+          method: 'PUT',
           body: JSON.stringify(body),
           headers: {
             'Content-Type': 'application/json',
@@ -390,13 +438,9 @@ export default class AddNewInterviewPage extends Component {
               });
             }
             if (res.status === 200) {
+              var update = true;
               this.toggleModalSuccess();
-              res.json().then(data => {
-                console.log(data);
-                this.setState({
-                  urlInterview: '/dashboard/interview/' + data.id
-                });
-              });
+              this.props.getUpdate(update);
             }
           })
           .catch(error => console.error('Error:', error));
@@ -413,10 +457,8 @@ export default class AddNewInterviewPage extends Component {
   render() {
     var i = 0;
     var j = 0;
-    const { errorNameMessage, urlInterview } = this.state;
-
     return (
-      <Card className="dashboard-card" style={{ marginBottom: '200px' }}>
+      <div>
         {/*--------Modal-Success-----*/}
         <Modal
           isOpen={this.state.modalSuccess}
@@ -430,11 +472,7 @@ export default class AddNewInterviewPage extends Component {
             <span className="dashboard-modal-header">Notification</span>
           </ModalHeader>
           <ModalBody>
-            <Link to={urlInterview}>
-              <span style={{ color: '#45b649' }}>
-                Successfully! Click to see the detail of the new interview
-              </span>
-            </Link>
+            <span style={{ color: '#45b649' }}>Update Successfully</span>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalSuccess}>
@@ -443,7 +481,6 @@ export default class AddNewInterviewPage extends Component {
           </ModalFooter>
         </Modal>
         {/*--------Modal-Success-----*/}
-
         {/*--------Modal-Error-----*/}
         <Modal
           isOpen={this.state.modalError}
@@ -476,9 +513,7 @@ export default class AddNewInterviewPage extends Component {
             </Button>
           </ModalFooter>
         </Modal>
-
         {/*--------Modal-Error-----*/}
-
         {/*--------Modal-Error-Validate-Date-----*/}
         <Modal
           isOpen={this.state.modalErrorDate}
@@ -527,151 +562,190 @@ export default class AddNewInterviewPage extends Component {
         </Modal>
         {/*--------Modal-Error-Validate-Date-----*/}
 
-        <CardHeader className="card-header-custom">
-          Create A New Interview
-        </CardHeader>
-        <CardBody>
-          <Form>
-            <FormGroup>
-              <Label className="title-input" for="exampleName">
-                Name
-              </Label>
-              <Input type="text" name="name" onChange={this.handleChange} />
-              {errorNameMessage !== '' && this.state.showErrorMessage && (
-                <span style={{ color: 'red' }}>
-                  {this.state.errorNameMessage}
-                </span>
-              )}
-            </FormGroup>
-            <FormGroup>
-              <Label className="title-input" for="exampleName">
-                Time
-              </Label>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ width: '45%' }}>
-                  <Label for="exampleName">Start</Label>
-                  <div className="input-calendar">
-                    <DatePicker
-                      selected={this.state.timeStart}
-                      onChange={this.handleChangeTimeStart.bind(this)}
-                      showTimeSelect
-                      timeFormat="HH:mm"
-                      timeIntervals={15}
-                      dateFormat="MMMM d, yyyy h:mm aa"
-                      timeCaption="time"
-                    />
-                  </div>
-                  {this.state.timeStart === '' &&
-                    this.state.showErrorMessage && (
-                      <span style={{ color: 'red' }}>
-                        Time start is required
-                      </span>
-                    )}
-                </div>
-
-                <div style={{ width: '45%' }}>
-                  <Label for="exampleName">End</Label>
-                  <div className="input-calendar">
-                    <DatePicker
-                      selected={this.state.timeEnd}
-                      onChange={this.handleChangeTimeEnd.bind(this)}
-                      showTimeSelect
-                      timeFormat="HH:mm"
-                      timeIntervals={15}
-                      dateFormat="MMMM d, yyyy h:mm aa"
-                      timeCaption="time"
-                    />
-                  </div>
-                  {this.state.timeEnd === '' && this.state.showErrorMessage && (
-                    <span style={{ color: 'red' }}>Time End is required</span>
+        {this.props.icon ? (
+          <Button
+            className="button-first"
+            color={this.props.color}
+            onClick={this.toggle}
+            style={{ color: 'white' }}
+          >
+            <MdEdit />
+          </Button>
+        ) : (
+          <Button
+            className="button-first"
+            color={this.props.color}
+            onClick={this.toggle}
+          >
+            Edit
+          </Button>
+        )}
+        <Modal
+          size="lg"
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggle}>
+            <span className="dashboard-modal-header">Update Interview</span>
+          </ModalHeader>
+          <ModalBody>
+            <Form>
+              <FormGroup>
+                <Label className="title-input" for="exampleName">
+                  Name
+                </Label>
+                <Input
+                  type="text"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                />
+                {this.state.errorNameMessage !== '' &&
+                  this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>
+                      {this.state.errorNameMessage}
+                    </span>
                   )}
-                </div>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label className="title-input" for="exampleName">
-                Address
-              </Label>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ width: '45%' }}>
-                  <Label for="exampleName">Street</Label>
-                  <Select
-                    components={animatedComponents}
-                    onChange={this.handleSelectStreetChange.bind(this)}
-                    defaultValue={this.state.selectedStreetOption}
-                    options={optionStreet}
-                  />
-                </div>
-
-                <div style={{ width: '45%' }}>
-                  <Label for="exampleName">Floor</Label>
-                  <Select
-                    components={animatedComponents}
-                    onChange={this.handleSelectFloorChange.bind(this)}
-                    defaultValue={this.state.selectedFloorOption}
-                    options={optionsFloor}
-                  />
-                </div>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label className="title-input">Interviewers</Label>
-              <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                isMulti
-                onChange={this.handleSelectInterviewerChange.bind(this)}
-                defaultValue={this.state.selectedInterviewerOption}
-                options={this.state.optionInterviewer}
-              />
-              {!this.state.selectedInterviewerOption &&
-                this.state.showErrorMessage && (
-                  <span style={{ color: 'red' }}>Interviewer is required</span>
-                )}
-            </FormGroup>
-            <FormGroup>
-              <Label className="title-input">Candidates</Label>
-              <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                isMulti
-                onChange={this.handleSelectCandidateChange.bind(this)}
-                defaultValue={this.state.selectedCandidateOption}
-                options={this.state.optionCandidate}
-              />
-            </FormGroup>
-            <br />
-            <FormGroup style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  width: '160px',
-                  justifyContent: 'space-between'
-                }}
-              >
-                {this.state.errorNameMessage == '' &&
-                this.state.timeStart !== '' &&
-                this.state.timeEnd !== '' &&
-                this.state.selectedInterviewerOption.length !== 0 ? (
-                  <Button color="success" onClick={this.handleSubmit}>
-                    Submit
-                  </Button>
-                ) : (
-                  <Button color="success" onClick={this.handleErrorMessage}>
-                    Submit
-                  </Button>
-                )}
-                <Button
-                  onClick={() => this.backToPreviousPage()}
-                  color="secondary"
+              </FormGroup>
+              <FormGroup>
+                <Label className="title-input" for="exampleName">
+                  Time
+                </Label>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
                 >
-                  Back
-                </Button>
-              </div>
-            </FormGroup>
-          </Form>
-        </CardBody>
-      </Card>
+                  <div style={{ width: '45%' }}>
+                    <Label for="exampleName">Start</Label>
+                    <div className="input-calendar">
+                      <DatePicker
+                        selected={this.state.timeStart}
+                        onChange={this.handleChangeTimeStart.bind(this)}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        timeCaption="time"
+                      />
+                    </div>
+                    {this.state.timeStart === '' &&
+                      this.state.showErrorMessage && (
+                        <span style={{ color: 'red' }}>
+                          Time start is required
+                        </span>
+                      )}
+                  </div>
+
+                  <div style={{ width: '45%' }}>
+                    <Label for="exampleName">End</Label>
+                    <div className="input-calendar">
+                      <DatePicker
+                        selected={this.state.timeEnd}
+                        onChange={this.handleChangeTimeEnd.bind(this)}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        timeCaption="time"
+                      />
+                    </div>
+                    {this.state.timeEnd === '' &&
+                      this.state.showErrorMessage && (
+                        <span style={{ color: 'red' }}>
+                          Time End is required
+                        </span>
+                      )}
+                  </div>
+                </div>
+              </FormGroup>
+              <FormGroup>
+                <Label className="title-input" for="exampleName">
+                  Address
+                </Label>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div style={{ width: '45%' }}>
+                    <Label for="exampleName">Street</Label>
+                    <Select
+                      components={animatedComponents}
+                      onChange={this.handleSelectStreetChange.bind(this)}
+                      defaultValue={this.state.selectedStreetOption}
+                      options={optionStreet}
+                    />
+                  </div>
+
+                  <div style={{ width: '45%' }}>
+                    <Label for="exampleName">Floor</Label>
+                    <Select
+                      components={animatedComponents}
+                      onChange={this.handleSelectFloorChange.bind(this)}
+                      defaultValue={this.state.selectedFloorOption}
+                      options={optionsFloor}
+                    />
+                  </div>
+                </div>
+              </FormGroup>
+              <FormGroup>
+                <Label className="title-input">Interviewers</Label>
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  onChange={this.handleSelectInterviewerChange.bind(this)}
+                  defaultValue={this.state.selectedInterviewerOption}
+                  options={this.state.optionInterviewer}
+                />
+                {!this.state.selectedInterviewerOption &&
+                  this.state.showErrorMessage && (
+                    <span style={{ color: 'red' }}>
+                      Interviewer is required
+                    </span>
+                  )}
+              </FormGroup>
+              <FormGroup>
+                <Label className="title-input">Candidates</Label>
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  onChange={this.handleSelectCandidateChange.bind(this)}
+                  defaultValue={this.state.selectedCandidateOption}
+                  options={this.state.optionCandidate}
+                />
+              </FormGroup>
+              <br />
+              <FormGroup
+                style={{ display: 'flex', justifyContent: 'flex-end' }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    width: '160px',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  {this.state.errorNameMessage == '' &&
+                  this.state.timeStart !== '' &&
+                  this.state.timeEnd !== '' &&
+                  this.state.selectedInterviewerOption.length !== 0 ? (
+                    <Button color="success" onClick={this.handleSubmit}>
+                      Submit
+                    </Button>
+                  ) : (
+                    <Button color="success" onClick={this.handleErrorMessage}>
+                      Submit
+                    </Button>
+                  )}
+                  <Button onClick={() => this.toggle()} color="secondary">
+                    Back
+                  </Button>
+                </div>
+              </FormGroup>
+            </Form>
+          </ModalBody>
+        </Modal>
+      </div>
     );
   }
 }

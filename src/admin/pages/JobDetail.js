@@ -109,8 +109,7 @@ export default class JobDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
-    
+
     if (data.message !== 'Unauthenticated.') {
       const n = data.salary.indexOf('$');
       const stringSalary2 = removeStringSalary(data.salary, n);
@@ -142,7 +141,7 @@ export default class JobDetail extends Component {
           editamount: data.amount,
           editpublishedOn: new Date(data.publishedOn),
           editdeadline: new Date(data.deadline),
-          loading: false,
+          loading: false
         });
       }, 500);
     }
@@ -386,7 +385,7 @@ export default class JobDetail extends Component {
 
   render() {
     var i = 0;
-    var j  = 0;
+    var j = 0;
     const { formError } = this.state;
     return (
       <Card className="dashboard-card">
@@ -584,7 +583,7 @@ export default class JobDetail extends Component {
                   activeTab={this.state.activeTab}
                 >
                   <TabPane tabId="1">
-                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
                       <div className="table-test">
                         <table style={{ width: '100%' }}>
                           <thead>
@@ -608,9 +607,9 @@ export default class JobDetail extends Component {
                                   <td className="title1">{i}</td>
                                   <td className="title1">{e.title}</td>
                                   {e.isPublic === 1 ? (
-                                      <td className="title1">Published</td>
-                                    ) : (
-                                      <td className="title1">Closed</td>
+                                    <td className="title1">Published</td>
+                                  ) : (
+                                    <td className="title1">Closed</td>
                                   )}
                                 </tr>
                               );
@@ -622,7 +621,7 @@ export default class JobDetail extends Component {
                     </CardBody>
                   </TabPane>
                   <TabPane tabId="2">
-                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
                       <div className="table-test">
                         <table style={{ width: '100%' }}>
                           <thead>
@@ -638,12 +637,11 @@ export default class JobDetail extends Component {
                               <th className="title1">Email</th>
                               <th className="title1">Phone</th>
                               <th className="title1">Status</th>
-                              
                             </tr>
                           </thead>
                           <tbody>
                             {this.state.candidates.map(e => {
-                              j++
+                              j++;
                               return (
                                 <tr style={{ textAlign: 'center' }} key={e.id}>
                                   <td className="title1">{j}</td>
@@ -651,11 +649,10 @@ export default class JobDetail extends Component {
                                   <td className="title1">{e.email}</td>
                                   <td className="title1">{e.phone}</td>
                                   {e.isPublic === 1 ? (
-                                      <td className="title1">Published</td>
-                                    ) : (
-                                      <td className="title1">Closed</td>
+                                    <td className="title1">Published</td>
+                                  ) : (
+                                    <td className="title1">Closed</td>
                                   )}
-                                 
                                 </tr>
                               );
                             })}
