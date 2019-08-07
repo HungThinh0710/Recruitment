@@ -9,6 +9,7 @@ import {
   Label,
   Input,
   Container,
+  Badge,
   Row,
   Col,
   FormGroup,
@@ -454,7 +455,7 @@ export default class UsersPage extends Component {
                           >
                             {e.email}
                           </td>
-                          <td>{e.status}</td>
+                          {e.status == 'Pending' ? (<td> <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80}} pill>{e.status}</Badge></td> ) : e.status == 'Deny' ? (<td><Badge style = {{backgroundColor: '#f85032', color: '#fff',width:80}} pill>{e.status}</Badge></td>) :  e.status == 'Approve' ? (<td><Badge style = {{backgroundColor: '#43a047', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Passed' ? (<td><Badge style = {{backgroundColor: '#64dd17', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : e.status == 'Failed' ? (<td><Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80}} pill>{e.status}</Badge></td>) : ( '') }
                           <td>{e.phone}</td>
                           <td>
                             <div className="action">
