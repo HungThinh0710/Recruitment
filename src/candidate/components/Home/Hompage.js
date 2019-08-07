@@ -298,7 +298,7 @@ export default class Homepage extends Component {
                           <div className="row mb-5 Searchtype">
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>Search</label>
-                              <input name="keyword" value={this.state.keyword} onChange={this.handleChange} type="text" className="form-control form-control-lg-2" ref="search" placeholder="keyword..." />
+                              <input name="keyword" value={this.state.keyword} onChange={this.handleChange} type="text" className="form-control form-control-lg-2" ref="search" placeholder="Keyword" />
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>Location</label>
