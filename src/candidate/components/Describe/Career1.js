@@ -18,7 +18,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import TechnicalSkill from '../TechnicalSkill'
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+const phonevalid = /(09|03|08|07|05|[0|1|2|4|6|8|9])+([0-9]{9})\b/g;
 const formValid = ({ formErrors, ...rest }) => {
   let valid = true;
 
@@ -71,6 +71,7 @@ export default class Careers extends Component {
           isDeleted={true}
         />
       ],
+      listChecked: [],
       errorData: '',
       urlInterviewer: '',
       dataTechnicalSkills: [],
@@ -192,7 +193,8 @@ export default class Careers extends Component {
             const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
             this.setState({
               errorData: dataArray,
-              
+              modalError: true,
+              modalSuccess: false,
             });
           });
         }
@@ -227,25 +229,42 @@ export default class Careers extends Component {
     switch (e.target.name) {
       case 'fullName':
         formErrors.fullName =
-          value.length < 3 ? 'minimum 3 characaters required' : '';
+          value.length < 3 ? 'Minimum 3 characaters required' : '';
         break;
       case 'addressed':
         formErrors.addressed =
-          value.length < 3 ? 'minimum 3 characaters required' : '';
+          value.length < 3 ? 'Minimum 3 characaters required' : '';
         break;
       case 'email':
         formErrors.email = emailRegex.test(value)
           ? ''
-          : 'invalid email address';
+          : 'Invalid email address';
         break;
       case 'phone':
-        formErrors.phone =
-          value.length < 10 ? 'minimum 10 characaters required' : '';
+        formErrors.phone = phonevalid.test(value)
+          ? ''
+          : 'Invalid phone number';
         break;
       default:
         break;
     }
-    this.setState({ formErrors, [e.target.name]: value }, () => console.log(this.state.fullName, this.state.email));
+    this.setState({ formErrors, [e.target.name]: value })
+  };
+  handleErrorMessage = () => {
+    var { listChecked } = this.state;
+    var array1 = [...new Set(listChecked)];
+    var array2 = [];
+    array1.map(element => {
+      var count = listChecked.filter(e => e === element);
+      var length = count.length;
+      if (length % 2 !== 0) {
+        array2.push(element);
+      }
+      return array2;
+    });
+    this.setState({
+      showErrorMessage: true,
+    });
   };
   getDataTechnicalSkill(technicalskill, year, id) {
     var { dataTechnicalSkills } = this.state;
@@ -338,14 +357,10 @@ export default class Careers extends Component {
           </ModalHeader>
           <ModalBody>
               <span style={{ color: '#45b649' }}>
-                Successfully! Thank you for your application !
+                Successfully! Thank you for your application!
               </span>
           </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggleModalSuccess}>
-              Cancel
-            </Button>
-          </ModalFooter>
+          
         </Modal>
         {/*--------Modal-Success-----*/}
 
@@ -429,7 +444,7 @@ export default class Careers extends Component {
                           <Form encType="multipart/form-data" onSubmit={this.handleSubmit} noValidate>
                             <FormGroup>
                               <div className="fullName">
-                                <label class="col-form-label">Full Name</label>
+                                <label class="col-form-label">Fullname<span style={{color: 'red'}}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.fullName.length > 0 ? 'error' : null}
@@ -446,7 +461,7 @@ export default class Careers extends Component {
                             </FormGroup>
                             <FormGroup>
                               <div className="email">
-                                <label class="col-form-label">Email</label>
+                                <label class="col-form-label">Email<span style={{color: 'red'}}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.email.length > 0 ? 'error' : null}
@@ -463,9 +478,7 @@ export default class Careers extends Component {
                             </FormGroup>
                             <FormGroup>
                               <div className="phone">
-                                <label class="col-form-label" className="phone">
-                                  Phone
-                                  </label>
+                                <label class="col-form-label">Phone<span style={{color: 'red'}}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.phone.length > 0 ? 'error' : null}
@@ -482,7 +495,7 @@ export default class Careers extends Component {
                             </FormGroup>
                             <FormGroup>
                               <div className="address">
-                                <label class="col-form-label">Address</label>
+                                <label class="col-form-label">Address<span style={{color: 'red'}}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.addressed.length > 0 ? 'error' : null}
