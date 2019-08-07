@@ -8,7 +8,13 @@ import {
 // page
 
 /*------Action-----*/
+import AddNewRolePage from './admin/pages/AddNewRolePage';
+import AddNewUserPage from './admin/pages/AddNewUserPage';
+import AddNewJobPage from './admin/pages/AddNewJobPage';
 import AddNewArticlePage from './admin/pages/AddNewArticlePage';
+import AddNewFormatPage from './admin/pages/AddNewFormatPage';
+import AddNewInterviewPage from './admin/pages/AddNewInterviewPage';
+import AddNewInterviewerPage from './admin/pages/AddNewInterviewerPage';
 /*------Action-----*/
 
 /*------Sidebar----*/
@@ -21,8 +27,14 @@ import JobsPage from './admin/pages/JobsPage';
 import JobDetail from './admin/pages/JobDetail';
 import ArticlesPage from './admin/pages/ArticlesPage';
 import ArticleDetail from './admin/pages/ArticleDetail';
+import FormatPage from './admin/pages/FormatPage';
+import FormatDetail from './admin/pages/FormatDetail';
 import InterviewsPage from './admin/pages/InterviewsPage';
 import InterviewDetail from './admin/pages/InterviewDetail';
+import Candidates from './admin/pages/candidate/candidate';
+import CandidateDetail from './admin/pages/candidate/detailCandidate';
+import ListInterviewer from './admin/pages/interviewer/ListInterviewer';
+import DetailInterviewer from './admin/pages/interviewer/DetailIterViewer';
 /*------Sidebar----*/
 import LoginPage from './admin/pages/LoginPage';
 import ForgotPasswordPage from './admin/pages/ForgotPasswordPage';
@@ -56,6 +68,13 @@ class App extends React.Component {
   //     return <Redirect to='/home'/>
   //   }
   // }
+  componentWillMount() {
+    if (localStorage.getItem('loginToken') != null) {
+      this.setState({
+        hasToken: true
+      });
+    }
+  }
   render() {
     return (
       <BrowserRouter basename={getBasename()}>
@@ -110,6 +129,12 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/create-role'}
+              layout={MainLayout}
+              component={AddNewRolePage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/user'}
               layout={MainLayout}
               component={UsersPage}
@@ -122,6 +147,12 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/create-user'}
+              layout={MainLayout}
+              component={AddNewUserPage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/job'}
               layout={MainLayout}
               component={JobsPage}
@@ -131,6 +162,12 @@ class App extends React.Component {
               path={'/dashboard/job/:id'}
               layout={MainLayout}
               component={JobDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/create-job'}
+              layout={MainLayout}
+              component={AddNewJobPage}
             />
             <LayoutRoute
               exact
@@ -152,6 +189,24 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/format'}
+              layout={MainLayout}
+              component={FormatPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/format/:id'}
+              layout={MainLayout}
+              component={FormatDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/create-format'}
+              layout={MainLayout}
+              component={AddNewFormatPage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/interview'}
               layout={MainLayout}
               component={InterviewsPage}
@@ -164,15 +219,59 @@ class App extends React.Component {
             />
             <LayoutRoute
               exact
+              path={'/dashboard/create-interview'}
+              layout={MainLayout}
+              component={AddNewInterviewPage}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/candidate'}
+              layout={MainLayout}
+              component={Candidates}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/candidate/:id'}
+              layout={MainLayout}
+              component={CandidateDetail}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/interviewer'}
+              layout={MainLayout}
+              component={ListInterviewer}
+            />
+
+            <LayoutRoute
+              exact
+              path={'/dashboard/interviewer/:id'}
+              layout={MainLayout}
+              component={DetailInterviewer}
+            />
+            <LayoutRoute
+              exact
+              path={'/dashboard/create-interviewer'}
+              layout={MainLayout}
+              component={AddNewInterviewerPage}
+            />
+            <LayoutRoute
+              exact
               path={'/dashboard/test'}
               layout={MainLayout}
               component={TestPage}
             />
+            {/* {!this.state.hasToken ? (
+              <LayoutRoute layout={EmptyLayout} component={LoginPage} />
+            ) : (
+              <LayoutRoute layout={MainLayout} component={Roles} />
+            )} */}
+
             {/* <Redirect to="/" /> */}
             <Route path="/" component={Homepage} exact />
-            <Route path="/careers" component={Careers} />
-            <Route path="/about" component={About} />
-            <Route path="/article/:id" component={Career1} />
+            <Route path="/careers" exact component={Careers} />
+            <Route path="/about" exact component={About} />
+            <Route path="/article/:id" exact component={Career1} />
+            <Route path="/article" exact component={Homepage} />
           </Switch>
         </GAListener>
       </BrowserRouter>

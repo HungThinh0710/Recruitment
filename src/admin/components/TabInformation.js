@@ -118,7 +118,7 @@ export default class TabInformation extends Component {
             <br />
             <Row>
               <Col className="contact-information">
-                <h6>Name:</h6>
+                <h6>Username:</h6>
                 <br />
                 <h6>Fullname:</h6>
                 <br />

@@ -115,11 +115,11 @@ class Header extends React.Component {
             className="menu-button"
             onClick={this.handleSidebarControlButton}
           >
-            <MdMenu size={50} />
+            <MdMenu size={40} />
           </button>
         </Nav>
         <Nav navbar className={bem.e('nav-right')}>
-          <NavItem className="d-inline-flex">
+          {/* <NavItem className="d-inline-flex">
             <NavLink id="Popover1" className="position-relative">
               {isNotificationConfirmed ? (
                 <MdNotificationsNone
@@ -145,7 +145,7 @@ class Header extends React.Component {
                 <Notifications notificationsData={notificationsData} />
               </PopoverBody>
             </Popover>
-          </NavItem>
+          </NavItem> */}
 
           <NavItem>
             <NavLink id="Popover2">

@@ -4,6 +4,7 @@
  #myModallabel {
   z-index: auto;
   font-size: 45px;
+  text-align: center;
  }
  #abc {
     text-align:center;
@@ -90,4 +91,7 @@
   padding-left: 10%;
   padding-right: 10%;
   
+}
+#articleModal {
+  z-index:100000;
 }

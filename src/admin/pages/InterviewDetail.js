@@ -2,30 +2,23 @@ import React, { Component } from 'react';
 import {
   Card,
   CardBody,
-  CardTitle,
   Button,
   Row,
   Container,
   TabContent,
   TabPane,
+  Badge,
   Nav,
   NavItem,
   NavLink,
-
+  CardHeader
 } from 'reactstrap';
-import {  MdMap, MdBook, MdCancel,MdPageview } from 'react-icons/md';
+import { MdMap, MdBook, MdSettings } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
-import classnames from 'classnames';
+import { PulseLoader } from 'react-spinners';
 import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
-import './JobDetail.css';
-const cutStringSalary = (s, i) => {
-  return s.substr(0, i);
-};
-const removeStringSalary = (s, i) => {
-  return s.substr(i + 4);
-};
+import classnames from 'classnames';
+
 export default class JobDetail extends Component {
   constructor(props) {
     super(props);
@@ -38,9 +31,8 @@ export default class JobDetail extends Component {
       timeStart: '',
       candidates: [],
       interviewers: [],
-      loading: true,
+      loading: true
     };
-    // this.handleChangePassword = this.handleChangePassword.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -57,21 +49,20 @@ export default class JobDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data);
-    
-      setTimeout(() => {
-        this.setState({
-          name: data.name,
-          address: data.address,
-          status: data.status,
-          timeEnd: data.timeEnd,
-          timeStart: data.timeStart,
-          candidates: data.candidates,
-          interviewers: data.interviewers,
-          loading: false
-        });
-      }, 500);
-    }
+
+    setTimeout(() => {
+      this.setState({
+        name: data.name,
+        address: data.address,
+        status: data.status,
+        timeEnd: data.timeEnd,
+        timeStart: data.timeStart,
+        candidates: data.candidates,
+        interviewers: data.interviewers,
+        loading: false
+      });
+    }, 500);
+  }
 
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -87,238 +78,294 @@ export default class JobDetail extends Component {
 
   render() {
     var i = 0;
+    var j = 0;
     const { formError } = this.state;
     return (
-      <div className="profile-card">
-        <Card className="card-body">
-          <CardTitle className="title">
-            <MdCancel className="first" />
-            Interview Information
-            <Link to="/dashboard/interview">
-              <MdCancel />
-            </Link>
-          </CardTitle>
-          {this.state.loading ? (
+      <Card className="dashboard-card">
+        <CardHeader className="card-header-custom">
+          interview's information
+        </CardHeader>
+        {this.state.loading ? (
+          <div
+            style={{
+              marginTop: '100px',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '100px'
+            }}
+            className="sweet-loading"
+          >
+            <PulseLoader
+              sizeUnit={'px'}
+              size={15}
+              color={'#45b649'}
+              loading={this.state.loading}
+            />
+          </div>
+        ) : (
+          <CardBody>
+            <Container>
+              <Row style={{ justifyContent: 'center' }}>
+                <div className="table-test" style={{ width: '100%' }}>
+                  <table style={{ width: '100%' }}>
+                    <tbody style={{ width: '100%' }}>
+                      <tr className="job-title3" key={1}>
+                        <td className="job-title">Name</td>
+                        <td className="job-title1">{this.state.name}</td>
+                      </tr>
+                      <tr className="job-title3" key={2}>
+                        <td className="job-title">Address</td>
+                        <td className="job-title1">{this.state.address}</td>
+                      </tr>
+                      <tr className="job-title3" key={3}>
+                        <td className="job-title">Start</td>
+                        <td className="job-title1">
+                          {moment(this.state.timeStart).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </td>
+                      </tr>
+
+                      <tr className="job-title3" key={4}>
+                        <td className="job-title">End</td>
+                        <td className="job-title1">
+                          {moment(this.state.timeEnd).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </td>
+                      </tr>
+                      <tr className="job-title3" key={5}>
+                        <td className="job-title">Status</td>
+                        <td className="job-title1">{this.state.status}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Row>
+              <br />
+              <Row>
+                <div className="job-tabs">
+                  <Nav tabs>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '1'
+                        })}
+                        onClick={() => {
+                          this.toggle('1');
+                        }}
+                      >
+                        <MdBook style={{ marginRight: '5px' }} />
+                        Interviewers
+                      </NavLink>
+                    </NavItem>
+                    <NavItem style={{ width: '150px' }}>
+                      <NavLink
+                        className={classnames({
+                          jobtabactive: this.state.activeTab === '2'
+                        })}
+                        onClick={() => {
+                          this.toggle('2');
+                        }}
+                      >
+                        <MdMap style={{ marginRight: '5px' }} />
+                        Candidates
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                </div>
+              </Row>
+              <br />
+              <br />
+              <Row>
+                <TabContent
+                  style={{ width: '100%' }}
+                  activeTab={this.state.activeTab}
+                >
+                  <TabPane tabId="1">
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Fullname</th>
+                              <th className="title1">Email</th>
+                              <th className="title1">Phone</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.interviewers.map(e => {
+                              i++;
+                              let url = '/dashboard/interview/' + e.id;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{i}</td>
+                                  <td className="title1">{e.fullname}</td>
+                                  <td className="title1">{e.email}</td>
+                                  <td className="title1">{e.phone}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                        <br />
+                      </div>
+                    </CardBody>
+                  </TabPane>
+                  <TabPane tabId="2">
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Fullname</th>
+                              <th className="title1">Email</th>
+                              <th className="title1">Phone</th>
+                              <th className="title1">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.candidates.map(e => {
+                              if (e.status == '1') {
+                                e.status = 'Pending';
+                              }
+                              if (e.status == '2') {
+                                e.status = 'Deny';
+                              }
+                              if (e.status == '3') {
+                                e.status = 'Approve';
+                              }
+                              if (e.status == '4') {
+                                e.status = 'Passed';
+                              }
+                              if (e.status == '5') {
+                                e.status = 'Failed';
+                              }
+                              j++;
+                              let url = '/dashboard/interview/' + e.id;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{j}</td>
+                                  <td className="title1">{e.fullname}</td>
+                                  <td className="title1">{e.email}</td>
+                                  <td className="title1">{e.phone}</td>
+                                  {e.status == 'Pending' ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Deny' ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#f85032',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Approve' ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#43a047',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Passed' ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#64dd17',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : e.status == 'Failed' ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    ''
+                                  )}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                        <br />
+                      </div>
+                    </CardBody>
+                  </TabPane>
+                </TabContent>
+              </Row>
+            </Container>
+
             <div
               style={{
-                marginTop: '100px',
                 display: 'flex',
-                justifyContent: 'center',
-                marginBottom: '100px'
+                justifyContent: 'flex-end',
+                marginTop: '20px'
               }}
-              className="sweet-loading"
             >
-              <ClipLoader
-                sizeUnit={'px'}
-                size={200}
-                color={'#45b649'}
-                loading={this.state.loading}
-              />
-            </div>
-          ) : (
-            <CardBody>
-              <Container>
-                <Row style={{ justifyContent: 'center' }}>
-                  <div className="table-test" style={{ width: '100%' }}>
-                    <table>
-                      <tbody>
-                        <tr key={1}>
-                          <td className="job-title">Name</td>
-                          <td>{this.state.name}</td>
-                        </tr>
-                        <tr key={2}>
-                          <td className="job-title">Address</td>
-                          <td>{this.state.address}</td>
-                        </tr>
-                        <tr key={3}>
-                          <td className="job-title">Start</td>
-                          <td>{this.state.timeStart}</td>
-                        </tr>
-                        
-                        <tr key={4}>
-                          <td className="job-title">End</td>
-                          <td>{this.state.timeEnd}</td>
-                        </tr>
-                        <tr key={5}>
-                          <td className="job-title">Status</td>
-                          <td>{this.state.status}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </Row>
-                <br />
-                <Row>
-                  <div className="job-tabs">
-                    <Nav tabs>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '1'
-                          })}
-                          onClick={() => {
-                            this.toggle('1');
-                          }}
-                        >
-                          <MdBook style={{ marginRight: '5px' }} />
-                          Interviewers
-                        </NavLink>
-                      </NavItem>
-                      <NavItem style={{ width: '150px' }}>
-                        <NavLink
-                          className={classnames({
-                            jobtabactive: this.state.activeTab === '2'
-                          })}
-                          onClick={() => {
-                            this.toggle('2');
-                          }}
-                        >
-                          <MdMap style={{ marginRight: '5px' }} />
-                          Candidates
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
-                </Row>
-                <br />
-                <br />
-                <Row>
-                  <TabContent
-                    style={{ width: '100%' }}
-                    activeTab={this.state.activeTab}
-                  >
-                    <TabPane tabId="1">
-                      <Row>
-                      <CardBody>
-                          <div className="table-test">
-                            <table>
-                              <thead>
-                                <tr
-                                  style={{
-                                    background:
-                                      '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                    color: 'white'
-                                  }}
-                                >
-                                  <th>#</th>
-                                  <th>Fullname</th>
-                                  <th>Email</th>
-                                  <th>Phone</th>
-                                  <th>Technical Skill</th>
-                                  <th style={{ width: '100px' }}>
-                                    <div className="action">Action</div>
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {this.state.interviewers.map(e => {
-                                  i++;
-                                  let url = '/dashboard/interview/' + e.id;
-                                  return (
-                                    <tr key={e.id}>
-                                      <td>{i}</td>
-                                      <td>{e.fullname}</td>
-                                      <td>{e.email}</td>
-                                      <td>{e.phone}</td>
-                                      <td>{e.technicalSkill}</td>
-                                      <td>
-                                        <div className="action">
-                                          <Link style={{ width: 'auto' }} to={'/dashboard/candidate/'+ e.id}>
-                                            <Button className="view-button" color="primary">
-                                              <MdPageview />
-                                            </Button>
-                                          </Link>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
-                            <br />
-
-                          </div>
-                        </CardBody>
-                      </Row>
-                    </TabPane>
-                    <TabPane tabId="2">
-                      <Row>
-
-                      <CardBody>
-                          <div className="table-test">
-                            <table>
-                              <thead>
-                                <tr
-                                  style={{
-                                    background:
-                                      '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                    color: 'white'
-                                  }}
-                                >
-                                  <th>#</th>
-                                  <th>Fullname</th>
-                                  <th>Email</th>
-                                  <th>Phone</th>
-                                  <th>Status</th>
-                                  <th>Technical Skill</th>
-                                  <th style={{ width: '100px' }}>
-                                    <div className="action">Action</div>
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {this.state.candidates.map(e => {
-                                  i++;
-                                  let url = '/dashboard/interview/' + e.id;
-                                  return (
-                                    <tr key={e.id}>
-                                      <td>{i}</td>
-                                      <td>{e.fullname}</td>
-                                      <td>{e.email}</td>
-                                      <td>{e.phone}</td>
-                                      <td>{e.status}</td>
-                                      <td>{e.technicalSkill}</td>
-                                      <td>
-                                        <div className="action">
-                                          <Link style={{ width: 'auto' }} to={'/dashboard/candidate/'+ e.id}>
-                                            <Button className="view-button" color="primary">
-                                              <MdPageview />
-                                            </Button>
-                                          </Link>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
-                            <br />
-
-                          </div>
-                        </CardBody>
-                      </Row>
-                    </TabPane>
-                  </TabContent>
-                </Row>
-              </Container>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  marginTop: '20px'
-                }}
+              <Button
+                onClick={() => this.backToPreviousPage()}
+                color="secondary"
               >
-                <Button
-                  onClick={() => this.backToPreviousPage()}
-                  color="secondary"
-                >
-                  Back
-                </Button>
-              </div>
-            </CardBody>
-          )}
-        </Card>
-      </div>
+                Back
+              </Button>
+            </div>
+          </CardBody>
+        )}
+      </Card>
     );
   }
 }

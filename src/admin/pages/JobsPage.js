@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
 
 import { MdPageview } from 'react-icons/md';
-import { Card, CardBody, CardHeader, Button } from 'reactstrap';
-import ModalRemoveJob from '../components/ModalRemoveJob';
-import ModalRemoveJobs from '../components/ModalRemoveJobs';
-import ModalEditItem from '../components/ModalEditItem';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Label,
+  Input,
+  Container,
+  Row,
+  Col,
+  FormGroup,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter
+} from 'reactstrap';
+import ModalRemoveItem from '../components/ModalRemoveItem';
+import ModalEditJob from '../components/ModalEditJob';
 import { Link } from 'react-router-dom';
-import Pagination from '../components/Pagination.js';
-// import './Roles.css'
-import ModalAddJob from '../components/ModalAddJob';
-import { ClipLoader } from 'react-spinners';
-import $ from 'jquery';
-const styleFont = {
-  fontSize: '200%'
-};
-const styleCard = {
-  width: '80%',
-  marginTop: '5%',
-  alignSelf: 'center',
-  marginBottom: '8%'
-};
+import PaginationComponent from '../components/Pagination.js';
+import { PulseLoader } from 'react-spinners';
+import DropDownTable from '../components/DropDownTable.js';
+import moment from 'moment';
 export default class JobsPage extends Component {
   constructor(props) {
     super(props);
@@ -31,21 +35,47 @@ export default class JobsPage extends Component {
       activePage: 1,
       totalItems: 0,
       listId: [],
-      loading: true
+      loading: true,
+      modalDeleteError: false,
+      modalDeleteSuccess: false,
+      selectPerPage: '10',
+      loadData: false,
+      keyword: '',
+      perPage: 10
     };
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    // this.removeManyItems = this.removeManyItems.bind(this);
+    this.toggleModalDeleteError = this.toggleModalDeleteError.bind(this);
+    this.toggleModalDeleteSuccess = this.toggleModalDeleteSuccess.bind(this);
+    this.handleChangePerPage = this.handleChangePerPage.bind(this);
+    this.handleChangeKeyWord = this.handleChangeKeyWord.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
       this.props.history.push('/dashboard/login');
     }
   }
-  async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/list-job?page=1';
+  async componentDidMount(perPage, keyword) {
+    const { activePage } = this.state;
+    if (!perPage) perPage = 10;
+    var body = '';
+    var url = '';
+    if (keyword != '') {
+      body = {
+        keyword: keyword
+      };
+      url = 'https://api.enclavei3dev.tk/api/list-job';
+    } else {
+      body = '';
+      url =
+        'https://api.enclavei3dev.tk/api/list-job?page=' +
+        activePage +
+        '&perpage=' +
+        perPage;
+    }
     const data = await fetch(url, {
       method: 'POST',
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -56,16 +86,51 @@ export default class JobsPage extends Component {
       this.setState({
         rows: data.data,
         totalItems: data.total,
-        loading: false
+        loading: false,
+        loadData: false,
+        activePage: data.current_page
       });
     }, 500);
   }
 
+  getUpdate(update) {
+    const { perPage, keyword } = this.state;
+    if ((update = true)) {
+      this.componentDidMount(perPage, keyword);
+    }
+  }
+
+  toggleModalDeleteSuccess() {
+    this.setState(prevState => ({
+      modalDeleteSuccess: !prevState.modalDeleteSuccess
+    }));
+  }
+  toggleModalDeleteError() {
+    this.setState(prevState => ({
+      modalDeleteError: !prevState.modalDeleteError
+    }));
+  }
+
   handlePageChange(pageNumber) {
-    // this.setState({activePage: pageNumber});
-    var url = 'https://api.enclavei3dev.tk/api/list-job?page=' + pageNumber;
+    const { perPage, keyword } = this.state;
+    var body = '';
+    var url = '';
+    if (keyword != '') {
+      body = {
+        keyword: keyword
+      };
+      url = 'https://api.enclavei3dev.tk/api/list-job';
+    } else {
+      body = '';
+      url =
+        'https://api.enclavei3dev.tk/api/list-job?page=' +
+        pageNumber +
+        '&perpage=' +
+        perPage;
+    }
     fetch(url, {
       method: 'POST',
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -77,42 +142,15 @@ export default class JobsPage extends Component {
           currentPage: data.currentPage,
           totalItems: data.total,
           rows: data.data,
-          activePage: pageNumber
+          activePage: pageNumber,
+          perPage: parseInt(data.per_page)
         });
       });
-    });
-  }
-
-  edit(index) {
-    $('.item').removeClass('item-active');
-    $('#' + index).addClass('item-active');
-    var url = 'https://api.enclavei3dev.tk/api/user?page=' + index;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      res.json().then(data => {
-        this.setState({
-          rows: data.data,
-          totalItems: data.total
-        });
-      });
-    });
-  }
-
-  addJob(data) {
-    this.setState({
-      rows: data.data,
-      totalItems: data.total
     });
   }
 
   removeItem(id) {
-    const { activePage } = this.state;
+    const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
     var url = 'https://api.enclavei3dev.tk/api/job';
@@ -127,21 +165,39 @@ export default class JobsPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-job?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total
-          });
+      if (res.status == 200) {
+        this.toggleModalDeleteSuccess();
+        this.componentDidMount(perPage, keyword);
+      } else {
+        this.toggleModalDeleteError();
+      }
+    });
+  }
+
+  removeManyItems() {
+    const { listDeleteId, perPage, keyword } = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/job';
+    fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        jobId: listDeleteId
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      if (res.status == 200) {
+        this.toggleModalDeleteSuccess();
+        this.componentDidMount(perPage, keyword);
+        this.setState({
+          listDeleteId: [],
+          listDeleteName: []
         });
-      });
+      } else {
+        this.toggleModalDeleteError();
+      }
     });
   }
 
@@ -175,154 +231,267 @@ export default class JobsPage extends Component {
     });
   }
 
-  removeManyItems() {
-    const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/job';
-    fetch(url, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        jobId: listDeleteId
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => {
-      fetch('https://api.enclavei3dev.tk/api/list-job?page=' + activePage, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('access_token')
-        }
-      }).then(res => {
-        res.json().then(data => {
-          this.setState({
-            rows: data.data,
-            totalItems: data.total,
-            listDeleteId: [],
-            listDeleteName: []
-          });
-        });
-      });
+  handleChangePerPage = e => {
+    const { keyword } = this.state;
+    var perPage = 0;
+    switch (e.target.value) {
+      case '10':
+        perPage = 10;
+        break;
+      case '20':
+        perPage = 20;
+        break;
+      case '50':
+        perPage = 50;
+        break;
+      case '100':
+        perPage = 100;
+        break;
+    }
+    this.setState({
+      perPage: perPage,
+      [e.target.name]: e.target.value,
+      loadData: true
     });
-  }
+    this.componentDidMount(perPage, keyword);
+  };
+
+  handleChangeKeyWord = e => {
+    const { perPage } = this.state;
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+    this.componentDidMount(perPage, e.target.value);
+  };
 
   render() {
-    var i = 0;
+    const { totalItems, activePage } = this.state;
+    var i = (activePage - 1) * 10;
     return (
-      <Card style={styleCard}>
-        <CardHeader style={styleFont}>Jobs Management</CardHeader>
+      <Card className="dashboard-card">
+        {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader
+            toggle={this.toggleModalDeleteSuccess}
+            className="card-header-custom"
+          >
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: '#45b649' }}>Deleted succesfully</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalDeleteError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader
+            toggle={this.toggleModalDeleteError}
+            className="card-header-custom"
+          >
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: 'red' }}>Cannot delete this job</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalDeleteError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
+        <CardHeader className="card-header-custom">Jobs Management</CardHeader>
         {this.state.loading ? (
           <div
             style={{
               marginTop: '100px',
               display: 'flex',
               justifyContent: 'center',
-              marginBottom: '100px'
+              marginBottom: '250px'
             }}
             className="sweet-loading"
           >
-            <ClipLoader
+            <PulseLoader
               sizeUnit={'px'}
-              size={200}
+              size={15}
               color={'#45b649'}
               loading={this.state.loading}
             />
           </div>
         ) : (
           <CardBody>
-            <ModalAddJob
-              color="success"
-              page={this.state.activePage}
-              buttonLabel="Create a new job"
-              nameButtonAccept="Add"
-              function={this.addJob.bind(this)}
-            />
-            {this.state.listDeleteId.length !== 0 && (
-              <ModalRemoveJobs
-                arrayName={this.state.listDeleteName}
-                buttonLabel="Delete"
-                function={() => this.removeManyItems()}
-              />
-            )}
-            <div className="table-test">
-              <table>
-                <thead>
-                  <tr
-                    style={{
-                      background:
-                        '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                      color: 'white'
-                    }}
-                  >
-                    <th>
-                      <input type="checkbox" />
-                    </th>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Salary</th>
-                    <th>Deadline</th>
-                    <th style={{ width: '180px' }}>
-                      <div className="action">Action</div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.rows.map(e => {
-                    i++;
-                    let url = '/dashboard/job/' + e.id;
-                    return (
-                      <tr key={e.id}>
-                        <td>
-                          <input
-                            type="checkbox"
-                            onChange={() => this.handleCheckChange(e)}
-                          />
-                        </td>
-                        <td>{i}</td>
-                        <td>{e.name}</td>
-                        <td>{e.position}</td>
-                        <td>{e.salary}</td>
-                        <td>{e.deadline}</td>
-                        <td>
-                          <div className="action">
-                            <ModalEditItem
-                              icon
-                              // id={listId[index]}
-                              name={e.name}
-                              color="success"
-                              buttonLabel="Edit"
-                              // function={this.editRole.bind(this)}
-                            />
-                            <Link style={{ width: 'auto' }} to={url}>
-                              <Button className="view-button" color="primary">
-                                <MdPageview />
-                              </Button>
-                            </Link>
-                            <ModalRemoveJob
-                              item={e}
-                              buttonLabel="Delete"
-                              function={() => this.removeItem(e.id)}
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <Container fluid={true} className="role-container-head-row">
+              <Row className="role-head-row">
+                <Col sm="12" md="6" className="role-form-create">
+                  <div className="form-header-area-button">
+                    <Link to="/dashboard/create-job">
+                      <Button color="success">Create</Button>
+                    </Link>
+
+                    {this.state.listDeleteId.length !== 0 && (
+                      <ModalRemoveItem
+                        itemName="these jobs"
+                        buttonLabel="Delete"
+                        function={() => this.removeManyItems()}
+                      />
+                    )}
+                  </div>
+                </Col>
+              </Row>
               <br />
-              <Pagination
-                activePage={this.state.activePage}
-                itemsCountPerPage={10}
-                totalItemsCount={this.state.totalItems}
-                pageRangeDisplayed={5}
-                onChange={this.handlePageChange.bind(this)}
-              />
-            </div>
+              <Row>
+                <Col>
+                  <div className="header-table-custom">
+                    <FormGroup>
+                      <Label>Show entries</Label>
+                      <Input
+                        type="select"
+                        name="selectPerPage"
+                        id="exampleSelect"
+                        value={this.state.selectPerPage}
+                        onChange={this.handleChangePerPage}
+                      >
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </Input>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>Search</Label>
+                      <Input
+                        className="role-input-search"
+                        name="keyword"
+                        value={this.state.keyword}
+                        onChange={this.handleChangeKeyWord}
+                      />
+                    </FormGroup>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+            {this.state.loadData ? (
+              <div
+                style={{
+                  marginTop: '100px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginBottom: '250px'
+                }}
+                className="sweet-loading"
+              >
+                <PulseLoader
+                  sizeUnit={'px'}
+                  size={15}
+                  color={'#45b649'}
+                  loading={this.state.loadData}
+                />
+              </div>
+            ) : (
+              <div className="table-rm">
+                <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
+                  <thead className="thead-light">
+                    <tr>
+                      <th style={{ width: '70px' }}>
+                        <input type="checkbox" />
+                      </th>
+                      <th style={{ width: '70px' }}>#</th>
+                      <th style={{ width: '500px' }}>Name</th>
+                      <th style={{ width: '180px' }}>Position</th>
+                      <th style={{ width: '180px' }}>Salary</th>
+                      <th>Deadline</th>
+                      <th style={{ width: '180px' }}>
+                        <div className="action">Action</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.rows.map(e => {
+                      i++;
+                      let url = '/dashboard/job/' + e.id;
+                      return (
+                        <tr key={e.id}>
+                          <td>
+                            <input
+                              type="checkbox"
+                              onChange={() => this.handleCheckChange(e)}
+                            />
+                          </td>
+                          <td>{i}</td>
+                          <td>{e.name}</td>
+                          <td>{e.position}</td>
+                          <td>{e.salary}</td>
+                          <td>
+                            {moment(e.deadline).format(
+                              'MMMM Do YYYY, h:mm:ss a'
+                            )}
+                          </td>
+                          <td>
+                            <div className="action">
+                              <div className="action-item">
+                                <ModalEditJob
+                                  icon
+                                  id={e.id}
+                                  name={e.name}
+                                  color="warning"
+                                  buttonLabel="Edit"
+                                  getUpdate={this.getUpdate.bind(this)}
+                                  // function={this.editRole.bind(this)}
+                                />
+                              </div>
+                              <div className="action-item">
+                                <Link style={{ width: 'auto' }} to={url}>
+                                  <Button
+                                    className="view-button"
+                                    color="primary"
+                                  >
+                                    <MdPageview />
+                                  </Button>
+                                </Link>
+                              </div>
+                              <div className="action-item">
+                                <ModalRemoveItem
+                                  itemName="this job"
+                                  function={() => this.removeItem(e.id)}
+                                />
+                              </div>
+                            </div>
+                            <div className="action-mobile">
+                              <DropDownTable />
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <br />
+                <PaginationComponent
+                  activePage={this.state.activePage}
+                  itemsCountPerPage={this.state.perPage}
+                  totalItemsCount={totalItems}
+                  pageRangeDisplayed={5}
+                  onChange={this.handlePageChange}
+                  totalItems={this.state.totalItems}
+                  activePage={this.state.activePage}
+                />
+              </div>
+            )}
           </CardBody>
         )}
       </Card>
