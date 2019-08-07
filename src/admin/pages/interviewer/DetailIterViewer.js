@@ -77,7 +77,7 @@ export default class JobDetail extends Component {
     const { id } = this.props.match.params;
     const { dataTechnicalSkills } = this.state;
     var j = -1;
-    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
+    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -215,7 +215,7 @@ export default class JobDetail extends Component {
       return array;
     });
     var arrayString = array.toString();
-    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
+    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -246,7 +246,7 @@ export default class JobDetail extends Component {
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
+          var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
           fetch(url, {
             headers: {
               'Content-Type': 'application/json',

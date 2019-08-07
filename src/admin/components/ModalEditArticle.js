@@ -53,7 +53,7 @@ export default class ModalEditArticle extends Component {
     var { optionsJob, optionsFormat, optionsCategory, isDisabled } = this.state;
     var status = '';
     var jobName = '';
-    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
+    var url = 'https://api.enclavei3.tk/api/article/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -226,7 +226,7 @@ export default class ModalEditArticle extends Component {
           jobId: jobId,
           isPublic: idStatus
         });
-    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
+    var url = 'https://api.enclavei3.tk/api/article/' + id;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -288,7 +288,7 @@ export default class ModalEditArticle extends Component {
           jobId: jobId,
           isPublic: idStatus
         });
-    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
+    var url = 'https://api.enclavei3.tk/api/article/' + id;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
