@@ -97,6 +97,7 @@ export default class ArticleDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    
     const data1 = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

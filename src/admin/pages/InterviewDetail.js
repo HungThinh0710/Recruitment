@@ -8,7 +8,6 @@ import {
   Container,
   TabContent,
   TabPane,
-  Badge,
   Nav,
   NavItem,
   NavLink,

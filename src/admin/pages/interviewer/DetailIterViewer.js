@@ -41,6 +41,7 @@ export default class JobDetail extends Component {
       email: '',
       phone: '',
       address: '',
+      image: '',
       interviews: [],
       technicalSkill: [],
       loading: true,
@@ -85,6 +86,8 @@ export default class JobDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    console.log(data);
+    
     data.technicalSkill.map(e => {
       dataTechnicalSkills.push(e.name + '-' + e.year);
       return dataTechnicalSkills;
@@ -100,6 +103,7 @@ export default class JobDetail extends Component {
         editEmail: data.email,
         phone: data.phone,
         editPhone: data.phone,
+        image: data.image,
         technicalSkill: data.technicalSkill,
         amountTechnicalSkills: data.technicalSkill.length,
         interviews: data.interviews,
@@ -444,6 +448,12 @@ export default class JobDetail extends Component {
                         <td className="job-title">Phone</td>
                         <td className="job-title1">{this.state.phone}</td>
                       </tr>
+
+                      <tr className="job-title3" key={4}>
+                        <td className="job-title">Image</td>
+                        <td className="job-title1"><image src = {'https://api.enclavei3dev.tk/upload/interviewer/avatars/' + `${this.state.image}`} /></td>
+                      </tr>
+
                       <tr className="job-title3" key={5}>
                         <td className="job-title">Skill</td>
                         <td className="job-title1">
