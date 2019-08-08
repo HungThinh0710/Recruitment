@@ -152,7 +152,7 @@ onCopy = () => {
       experience: data.job.experience,
       salary: data.job.salary,
       status: data.job.status,
-      addressed: data.job.address,
+      address: data.job.address,
       content: data.content,
       IDapply: data.job.id,
       image: data.image
@@ -444,22 +444,52 @@ onCopy = () => {
           </section>
           <section className="site-section" id="section-describe">
             <div className="container">
-              <div className="row align-items-center mb-5">
+              <div className="row align-items-center mb-5 fix-space-sharing" >
                 <div className="col-lg-8 mb-4 mb-lg-0" id="view-mobile">
                   <div className="d-flex align-items-center">
                     <div>
                       <h2 className="modify-title">{this.state.title}</h2>
                       <div class="show-line">
                         <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />{this.state.position}</span>
-                        <span className="m-2"><span className="icon-room mr-2" />{this.state.addressed}</span>
+                        <span className="m-2"><span className="icon-room mr-2" />{this.state.address}</span>
                         <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status}
                         </span></span>
                       </div>
                       <div class="show-line-2">
                         <p className="m-2"><span className="icon-briefcase mr-2" />{this.state.position}</p>
-                        <p className="m-2"><span className="icon-room mr-2" />{this.state.addressed}</p>
+                        <p className="m-2"><span className="icon-room mr-2" />{this.state.address}</p>
                         <p className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status}</span></p>
                       </div>
+                      <div class="show-line-3">
+                        <div className="row text-center" style={{paddingTop: 20, paddingLeft: 15}}>
+                        {/* <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />{this.state.position}</span>
+                        <span className="m-2"><span className="icon-room mr-2" />{this.state.addressed}</span>
+                        <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status} */}
+                        {/* </span></span> */}
+                        {/* <div className="col-4" style ={{paddingLeft: 0, paddingRight: 0}}> */}
+                        <span className="ml-0 mr-2 mb-2">
+                          <div class="fb-share-button"
+                            data-href={"https://enclavei3dev.tk/information/" + id}
+                            data-layout="button_count"
+                            data-size="large">
+                          </div>
+                        </span>  
+                        {/* </div>   */}
+                        {/* <div className="col-4" style ={{paddingLeft: 0, paddingRight: 0}}> */}
+                        <span className="ml-0 mr-2 mb-2">
+                          <a class="twitter-share-button ml-auto"
+                            href={"https://enclavei3dev.tk/information/" + id}
+                            data-size="large">
+                            </a>
+                        </span>
+                        {/* </div> */}
+                      <div className="modify-copylink">
+                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
+                        <button><span class="far fa-copy" aria-hidden="true"/> Link</button>
+                        </CopyToClipboard>
+                      </div>
+                      </div>
+                      </div>  
                     </div>
                   </div>
                 </div>
@@ -633,7 +663,7 @@ onCopy = () => {
                         <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
                         <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
                         <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
+                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
                         <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
                         {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
                         <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
@@ -645,49 +675,22 @@ onCopy = () => {
                         </IntlProvider></li>
                       </ul>
                     </div>
-                    <div className="bg-light p-3 border rounded">
-                      {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
-                      <div className="row text-center">
-                        <div className="col-4">
-                          <div class="fb-share-button"
-                            data-href={"https://enclavei3dev.tk/article/" + id}
-                            data-layout="button_count"
-                            data-size="large">
-                          </div>
-                        </div>
-                        <p></p>
-                        <div className="col-4">
-                          <a class="twitter-share-button ml-auto"
-                            href={"https://enclavei3dev.tk/article/" + id}
-                            data-size="large">
-                            Tweet</a>
-                        </div>
-                        <div className="col-4 modify-copylink">
-                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
-                          <button>Copy link</button>
-                        </CopyToClipboard>
-                      </div>
-                      </div>
-                      {/* <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter" /></NavLink> */}
-                      {/* <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-instagram" /></NavLink>
-                        <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-skype" /></NavLink> */}
-
-                    </div>
+                    
                   </div>
                 </div>
                 <div className="col-lg-8">
                   <div className="mb-5">
-                    {/*src={"https://api.enclavei3dev.tk/upload/images/articles/" + this.state.image}*/}
-                    <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" 
+                    {/**/}
+                    <figure className="mb-5"><img src={"https://api.enclavei3dev.tk/upload/images/articles/" + this.state.image} 
                      alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
                 <div className="col-lg-4">
                   <div className="show-jobsummary">
-                    <div className="bg-light p-3 border rounded mb-4">
-                      <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
-                      <ul className="list-unstyled pl-3 mb-0">
+                    <div className="bg-light p-3 border rounded mb-4" style={{height: 400}}>
+                      <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center" style={{paddingBottom: 30, paddingTop: 10}}>Job Summary</h3>
+                      <ul className="list-unstyled pl-3 mb-0 fix-job-padding-left" >
                         <li className="mb-2"><strong className="text-black">Published on:</strong> <IntlProvider locale="fr">
                           <FormattedDate
                             value={this.state.publishedOn}
@@ -698,7 +701,7 @@ onCopy = () => {
                         <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
                         <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
                         <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
+                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.address}</li>
                         <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
                         {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> */}
                         <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
@@ -710,49 +713,27 @@ onCopy = () => {
                         </IntlProvider></li>
                       </ul>
                     </div>
-                    <div className="bg-light p-3 border rounded">
-                      <div className="row text-center">
-                        <div className="col-4">
-                          <div class="fb-share-button"
-                            data-href={"https://enclavei3dev.tk/article/" + id}
-                            data-layout="button_count"
-                            data-size="large">
-                          </div>
-                        </div>
-                        <p></p>
-                        <div className="col-4">
-                          <a class="twitter-share-button ml-auto"
-                            href={"https://enclavei3dev.tk/article/" + id}
-                            data-size="large">
-                            Tweet</a>
-                        </div>
-                        <div className="col-4 modify-copylink">
-                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
-                          <button>Copy link</button>
-                        </CopyToClipboard>
-                      </div>
-                      </div>
 
                       {/* <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink> */}
 
-                    </div>
+                   
                   </div>
                 </div>
                 <div className="col-lg-8 recommendjob">
 
 
-                  <h3 className="panel-title-article">We recommend</h3>
+                  <h3 className="panel-title-article" style={{color: 'black', paddingBottom: 10,fontSize: 25,textTransform: 'none'}}>We Recommend</h3>
                   <div className="row">
-                    <div className="col-lg-6 panel-article mr-auto">
+                    <div className="col-lg-6 panel-article mr-auto" style={{paddingTop: 10}}>
                       <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
                         <tbody>
                           {listRecommend.map((list, index) => {
                             if (index < 3)
                               return <tr className="border-title">
                                 <td class="list-group-item article-recommend" >
-                                  <Link className="item-info" to={"/article/" + list.id} >{list.title}</Link>
+                                  <Link className="item-info" style={{color: '#212629'}} to={"/article/" + list.id} >{list.title}</Link>
                                   <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
                                     value={list.updated_at}
                                     day="numeric"
@@ -766,14 +747,14 @@ onCopy = () => {
                         </tbody>
                       </div>
                     </div>
-                    <div className="col-lg-6 panel-article ml-auto">
+                    <div className="col-lg-6 panel-article ml-auto" style={{paddingTop: 10}}>
                       <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
                         <tbody>
                           {listRecommend.map((list, index) => {
                             if (index > 2 && index < 6)
                               return <tr className="border-title">
-                                <td class="list-group-item article-recommend" >
-                                  <Link className="item-info" to={"/article/" + list.id} >{list.title}</Link>
+                                <td class="list-group-item article-recommend article-recommend-2" >
+                                  <Link className="item-info" style={{color: '#212629'}} to={"/article/" + list.id} >{list.title}</Link>
                                   <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
                                     value={list.updated_at}
                                     day="numeric"

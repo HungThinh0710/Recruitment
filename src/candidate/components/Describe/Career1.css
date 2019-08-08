@@ -106,16 +106,16 @@
   text-transform: uppercase;
   position: relative;
   margin-top: 0;
-  padding-top: 80px;
+  padding-top: 40px;
 }
 
 .panel-title-article::before {
   content: '';
-  width: 100%;
+  width: 95.5%;
   height: 3px;
   border-radius: 999em;
   display: inline-block;
-  background-color: #e1e1e1;
+  background-color: red;
   position: absolute;
   bottom: -9px;
   left: 0;
@@ -129,6 +129,7 @@
 }
 .article-recommend {
   padding-left: 0!important;
+  line-height: 17px;
 }
 .panel-article .table::before {
   border: none;
@@ -154,4 +155,17 @@ tr.border-title td {
   padding-top: 10px !important;
   font-size: 10px;
   color: gray;
+}
+.article-recommend .item-info {
+  text-transform: none !important;
+  font-size: 15px;
+}
+.article-recommend-2 {
+  margin-right: 0!important;
+}
+.fix-space-sharing {
+  margin-bottom: 0!important;
+}
+.fix-job-padding-left {
+  padding-left: 50px !important;
 }

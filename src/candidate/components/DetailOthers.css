@@ -125,7 +125,7 @@
   border-bottom: #45b649;
 }
 .fixed-title-space {
-  margin-bottom: 20px !important;
+  /* margin-bottom: 20px !important; */
 }
 .fixed-share-space {
   margin-top: 20px;
@@ -140,4 +140,15 @@
 }
 .image-fixed-info figure .modify-img {
   height: 420px !important;
+}
+.image-fixed-info > p {
+  margin-left: 10px;
+}
+.panel-title-article-2 {
+  color: red;
+  font-size: 23px;
+  font-weight: bold;
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 0!important;
 }

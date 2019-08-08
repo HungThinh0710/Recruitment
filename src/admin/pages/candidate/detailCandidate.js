@@ -30,6 +30,7 @@ export default class JobDetail extends Component {
       phone: '',
       address: '',
       description: '',
+      CV: '',
       status: '',
       jobs: [],
       interviews: [],
@@ -77,6 +78,7 @@ export default class JobDetail extends Component {
         status: data.status,
         email: data.email,
         phone: data.phone,
+        CV: data.CV,
         description: data.description,
         technicalSkill: data.technicalSkill,
         interviews: data.interviews,
@@ -141,6 +143,10 @@ export default class JobDetail extends Component {
                       <tr className="job-title3" key={1}>
                         <td className="job-title">Name</td>
                         <td className="job-title1">{this.state.fullname}</td>
+                      </tr>
+                      <tr className="job-title3" key={7}>
+                        <td className="job-title">CV</td>
+                        <td className="job-title1"><a href = {'https://api.enclavei3dev.tk/upload/CV/' + `${this.state.CV}`}> {this.state.CV} </a></td>
                       </tr>
                       <tr className="job-title3" key={2}>
                         <td className="job-title">Address</td>

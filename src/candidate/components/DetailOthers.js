@@ -19,6 +19,7 @@ export default class Careers extends Component {
       listOther: [],
       listid: this.props.match.params.id,
       copied: false,
+      image: '',
     }
     console.log(this.state.listid)
     this.handleReload = this.handleReload.bind(this);
@@ -44,6 +45,7 @@ export default class Careers extends Component {
       jobID: data,
       title: data.title,
       content: data.content,
+      image: data.image,
     });
     console.log(this.state.jobID)
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
@@ -82,7 +84,7 @@ export default class Careers extends Component {
     window.location.reload()
   }
   onCopy = () => {
-    this.setState({copied: true});
+    this.setState({ copied: true });
   };
   //   componentDidUpdate(prevProps) {
   //     const {
@@ -135,89 +137,85 @@ export default class Careers extends Component {
           </section>
           <section className="site-section" id="section-describe">
             <div className="container">
-              <div className="row align-items-center mb-5 fixed-title-space">
+              <div className="row align-items-center mb-9 fixed-title-space">
                 <div className="col-lg-8 mb-4 mb-lg-0" id="view-mobile">
                   <div className="d-flex align-items-center">
                     <div>
                       <h2 className="modify-title">{this.state.title}</h2>
-
+                      <div class="show-line-3">
+                        <div className="row text-center" style={{ paddingTop: 20, paddingLeft: 15 }}>
+                          {/* <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />{this.state.position}</span>
+                        <span className="m-2"><span className="icon-room mr-2" />{this.state.addressed}</span>
+                        <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status} */}
+                          {/* </span></span> */}
+                          {/* <div className="col-4" style ={{paddingLeft: 0, paddingRight: 0}}> */}
+                          <span className="ml-0 mr-2 mb-2">
+                            <div class="fb-share-button"
+                              data-href={"https://enclavei3dev.tk/information/" + id}
+                              data-layout="button_count"
+                              data-size="large">
+                            </div>
+                          </span>
+                          {/* </div>   */}
+                          {/* <div className="col-4" style ={{paddingLeft: 0, paddingRight: 0}}> */}
+                          <span className="ml-0 mr-2 mb-2">
+                            <a class="twitter-share-button ml-auto"
+                              href={"https://enclavei3dev.tk/information/" + id}
+                              data-size="large">
+                            </a>
+                          </span>
+                          {/* </div> */}
+                          <div className="modify-copylink">
+                            <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" + id}>
+                              <button><span class="far fa-copy" aria-hidden="true" /> Link</button>
+                            </CopyToClipboard>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="row">
-                <div className="col-lg-8 image-fixed-info" style={{ textAlign: 'justify'}}>
+                <div className="col-lg-8 image-fixed-info" style={{ textAlign: 'justify' }}>
                   <div className="mb-5">
-                    <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
+                    <figure className="mb-5"><img src={"https://api.enclavei3dev.tk/upload/images/articles/" + this.state.image} alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
-                <div className="col-lg-4">
-                <h2 class="panel-title">
-                      More information
+                <div className="col-lg-4 " style={{paddingLeft: 25}}>
+                  <h2 class="panel-title-article-2">
+                    More Information
                         </h2>
-                  <div className="show-information">
+                  <div className="show-information" style={{paddingTop: 10}}>
 
-                    {/* <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
-                      <ul className="list-unstyled pl-3 mb-0">
-                        <li className="mb-2"><strong className="text-black">Published on:</strong> <IntlProvider locale="fr">
-                          <FormattedDate
-                            value={this.state.publishedOn}
-                            day="numeric"
-                            month="long"
-                            year="numeric" />
-                        </IntlProvider></li>
-                        <li className="mb-2"><strong className="text-black">Vacancy:</strong> {this.state.amount}</li>
-                        <li className="mb-2"><strong className="text-black">Status:</strong> {this.state.status}</li>
-                        <li className="mb-2"><strong className="text-black">Experience:</strong> {this.state.experience}</li>
-                        <li className="mb-2"><strong className="text-black">Location:</strong> {this.state.addressed}</li>
-                        <li className="mb-2"><strong className="text-black">Salary:</strong> {this.state.salary}</li>
-                        {/* <li className="mb-2"><strong className="text-black">Gender:</strong> Any</li> 
-                        <li className="mb-2"><strong className="text-black">Deadline:</strong> <IntlProvider locale="fr">
-                          <FormattedDate
-                            value={this.state.deadline}
-                            day="numeric"
-                            month="long"
-                            year="numeric" />
-                        </IntlProvider></li>
-                      </ul> */}
-                    {listOther.map((list, index) => {
-                      if (index < 5)
-                      return <li class="list-group-item" >
-                         {(list.id !== this.state.listid) ? <Link className="item-info" to={"/information/" + list.id} >{list.title}</Link> : null}
-                        </li>
-                    })}
-                    <h2 class="panel-title sharing-top">
-                      Sharing
-                        </h2>
-                    <div className="bg-light p-3 border rounded fixed-share-space">
-                      <div className="row text-center">
-                        <div className="col-4">
-                          <div class="fb-share-button"
-                            data-href={"https://enclavei3dev.tk/information/" + id}
-                            data-layout="button_count"
-                            data-size="large">
-                          </div>
-                        </div>
-                        <p></p>
-                        <div className="col-4">
-                          <a class="twitter-share-button ml-auto"
-                            href={"https://enclavei3dev.tk/information/" + id}
-                            data-size="large">
-                            Tweet</a>
-                        </div>
+
+                    <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
+                      <tbody>
+                        {listOther.map((list, index) => {
+                          if (index < 10)
+                            return <tr className="border-title">
+                              <td class="list-group-item article-recommend article-recommend-2" >
+                                <Link className="item-info" style={{ color: '#212629' }} to={"/article/" + list.id} >{list.title}</Link>
+                                <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
+                                  value={list.updated_at}
+                                  day="numeric"
+                                  month="long"
+                                  year="numeric" />
+                                </IntlProvider>
+                                </h6>
+                              </td>
+                            </tr>
+                        })}
+                      </tbody>
+                    </div>
+                    {/* <div className="bg-light p-3 border rounded fixed-share-space">
                       
-                      <div className="col-4 modify-copylink">
-                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
-                          <button>Copy link</button>
-                        </CopyToClipboard>
-                      </div>
-                      </div>
                       {/* <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
-                        <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink> */}
+                        <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink> 
 
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

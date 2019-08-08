@@ -361,12 +361,15 @@ export default class Homepage extends Component {
                         </form>
                       </div>
                       <div class="panel job-list-panel">
+                        <div className="row" style={{marginLeft: 1, marginRight: 1}}>
+                          <div className="col-sm-4" style={{paddingLeft : 0}}>
                         <h2 class="panel-title">
                           Job Opening
                         </h2>
-                        <div class="col-sm-4 ml-auto showentries">
-                          <label className="col-sm-8 ml-auto labelshow text-right">Show entries:</label>
-                        <select class="col-sm-4 ml-auto selectshow" type="select"
+                       </div>
+                        <div class="col-sm-4 ml-auto showentries text-right">
+                          <label className="ml-auto">Show entries: &nbsp; </label>
+                        <select class="selectshow ml-auto" type="select"
                         name="selectPerPage"
                         id="exampleSelect"
                         value={this.state.selectPerPage}
@@ -376,6 +379,7 @@ export default class Homepage extends Component {
                         <option>50</option>
                         <option>100</option>
                         </select>
+                        </div>
                         </div>
                         {/* <Input
                         type="select"

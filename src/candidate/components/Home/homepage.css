@@ -271,6 +271,7 @@
 .showentries {
   padding-right: 0!important;
   padding-bottom: 10px;
+  padding-left: 0!important;
 }
 .list-group-item .item {
   text-decoration: none;
