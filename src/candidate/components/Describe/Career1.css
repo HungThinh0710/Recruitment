@@ -149,7 +149,7 @@ tr.border-title td {
   padding: 0!important;
 }
 #section-describe.site-section {
-  padding-bottom: 10rem !important;
+  padding-bottom: 8rem !important;
 }
 .time-update {
   padding-top: 10px !important;
@@ -166,6 +166,6 @@ tr.border-title td {
 .fix-space-sharing {
   margin-bottom: 0!important;
 }
-.fix-job-padding-left {
-  padding-left: 50px !important;
+.hover-clipboard:hover {
+  background-color: green;
 }

@@ -7,3 +7,18 @@
   border: none;
   outline: none !important;
 }
+
+.btn-more-header{
+  background: #e2e6ea linear-gradient(180deg, #e6eaed, #e2e6ea) repeat-x;
+}
+
+.a-mask-as-read-header{
+  text-decoration: none;
+  color: #45b649;
+}
+
+.a-mask-as-read-header:hover{
+  text-decoration: none;
+  color: #45b649;
+  font-weight: bold;
+}

@@ -65,6 +65,11 @@ export default class Careers extends Component {
       "experience": "",
       "orderby": "asc"
     }
+    const {
+      match: {
+        params: { id }
+      }
+    } = this.props;
     var url = 'https://api.enclavei3dev.tk/api/article-web';
     const data = await fetch(url, {
       method: 'POST',
@@ -167,7 +172,7 @@ export default class Careers extends Component {
                           {/* </div> */}
                           <div className="modify-copylink">
                             <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" + id}>
-                              <button><span class="far fa-copy" aria-hidden="true" /> Link</button>
+                            <button className="hover-clipboard">&nbsp;<span class="far fa-copy" aria-hidden="true">&nbsp;</span> <span style={{fontSize: 14, fontWeight: 'bold'}}> Link&nbsp;</span></button>
                             </CopyToClipboard>
                           </div>
                         </div>
@@ -195,8 +200,8 @@ export default class Careers extends Component {
                         {listOther.map((list, index) => {
                           if (index < 10)
                             return <tr className="border-title">
-                              <td class="list-group-item article-recommend article-recommend-2" >
-                                <Link className="item-info" style={{ color: '#212629' }} to={"/information/" + list.id} >{list.title}</Link>
+                              <td class="list-group-item article-recommend article-recommend-2" style={{paddingBottom: 3}}>
+                                <NavLink className="item-info" style={{ color: '#212629' }} to={"/information/" + list.id} >{list.title}</NavLink>
                                 <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
                                   value={list.updated_at}
                                   day="numeric"
