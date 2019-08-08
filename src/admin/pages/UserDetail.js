@@ -606,6 +606,68 @@ export default class UserDetail extends Component {
                     </Col>
                   </Row>
                   </TabPane> */}
+                  <TabPane tabId="2">
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Title</th>
+                              <th className="title1">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.articles.map(e => {
+                              i++;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{i}</td>
+                                  <td className="title1">{e.title}</td>
+                                  {e.isPublic === 1 ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        Published
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        Closed
+                                      </Badge>
+                                    </td>
+                                  )}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                        <br />
+                      </div>
+                    </CardBody>
+                  </TabPane>
                     <TabPane tabId="3">
                       <Row>
                         <Col>
