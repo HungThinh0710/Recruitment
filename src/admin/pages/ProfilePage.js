@@ -6,7 +6,7 @@ import {
   CardSubtitle,
   CardImg,
   Button,
-  CardText,
+  Badge,
   Row,
   Col,
   Container,
@@ -32,6 +32,7 @@ import './ProfilePage.css';
 import { Link, Redirect } from 'react-router-dom';
 import TabInformation from '../components/TabInformation';
 import { PulseLoader } from 'react-spinners';
+import axios from 'axios';
 
 /*-------Regex----------*/
 const fullNameRegex = /^[a-zA-Z\s]+$/;
@@ -42,7 +43,8 @@ export default class ProfilePage extends Component {
     super(props);
     this.state = {
       // activeTab: '1',
-      activeTab: '3',
+      activeTab: '1',
+      articles: '',
       name: '',
       fullName: '',
       email: '',
@@ -68,13 +70,16 @@ export default class ProfilePage extends Component {
         password: 'Password is required',
         password_confirmation: 'Confirm password is required'
       },
+
       modalError: false,
       modalErrorPassword: false,
       modalSuccess: false,
       errorData: '',
       errorPassword: '',
       showErrorProfileMessage: false,
-      showErrorPasswordMessage: false
+      showErrorPasswordMessage: false,
+      editImage: null,
+      url: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -86,6 +91,7 @@ export default class ProfilePage extends Component {
     this.handleErrorPasswordMessage = this.handleErrorPasswordMessage.bind(
       this
     );
+    this.removeDemoImg = this.removeDemoImg.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -94,7 +100,7 @@ export default class ProfilePage extends Component {
   }
   async componentDidMount() {
     //const {firstName, lastName, email} = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/current-profile';
+    var url = 'https://api.enclavei3.tk/api/current-profile';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -107,6 +113,7 @@ export default class ProfilePage extends Component {
         this.setState({
           name: data.name,
           fullName: data.fullname,
+          articles: data.articles,
           email: data.email,
           phone: data.phone,
           address: data.address,
@@ -116,7 +123,8 @@ export default class ProfilePage extends Component {
           editPhone: data.phone,
           editAddress: data.address,
           editImage: data.image,
-          loading: false
+          loading: false,
+          url: null
         });
       }, 500);
     }
@@ -128,6 +136,60 @@ export default class ProfilePage extends Component {
       });
     }
   }
+  updateImage = () => {
+    const { editImage } = this.state;
+    const formData = new FormData();
+    formData.append('image', editImage);
+    let configs = {
+      header: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json'
+      }
+    };
+
+    var url = 'https://api.enclavei3.tk/api/profile/avatar';
+
+    axios.defaults.headers.common = {
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    };
+    var urlHT = 'https://api.enclavei3.tk/api/profile/avatar';
+    axios
+      .post(urlHT, formData, {})
+      .then(res => {
+        if (res.status === 401) {
+          alert('Add Failed');
+        }
+        if (res.status === 422) {
+          this.toggleModalError();
+          const dataArray = Object.keys(res.data.errors).map(
+            i => res.data.errors[i]
+          );
+          this.setState({
+            errorData: dataArray
+          });
+        }
+
+        if (res.status === 200) {
+          this.toggleModalSuccess();
+          this.componentDidMount();
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  };
+
+  removeDemoImg = () => {
+    this.setState({ url: null, editImage: null });
+  };
+
+  handleChangeImage = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      var url = URL.createObjectURL(e.target.files[0]);
+      this.setState({ url: url, editImage: image });
+    }
+  };
 
   toggleModalSuccess() {
     this.setState(prevState => ({
@@ -268,7 +330,7 @@ export default class ProfilePage extends Component {
     this.setState({
       modalError: false
     });
-    var url = 'https://api.enclavei3dev.tk/api/profile';
+    var url = 'https://api.enclavei3.tk/api/profile';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -315,7 +377,7 @@ export default class ProfilePage extends Component {
 
   handleChangePassword() {
     const { old_password, password, password_confirmation } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/change-password';
+    var url = 'https://api.enclavei3.tk/api/change-password';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -453,7 +515,7 @@ export default class ProfilePage extends Component {
           className="card-header-custom"
           style={{ display: 'flex', justifyContent: 'space-between' }}
         >
-          User's Information
+          Profile
         </CardHeader>
 
         {this.state.loading ? (
@@ -478,11 +540,77 @@ export default class ProfilePage extends Component {
             <Container style={{ marginTop: '5%' }}>
               <Row>
                 <Col xs="4">
-                  <img
-                    className="avatar"
-                    src="/static/media/100_3.6e25d86d.jpg"
-                    alt="Card image cap"
-                  />
+                  {this.state.url ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end'
+                      }}
+                    >
+                      <Button
+                        style={{
+                          color: 'black',
+                          fontWeight: '20px',
+                          border: 'none',
+                          padding: '0px',
+                          background: 'white'
+                        }}
+                        onClick={() => this.removeDemoImg()}
+                      >
+                        X
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      <br />
+                    </div>
+                  )}
+
+                  <div style={{ overflow: 'hidden' }}>
+                    {this.state.url ? (
+                      <img
+                        className="avatar"
+                        src={this.state.url}
+                        alt="Card image cap"
+                      />
+                    ) : (
+                      <img
+                        className="avatar"
+                        src={
+                          'https://api.enclavei3.tk/upload/images/avatars/' +
+                          `${this.state.image}`
+                        }
+                        alt="Card image cap"
+                      />
+                    )}
+                  </div>
+                  <br />
+                  <div style={{ display: 'flex' }}>
+                    <Input
+                      type="file"
+                      name="editImage"
+                      onChange={this.handleChangeImage}
+                      className="image-input-field"
+                    />
+                    {this.state.url ? (
+                      <Button
+                        onClick={() => this.updateImage()}
+                        color="success"
+                        style={{ borderRadius: '0px' }}
+                      >
+                        Update
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => this.updateImage()}
+                        color="success"
+                        style={{ borderRadius: '0px' }}
+                        disabled
+                      >
+                        Upload
+                      </Button>
+                    )}
+                  </div>
                 </Col>
                 <Col xs="auto" />
                 <Col xs="6">
@@ -496,38 +624,33 @@ export default class ProfilePage extends Component {
                 </Col>
               </Row>
               <br />
-              <hr />
 
               <br />
               <br />
               <Row>
                 <Col>
                   <Nav tabs>
-                    {/* <NavItem>
-                    <NavLink
-                      className={classnames({ tabactive: this.state.activeTab === '1' })}
-                      onClick={() => { this.toggle('1'); }}
-                    >
-                    <MdBook style={{marginRight:'5px'}}/>
-                      Articles
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ tabactive: this.state.activeTab === '2' })}
-                      onClick={() => { this.toggle('2'); }}
-                    >
-                      <MdMap style={{marginRight:'5px'}}/>
-                      Interviews
-                    </NavLink>
-                  </NavItem> */}
                     <NavItem>
                       <NavLink
                         className={classnames({
-                          tabactive: this.state.activeTab === '3'
+                          tabactive: this.state.activeTab === '1'
                         })}
                         onClick={() => {
-                          this.toggle('3');
+                          this.toggle('1');
+                        }}
+                      >
+                        <MdBook style={{ marginRight: '5px' }} />
+                        Articles
+                      </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
+                          tabactive: this.state.activeTab === '2'
+                        })}
+                        onClick={() => {
+                          this.toggle('2');
                         }}
                       >
                         <MdSettings style={{ marginRight: '5px' }} />
@@ -540,85 +663,84 @@ export default class ProfilePage extends Component {
               <br />
               <br />
               <TabContent activeTab={this.state.activeTab}>
-                {/* <TabPane tabId="1">
-                      <Row>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240/paris" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240/brazil" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                    </Row>
-                  </TabPane>
-                  <TabPane tabId="2">
-                  <Row>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/dog" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/cat" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/rio" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                  </Row>
-                  </TabPane> */}
-                <TabPane tabId="3">
+                <TabPane tabId="1">
+                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <div className="table-test">
+                      <table style={{ width: '100%' }}>
+                        <thead>
+                          <tr
+                            style={{
+                              background:
+                                '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                              color: 'white'
+                            }}
+                          >
+                            <th className="title1">#</th>
+                            <th className="title1">Title</th>
+                            <th className="title1">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.state.articles.map(e => {
+                            i++;
+                            return (
+                              <tr style={{ textAlign: 'center' }} key={e.id}>
+                                <td className="title1">{i}</td>
+                                <td className="title1">{e.title}</td>
+                                {e.isPublic === 1 ? (
+                                  <td className="title1 text-center">
+                                    <Badge
+                                      style={{
+                                        backgroundColor: '#6a82fb',
+                                        color: '#fff',
+                                        width: 80,
+                                        borderRadius: 4
+                                      }}
+                                      pill
+                                    >
+                                      Published
+                                    </Badge>
+                                  </td>
+                                ) : (
+                                  <td className="title1 text-center">
+                                    <Badge
+                                      style={{
+                                        backgroundColor: '#dd2c00',
+                                        color: '#fff',
+                                        width: 80,
+                                        borderRadius: 4
+                                      }}
+                                      pill
+                                    >
+                                      Closed
+                                    </Badge>
+                                  </td>
+                                )}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                      <br />
+                    </div>
+                  </CardBody>
+                </TabPane>
+                <TabPane tabId="2">
                   <Row>
                     <Col>
                       <Card>
                         <CardBody>
                           <Form onSubmit={this.handleChangeProfile}>
                             <FormGroup>
-                              <h4>Profile</h4>
+                              <h4 style={{ fontWeight: 'bold' }}>Profile</h4>
                             </FormGroup>
                             <FormGroup>
-                              <Label for="Fullname">Fullname</Label>
+                              <Label
+                                style={{ fontWeight: 'bold' }}
+                                for="Fullname"
+                              >
+                                Fullname
+                              </Label>
                               <Input
                                 type="text"
                                 name="editFullName"
@@ -633,7 +755,9 @@ export default class ProfilePage extends Component {
                                 )}
                             </FormGroup>
                             <FormGroup>
-                              <Label for="Email">Email</Label>
+                              <Label style={{ fontWeight: 'bold' }} for="Email">
+                                Email
+                              </Label>
                               <Input
                                 type="email"
                                 name="editEmail"
@@ -648,7 +772,9 @@ export default class ProfilePage extends Component {
                                 )}
                             </FormGroup>
                             <FormGroup>
-                              <Label for="Phone">Phone</Label>
+                              <Label for="Phone" style={{ fontWeight: 'bold' }}>
+                                Phone
+                              </Label>
                               <Input
                                 type="text"
                                 name="editPhone"
@@ -663,7 +789,12 @@ export default class ProfilePage extends Component {
                                 )}
                             </FormGroup>
                             <FormGroup>
-                              <Label for="Address">Address</Label>
+                              <Label
+                                for="Address"
+                                style={{ fontWeight: 'bold' }}
+                              >
+                                Address
+                              </Label>
                               <Input
                                 type="text"
                                 name="editAddress"

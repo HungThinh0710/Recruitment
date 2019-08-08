@@ -36,7 +36,7 @@ export default class Careers extends Component {
       }
     } = this.props;
 
-    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
+    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
       headers: headers,
     }).then(response => response.json())
     await this.setState({
@@ -58,8 +58,17 @@ export default class Careers extends Component {
     let body = {
       "count": ""
     }
+<<<<<<< HEAD
     const {id} = this.props.match.params;
     var url = 'https://api.enclavei3dev.tk/api/article-web';
+=======
+    const {
+      match: {
+        params: { id }
+      }
+    } = this.props;
+    var url = 'https://api.enclavei3.tk/api/article-web';
+>>>>>>> e8b51774e5d246dd0b0ba6ba000c5a7bb58d6bf8
     const data = await fetch(url, {
       method: 'POST',
       headers: headers,

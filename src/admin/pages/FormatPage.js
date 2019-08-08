@@ -52,7 +52,7 @@ export default class FormatPage extends Component {
     }
   }
   async componentDidMount() {
-    var url = 'https://api.enclavei3dev.tk/api/format-article?numberRecord=10';
+    var url = 'https://api.enclavei3.tk/api/format-article?numberRecord=10';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ export default class FormatPage extends Component {
   }
   removeManyItems() {
     const { listDeleteId, activePage } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    var url = 'https://api.enclavei3.tk/api/format-article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -131,16 +131,13 @@ export default class FormatPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch(
-        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('access_token')
-          }
+      fetch('https://api.enclavei3.tk/api/format-article?page=' + activePage, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
-      ).then(res => {
+      }).then(res => {
         res.json().then(data => {
           if (res.status === 200) {
             this.toggleModalDeleteSuccess();
@@ -160,7 +157,7 @@ export default class FormatPage extends Component {
     const { activePage } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/format-article';
+    var url = 'https://api.enclavei3.tk/api/format-article';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -173,16 +170,13 @@ export default class FormatPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      fetch(
-        'https://api.enclavei3dev.tk/api/format-article?page=' + activePage,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('access_token')
-          }
+      fetch('https://api.enclavei3.tk/api/format-article?page=' + activePage, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
         }
-      ).then(res => {
+      }).then(res => {
         if (res.status === 200) {
           this.toggleModalDeleteSuccess();
           res.json().then(data => {
@@ -309,9 +303,7 @@ export default class FormatPage extends Component {
                 <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
                   <thead className="thead-light">
                     <tr>
-                      <th style={{ width: '5%' }}>
-                        <input type="checkbox" />
-                      </th>
+                      <th style={{ width: '5%' }} />
                       <th style={{ width: '5%' }}>#</th>
                       <th>Title</th>
                       {/* <th>Created At</th>

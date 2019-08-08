@@ -87,11 +87,11 @@ export default class ArticleDetail extends Component {
     var { optionsJob, optionsCategory, optionsFormat, isDisabled } = this.state;
     var status = '';
     var jobName = '';
-    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
+    var url = 'https://api.enclavei3.tk/api/article/' + id;
 
-    var url2 = 'https://api.enclavei3dev.tk/api/list-job';
-    var url3 = 'https://api.enclavei3dev.tk/api/category?page=1';
-    var url4 = 'https://api.enclavei3dev.tk/api/format-article';
+    var url2 = 'https://api.enclavei3.tk/api/list-job';
+    var url3 = 'https://api.enclavei3.tk/api/category?page=1';
+    var url4 = 'https://api.enclavei3.tk/api/format-article';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -207,6 +207,7 @@ export default class ArticleDetail extends Component {
             title: data1.title,
             content: data1.content,
             status: status,
+            image: data1.image,
             jobId: null,
             jobName: null,
             catId: data1.catId,
@@ -296,14 +297,14 @@ export default class ArticleDetail extends Component {
       }
     };
 
-    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
+    var url = 'https://api.enclavei3.tk/api/article/' + id;
 
     axios.defaults.headers.common = {
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json'
     };
-    var urlHT = 'https://api.enclavei3dev.tk/api/article/' + id;
+    var urlHT = 'https://api.enclavei3.tk/api/article/' + id;
     axios
       .post(urlHT, formData, {})
       .then(res => {
@@ -391,14 +392,14 @@ export default class ArticleDetail extends Component {
       }
     };
 
-    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
+    var url = 'https://api.enclavei3.tk/api/article/' + id;
 
     axios.defaults.headers.common = {
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json'
     };
-    var urlHT = 'https://api.enclavei3dev.tk/api/article/' + id;
+    var urlHT = 'https://api.enclavei3.tk/api/article/' + id;
     axios
       .post(urlHT, formData, {})
       .then(res => {
@@ -520,7 +521,7 @@ export default class ArticleDetail extends Component {
       check = true;
     }
     var imageURL =
-      'https://api.enclavei3dev.tk/upload/images/articles/' + this.state.image;
+      'https://api.enclavei3.tk/upload/images/articles/' + this.state.image;
 
     return (
       <Card className="dashboard-card">
@@ -647,7 +648,7 @@ export default class ArticleDetail extends Component {
                   />
                 </Row>
               )}
-              ``
+              
               <br />
               <br />
               <Row style={{ justifyContent: 'center' }}>

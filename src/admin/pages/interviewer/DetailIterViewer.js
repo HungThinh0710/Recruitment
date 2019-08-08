@@ -86,7 +86,7 @@ export default class JobDetail extends Component {
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json());   
+    }).then(res => res.json());
     data.technicalSkill.map(e => {
       dataTechnicalSkills.push(e.name + '-' + e.year);
       return dataTechnicalSkills;
@@ -325,7 +325,15 @@ export default class JobDetail extends Component {
 
   render() {
     var i = 0;
-    const { fullname, email, phone, address,dataTechnicalSkills, technicalSkill, formError } = this.state;
+    const {
+      fullname,
+      email,
+      phone,
+      address,
+      dataTechnicalSkills,
+      technicalSkill,
+      formError
+    } = this.state;
     var string = '';
     {
       this.state.technicalSkill.map(e => {
@@ -344,10 +352,8 @@ export default class JobDetail extends Component {
     array.length === 0
       ? (errorTechnicalSkillMessage = 'Technical skill is required')
       : (errorTechnicalSkillMessage = '');
-      // console.log(technicalSkill);
+    // console.log(technicalSkill);
     return (
-     
-      
       <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
@@ -429,28 +435,31 @@ export default class JobDetail extends Component {
         ) : (
           <CardBody>
             <Container>
-              
-                  <Row>
-                    <Col xs="4">
-                      <div style= {{overflow: 'hidden'}}> 
-                        <img
-                        className="avatar"
-                        src={'https://api.enclavei3dev.tk/upload/interviewer/avatars/'+ `${this.state.image}`}
-                        alt="Card image cap"
-                      /></div>
-                     
-                    </Col>
-                    <Col xs="auto" />
-                    <Col xs="6">
-                      <TabInformation
-                        fullName={fullname}
-                        Technical Skill={technicalSkill}
-                        phone={phone}
-                        email={email}
-                        address={address}
-                      />
-                    </Col>
-                  </Row>
+              <Row>
+                <Col xs="4">
+                  <div style={{ overflow: 'hidden' }}>
+                    <img
+                      className="avatar"
+                      src={
+                        'https://api.enclavei3dev.tk/upload/interviewer/avatars/' +
+                        `${this.state.image}`
+                      }
+                      alt="Card image cap"
+                    />
+                  </div>
+                </Col>
+                <Col xs="auto" />
+                <Col xs="6">
+                  <TabInformation
+                    fullName={fullname}
+                    Technical
+                    Skill={technicalSkill}
+                    phone={phone}
+                    email={email}
+                    address={address}
+                  />
+                </Col>
+              </Row>
               <br />
               <Row>
                 <div className="job-tabs">
@@ -598,7 +607,7 @@ export default class JobDetail extends Component {
                       <br />
                       <br />
                       <Row>
-                        <Col xs="4">
+                        {/* <Col xs="4">
                           <div
                             style={{
                               display: 'flex',
@@ -620,7 +629,8 @@ export default class JobDetail extends Component {
                             />
                           </div>
                         </Col>
-                        <Col xs="8">
+                        <Col xs="8"> */}
+                        <Col>
                           <FormGroup>
                             <Label className="title-input" for="exampleName">
                               Full Name
