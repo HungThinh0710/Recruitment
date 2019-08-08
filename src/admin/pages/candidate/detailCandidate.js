@@ -80,6 +80,7 @@ export default class JobDetail extends Component {
         data.status = 'Failed';
         break;
     }
+    console.log(data);
     setTimeout(() => {
       this.setState({
         fullname: data.fullname,
@@ -155,7 +156,7 @@ export default class JobDetail extends Component {
     var i = 0;
     const { status } = this.state;
     var string = '';
-    {
+    if (this.state.technicalSkill) {
       this.state.technicalSkill.map(e => {
         string += e.name + ': ' + e.year + ' years; ';
         return string;
@@ -366,7 +367,17 @@ export default class JobDetail extends Component {
                       </tr>
                       <tr className="job-title3" key={7}>
                         <td className="job-title">CV</td>
-                        <td className="job-title1"><a href = {'https://api.enclavei3dev.tk/upload/CV/' + `${this.state.CV}`}> {this.state.CV} </a></td>
+                        <td className="job-title1">
+                          <a
+                            href={
+                              'https://api.enclavei3dev.tk/upload/CV/' +
+                              `${this.state.CV}`
+                            }
+                          >
+                            {' '}
+                            {this.state.CV}{' '}
+                          </a>
+                        </td>
                       </tr>
                       <tr className="job-title3" key={2}>
                         <td className="job-title">Address</td>
@@ -391,9 +402,13 @@ export default class JobDetail extends Component {
                       </tr>
                       <tr className="job-title3" key={7}>
                         <td className="job-title">Skill</td>
-                        <td className="job-title1">
-                          <span>{newString}</span>
-                        </td>
+                        {this.state.technicalSkill ? (
+                          <td className="job-title1">
+                            <span>{newString}</span>
+                          </td>
+                        ) : (
+                          <td className="job-title1" />
+                        )}
                       </tr>
                     </tbody>
                   </table>
@@ -444,77 +459,89 @@ export default class JobDetail extends Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {this.state.interviews.map(e => {
-                              if (e.status == '1') {
-                                e.status = 'Pending';
-                              }
-                              if (e.status == '2') {
-                                e.status = 'Closed';
-                              }
-                              if (e.address == '2-1') {
-                                e.address = 'Floor 2 - 453-455 Hoang Dieu Str';
-                              }
-                              if (e.address == '3-1') {
-                                e.address = 'Floor 3 - 453-455 Hoang Dieu Str';
-                              }
-                              if (e.address == '4-1') {
-                                e.address = 'Floor 4 - 453-455 Hoang Dieu Str';
-                              }
-                              if (e.address == '5-1') {
-                                e.address = 'Floor 5 - 453-455 Hoang Dieu Str';
-                              }
-                              if (e.address == '2-2') {
-                                e.address = 'Floor 2 - 117 Nguyen Huu Tho Str';
-                              }
-                              if (e.address == '3-2') {
-                                e.address = 'Floor 3 - 117 Nguyen Huu Tho Str';
-                              }
-                              if (e.address == '4-2') {
-                                e.address = 'Floor 4 - 117 Nguyen Huu Tho Str';
-                              }
-                              if (e.address == '5-2') {
-                                e.address = 'Floor 5 - 117 Nguyen Huu Tho Str';
-                              }
-                              i++;
-                              let url = '/dashboard/candidate/' + e.id;
-                              return (
-                                <tr style={{ textAlign: 'center' }} key={e.id}>
-                                  <td className="title1">{i}</td>
-                                  <td className="title1">{e.name}</td>
-                                  <td className="title1">{e.address}</td>
-                                  <td className="title1">{e.timeStart}</td>
-                                  {e.status == 'Pending' ? (
-                                    <td className="title1 text-center">
-                                      <Badge
-                                        style={{
-                                          backgroundColor: '#6a82fb',
-                                          color: '#fff',
-                                          width: 80,
-                                          borderRadius: 4
-                                        }}
-                                        pill
-                                      >
-                                        {e.status}
-                                      </Badge>
-                                    </td>
-                                  ) : (
-                                    <td className="title1 text-center">
-                                      <Badge
-                                        style={{
-                                          backgroundColor: '#dd2c00',
-                                          color: '#fff',
-                                          width: 80,
-                                          borderRadius: 4
-                                        }}
-                                        pill
-                                      >
-                                        {e.status}
-                                      </Badge>
-                                    </td>
-                                  )}
-                                </tr>
-                              );
-                            })}
+                            {this.state.interviews &&
+                              this.state.interviews.map(e => {
+                                if (e.status == '1') {
+                                  e.status = 'Pending';
+                                }
+                                if (e.status == '2') {
+                                  e.status = 'Closed';
+                                }
+                                if (e.address == '2-1') {
+                                  e.address =
+                                    'Floor 2 - 453-455 Hoang Dieu Str';
+                                }
+                                if (e.address == '3-1') {
+                                  e.address =
+                                    'Floor 3 - 453-455 Hoang Dieu Str';
+                                }
+                                if (e.address == '4-1') {
+                                  e.address =
+                                    'Floor 4 - 453-455 Hoang Dieu Str';
+                                }
+                                if (e.address == '5-1') {
+                                  e.address =
+                                    'Floor 5 - 453-455 Hoang Dieu Str';
+                                }
+                                if (e.address == '2-2') {
+                                  e.address =
+                                    'Floor 2 - 117 Nguyen Huu Tho Str';
+                                }
+                                if (e.address == '3-2') {
+                                  e.address =
+                                    'Floor 3 - 117 Nguyen Huu Tho Str';
+                                }
+                                if (e.address == '4-2') {
+                                  e.address =
+                                    'Floor 4 - 117 Nguyen Huu Tho Str';
+                                }
+                                if (e.address == '5-2') {
+                                  e.address =
+                                    'Floor 5 - 117 Nguyen Huu Tho Str';
+                                }
+                                i++;
+                                let url = '/dashboard/candidate/' + e.id;
+                                return (
+                                  <tr
+                                    style={{ textAlign: 'center' }}
+                                    key={e.id}
+                                  >
+                                    <td className="title1">{i}</td>
+                                    <td className="title1">{e.name}</td>
+                                    <td className="title1">{e.address}</td>
+                                    <td className="title1">{e.timeStart}</td>
+                                    {e.status == 'Pending' ? (
+                                      <td className="title1 text-center">
+                                        <Badge
+                                          style={{
+                                            backgroundColor: '#6a82fb',
+                                            color: '#fff',
+                                            width: 80,
+                                            borderRadius: 4
+                                          }}
+                                          pill
+                                        >
+                                          {e.status}
+                                        </Badge>
+                                      </td>
+                                    ) : (
+                                      <td className="title1 text-center">
+                                        <Badge
+                                          style={{
+                                            backgroundColor: '#dd2c00',
+                                            color: '#fff',
+                                            width: 80,
+                                            borderRadius: 4
+                                          }}
+                                          pill
+                                        >
+                                          {e.status}
+                                        </Badge>
+                                      </td>
+                                    )}
+                                  </tr>
+                                );
+                              })}
                           </tbody>
                         </table>
                         <br />

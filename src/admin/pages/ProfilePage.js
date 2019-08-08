@@ -32,6 +32,7 @@ import './ProfilePage.css';
 import { Link, Redirect } from 'react-router-dom';
 import TabInformation from '../components/TabInformation';
 import { PulseLoader } from 'react-spinners';
+import axios from 'axios';
 
 /*-------Regex----------*/
 const fullNameRegex = /^[a-zA-Z\s]+$/;
@@ -76,7 +77,9 @@ export default class ProfilePage extends Component {
       errorData: '',
       errorPassword: '',
       showErrorProfileMessage: false,
-      showErrorPasswordMessage: false
+      showErrorPasswordMessage: false,
+      editImage: null,
+      url: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -88,6 +91,7 @@ export default class ProfilePage extends Component {
     this.handleErrorPasswordMessage = this.handleErrorPasswordMessage.bind(
       this
     );
+    this.removeDemoImg = this.removeDemoImg.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -119,7 +123,8 @@ export default class ProfilePage extends Component {
           editPhone: data.phone,
           editAddress: data.address,
           editImage: data.image,
-          loading: false
+          loading: false,
+          url: null
         });
       }, 500);
     }
@@ -131,6 +136,60 @@ export default class ProfilePage extends Component {
       });
     }
   }
+  updateImage = () => {
+    const { editImage } = this.state;
+    const formData = new FormData();
+    formData.append('image', editImage);
+    let configs = {
+      header: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json'
+      }
+    };
+
+    var url = 'https://api.enclavei3dev.tk/api/profile/avatar';
+
+    axios.defaults.headers.common = {
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    };
+    var urlHT = 'https://api.enclavei3dev.tk/api/profile/avatar';
+    axios
+      .post(urlHT, formData, {})
+      .then(res => {
+        if (res.status === 401) {
+          alert('Add Failed');
+        }
+        if (res.status === 422) {
+          this.toggleModalError();
+          const dataArray = Object.keys(res.data.errors).map(
+            i => res.data.errors[i]
+          );
+          this.setState({
+            errorData: dataArray
+          });
+        }
+
+        if (res.status === 200) {
+          this.toggleModalSuccess();
+          this.componentDidMount();
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  };
+
+  removeDemoImg = () => {
+    this.setState({ url: null, editImage: null });
+  };
+
+  handleChangeImage = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      var url = URL.createObjectURL(e.target.files[0]);
+      this.setState({ url: url, editImage: image });
+    }
+  };
 
   toggleModalSuccess() {
     this.setState(prevState => ({
@@ -456,7 +515,7 @@ export default class ProfilePage extends Component {
           className="card-header-custom"
           style={{ display: 'flex', justifyContent: 'space-between' }}
         >
-          User's Information
+          Profile
         </CardHeader>
 
         {this.state.loading ? (
@@ -481,15 +540,76 @@ export default class ProfilePage extends Component {
             <Container style={{ marginTop: '5%' }}>
               <Row>
                 <Col xs="4">
+                  {this.state.url ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end'
+                      }}
+                    >
+                      <Button
+                        style={{
+                          color: 'black',
+                          fontWeight: '20px',
+                          border: 'none',
+                          padding: '0px',
+                          background: 'white'
+                        }}
+                        onClick={() => this.removeDemoImg()}
+                      >
+                        X
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      <br />
+                    </div>
+                  )}
+
                   <div style={{ overflow: 'hidden' }}>
-                    <img
-                      className="avatar"
-                      src={
-                        'https://api.enclavei3dev.tk/upload/images/avatars/' +
-                        `${this.state.image}`
-                      }
-                      alt="Card image cap"
+                    {this.state.url ? (
+                      <img
+                        className="avatar"
+                        src={this.state.url}
+                        alt="Card image cap"
+                      />
+                    ) : (
+                      <img
+                        className="avatar"
+                        src={
+                          'https://api.enclavei3dev.tk/upload/images/avatars/' +
+                          `${this.state.image}`
+                        }
+                        alt="Card image cap"
+                      />
+                    )}
+                  </div>
+                  <br />
+                  <div style={{ display: 'flex' }}>
+                    <Input
+                      type="file"
+                      name="editImage"
+                      onChange={this.handleChangeImage}
+                      className="image-input-field"
                     />
+                    {this.state.url ? (
+                      <Button
+                        onClick={() => this.updateImage()}
+                        color="success"
+                        style={{ borderRadius: '0px' }}
+                      >
+                        Update
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => this.updateImage()}
+                        color="success"
+                        style={{ borderRadius: '0px' }}
+                        disabled
+                      >
+                        Upload
+                      </Button>
+                    )}
                   </div>
                 </Col>
                 <Col xs="auto" />
