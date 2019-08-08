@@ -364,12 +364,12 @@ export default class Homepage extends Component {
                       <div className="displayresponsive">
                         <div className="row" style={{marginLeft: 1, marginRight: 1}}>
                           
-                          <span className="ml-0  mb-2" style={{paddingLeft : 0}}>
+                          <span className="ml-0  " style={{paddingLeft : 0}}>
                         <h2 class="panel-title">
                           Job Opening
                         </h2>
                        </span>
-                        <span class="ml-0  mb-2 ml-auto showentries text-right">
+                        <span class="ml-0 ml-auto showentries text-right">
                           <label className="ml-auto">Show entries: &nbsp; </label>
                         <select class="selectshow ml-auto" type="select"
                         name="selectPerPage"
