@@ -4,10 +4,10 @@ import {
   CardBody,
   Button,
   Row,
+  Badge,
   Container,
   TabContent,
   TabPane,
-  Badge,
   Nav,
   NavItem,
   NavLink,
@@ -555,6 +555,7 @@ export default class JobDetail extends Component {
               }}
             >
               <Button
+              className = "btn-basic"
                 onClick={() => this.backToPreviousPage()}
                 color="secondary"
               >
