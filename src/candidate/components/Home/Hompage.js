@@ -15,6 +15,7 @@ export default class Homepage extends Component {
     super(props);
     this.state = {
       listjob: [],
+      listOther: [],
       currentPage: 0,
       activePage: 1,
       totalItems: 0,
@@ -37,6 +38,7 @@ export default class Homepage extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.addActiveClass = this.addActiveClass.bind(this);
     this.handleChangePerPage =this.handleChangePerPage.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
 
@@ -81,7 +83,7 @@ export default class Homepage extends Component {
       "location": "",
       "category": "Recruitment",
       "experience": "",
-      "orderby": "asc"
+      "orderby": "desc"
     }
     var  url = 'https://api.enclavei3dev.tk/api/article-web?page=' +activePage +
         '&perpage=' +
@@ -101,6 +103,34 @@ export default class Homepage extends Component {
       });
     }, 500);
   }
+  async componentWillMount() {
+   
+    let headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    }
+    let body = {
+      "keyword": "",
+      "position": "",
+      "location": "",
+      "category": "Others",
+      "experience": "",
+      "orderby": "asc"
+    }
+    var  url = 'https://api.enclavei3dev.tk/api/article-web';
+    const data = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body)
+    }).then(res => res.json());
+    setTimeout(() => {
+      this.setState({
+        listOther: data.data,
+      });
+      console.log(this.state.listOther)
+    }, 500);
+  }
+
   handleFilter(keyword, pageNumber) {
     const {perPage} = this.state;
     let headers = {
@@ -112,7 +142,7 @@ export default class Homepage extends Component {
       "position": keyword,
       "location": "",
       "experience": "",
-      "orderby": "asc",
+      "orderby": "desc",
       "category": "Recruitment",
     }
     var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber + '&perpage=' + perPage;
@@ -148,7 +178,7 @@ export default class Homepage extends Component {
       "location": location,
       "category": "Recruitment",
       "status": status,
-      "orderby": "asc"
+      "orderby": "desc"
     }
     var url = 'https://api.enclavei3dev.tk/api/article-web?page=' + pageNumber + '&perpage=' +
     perPage;
@@ -169,7 +199,12 @@ export default class Homepage extends Component {
       });
 
     });
+    
   }
+  handleKeyUp = event => {
+    if (event.keyCode === 13) return this.handleSubmit(event);
+  };
+
   handleChangePerPage = e => {
     const { keyword } = this.state;
     var perPage = 0;
@@ -210,8 +245,9 @@ export default class Homepage extends Component {
     })
   }
   render() {
-    const { activePage,listjob } = this.state;
+    const { activePage,listjob, listOther } = this.state;
     var i = (activePage-1)*10;
+    
     return (
       <section id="Home">
         <div className="site-wrap" >
@@ -249,22 +285,22 @@ export default class Homepage extends Component {
               <div class="row">
                 <aside class="col-sm-3 sidebar-nav career-sidebar">
                   <ul class="list-group-wrap">
-                    {/* <li id="view" class="list-group-block">
+                    
+                 
+
+                     <li id="view" class="list-group-block">
                       <p class="list-group-title">
                         Information
                       </p>
                       <ul class="list-group">
-                        <li class="list-group-item">
-                          <NavLink className="item" to={"#"}>Why join Enclave</NavLink>
+                       {(listOther.length > 0) ? listOther.map((list, index) => {
+                         if (index < 3)
+                         return <li class="list-group-item">
+                          <NavLink className="item-info" to={"/information/" + list.id}>{list.title}</NavLink>
                         </li>
-                        <li class="list-group-item">
-                          <NavLink className="item" to={"#"}>Working environment</NavLink>
-                        </li>
-                        <li class="list-group-item">
-                          <NavLink className="item" to={"#"}>Flat model</NavLink>
-                        </li>
+                       }): null}
                       </ul>
-                    </li> */}
+                    </li> 
                     <li>
                       <p class="list-group-title">
                         Job opening
@@ -298,7 +334,7 @@ export default class Homepage extends Component {
                           <div className="row mb-5 Searchtype">
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>Search</label>
-                              <input name="keyword" value={this.state.keyword} onChange={this.handleChange} type="text" className="form-control form-control-lg-2" ref="search" placeholder="keyword..." />
+                              <input name="keyword" value={this.state.keyword} onChange={this.handleChange} type="text" className="form-control form-control-lg-2" ref="search" placeholder="Keyword" />
                             </div>
                             <div className="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                               <label>Location</label>
@@ -325,12 +361,17 @@ export default class Homepage extends Component {
                         </form>
                       </div>
                       <div class="panel job-list-panel">
+                      <div className="displayresponsive">
+                        <div className="row" style={{marginLeft: 1, marginRight: 1}}>
+                          
+                          <span className="ml-0  mb-2" style={{paddingLeft : 0}}>
                         <h2 class="panel-title">
                           Job Opening
                         </h2>
-                        <div class="col-sm-4 ml-auto showentries">
-                          <label className="col-sm-8 ml-auto labelshow text-right">Show entries:</label>
-                        <select class="col-sm-4 ml-auto selectshow" type="select"
+                       </span>
+                        <span class="ml-0  mb-2 ml-auto showentries text-right">
+                          <label className="ml-auto">Show entries: &nbsp; </label>
+                        <select class="selectshow ml-auto" type="select"
                         name="selectPerPage"
                         id="exampleSelect"
                         value={this.state.selectPerPage}
@@ -340,6 +381,8 @@ export default class Homepage extends Component {
                         <option>50</option>
                         <option>100</option>
                         </select>
+                        </span>
+                        </div>
                         </div>
                         {/* <Input
                         type="select"
@@ -360,10 +403,10 @@ export default class Homepage extends Component {
                             <th>Day expired</th>
                           </thead>
                           <tbody class="transistion">
-                            {this.state.listjob.map((p, index) => {
+                            {listjob.map((p, index) => {
                               i++;
                               return <tr class="transfer">
-                                <td data-th="number">
+                                <td data-th="Index">
                                   <div>
                                     <p class="number-id">
                                       <p class="number-title">

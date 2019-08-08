@@ -164,6 +164,7 @@
 .rwd-table td div {
     display: table-cell;
 }
+
 .article-table {
   width: 100%;
   max-width: 100%;
@@ -271,6 +272,21 @@
 .showentries {
   padding-right: 0!important;
   padding-bottom: 10px;
+  padding-left: 0!important;
 }
-.list-group-title {
+.list-group-item .item {
+  text-decoration: none;
 }
+#Home .site-section > .container {
+  max-width: 1350px !important;
+
+}
+.list-group-wrap .list-group-item .item-info:hover {
+  border-color: green;
+  font-weight: bold !important;
+  border-bottom: #45b649;
+}
+.list-group-wrap .list-group-item .item-info {
+  font-weight: none !important;
+}
+
