@@ -138,3 +138,6 @@
   background-color: #45b649;
   color: white;
 }
+.image-fixed-info figure .modify-img {
+  height: 420px !important;
+}

@@ -145,7 +145,7 @@ export default class AddNewInterviewerPage extends Component {
       return array;
     });
     var arrayString = array.toString();
-    var url = 'https://api.enclavei3.tk/api/interviewer';
+    var url = 'https://api.enclavei3dev.tk/api/interviewer';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({

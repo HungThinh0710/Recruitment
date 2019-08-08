@@ -56,6 +56,7 @@ export default class Careers extends Component {
       title: '',
       position: '',
       amount: '',
+      image: '',
       publishedOn: '',
       deadline: '',
       experience: '',
@@ -138,7 +139,7 @@ onCopy = () => {
       "Content-Type": "application/json",
     }
     const { id } = this.props.match.params;
-    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
+    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
       headers: headers,
     }).then(response => response.json())
     await this.setState({
@@ -154,8 +155,8 @@ onCopy = () => {
       addressed: data.job.address,
       content: data.content,
       IDapply: data.job.id,
+      image: data.image
     });
-    console.log(this.state.jobID)
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
     $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
   }
@@ -179,7 +180,7 @@ onCopy = () => {
       "experience": "",
       "orderby": "desc"
     }
-    var url = 'https://api.enclavei3.tk/api/article-web';
+    var url = 'https://api.enclavei3dev.tk/api/article-web';
     const data = await fetch(url, {
       method: 'POST',
       headers: headers,
@@ -189,7 +190,6 @@ onCopy = () => {
       this.setState({
         listRecommend: data.data,
       });
-      console.log(this.state.listOther)
     }, 500);
   }
   handleSubmit() {
@@ -206,7 +206,6 @@ onCopy = () => {
       return array;
     });
     var arrayString = array.toString();
-    console.log(arrayString);
     let configs = { header: { 'Content-Type': 'multipart/form-data' } }
     const formData = new FormData();
     formData.set('jobId', this.state.IDapply)
@@ -217,7 +216,7 @@ onCopy = () => {
     formData.set('description', this.state.description);
     formData.set('technicalSkill', arrayString);
     formData.append('file', this.state.selectedFile);
-    var url = 'https://api.enclavei3.tk/api/candidate';
+    var url = 'https://api.enclavei3dev.tk/api/candidate';
     const data = axios.post(url, formData, {}, configs
     )
       .then(res => {
@@ -266,11 +265,11 @@ onCopy = () => {
     switch (e.target.name) {
       case 'fullName':
         formErrors.fullName =
-          value.length < 3 ? 'Minimum 3 characaters required' : '';
+          value.length < 1 ? 'Full name is required' : '';
         break;
       case 'addressed':
         formErrors.addressed =
-          value.length < 3 ? 'Minimum 3 characaters required' : '';
+          value.length < 1 ? 'Address is required' : '';
         break;
       case 'email':
         formErrors.email = emailRegex.test(value)
@@ -482,7 +481,7 @@ onCopy = () => {
                           <Form encType="multipart/form-data" onSubmit={this.handleSubmit} noValidate>
                             <FormGroup>
                               <div className="fullName">
-                                <label class="col-form-label">Full Name<span style={{ color: 'red' }}>*</span></label>
+                                <label class="col-form-label">Full name<span style={{ color: 'red' }}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.fullName.length > 0 ? 'error' : null}
@@ -539,7 +538,7 @@ onCopy = () => {
                                   className={formErrors.addressed.length > 0 ? 'error' : null}
                                   placeholder="Address"
                                   type="text"
-                                  name="address"
+                                  name="addressed"
                                   noValidate
                                   onChange={this.handleChange}
                                 />
@@ -651,7 +650,7 @@ onCopy = () => {
                       <div className="row text-center">
                         <div className="col-4">
                           <div class="fb-share-button"
-                            data-href={"https://enclavei3.tk/article/" + id}
+                            data-href={"https://enclavei3dev.tk/article/" + id}
                             data-layout="button_count"
                             data-size="large">
                           </div>
@@ -659,12 +658,12 @@ onCopy = () => {
                         <p></p>
                         <div className="col-4">
                           <a class="twitter-share-button ml-auto"
-                            href={"https://enclavei3.tk/article/" + id}
+                            href={"https://enclavei3dev.tk/article/" + id}
                             data-size="large">
                             Tweet</a>
                         </div>
                         <div className="col-4 modify-copylink">
-                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3.tk/information/" +id}>
+                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
                           <button>Copy link</button>
                         </CopyToClipboard>
                       </div>
@@ -678,7 +677,9 @@ onCopy = () => {
                 </div>
                 <div className="col-lg-8">
                   <div className="mb-5">
-                    <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
+                    {/*src={"https://api.enclavei3dev.tk/upload/images/articles/" + this.state.image}*/}
+                    <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" 
+                     alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
@@ -713,7 +714,7 @@ onCopy = () => {
                       <div className="row text-center">
                         <div className="col-4">
                           <div class="fb-share-button"
-                            data-href={"https://enclavei3.tk/article/" + id}
+                            data-href={"https://enclavei3dev.tk/article/" + id}
                             data-layout="button_count"
                             data-size="large">
                           </div>
@@ -721,12 +722,12 @@ onCopy = () => {
                         <p></p>
                         <div className="col-4">
                           <a class="twitter-share-button ml-auto"
-                            href={"https://enclavei3.tk/article/" + id}
+                            href={"https://enclavei3dev.tk/article/" + id}
                             data-size="large">
                             Tweet</a>
                         </div>
                         <div className="col-4 modify-copylink">
-                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3.tk/information/" +id}>
+                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
                           <button>Copy link</button>
                         </CopyToClipboard>
                       </div>
@@ -768,8 +769,6 @@ onCopy = () => {
                     <div className="col-lg-6 panel-article ml-auto">
                       <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
                         <tbody>
-
-
                           {listRecommend.map((list, index) => {
                             if (index > 2 && index < 6)
                               return <tr className="border-title">
@@ -785,13 +784,10 @@ onCopy = () => {
                                 </td>
                               </tr>
                           })}
-
-
                         </tbody>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>

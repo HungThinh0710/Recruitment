@@ -37,7 +37,7 @@ export default class Careers extends Component {
       }
     } = this.props;
 
-    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
+    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
       headers: headers,
     }).then(response => response.json())
     await this.setState({
@@ -63,7 +63,7 @@ export default class Careers extends Component {
       "experience": "",
       "orderby": "asc"
     }
-    var url = 'https://api.enclavei3.tk/api/article-web';
+    var url = 'https://api.enclavei3dev.tk/api/article-web';
     const data = await fetch(url, {
       method: 'POST',
       headers: headers,
@@ -146,13 +146,16 @@ export default class Careers extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-lg-8">
+                <div className="col-lg-8 image-fixed-info" style={{ textAlign: 'justify'}}>
                   <div className="mb-5">
                     <figure className="mb-5"><img src="/candidate/images/sq_img_1.jpg" alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
                 <div className="col-lg-4">
+                <h2 class="panel-title">
+                      More information
+                        </h2>
                   <div className="show-information">
 
                     {/* <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
@@ -178,13 +181,10 @@ export default class Careers extends Component {
                             year="numeric" />
                         </IntlProvider></li>
                       </ul> */}
-                    <h2 class="panel-title">
-                      More information
-                        </h2>
                     {listOther.map((list, index) => {
-                      if (index < 6)
-                        return <li class="list-group-item" >
-                          <Link className="item-info" to={"/information/" + list.id} >{list.title}</Link>
+                      if (index < 5)
+                      return <li class="list-group-item" >
+                         {(list.id !== this.state.listid) ? <Link className="item-info" to={"/information/" + list.id} >{list.title}</Link> : null}
                         </li>
                     })}
                     <h2 class="panel-title sharing-top">
@@ -194,7 +194,7 @@ export default class Careers extends Component {
                       <div className="row text-center">
                         <div className="col-4">
                           <div class="fb-share-button"
-                            data-href={"https://enclavei3.tk/information/" + id}
+                            data-href={"https://enclavei3dev.tk/information/" + id}
                             data-layout="button_count"
                             data-size="large">
                           </div>
@@ -202,13 +202,13 @@ export default class Careers extends Component {
                         <p></p>
                         <div className="col-4">
                           <a class="twitter-share-button ml-auto"
-                            href={"https://enclavei3.tk/information/" + id}
+                            href={"https://enclavei3dev.tk/information/" + id}
                             data-size="large">
                             Tweet</a>
                         </div>
                       
                       <div className="col-4 modify-copylink">
-                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3.tk/information/" +id}>
+                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
                           <button>Copy link</button>
                         </CopyToClipboard>
                       </div>

@@ -74,7 +74,7 @@ export default class ModalEditUser extends Component {
       selectedStreetOption
     } = this.state;
     const { id, dataInterviewers, dataCandidates } = this.props;
-    var url1 = 'https://api.enclavei3.tk/api/interview/' + id;
+    var url1 = 'https://api.enclavei3dev.tk/api/interview/' + id;
 
     const data1 = await fetch(url1, {
       headers: {
@@ -412,7 +412,7 @@ export default class ModalEditUser extends Component {
           };
         }
         const { id } = this.props;
-        var url = 'https://api.enclavei3.tk/api/interview/' + id;
+        var url = 'https://api.enclavei3dev.tk/api/interview/' + id;
         fetch(url, {
           method: 'PUT',
           body: JSON.stringify(body),

@@ -64,11 +64,11 @@ export default class UsersPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3.tk/api/list-candidate';
+      url = 'https://api.enclavei3dev.tk/api/list-candidate';
     } else {
       body = '';
       url =
-        'https://api.enclavei3.tk/api/list-candidate?page=' +
+        'https://api.enclavei3dev.tk/api/list-candidate?page=' +
         activePage +
         '&perpage=' +
         perPage;
@@ -120,11 +120,11 @@ export default class UsersPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3.tk/api/list-candidate';
+      url = 'https://api.enclavei3dev.tk/api/list-candidate';
     } else {
       body = '';
       url =
-        'https://api.enclavei3.tk/api/list-candidate?page=' +
+        'https://api.enclavei3dev.tk/api/list-candidate?page=' +
         pageNumber +
         '&perpage=' +
         perPage;
@@ -154,7 +154,7 @@ export default class UsersPage extends Component {
     const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3.tk/api/candidate';
+    var url = 'https://api.enclavei3dev.tk/api/candidate';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -206,7 +206,7 @@ export default class UsersPage extends Component {
   }
   removeManyItems() {
     const { listDeleteId, perPage, keyword } = this.state;
-    var url = 'https://api.enclavei3.tk/api/candidate';
+    var url = 'https://api.enclavei3dev.tk/api/candidate';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({

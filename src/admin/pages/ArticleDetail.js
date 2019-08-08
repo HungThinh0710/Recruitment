@@ -85,11 +85,11 @@ export default class ArticleDetail extends Component {
     var { optionsJob, optionsCategory, optionsFormat, isDisabled } = this.state;
     var status = '';
     var jobName = '';
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
 
-    var url2 = 'https://api.enclavei3.tk/api/list-job';
-    var url3 = 'https://api.enclavei3.tk/api/category?page=1';
-    var url4 = 'https://api.enclavei3.tk/api/format-article';
+    var url2 = 'https://api.enclavei3dev.tk/api/list-job';
+    var url3 = 'https://api.enclavei3dev.tk/api/category?page=1';
+    var url4 = 'https://api.enclavei3dev.tk/api/format-article';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -282,7 +282,7 @@ export default class ArticleDetail extends Component {
           jobId: jobId,
           isPublic: status
         });
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -443,7 +443,7 @@ export default class ArticleDetail extends Component {
           jobId: jobId,
           isPublic: editStatus
         });
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),

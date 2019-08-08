@@ -80,8 +80,8 @@ export default class AddNewInterviewPage extends Component {
   }
   async componentDidMount() {
     var { optionInterviewer, optionCandidate } = this.state;
-    var url1 = 'https://api.enclavei3.tk/api/list-interviewer';
-    var url2 = 'https://api.enclavei3.tk/api/list-candidate';
+    var url1 = 'https://api.enclavei3dev.tk/api/list-interviewer';
+    var url2 = 'https://api.enclavei3dev.tk/api/list-candidate';
     const data1 = await fetch(url1, {
       method: 'POST',
       body: JSON.stringify({
@@ -210,7 +210,7 @@ export default class AddNewInterviewPage extends Component {
   }
 
   async fetchInterviewer(id) {
-    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -222,7 +222,7 @@ export default class AddNewInterviewPage extends Component {
   }
 
   async fetchCandidate(id) {
-    var url = 'https://api.enclavei3.tk/api/candidate/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/candidate/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -364,7 +364,7 @@ export default class AddNewInterviewPage extends Component {
             interviewerId: arrayInterviewer
           };
         }
-        var url = 'https://api.enclavei3.tk/api/interview';
+        var url = 'https://api.enclavei3dev.tk/api/interview';
         fetch(url, {
           method: 'POST',
           body: JSON.stringify(body),

@@ -56,7 +56,7 @@ export default class ModalEditInterview extends Component {
     const { id } = this.props;
     const { dataTechnicalSkills } = this.state;
     var j = -1;
-    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ export default class ModalEditInterview extends Component {
       return array;
     });
     var arrayString = array.toString();
-    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
