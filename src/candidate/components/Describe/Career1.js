@@ -75,6 +75,7 @@ export default class Careers extends Component {
           isDeleted={true}
         />
       ],
+      currentid: '',
       listChecked: [],
       errorData: '',
       urlInterviewer: '',
@@ -155,7 +156,8 @@ onCopy = () => {
       address: data.job.address,
       content: data.content,
       IDapply: data.job.id,
-      image: data.image
+      image: data.image,
+      currentid: id,
     });
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
     $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
@@ -734,7 +736,7 @@ onCopy = () => {
                       <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
                         <tbody>
                           {listRecommend.map((list, index) => {
-                            if (index < 3)
+                            if (index < 4 && !(this.state.currentid == list.id))
                               return <tr className="border-title">
                                 <td class="list-group-item article-recommend" style={{paddingBottom: 3}}>
                                   <Link className="item-info" style={{color: '#212629'}} to={"/article/" + list.id} >{list.title}</Link>
@@ -755,7 +757,7 @@ onCopy = () => {
                       <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
                         <tbody>
                           {listRecommend.map((list, index) => {
-                            if (index > 2 && index < 6)
+                            if (index > 2 && index < 6 && !(this.state.currentid == list.id))
                               return <tr className="border-title">
                                 <td class="list-group-item article-recommend article-recommend-2" style={{paddingBottom: 3}}>
                                   <Link className="item-info" style={{color: '#212629'}} to={"/article/" + list.id} >{list.title}</Link>

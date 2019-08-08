@@ -127,7 +127,6 @@ export default class Homepage extends Component {
       this.setState({
         listOther: data.data,
       });
-      console.log(this.state.listOther)
     }, 500);
   }
 
@@ -188,7 +187,6 @@ export default class Homepage extends Component {
       body: JSON.stringify(body)
     }).then(res => {
       res.json().then(data => {
-        console.log(data)
         this.setState({
           currentPage: data.currentPage,
           totalItems: data.total,
