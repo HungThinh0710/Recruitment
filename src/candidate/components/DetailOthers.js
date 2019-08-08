@@ -58,17 +58,12 @@ export default class Careers extends Component {
     let body = {
       "count": ""
     }
-<<<<<<< HEAD
-    const {id} = this.props.match.params;
-    var url = 'https://api.enclavei3dev.tk/api/article-web';
-=======
     const {
       match: {
         params: { id }
       }
     } = this.props;
     var url = 'https://api.enclavei3.tk/api/article-web';
->>>>>>> e8b51774e5d246dd0b0ba6ba000c5a7bb58d6bf8
     const data = await fetch(url, {
       method: 'POST',
       headers: headers,
@@ -180,11 +175,7 @@ export default class Careers extends Component {
               <div className="row">
                 <div className="col-lg-8 image-fixed-info" style={{ textAlign: 'justify' }}>
                   <div className="mb-5">
-                    
-                    <figure className="mb-5"><img src={"https://api.enclavei3dev.tk/upload/images/articles/" + this.state.image} alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
-                   
-                  
-                    
+                    <figure className="mb-5"><img src={"https://api.enclavei3.tk/upload/images/articles/" + this.state.image} alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
