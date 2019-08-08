@@ -647,7 +647,7 @@ export default class ArticleDetail extends Component {
                   />
                 </Row>
               )}
-              ``
+              
               <br />
               <br />
               <Row style={{ justifyContent: 'center' }}>
