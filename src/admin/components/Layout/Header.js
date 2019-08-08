@@ -69,6 +69,23 @@ class Header extends React.Component {
     });
   }
 
+  async componentDidUpdate() {
+    //const {firstName, lastName, email} = this.state;
+    var url = 'https://api.enclavei3dev.tk/api/current-profile';
+    const data = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    this.setState({
+      name: data.name,
+      email: data.email,
+      image: data.image
+    });
+  }
+
   toggleNotificationPopover = () => {
     this.setState({
       isOpenNotificationPopover: !this.state.isOpenNotificationPopover
@@ -150,6 +167,10 @@ class Header extends React.Component {
           <NavItem>
             <NavLink id="Popover2">
               <Avatar
+                src={
+                  'https://api.enclavei3dev.tk/upload/images/avatars/' +
+                  `${this.state.image}`
+                }
                 onClick={this.toggleUserCardPopover}
                 className="can-click"
               />
@@ -166,6 +187,10 @@ class Header extends React.Component {
                 <UserCard
                   title={this.state.name}
                   subtitle={this.state.email}
+                  avatar={
+                    'https://api.enclavei3dev.tk/upload/images/avatars/' +
+                    `${this.state.image}`
+                  }
                   // text="Last updated 3 mins ago"
                   className="border-light"
                 >

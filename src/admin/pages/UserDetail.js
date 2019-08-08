@@ -27,6 +27,8 @@ import {
   ModalFooter
 } from 'reactstrap';
 import classnames from 'classnames';
+import axios from 'axios';
+
 import TabInformation from '../components/TabInformation';
 import { MdSettings, MdMap, MdBook, MdCancel } from 'react-icons/md';
 import { NumberWidget } from '../components/Widget';
@@ -92,7 +94,9 @@ export default class UserDetail extends Component {
       errorData: '',
       showErrorMessage: false,
       errorRoleMessage: '',
-      checkRole: false
+      checkRole: false,
+      editImage: null,
+      url: null
     };
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -101,6 +105,7 @@ export default class UserDetail extends Component {
     this.handleCheck = this.handleCheck.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
+    this.removeDemoImg = this.removeDemoImg.bind(this);
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -127,7 +132,6 @@ export default class UserDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      
       if (res.status === 403) {
         check = false;
         this.setState({
@@ -138,8 +142,7 @@ export default class UserDetail extends Component {
       if (res.status === 200) {
         res.json().then(response => {
           var data = response;
-          console.log(data);
-          
+
           check = true;
           this.setState({
             name: data.name,
@@ -212,12 +215,24 @@ export default class UserDetail extends Component {
               rows: data2
             },
             loading: false,
-            editRoles: editRoles
+            editRoles: editRoles,
+            url: null
           });
         }, 500);
       }
     }
   }
+  removeDemoImg = () => {
+    this.setState({ url: null, editImage: null });
+  };
+
+  handleChangeImage = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      var url = URL.createObjectURL(e.target.files[0]);
+      this.setState({ url: url, editImage: image });
+    }
+  };
 
   handleCheck(id, editRoles) {
     editRoles.push(id);
@@ -255,6 +270,49 @@ export default class UserDetail extends Component {
       modalError: !prevState.modalError
     }));
   }
+
+  updateImage = () => {
+    const { editImage } = this.state;
+    const formData = new FormData();
+    formData.append('image', editImage);
+    let configs = {
+      header: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json'
+      }
+    };
+
+    var url = 'https://api.enclavei3dev.tk/api/profile/avatar';
+
+    axios.defaults.headers.common = {
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    };
+    var urlHT = 'https://api.enclavei3dev.tk/api/profile/avatar';
+    axios
+      .post(urlHT, formData, {})
+      .then(res => {
+        if (res.status === 401) {
+          alert('Add Failed');
+        }
+        if (res.status === 422) {
+          this.toggleModalError();
+          const dataArray = Object.keys(res.data.errors).map(
+            i => res.data.errors[i]
+          );
+          this.setState({
+            errorData: dataArray
+          });
+        }
+
+        if (res.status === 200) {
+          this.toggleModalSuccess();
+          this.componentDidMount();
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  };
 
   handleChange(event) {
     var { formError } = this.state;
@@ -328,7 +386,9 @@ export default class UserDetail extends Component {
       }
       return array2;
     });
+
     var url = 'https://api.enclavei3dev.tk/api/user/' + id;
+
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -496,16 +556,82 @@ export default class UserDetail extends Component {
                 <Container style={{ marginTop: '5%' }}>
                   <Row>
                     <Col xs="4">
-                      <div style= {{overflow: 'hidden'}}> 
-                        <img
-                        className="avatar"
-                        src={'https://api.enclavei3dev.tk/upload/images/avatars/'+ `${this.state.image}`}
-                        alt="Card image cap"
-                      /></div>
-                     
+                      {this.state.url ? (
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end'
+                          }}
+                        >
+                          <Button
+                            style={{
+                              color: 'black',
+                              fontWeight: '20px',
+                              border: 'none',
+                              padding: '0px',
+                              background: 'white'
+                            }}
+                            onClick={() => this.removeDemoImg()}
+                          >
+                            X
+                          </Button>
+                        </div>
+                      ) : (
+                        <div>
+                          <br />
+                        </div>
+                      )}
+
+                      <div style={{ overflow: 'hidden' }}>
+                        {this.state.url ? (
+                          <img
+                            className="avatar"
+                            src={this.state.url}
+                            alt="Card image cap"
+                          />
+                        ) : (
+                          <img
+                            className="avatar"
+                            src={
+                              'https://api.enclavei3dev.tk/upload/images/avatars/' +
+                              `${this.state.image}`
+                            }
+                            alt="Card image cap"
+                          />
+                        )}
+                      </div>
+                      <br />
+                      <div style={{ display: 'flex' }}>
+                        <Input
+                          type="file"
+                          name="editImage"
+                          onChange={this.handleChangeImage}
+                          className="image-input-field"
+                        />
+                        {this.state.url ? (
+                          <Button
+                            onClick={() => this.updateImage()}
+                            color="success"
+                            style={{ borderRadius: '0px' }}
+                          >
+                            Update
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => this.updateImage()}
+                            color="success"
+                            style={{ borderRadius: '0px' }}
+                            disabled
+                          >
+                            Upload
+                          </Button>
+                        )}
+                      </div>
                     </Col>
                     <Col xs="auto" />
                     <Col xs="6">
+                      <br />
+                      <br />
                       <TabInformation
                         name={name}
                         fullName={fullName}
@@ -513,10 +639,14 @@ export default class UserDetail extends Component {
                         email={email}
                         address={address}
                       />
+                      <br />
+
+                      {/* <Label className="title-input" for="Content">
+                                    Image
+                                  </Label> */}
                     </Col>
                   </Row>
                   <br />
-                  <hr />
 
                   <br />
                   <br />
@@ -532,14 +662,19 @@ export default class UserDetail extends Component {
                     </NavLink>
                   </NavItem>
                   */}
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ tabactive: this.state.activeTab === '2' })}
-                      onClick={() => { this.toggle('2'); }}
-                    ><MdMap style={{marginRight:'5px'}}/>
-                      Articles
-                    </NavLink>
-                  </NavItem> 
+                        <NavItem>
+                          <NavLink
+                            className={classnames({
+                              tabactive: this.state.activeTab === '2'
+                            })}
+                            onClick={() => {
+                              this.toggle('2');
+                            }}
+                          >
+                            <MdBook style={{ marginRight: '5px' }} />
+                            Articles
+                          </NavLink>
+                        </NavItem>
                         <NavItem>
                           <NavLink
                             className={classnames({
@@ -559,136 +694,71 @@ export default class UserDetail extends Component {
                   <br />
                   <br />
                   <TabContent activeTab={this.state.activeTab}>
-                    {/* <TabPane tabId="1">
-                      <Row>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240/paris" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240/brazil" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                    </Row>
-                  </TabPane>
-                  <TabPane tabId="2">
-                  <Row>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/dog" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+                    <TabPane tabId="2">
+                      <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                        <div className="table-test">
+                          <table style={{ width: '100%' }}>
+                            <thead>
+                              <tr
+                                style={{
+                                  background:
+                                    '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                  color: 'white'
+                                }}
+                              >
+                                <th className="title1">#</th>
+                                <th className="title1">Title</th>
+                                <th className="title1">Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {this.state.articles.map(e => {
+                                i++;
+                                return (
+                                  <tr
+                                    style={{ textAlign: 'center' }}
+                                    key={e.id}
+                                  >
+                                    <td className="title1">{i}</td>
+                                    <td className="title1">{e.title}</td>
+                                    {e.isPublic === 1 ? (
+                                      <td className="title1 text-center">
+                                        <Badge
+                                          style={{
+                                            backgroundColor: '#6a82fb',
+                                            color: '#fff',
+                                            width: 80,
+                                            borderRadius: 4
+                                          }}
+                                          pill
+                                        >
+                                          Published
+                                        </Badge>
+                                      </td>
+                                    ) : (
+                                      <td className="title1 text-center">
+                                        <Badge
+                                          style={{
+                                            backgroundColor: '#dd2c00',
+                                            color: '#fff',
+                                            width: 80,
+                                            borderRadius: 4
+                                          }}
+                                          pill
+                                        >
+                                          Closed
+                                        </Badge>
+                                      </td>
+                                    )}
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                          <br />
+                        </div>
                       </CardBody>
-                    </Card>
-                    </Col>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/cat" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/rio" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                  </Row>
-                  </TabPane> */}
-                  <TabPane tabId="2">
-                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
-                      <div className="table-test">
-                        <table style={{ width: '100%' }}>
-                          <thead>
-                            <tr
-                              style={{
-                                background:
-                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                color: 'white'
-                              }}
-                            >
-                              <th className="title1">#</th>
-                              <th className="title1">Title</th>
-                              <th className="title1">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.state.articles.map(e => {
-                              i++;
-                              return (
-                                <tr style={{ textAlign: 'center' }} key={e.id}>
-                                  <td className="title1">{i}</td>
-                                  <td className="title1">{e.title}</td>
-                                  {e.isPublic === 1 ? (
-                                    <td className="title1 text-center">
-                                      <Badge
-                                        style={{
-                                          backgroundColor: '#6a82fb',
-                                          color: '#fff',
-                                          width: 80,
-                                          borderRadius:4,
-                                        }}
-                                        pill
-                                      >
-                                        Published
-                                      </Badge>
-                                    </td>
-                                  ) : (
-                                    <td className="title1 text-center">
-                                      <Badge
-                                        style={{
-                                          backgroundColor: '#dd2c00',
-                                          color: '#fff',
-                                          width: 80,
-                                          borderRadius:4,
-                                        }}
-                                        pill
-                                      >
-                                        Closed
-                                      </Badge>
-                                    </td>
-                                  )}
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                        <br />
-                      </div>
-                    </CardBody>
-                  </TabPane>
+                    </TabPane>
                     <TabPane tabId="3">
                       <Row>
                         <Col>
@@ -696,7 +766,17 @@ export default class UserDetail extends Component {
                             <CardBody>
                               <Form onSubmit={this.handleSubmit}>
                                 <FormGroup>
-                                  <Label for="Fullname">Full Name</Label>
+                                  <h4 style={{ fontWeight: 'bold' }}>
+                                    Profile
+                                  </h4>
+                                </FormGroup>
+                                <FormGroup>
+                                  <Label
+                                    for="Fullname"
+                                    style={{ fontWeight: 'bold' }}
+                                  >
+                                    Full Name
+                                  </Label>
                                   <Input
                                     type="text"
                                     name="editFullName"
@@ -711,7 +791,12 @@ export default class UserDetail extends Component {
                                     )}
                                 </FormGroup>
                                 <FormGroup>
-                                  <Label for="Email">Email</Label>
+                                  <Label
+                                    for="Email"
+                                    style={{ fontWeight: 'bold' }}
+                                  >
+                                    Email
+                                  </Label>
                                   <Input
                                     type="email"
                                     name="editEmail"
@@ -726,7 +811,12 @@ export default class UserDetail extends Component {
                                     )}
                                 </FormGroup>
                                 <FormGroup>
-                                  <Label for="Phone">Phone</Label>
+                                  <Label
+                                    for="Phone"
+                                    style={{ fontWeight: 'bold' }}
+                                  >
+                                    Phone
+                                  </Label>
                                   <Input
                                     type="text"
                                     name="editPhone"
@@ -741,7 +831,12 @@ export default class UserDetail extends Component {
                                     )}
                                 </FormGroup>
                                 <FormGroup>
-                                  <Label for="Fullname">Address</Label>
+                                  <Label
+                                    for="Fullname"
+                                    style={{ fontWeight: 'bold' }}
+                                  >
+                                    Address
+                                  </Label>
                                   <Input
                                     type="text"
                                     name="editAddress"
@@ -749,6 +844,7 @@ export default class UserDetail extends Component {
                                     onChange={this.handleChange}
                                   />
                                 </FormGroup>
+
                                 <FormGroup>
                                   <div
                                     style={{
@@ -785,6 +881,9 @@ export default class UserDetail extends Component {
                         <Col>
                           <Card>
                             <CardBody>
+                              <FormGroup>
+                                <h4 style={{ fontWeight: 'bold' }}>Role</h4>
+                              </FormGroup>
                               <MDBDataTable
                                 striped
                                 bordered

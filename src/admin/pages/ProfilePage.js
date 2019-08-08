@@ -6,7 +6,7 @@ import {
   CardSubtitle,
   CardImg,
   Button,
-  CardText,
+  Badge,
   Row,
   Col,
   Container,
@@ -42,7 +42,8 @@ export default class ProfilePage extends Component {
     super(props);
     this.state = {
       // activeTab: '1',
-      activeTab: '3',
+      activeTab: '1',
+      articles: '',
       name: '',
       fullName: '',
       email: '',
@@ -68,6 +69,7 @@ export default class ProfilePage extends Component {
         password: 'Password is required',
         password_confirmation: 'Confirm password is required'
       },
+
       modalError: false,
       modalErrorPassword: false,
       modalSuccess: false,
@@ -107,6 +109,7 @@ export default class ProfilePage extends Component {
         this.setState({
           name: data.name,
           fullName: data.fullname,
+          articles: data.articles,
           email: data.email,
           phone: data.phone,
           address: data.address,
@@ -478,11 +481,16 @@ export default class ProfilePage extends Component {
             <Container style={{ marginTop: '5%' }}>
               <Row>
                 <Col xs="4">
-                  <img
-                    className="avatar"
-                    src="/static/media/100_3.6e25d86d.jpg"
-                    alt="Card image cap"
-                  />
+                  <div style={{ overflow: 'hidden' }}>
+                    <img
+                      className="avatar"
+                      src={
+                        'https://api.enclavei3dev.tk/upload/images/avatars/' +
+                        `${this.state.image}`
+                      }
+                      alt="Card image cap"
+                    />
+                  </div>
                 </Col>
                 <Col xs="auto" />
                 <Col xs="6">
@@ -496,38 +504,33 @@ export default class ProfilePage extends Component {
                 </Col>
               </Row>
               <br />
-              <hr />
 
               <br />
               <br />
               <Row>
                 <Col>
                   <Nav tabs>
-                    {/* <NavItem>
-                    <NavLink
-                      className={classnames({ tabactive: this.state.activeTab === '1' })}
-                      onClick={() => { this.toggle('1'); }}
-                    >
-                    <MdBook style={{marginRight:'5px'}}/>
-                      Articles
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ tabactive: this.state.activeTab === '2' })}
-                      onClick={() => { this.toggle('2'); }}
-                    >
-                      <MdMap style={{marginRight:'5px'}}/>
-                      Interviews
-                    </NavLink>
-                  </NavItem> */}
                     <NavItem>
                       <NavLink
                         className={classnames({
-                          tabactive: this.state.activeTab === '3'
+                          tabactive: this.state.activeTab === '1'
                         })}
                         onClick={() => {
-                          this.toggle('3');
+                          this.toggle('1');
+                        }}
+                      >
+                        <MdBook style={{ marginRight: '5px' }} />
+                        Articles
+                      </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
+                          tabactive: this.state.activeTab === '2'
+                        })}
+                        onClick={() => {
+                          this.toggle('2');
                         }}
                       >
                         <MdSettings style={{ marginRight: '5px' }} />
@@ -540,85 +543,84 @@ export default class ProfilePage extends Component {
               <br />
               <br />
               <TabContent activeTab={this.state.activeTab}>
-                {/* <TabPane tabId="1">
-                      <Row>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240/paris" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                      <Col>
-                      <Card>
-                        <CardImg top width="100%" src="https://loremflickr.com/320/240/brazil" alt="Card image cap" />
-                        <CardBody>
-                          <CardTitle>Card title</CardTitle>
-                          <CardSubtitle>Card subtitle</CardSubtitle>
-                          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        </CardBody>
-                      </Card>
-                      </Col>
-                    </Row>
-                  </TabPane>
-                  <TabPane tabId="2">
-                  <Row>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/dog" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/cat" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                    <Col>
-                    <Card>
-                      <CardImg top width="100%" src="https://loremflickr.com/320/240/rio" alt="Card image cap" />
-                      <CardBody>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                  </Row>
-                  </TabPane> */}
-                <TabPane tabId="3">
+                <TabPane tabId="1">
+                  <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <div className="table-test">
+                      <table style={{ width: '100%' }}>
+                        <thead>
+                          <tr
+                            style={{
+                              background:
+                                '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                              color: 'white'
+                            }}
+                          >
+                            <th className="title1">#</th>
+                            <th className="title1">Title</th>
+                            <th className="title1">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.state.articles.map(e => {
+                            i++;
+                            return (
+                              <tr style={{ textAlign: 'center' }} key={e.id}>
+                                <td className="title1">{i}</td>
+                                <td className="title1">{e.title}</td>
+                                {e.isPublic === 1 ? (
+                                  <td className="title1 text-center">
+                                    <Badge
+                                      style={{
+                                        backgroundColor: '#6a82fb',
+                                        color: '#fff',
+                                        width: 80,
+                                        borderRadius: 4
+                                      }}
+                                      pill
+                                    >
+                                      Published
+                                    </Badge>
+                                  </td>
+                                ) : (
+                                  <td className="title1 text-center">
+                                    <Badge
+                                      style={{
+                                        backgroundColor: '#dd2c00',
+                                        color: '#fff',
+                                        width: 80,
+                                        borderRadius: 4
+                                      }}
+                                      pill
+                                    >
+                                      Closed
+                                    </Badge>
+                                  </td>
+                                )}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                      <br />
+                    </div>
+                  </CardBody>
+                </TabPane>
+                <TabPane tabId="2">
                   <Row>
                     <Col>
                       <Card>
                         <CardBody>
                           <Form onSubmit={this.handleChangeProfile}>
                             <FormGroup>
-                              <h4>Profile</h4>
+                              <h4 style={{ fontWeight: 'bold' }}>Profile</h4>
                             </FormGroup>
                             <FormGroup>
-                              <Label for="Fullname">Fullname</Label>
+                              <Label
+                                style={{ fontWeight: 'bold' }}
+                                for="Fullname"
+                              >
+                                Fullname
+                              </Label>
                               <Input
                                 type="text"
                                 name="editFullName"
@@ -633,7 +635,9 @@ export default class ProfilePage extends Component {
                                 )}
                             </FormGroup>
                             <FormGroup>
-                              <Label for="Email">Email</Label>
+                              <Label style={{ fontWeight: 'bold' }} for="Email">
+                                Email
+                              </Label>
                               <Input
                                 type="email"
                                 name="editEmail"
@@ -648,7 +652,9 @@ export default class ProfilePage extends Component {
                                 )}
                             </FormGroup>
                             <FormGroup>
-                              <Label for="Phone">Phone</Label>
+                              <Label for="Phone" style={{ fontWeight: 'bold' }}>
+                                Phone
+                              </Label>
                               <Input
                                 type="text"
                                 name="editPhone"
@@ -663,7 +669,12 @@ export default class ProfilePage extends Component {
                                 )}
                             </FormGroup>
                             <FormGroup>
-                              <Label for="Address">Address</Label>
+                              <Label
+                                for="Address"
+                                style={{ fontWeight: 'bold' }}
+                              >
+                                Address
+                              </Label>
                               <Input
                                 type="text"
                                 name="editAddress"
