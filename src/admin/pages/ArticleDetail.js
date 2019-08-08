@@ -207,6 +207,7 @@ export default class ArticleDetail extends Component {
             title: data1.title,
             content: data1.content,
             status: status,
+            image: data1.image,
             jobId: null,
             jobName: null,
             catId: data1.catId,
