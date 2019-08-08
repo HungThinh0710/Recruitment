@@ -43,7 +43,7 @@ export default class ModalEditRole extends Component {
   async componentDidMount() {
     var { optionPermission, selectedPermissionOption } = this.state;
     const { id, dataPermissions } = this.props;
-    var url1 = 'https://api.enclavei3.tk/api/role/' + id;
+    var url1 = 'https://api.enclavei3dev.tk/api/role/' + id;
     const data1 = await fetch(url1, {
       headers: {
         'Content-Type': 'application/json',
@@ -51,6 +51,7 @@ export default class ModalEditRole extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+
     data1.permissions.map(e => {
       var currentPermission = { id: e.id, value: e.name, label: e.name };
       selectedPermissionOption.push(currentPermission);
@@ -125,7 +126,7 @@ export default class ModalEditRole extends Component {
       array.push(e.id);
       return array;
     });
-    var url = 'https://api.enclavei3.tk/api/role/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/role/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({

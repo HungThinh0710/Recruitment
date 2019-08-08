@@ -70,7 +70,7 @@ export default class ModalEditJob extends Component {
 
   async componentDidMount() {
     const { id } = this.props;
-    var url = 'https://api.enclavei3.tk/api/job/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/job/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -232,6 +232,9 @@ export default class ModalEditJob extends Component {
       salary = salaryBegin + '$';
     }
     switch (experience) {
+      case 'No experience':
+        exp = 0;
+        break;
       case '1 year':
         exp = 1;
         break;
@@ -251,7 +254,7 @@ export default class ModalEditJob extends Component {
         exp = 6;
         break;
     }
-    var url = 'https://api.enclavei3.tk/api/job/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/job/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -685,6 +688,7 @@ export default class ModalEditJob extends Component {
                     value={this.state.experience}
                     onChange={this.handleChange}
                   >
+                    <option>No experience</option>
                     <option>1 year</option>
                     <option>2 years</option>
                     <option>3 years</option>

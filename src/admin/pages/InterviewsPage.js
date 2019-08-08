@@ -69,11 +69,11 @@ export default class UsersPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3.tk/api/list-interview';
+      url = 'https://api.enclavei3dev.tk/api/list-interview';
     } else {
       body = '';
       url =
-        'https://api.enclavei3.tk/api/list-interview?page=' +
+        'https://api.enclavei3dev.tk/api/list-interview?page=' +
         activePage +
         '&perpage=' +
         perPage;
@@ -87,8 +87,8 @@ export default class UsersPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    var url1 = 'https://api.enclavei3.tk/api/list-interviewer';
-    var url2 = 'https://api.enclavei3.tk/api/list-candidate';
+    var url1 = 'https://api.enclavei3dev.tk/api/list-interviewer';
+    var url2 = 'https://api.enclavei3dev.tk/api/list-candidate';
     const data1 = await fetch(url1, {
       method: 'POST',
       body: JSON.stringify({
@@ -151,11 +151,11 @@ export default class UsersPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3.tk/api/list-interview';
+      url = 'https://api.enclavei3dev.tk/api/list-interview';
     } else {
       body = '';
       url =
-        'https://api.enclavei3.tk/api/list-interview?page=' +
+        'https://api.enclavei3dev.tk/api/list-interview?page=' +
         pageNumber +
         '&perpage=' +
         perPage;
@@ -206,7 +206,7 @@ export default class UsersPage extends Component {
     const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3.tk/api/interview';
+    var url = 'https://api.enclavei3dev.tk/api/interview';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -229,7 +229,7 @@ export default class UsersPage extends Component {
   }
   removeManyItems() {
     const { listDeleteId, perPage, keyword } = this.state;
-    var url = 'https://api.enclavei3.tk/api/interview';
+    var url = 'https://api.enclavei3dev.tk/api/interview';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -436,7 +436,7 @@ export default class UsersPage extends Component {
                         <input type="checkbox" />
                       </th>
                       <th>#</th>
-                      <th>Name</th>
+                      <th style={{ width: '330px' }}>Name</th>
                       <th>Address</th>
                       <th>Status</th>
                       <th>Start</th>
@@ -461,15 +461,35 @@ export default class UsersPage extends Component {
                           <td>{i}</td>
                           <td>{e.name}</td>
                           <td>{e.address}</td>
-                          {e.status == 'Pending' ?  
-                              <td className = "text-center">
-                                  <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:70, borderRadius: 4,}} pill>{e.status}</Badge>
-                              </td>
-                               :  
-                              <td className = "text-center">
-                                <Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:70,borderRadius: 4}} pill>{e.status}</Badge>
-                                </td> 
-                              }
+                          {e.status == 'Pending' ? (
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#6a82fb',
+                                  color: '#fff',
+                                  width: 70,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                {e.status}
+                              </Badge>
+                            </td>
+                          ) : (
+                            <td className="text-center">
+                              <Badge
+                                style={{
+                                  backgroundColor: '#dd2c00',
+                                  color: '#fff',
+                                  width: 70,
+                                  borderRadius: 4
+                                }}
+                                pill
+                              >
+                                {e.status}
+                              </Badge>
+                            </td>
+                          )}
                           <td>
                             {moment(e.timeStart).format(
                               'MMMM Do YYYY, h:mm:ss a'

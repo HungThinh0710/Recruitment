@@ -1,10 +1,16 @@
-import Avatar from '../../components/Avatar';
+import { Media } from 'reactstrap';
+
+import Avatar from '../Avatar';
 import { UserCard } from '../../components/Card';
 import Notifications from '../../components/Notifications';
-import { notificationsData } from '../../demos/header';
+// import { notificationsData } from '../../demos/header';
 import withBadge from '../../hocs/withBadge';
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
+import Pusher from 'pusher-js';
+import axios from 'axios';
+import NotificationCard from '../../components/NotificationCard'
+import Moment from 'moment';
 import {
   MdMenu,
   MdExitToApp,
@@ -26,9 +32,11 @@ import bn from '../../utils/bemnames';
 import './Header.css';
 const bem = bn.create('header');
 
-const MdNotificationsActiveWithBadge = withBadge({
+var test = 100;
+
+var MdNotificationsActiveWithBadge = withBadge({
   size: 'md',
-  color: 'primary',
+  color: 'danger',
   style: {
     top: -10,
     right: -10,
@@ -36,8 +44,9 @@ const MdNotificationsActiveWithBadge = withBadge({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  children: <small>5</small>
+  // children: <small>{test}</small>
 })(MdNotificationsActive);
+
 
 class Header extends React.Component {
   constructor(props) {
@@ -47,13 +56,18 @@ class Header extends React.Component {
       isNotificationConfirmed: false,
       isOpenUserCardPopover: false,
       redirect: false,
+      idUser: '',
       name: '',
       email: '',
-      image: ''
+      image: '',
+      arrNotification: [],
+      ringTheBell: false,
+      countNotifications: 0,
     };
   }
+
   async componentDidMount() {
-    //const {firstName, lastName, email} = this.state;
+    const { firstName, lastName, email, arrNotification } = this.state;
     var url = 'https://api.enclavei3.tk/api/current-profile';
     const data = await fetch(url, {
       headers: {
@@ -62,16 +76,93 @@ class Header extends React.Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    // console.log(data.id);
     this.setState({
+      idUser: data.id,
       name: data.name,
       email: data.email,
       image: data.image
     });
+
+    fetch('https://api.enclavei3.tk/api/notifications', {
+      headers: {
+        'Accept': "application/json",
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      res.json().then(dataResponse => {
+        // console.log(dataResponse);
+        // this.setState({arrNotification});
+        // headerClass.setState({ arrNotification: dataResponse });
+        // console.log(dataResponse);
+        this.setState({ arrNotification: dataResponse, countNotifications: dataResponse.length });
+      });
+    });
+    // console.log(this.state.arrNotification);
+
+
+    //Notification initial
+    // var pusher = new Pusher('app_key');
+    // pusher.connection.bind( 'error', function( err ) {
+    //   if( err.error.data.code === 4004 ) {
+    //     log('>>> detected limit error');
+    //   }
+    // });
+
+    // Pusher.logToConsole = true;
+
+    var pusher = new Pusher('47e53ceb02a16b8a22a7', {
+      cluster: 'ap1',
+      forceTLS: true,
+      auth: {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }
+    });
+
+
+
+    const { idUser } = this.state;
+
+    var channel = pusher.subscribe('user-notifications-id-' + idUser);
+    var event = "send-new-candidates";
+
+
+    // console.log("Channel: " + channel);
+
+    // console.log(this.state.arrNotification);
+    const abc = this;
+    channel.bind(event, function (data) {
+
+      // console.log("Data ne: " + data);
+      //fetch new notifications.
+      fetch('https://api.enclavei3.tk/api/notifications', {
+        headers: {
+          'Accept': "application/json",
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(dataResponse => {
+          // console.log(dataResponse);
+          // this.setState({arrNotification});
+          test = dataResponse.length;
+          abc.setState({ arrNotification: dataResponse, ringTheBell: true, countNotifications: dataResponse.length });
+        });
+      });
+    });
+
+    console.log(this.state.arrNotification);
+    channel.bind('pusher:subscription_succeeded', function (members) {
+    });
+
   }
 
   toggleNotificationPopover = () => {
     this.setState({
-      isOpenNotificationPopover: !this.state.isOpenNotificationPopover
+      isOpenNotificationPopover: !this.state.isOpenNotificationPopover,
+      ringTheBell: false
     });
 
     if (!this.state.isNotificationConfirmed) {
@@ -107,7 +198,34 @@ class Header extends React.Component {
 
   render() {
     const { isNotificationConfirmed } = this.state;
-
+    var i = 0;
+    var data = [];
+    if (this.state.arrNotification.length !== 0) {
+      this.state.arrNotification.
+        map((arr, index) => {
+          // console.log(arr);
+          var item = {
+            id: arr.id,
+            candidateId: arr.data.candidate_id,
+            message: arr.data.candidate_name + " sent an application.",
+            date: Moment(arr.updated_at, "YYYYMMDD h:mm").fromNow(),
+          }
+          if (index < 10)
+            (
+              data.push(item)
+            )
+          if(index = 0){
+            var itemNull = {
+              id: null,
+              candidateId: null,
+              message: "Don't have notification.",
+              date: null,
+            }
+            data.push(itemNull);
+          }
+          return data;
+        })
+    }
     return (
       <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2">
@@ -119,21 +237,23 @@ class Header extends React.Component {
           </button>
         </Nav>
         <Nav navbar className={bem.e('nav-right')}>
-          {/* <NavItem className="d-inline-flex">
+          {/* Notifications */}
+          <NavItem className="d-inline-flex">
             <NavLink id="Popover1" className="position-relative">
-              {isNotificationConfirmed ? (
+              {this.state.countNotifications == 0 ? (
                 <MdNotificationsNone
                   size={25}
                   className="text-secondary can-click"
                   onClick={this.toggleNotificationPopover}
                 />
               ) : (
-                <MdNotificationsActiveWithBadge
-                  size={25}
-                  className="text-secondary can-click animated swing infinite"
-                  onClick={this.toggleNotificationPopover}
-                />
-              )}
+                    <MdNotificationsActiveWithBadge
+                      data={this.state.countNotifications > 10 ? ("10+") : (this.state.countNotifications) }
+                      size={25}
+                      className="text-secondary can-click animated swing infinite badge-react-count-notify"
+                      onClick={this.toggleNotificationPopover}
+                    ></MdNotificationsActiveWithBadge>
+                )}
             </NavLink>
             <Popover
               placement="bottom"
@@ -142,10 +262,15 @@ class Header extends React.Component {
               target="Popover1"
             >
               <PopoverBody>
-                <Notifications notificationsData={notificationsData} />
+                {/* <Notifications className="notifications-custom-react" notificationsData={this.state.arrNotification} /> */}
+                {/* <  className="notifications-custom-react" /> */}
+
+                {/* <div className="text-right"><Link className="a-mask-as-read-header" to="#">Mask all as read</Link></div> */}
+                <Notifications notificationsData={data} />
+                <div className="text-center"><Link to="candidate"><button className="btn btn-more-header w-100">More</button></Link></div>
               </PopoverBody>
             </Popover>
-          </NavItem> */}
+          </NavItem>
 
           <NavItem>
             <NavLink id="Popover2">
@@ -200,3 +325,4 @@ class Header extends React.Component {
 }
 
 export default Header;
+

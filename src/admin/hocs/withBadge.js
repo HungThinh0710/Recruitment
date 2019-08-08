@@ -53,6 +53,7 @@ const withBadge = ({
   className,
   ...restBadgeProps
 } = {}) => WrappedComponent => ({ tag: Tag = 'div', ...restProps }) => {
+  console.log(restProps)
   return (
     <Tag className="d-inline-block position-relative">
       <WrappedComponent {...restProps} />
@@ -62,11 +63,12 @@ const withBadge = ({
           ...positionMap[position],
           ...sizeMap[size],
           borderRadius: '50%',
-          border: '2px solid #fff',
+          border: '1px solid #fff',
           ...style,
         }}
         {...restBadgeProps}
-      />
+      >      <small>{restProps.data}</small>
+      </Badge>
     </Tag>
   );
 };

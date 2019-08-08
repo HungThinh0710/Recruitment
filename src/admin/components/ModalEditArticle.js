@@ -22,6 +22,7 @@ export default class ModalEditArticle extends Component {
       title: '',
       content: '',
       status: '',
+      image: '',
       errorTitle: '',
       errorData: '',
       modal: false,
@@ -53,7 +54,7 @@ export default class ModalEditArticle extends Component {
     var { optionsJob, optionsFormat, optionsCategory, isDisabled } = this.state;
     var status = '';
     var jobName = '';
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -93,6 +94,7 @@ export default class ModalEditArticle extends Component {
           this.setState({
             title: data.title,
             content: data.content,
+            image: data.image,
             status: status,
             loading: false,
             optionsJob: optionsJob,
@@ -226,7 +228,7 @@ export default class ModalEditArticle extends Component {
           jobId: jobId,
           isPublic: idStatus
         });
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -288,7 +290,7 @@ export default class ModalEditArticle extends Component {
           jobId: jobId,
           isPublic: idStatus
         });
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/article/' + id;
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -414,7 +416,9 @@ export default class ModalEditArticle extends Component {
           <ModalHeader toggle={this.toggleModalPreview}>
             Title: {this.state.title}
           </ModalHeader>
-          <ModalBody>{renderHTML(this.state.content)}</ModalBody>
+          <ModalBody style={{ padding: '35px' }}>
+            {renderHTML(this.state.content)}
+          </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalPreview}>
               Cancel
@@ -575,14 +579,14 @@ export default class ModalEditArticle extends Component {
                           onClick={this.handleChangeStatus}
                           color="warning"
                         >
-                          Close
+                          Unpublish
                         </Button>
                       ) : (
                         <Button
                           onClick={this.handleErrorMessage.bind(this)}
                           color="warning"
                         >
-                          Close
+                          Unpublish
                         </Button>
                       )}
                     </div>

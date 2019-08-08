@@ -51,7 +51,7 @@ export default class ModalEditUser extends Component {
   async componentDidMount() {
     var { optionRoles, selectedRoleOption } = this.state;
     const { id, dataRoles } = this.props;
-    var url1 = 'https://api.enclavei3.tk/api/user/' + id;
+    var url1 = 'https://api.enclavei3dev.tk/api/user/' + id;
     const data1 = await fetch(url1, {
       headers: {
         'Content-Type': 'application/json',
@@ -59,12 +59,12 @@ export default class ModalEditUser extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    // data1.roles.map(e => {
-    //   var currentRole = { id: e.id, value: e.name, label: e.name };
-    //   selectedRoleOption.push(currentRole);
-    //   return selectedRoleOption;
-    // });
-    selectedRoleOption = [{ id: 100, value: 'hieu', label: 'hieu' }];
+    data1.roles.map(e => {
+      var currentRole = { id: e.id, value: e.name, label: e.name };
+      selectedRoleOption.push(currentRole);
+      return selectedRoleOption;
+    });
+
     dataRoles.map(e => {
       var permission = { id: e.id, value: e.name, label: e.name };
       optionRoles.push(permission);
@@ -103,12 +103,12 @@ export default class ModalEditUser extends Component {
     switch (event.target.name) {
       case 'fullname':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'email':
@@ -169,7 +169,7 @@ export default class ModalEditUser extends Component {
       array.push(e.id);
       return array;
     });
-    var url = 'https://api.enclavei3.tk/api/user/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/user/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -298,7 +298,7 @@ export default class ModalEditUser extends Component {
             <Form>
               <FormGroup>
                 <Label for="fullname" className="title-input">
-                  Fullname:
+                  Full Name:
                 </Label>
                 <Input
                   type="text"

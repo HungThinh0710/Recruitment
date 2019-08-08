@@ -49,7 +49,7 @@ export default class LoginPage extends React.Component {
     }
 
     if (username != '' && password != '') {
-      var url = 'https://api.enclavei3.tk/api/login';
+      var url = 'https://api.enclavei3dev.tk/api/login';
       var messenger = '';
       fetch(url, {
         method: 'POST',

@@ -7,6 +7,7 @@ import {
   CardSubtitle,
   CardImg,
   Button,
+  Badge,
   CardText,
   Row,
   Col,
@@ -42,12 +43,13 @@ export default class UserDetail extends Component {
       checkedRole: false,
       activeRole: false,
       // activeTab: '1',
-      activeTab: '3',
+      activeTab: '2',
       name: '',
       fullName: '',
       email: '',
       phone: '',
       address: '',
+      articles: '',
       editFullName: '',
       editEmail: '',
       editPhone: '',
@@ -117,7 +119,7 @@ export default class UserDetail extends Component {
     const columns = this.state.listRoles.columns;
     let { editRoles } = this.state;
     var check = true;
-    var url = 'https://api.enclavei3.tk/api/user/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/user/' + id;
     await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -125,6 +127,7 @@ export default class UserDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
+      
       if (res.status === 403) {
         check = false;
         this.setState({
@@ -135,10 +138,13 @@ export default class UserDetail extends Component {
       if (res.status === 200) {
         res.json().then(response => {
           var data = response;
+          console.log(data);
+          
           check = true;
           this.setState({
             name: data.name,
             fullName: data.fullname,
+            articles: data.articles,
             email: data.email,
             phone: data.phone,
             address: data.address,
@@ -156,7 +162,7 @@ export default class UserDetail extends Component {
     });
 
     if (check == true) {
-      var url2 = 'https://api.enclavei3.tk/api/list-role';
+      var url2 = 'https://api.enclavei3dev.tk/api/list-role';
       const data2 = await fetch(url2, {
         method: 'POST',
         body: JSON.stringify({
@@ -255,12 +261,12 @@ export default class UserDetail extends Component {
     switch (event.target.name) {
       case 'editFullName':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'editEmail':
@@ -322,7 +328,7 @@ export default class UserDetail extends Component {
       }
       return array2;
     });
-    var url = 'https://api.enclavei3.tk/api/user/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/user/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -355,7 +361,7 @@ export default class UserDetail extends Component {
           this.toggleModalSuccess();
           res.json().then(data => {
             array2.map(e => {
-              var url2 = 'https://api.enclavei3.tk/api/role/' + e;
+              var url2 = 'https://api.enclavei3dev.tk/api/role/' + e;
               fetch(url2, {
                 headers: {
                   'Content-Type': 'application/json',
@@ -490,11 +496,13 @@ export default class UserDetail extends Component {
                 <Container style={{ marginTop: '5%' }}>
                   <Row>
                     <Col xs="4">
-                      <img
+                      <div style= {{overflow: 'hidden'}}> 
+                        <img
                         className="avatar"
-                        src="/static/media/100_3.6e25d86d.jpg"
+                        src={'https://api.enclavei3dev.tk/upload/images/avatars/'+ `${this.state.image}`}
                         alt="Card image cap"
-                      />
+                      /></div>
+                     
                     </Col>
                     <Col xs="auto" />
                     <Col xs="6">
@@ -523,14 +531,15 @@ export default class UserDetail extends Component {
                       Articles
                     </NavLink>
                   </NavItem>
+                  */}
                   <NavItem>
                     <NavLink
                       className={classnames({ tabactive: this.state.activeTab === '2' })}
                       onClick={() => { this.toggle('2'); }}
                     ><MdMap style={{marginRight:'5px'}}/>
-                      Interviews
+                      Articles
                     </NavLink>
-                  </NavItem> */}
+                  </NavItem> 
                         <NavItem>
                           <NavLink
                             className={classnames({
@@ -618,6 +627,68 @@ export default class UserDetail extends Component {
                     </Col>
                   </Row>
                   </TabPane> */}
+                  <TabPane tabId="2">
+                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
+                      <div className="table-test">
+                        <table style={{ width: '100%' }}>
+                          <thead>
+                            <tr
+                              style={{
+                                background:
+                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
+                                color: 'white'
+                              }}
+                            >
+                              <th className="title1">#</th>
+                              <th className="title1">Title</th>
+                              <th className="title1">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.articles.map(e => {
+                              i++;
+                              return (
+                                <tr style={{ textAlign: 'center' }} key={e.id}>
+                                  <td className="title1">{i}</td>
+                                  <td className="title1">{e.title}</td>
+                                  {e.isPublic === 1 ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        Published
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius:4,
+                                        }}
+                                        pill
+                                      >
+                                        Closed
+                                      </Badge>
+                                    </td>
+                                  )}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                        <br />
+                      </div>
+                    </CardBody>
+                  </TabPane>
                     <TabPane tabId="3">
                       <Row>
                         <Col>
@@ -625,7 +696,7 @@ export default class UserDetail extends Component {
                             <CardBody>
                               <Form onSubmit={this.handleSubmit}>
                                 <FormGroup>
-                                  <Label for="Fullname">Fullname</Label>
+                                  <Label for="Fullname">Full Name</Label>
                                   <Input
                                     type="text"
                                     name="editFullName"
