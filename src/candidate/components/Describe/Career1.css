@@ -111,7 +111,7 @@
 
 .panel-title-article::before {
   content: '';
-  width: 95.5%;
+  width: 100%;
   height: 3px;
   border-radius: 999em;
   display: inline-block;

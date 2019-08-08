@@ -11,7 +11,11 @@ import {
   Badge,
   Nav,
   NavItem,
-  NavLink
+  NavLink,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from 'reactstrap';
 import { MdMap, MdBook, MdCancel, MdPageview } from 'react-icons/md';
 import { Link } from 'react-router-dom';
@@ -35,9 +39,14 @@ export default class JobDetail extends Component {
       jobs: [],
       interviews: [],
       technicalSkill: [],
-      loading: true
+      loading: true,
+      modalSuccess: false,
+      modalError: false,
+      errorData: ''
     };
-    // this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.changeStatus = this.changeStatus.bind(this);
+    this.toggleModalError = this.toggleModalError.bind(this);
+    this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -95,13 +104,56 @@ export default class JobDetail extends Component {
     }
   }
 
+  toggleModalSuccess() {
+    this.setState(prevState => ({
+      modalSuccess: !prevState.modalSuccess
+    }));
+  }
+  toggleModalError() {
+    this.setState(prevState => ({
+      modalError: !prevState.modalError
+    }));
+  }
+
   backToPreviousPage = () => {
     this.props.history.push('/dashboard/candidate');
   };
 
+  changeStatus(statusString) {
+    const { id } = this.props.match.params;
+    const url = 'https://api.enclavei3dev.tk/api/candidate-status';
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        candidateId: id,
+        status: statusString
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        res.json().then(data => {
+          this.toggleModalSuccess();
+          this.componentDidMount();
+        });
+      } else {
+        this.toggleModalError();
+        res.json().then(data => {
+          const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
+          this.setState({
+            errorData: dataArray
+          });
+        });
+      }
+    });
+  }
+
   render() {
     var i = 0;
-    const { formError } = this.state;
+    const { status } = this.state;
     var string = '';
     {
       this.state.technicalSkill.map(e => {
@@ -111,8 +163,154 @@ export default class JobDetail extends Component {
     }
     var length = string.length;
     var newString = string.slice(0, length - 2);
+
+    var buttons = null;
+    switch (status) {
+      case 'Pending':
+        buttons = (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '160px'
+            }}
+          >
+            <Button
+              style={{ background: '#43a047', borderColor: '#43a047' }}
+              onClick={() => this.changeStatus('Approve Application')}
+            >
+              Approve
+            </Button>
+            <Button
+              style={{ background: '#f85032', borderColor: '#f85032' }}
+              onClick={() => this.changeStatus('Deny')}
+            >
+              Deny
+            </Button>
+          </div>
+        );
+        break;
+      case 'Deny':
+        buttons = (
+          <Button
+            style={{ background: '#43a047', borderColor: '#43a047' }}
+            onClick={() => this.changeStatus('Approve Application')}
+          >
+            Approve
+          </Button>
+        );
+        break;
+      case 'Approve Application':
+        buttons = (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '200px'
+            }}
+          >
+            <Button
+              style={{ background: '#64dd17', borderColor: '#64dd17' }}
+              onClick={() => this.changeStatus('Passed')}
+            >
+              Pass
+            </Button>
+            <Button
+              style={{ background: '#dd2c00', borderColor: '#dd2c00' }}
+              onClick={() => this.changeStatus('Failed')}
+            >
+              Fail
+            </Button>
+            <Button
+              style={{ background: '#f85032', borderColor: '#f85032' }}
+              onClick={() => this.changeStatus('Deny')}
+            >
+              Deny
+            </Button>
+          </div>
+        );
+        break;
+      case 'Passed':
+        buttons = (
+          <Button
+            style={{ background: '#dd2c00', borderColor: '#dd2c00' }}
+            onClick={() => this.changeStatus('Failed')}
+          >
+            Fail
+          </Button>
+        );
+        break;
+      case 'Failed':
+        buttons = (
+          <Button
+            style={{ background: '#64dd17', borderColor: '#64dd17' }}
+            onClick={() => this.changeStatus('Passed')}
+          >
+            Pass
+          </Button>
+        );
+        break;
+    }
+
     return (
       <Card className="dashboard-card">
+        {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: '#45b649' }}>Update successfully</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {this.state.errorData !== undefined &&
+                this.state.errorData.length !== 0 &&
+                this.state.errorData.map(e => {
+                  i++;
+                  return (
+                    <span key={i} style={{ color: 'red' }}>
+                      {e[0]}
+                    </span>
+                  );
+                })}
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
         <CardHeader className="card-header-custom">
           candidate's information
         </CardHeader>
@@ -136,12 +334,34 @@ export default class JobDetail extends Component {
         ) : (
           <CardBody>
             <Container>
+              <Row>
+                {/* <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '160px'
+                  }}
+                >
+                  <Button
+                    style={{ background: '#43a047', borderColor: '#43a047' }}
+                  >
+                    Approve
+                  </Button>
+                  <Button
+                    style={{ background: '#f85032', borderColor: '#f85032' }}
+                  >
+                    Deny
+                  </Button>
+                </div> */}
+                {buttons}
+              </Row>
+              <br />
               <Row style={{ justifyContent: 'center' }}>
                 <div className="table-test" style={{ width: '100%' }}>
                   <table style={{ width: '100%' }}>
                     <tbody style={{ width: '100%' }}>
                       <tr className="job-title3" key={1}>
-                        <td className="job-title">Name</td>
+                        <td className="job-title">Full Name</td>
                         <td className="job-title1">{this.state.fullname}</td>
                       </tr>
                       <tr className="job-title3" key={7}>
@@ -263,37 +483,58 @@ export default class JobDetail extends Component {
                                   <td className="title1">{e.name}</td>
                                   <td className="title1">{e.address}</td>
                                   <td className="title1">{e.timeStart}</td>
-                                  {e.status == 'Pending' ?  
-                                  <td className="title1 text-center">
-                                    <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
-                                    </td> :  
+                                  {e.status == 'Pending' ? (
                                     <td className="title1 text-center">
-                                      <Badge style = {{backgroundColor: '#dd2c00', color: '#fff', width:80,borderRadius:4}} pill>{e.status}</Badge>
-                                      </td> }
-                                 
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius: 4
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          width: 80,
+                                          borderRadius: 4
+                                        }}
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  )}
                                 </tr>
                               );
                             })}
                           </tbody>
                         </table>
                         <br />
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginTop: '20px'
+                          }}
+                        >
+                          <Link to="/dashboard/candidate">
+                            <Button>Back</Button>
+                          </Link>
+                        </div>
                       </div>
                     </CardBody>
                   </TabPane>
                 </TabContent>
               </Row>
             </Container>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                marginTop: '20px'
-              }}
-            >
-              <Link to="/dashboard/candidate">
-                <Button>Back</Button>
-              </Link>
-            </div>
           </CardBody>
         )}
       </Card>

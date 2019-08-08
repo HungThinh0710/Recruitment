@@ -18,6 +18,8 @@ import {
 import { MdCancel } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import TechnicalSkill from '../components/TechnicalSkill';
+import { storage } from '../firebase/firebase';
+import { FadeLoader } from 'react-spinners';
 
 const fullNameRegex = /^[a-zA-Z\s]+$/;
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -29,14 +31,17 @@ export default class AddNewInterviewerPage extends Component {
       email: '',
       phone: '',
       address: '',
-      image: '',
+      image: null,
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/enclave-recruitment.appspot.com/o/images%2FDefault-avatar.png?alt=media&token=310daf6b-b63b-4d37-8f05-497220f3fa21',
       errorData: '',
       modalError: false,
       modalSuccess: false,
       showErrorMessage: false,
       amountTechnicalSkills: 1,
+      progressLoading: false,
       formError: {
-        fullname: 'Fullname is required',
+        fullname: 'Full Name is required',
         email: 'Email is required',
         phone: 'Phone is required'
       },
@@ -55,6 +60,8 @@ export default class AddNewInterviewerPage extends Component {
       skills: []
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeImage = this.handleChangeImage.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
@@ -75,12 +82,12 @@ export default class AddNewInterviewerPage extends Component {
     switch (event.target.name) {
       case 'fullname':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'email':
@@ -119,6 +126,45 @@ export default class AddNewInterviewerPage extends Component {
       }
     });
   }
+
+  handleChangeImage = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      this.setState(() => ({ image }));
+    }
+  };
+
+  handleUpload = () => {
+    const { image } = this.state;
+    const upLoadImage = storage.ref(`images/${image.name}`).put(image);
+
+    upLoadImage.on(
+      'state_changed',
+      snapshot => {
+        //progress function
+        this.setState({
+          progressLoading: true
+        });
+      },
+      error => {
+        //error function
+        console.log(error);
+      },
+      () => {
+        //complete function
+        storage
+          .ref('images')
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+            console.log(url);
+            setTimeout(() => {
+              this.setState({ url, progressLoading: false });
+            }, 1000);
+          });
+      }
+    );
+  };
 
   handleErrorMessage = () => {
     this.setState({
@@ -329,23 +375,39 @@ export default class AddNewInterviewerPage extends Component {
                     flexDirection: 'column'
                   }}
                 >
-                  <img
-                    src="/admin/img/Default-avatar.png"
-                    style={{ width: '200px' }}
-                  />
+                  {this.state.progressLoading ? (
+                    <FadeLoader
+                      sizeUnit={'px'}
+                      size={150}
+                      color={'#45b649'}
+                      loading={this.state.loading}
+                    />
+                  ) : (
+                    <img
+                      src={this.state.url}
+                      alt="Upload image"
+                      style={{ width: '200px' }}
+                    />
+                  )}
+
                   <br />
-                  <Input
-                    type="file"
-                    name="image"
-                    style={{ padding: '5px' }}
-                    onChange={this.handleChange}
-                  />
+                  <div style={{ display: 'flex' }}>
+                    <Input
+                      type="file"
+                      name="image"
+                      style={{ padding: '5px' }}
+                      onChange={this.handleChangeImage}
+                    />
+                    <Button color="primary" onClick={this.handleUpload}>
+                      Upload
+                    </Button>
+                  </div>
                 </div>
               </Col>
               <Col xs="8">
                 <FormGroup>
                   <Label className="title-input" for="exampleName">
-                    Fullname
+                    Full Name
                   </Label>
                   <Input
                     type="text"

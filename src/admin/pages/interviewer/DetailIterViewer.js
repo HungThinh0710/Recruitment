@@ -91,7 +91,7 @@ export default class JobDetail extends Component {
       dataTechnicalSkills.push(e.name + '-' + e.year);
       return dataTechnicalSkills;
     });
-    
+
     setTimeout(() => {
       this.setState({
         fullname: data.fullname,
@@ -158,12 +158,12 @@ export default class JobDetail extends Component {
     switch (event.target.name) {
       case 'editFullname':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'editEmail':
@@ -509,9 +509,7 @@ export default class JobDetail extends Component {
                             </tr>
                           </thead>
                           <tbody>
-                            
                             {this.state.interviews.map(e => {
-                              
                               if (e.status == '1') {
                                 e.status = 'Pending';
                               }
@@ -549,18 +547,44 @@ export default class JobDetail extends Component {
                                   <td className="title1">{i}</td>
                                   <td className="title1">{e.name}</td>
                                   <td className="title1">{e.address}</td>
-                                  <td className="title1">{moment(e.timeStart).format(
-                                          'MMMM Do YYYY, h:mm:ss a'
-                                           )}
-                                           </td>
+                                  <td className="title1">
+                                    {moment(e.timeStart).format(
+                                      'MMMM Do YYYY, h:mm:ss a'
+                                    )}
+                                  </td>
                                   {e.status == 'Pending' ? (
-                                  <td className="title1 text-center"> 
-                                    <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', borderRadius:4,}} color="#f59a92" pill>{e.status}</Badge>
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          borderRadius: 4,
+                                          width: '80px'
+                                        }}
+                                        color="#f59a92"
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
                                     </td>
-                                     ) : e.status == 'Closed' ? (
-                                     <td className="title1 text-center">
-                                       <Badge style = {{backgroundColor: '#dd2c00', color: '#fff',borderRadius:4,}} color="#f59a92" pill>{e.status}</Badge>
-                                       </td>) : ( '') }
+                                  ) : e.status == 'Closed' ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          borderRadius: 4,
+                                          width: '80px'
+                                        }}
+                                        color="#f59a92"
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    ''
+                                  )}
                                 </tr>
                               );
                             })}
@@ -599,7 +623,7 @@ export default class JobDetail extends Component {
                         <Col xs="8">
                           <FormGroup>
                             <Label className="title-input" for="exampleName">
-                              Fullname
+                              Full Name
                             </Label>
                             <Input
                               type="text"

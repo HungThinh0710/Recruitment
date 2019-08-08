@@ -1,13 +1,17 @@
 import firebase from 'firebase';
+import 'firebase/storage';
 
-const config = {
-  apiKey: 'AIzaSyCkFj2b4cG_5jsIyxKnEM6FTabNRDdYtjc',
-  authDomain: 'si2019-enclave.firebaseapp.com',
-  databaseURL: 'https://si2019-enclave.firebaseio.com',
-  projectId: 'si2019-enclave',
-  storageBucket: '',
-  messagingSenderId: '1014773926030',
-  appId: '1:1014773926030:web:6a6f286680d97484'
+var firebaseConfig = {
+  apiKey: 'AIzaSyA2QqTDxsBsPDUR4ttNsEaXCBLVFKEpqXE',
+  authDomain: 'recruitment-54d86.firebaseapp.com',
+  databaseURL: 'https://recruitment-54d86.firebaseio.com',
+  projectId: 'recruitment-54d86',
+  storageBucket: 'enclave-recruitment.appspot.com',
+  messagingSenderId: '233295150051',
+  appId: '1:233295150051:web:ffae1b306f27002e'
 };
-firebase.initializeApp(config);
-export default firebase;
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+const storage = firebase.storage();
+export { storage, firebase as default };

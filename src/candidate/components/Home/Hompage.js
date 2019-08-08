@@ -361,13 +361,15 @@ export default class Homepage extends Component {
                         </form>
                       </div>
                       <div class="panel job-list-panel">
+                      <div className="displayresponsive">
                         <div className="row" style={{marginLeft: 1, marginRight: 1}}>
-                          <div className="col-sm-4" style={{paddingLeft : 0}}>
+                          
+                          <span className="ml-0  mb-2" style={{paddingLeft : 0}}>
                         <h2 class="panel-title">
                           Job Opening
                         </h2>
-                       </div>
-                        <div class="col-sm-4 ml-auto showentries text-right">
+                       </span>
+                        <span class="ml-0  mb-2 ml-auto showentries text-right">
                           <label className="ml-auto">Show entries: &nbsp; </label>
                         <select class="selectshow ml-auto" type="select"
                         name="selectPerPage"
@@ -379,6 +381,7 @@ export default class Homepage extends Component {
                         <option>50</option>
                         <option>100</option>
                         </select>
+                        </span>
                         </div>
                         </div>
                         {/* <Input
@@ -403,7 +406,7 @@ export default class Homepage extends Component {
                             {listjob.map((p, index) => {
                               i++;
                               return <tr class="transfer">
-                                <td data-th="number">
+                                <td data-th="Index">
                                   <div>
                                     <p class="number-id">
                                       <p class="number-title">

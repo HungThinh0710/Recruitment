@@ -503,7 +503,7 @@ onCopy = () => {
                         onClick={this.toggleModal.bind(this)}>{this.props.buttonLabel}
                       </Button>
                       <Modal id="articleModal" isOpen={this.state.modalisOpen}
-                        toggle={this.toggleModal.bind(this)} className={this.props.className} external={externalCloseBtn}
+                        toggle={this.toggleModal.bind(this)} className={this.props.className}
                       >
                         <p></p>
                         <h3 className="modal-title" id="myModallabel" style={{ fontSize: 24, fontWeight: "bold" }}>APPLICATION FORM</h3>

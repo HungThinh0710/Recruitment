@@ -164,6 +164,7 @@
 .rwd-table td div {
     display: table-cell;
 }
+
 .article-table {
   width: 100%;
   max-width: 100%;
@@ -288,3 +289,4 @@
 .list-group-wrap .list-group-item .item-info {
   font-weight: none !important;
 }
+
