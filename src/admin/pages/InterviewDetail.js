@@ -11,7 +11,11 @@ import {
   Nav,
   NavItem,
   NavLink,
-  CardHeader
+  CardHeader,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from 'reactstrap';
 import { MdMap, MdBook, MdSettings } from 'react-icons/md';
 import { Link } from 'react-router-dom';
@@ -31,8 +35,14 @@ export default class JobDetail extends Component {
       timeStart: '',
       candidates: [],
       interviewers: [],
-      loading: true
+      loading: true,
+      modalSuccess: false,
+      modalError: false,
+      errorData: ''
     };
+    this.changeStatus = this.changeStatus.bind(this);
+    this.toggleModalError = this.toggleModalError.bind(this);
+    this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -72,6 +82,46 @@ export default class JobDetail extends Component {
     }
   }
 
+  toggleModalSuccess() {
+    this.setState(prevState => ({
+      modalSuccess: !prevState.modalSuccess
+    }));
+  }
+  toggleModalError() {
+    this.setState(prevState => ({
+      modalError: !prevState.modalError
+    }));
+  }
+  changeStatus(statusString, id) {
+    const url = 'https://api.enclavei3dev.tk/api/candidate-status';
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        candidateId: id,
+        status: statusString
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        res.json().then(data => {
+          this.toggleModalSuccess();
+          this.componentDidMount();
+        });
+      } else {
+        this.toggleModalError();
+        res.json().then(data => {
+          const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
+          this.setState({
+            errorData: dataArray
+          });
+        });
+      }
+    });
+  }
   backToPreviousPage = () => {
     this.props.history.push('/dashboard/interview');
   };
@@ -82,6 +132,63 @@ export default class JobDetail extends Component {
     const { formError } = this.state;
     return (
       <Card className="dashboard-card">
+        {/*--------Modal-Success-----*/}
+        <Modal
+          isOpen={this.state.modalSuccess}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader
+            toggle={this.toggleModalSuccess}
+            className="card-header-custom"
+          >
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <span style={{ color: '#45b649' }}>Update successfully</span>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalSuccess}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/*--------Modal-Success-----*/}
+
+        {/*--------Modal-Error-----*/}
+        <Modal
+          isOpen={this.state.modalError}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader
+            toggle={this.toggleModalError}
+            className="card-header-custom"
+          >
+            <span className="dashboard-modal-header">Notification</span>
+          </ModalHeader>
+          <ModalBody>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {this.state.errorData !== undefined &&
+                this.state.errorData.length !== 0 &&
+                this.state.errorData.map(e => {
+                  i++;
+                  return (
+                    <span key={i} style={{ color: 'red' }}>
+                      {e[0]}
+                    </span>
+                  );
+                })}
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleModalError}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/*--------Modal-Error-----*/}
         <CardHeader className="card-header-custom">
           interview's information
         </CardHeader>
@@ -236,6 +343,9 @@ export default class JobDetail extends Component {
                               <th className="title1">Email</th>
                               <th className="title1">Phone</th>
                               <th className="title1">Status</th>
+                              <th className="title1" style={{ width: '150px' }}>
+                                Action
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -336,6 +446,95 @@ export default class JobDetail extends Component {
                                   ) : (
                                     ''
                                   )}
+                                  <td className="title1">
+                                    {e.status == 'Approve' ? (
+                                      <div
+                                        style={{
+                                          display: 'flex',
+                                          justifyContent: 'space-around'
+                                        }}
+                                      >
+                                        <Button
+                                          style={{
+                                            fontSize: '13px',
+                                            padding: '4px 0px',
+                                            width: '45px',
+                                            background: '#64dd17',
+                                            borderColor: '#64dd17',
+                                            fontWeight: 'bold'
+                                          }}
+                                          onClick={() =>
+                                            this.changeStatus('Passed', e.id)
+                                          }
+                                        >
+                                          Pass
+                                        </Button>
+                                        <Button
+                                          style={{
+                                            fontSize: '13px',
+                                            padding: '4px 0px',
+                                            width: '45px',
+                                            background: '#dd2c00',
+                                            borderColor: '#dd2c00',
+                                            fontWeight: 'bold'
+                                          }}
+                                          onClick={() =>
+                                            this.changeStatus('Failed', e.id)
+                                          }
+                                        >
+                                          Fail
+                                        </Button>
+                                      </div>
+                                    ) : e.status == 'Passed' ? (
+                                      <div
+                                        style={{
+                                          display: 'flex',
+                                          justifyContent: 'center'
+                                        }}
+                                      >
+                                        <Button
+                                          style={{
+                                            fontSize: '13px',
+                                            padding: '4px 0px',
+                                            width: '45px',
+                                            background: '#dd2c00',
+                                            borderColor: '#dd2c00',
+                                            fontWeight: 'bold'
+                                          }}
+                                          onClick={() =>
+                                            this.changeStatus('Failed', e.id)
+                                          }
+                                        >
+                                          Fail
+                                        </Button>
+                                      </div>
+                                    ) : e.status == 'Failed' ? (
+                                      <div
+                                        style={{
+                                          display: 'flex',
+                                          justifyContent: 'center'
+                                        }}
+                                      >
+                                        <Button
+                                          style={{
+                                            fontSize: '13px',
+                                            padding: '4px 0px',
+                                            width: '45px',
+                                            background: '#64dd17',
+                                            borderColor: '#64dd17',
+                                            fontWeight: 'bold'
+                                          }}
+                                          onClick={() =>
+                                            this.changeStatus('Passed', e.id)
+                                          }
+                                        >
+                                          Pass
+                                        </Button>
+                                      </div>
+                                    ) : (
+                                      ''
+                                    )}
+                                  </td>
                                 </tr>
                               );
                             })}
@@ -348,7 +547,6 @@ export default class JobDetail extends Component {
                 </TabContent>
               </Row>
             </Container>
-
             <div
               style={{
                 display: 'flex',

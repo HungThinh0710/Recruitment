@@ -62,11 +62,12 @@ export default class UsersPage extends Component {
     var url = '';
     if (keyword != '') {
       body = {
-        keyword: keyword
+        keyword: keyword,
+        property: 'created_at'
       };
       url = 'https://api.enclavei3dev.tk/api/list-candidate';
     } else {
-      body = '';
+      body = { property: 'created_at' };
       url =
         'https://api.enclavei3dev.tk/api/list-candidate?page=' +
         activePage +
@@ -118,11 +119,12 @@ export default class UsersPage extends Component {
     var body = '';
     if (keyword != '') {
       body = {
-        keyword: keyword
+        keyword: keyword,
+        property: 'created_at'
       };
       url = 'https://api.enclavei3dev.tk/api/list-candidate';
     } else {
-      body = '';
+      body = { property: 'created_at' };
       url =
         'https://api.enclavei3dev.tk/api/list-candidate?page=' +
         pageNumber +

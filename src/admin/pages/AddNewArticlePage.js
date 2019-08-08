@@ -23,7 +23,9 @@ import 'react-quill/dist/quill.bubble.css';
 import renderHTML from 'react-render-html';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { storage } from '../firebase/firebase';
 import './AddNewArticlePage.css';
+import axios from 'axios';
 
 export default class AddNewArticlePage extends Component {
   constructor(props) {
@@ -56,7 +58,9 @@ export default class AddNewArticlePage extends Component {
       optionsFormat: [],
       isDisabled: false,
       showJobError: false,
-      image: ''
+      image: null,
+      url: '',
+      progressLoading: false
     };
     this.handleEditorChange = this.handleEditorChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -65,6 +69,7 @@ export default class AddNewArticlePage extends Component {
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
     this.toggleModalPreview = this.toggleModalPreview.bind(this);
+    this.handleChangeImage = this.handleChangeImage.bind(this);
   }
   componentWillMount() {
     if (!localStorage.getItem('access_token')) {
@@ -178,6 +183,15 @@ export default class AddNewArticlePage extends Component {
     this.setState({ content: html });
   }
 
+  handleChangeImage = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      var url = URL.createObjectURL(e.target.files[0]);
+
+      this.setState({ url: url, image: image });
+    }
+  };
+
   backToPreviousPage = () => {
     this.props.history.push('/dashboard/article');
   };
@@ -203,52 +217,80 @@ export default class AddNewArticlePage extends Component {
       title,
       content,
       selectedCategoryOption,
-      selectedJobOption
+      selectedJobOption,
+      image
     } = this.state;
+
     var jobId = 0;
     var catId = 0;
     if (selectedCategoryOption) catId = selectedCategoryOption.id;
     if (selectedJobOption) jobId = selectedJobOption.id;
-    var body = '';
-    jobId === 0
-      ? (body = { title: title, content: content, catId: catId, isPublic: 1 })
-      : (body = {
-          title: title,
-          content: content,
-          catId: catId,
-          jobId: jobId,
-          isPublic: 1
-        });
+    const formData = new FormData();
+    if (jobId === 0) {
+      if (image) {
+        formData.set('title', title);
+        formData.set('content', content);
+        formData.set('catId', catId);
+        formData.set('isPublic', 1);
+        formData.append('image', image);
+      } else {
+        formData.set('title', title);
+        formData.set('content', content);
+        formData.set('catId', catId);
+        formData.set('isPublic', 1);
+      }
+    } else {
+      if (image) {
+        formData.set('title', title);
+        formData.set('content', content);
+        formData.set('catId', catId);
+        formData.set('jobId', jobId);
+        formData.set('isPublic', 1);
+        formData.append('image', image);
+      } else {
+        formData.set('title', title);
+        formData.set('content', content);
+        formData.set('catId', catId);
+        formData.set('jobId', jobId);
+        formData.set('isPublic', 1);
+      }
+    }
+
+    let configs = {
+      header: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json'
+      }
+    };
 
     var url = 'https://api.enclavei3dev.tk/api/article';
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    })
+
+    axios.defaults.headers.common = {
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    };
+    var urlHT = 'https://api.enclavei3dev.tk/api/article';
+    axios
+      .post(urlHT, formData, {})
       .then(res => {
         if (res.status === 401) {
           alert('Add Failed');
         }
         if (res.status === 422) {
           this.toggleModalError();
-          res.json().then(data => {
-            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
-            this.setState({
-              errorData: dataArray
-            });
+          const dataArray = Object.keys(res.data.errors).map(
+            i => res.data.errors[i]
+          );
+          this.setState({
+            errorData: dataArray
           });
         }
+
         if (res.status === 200) {
           this.toggleModalSuccess();
-          res.json().then(data => {
-            this.setState({
-              urlArticle: '/dashboard/article/' + data.article.id
-            });
+          this.setState({
+            urlArticle: '/dashboard/article/' + res.data.article.id
           });
         }
       })
@@ -260,52 +302,79 @@ export default class AddNewArticlePage extends Component {
       title,
       content,
       selectedCategoryOption,
-      selectedJobOption
+      selectedJobOption,
+      image
     } = this.state;
+
     var jobId = 0;
     var catId = 0;
     if (selectedCategoryOption) catId = selectedCategoryOption.id;
     if (selectedJobOption) jobId = selectedJobOption.id;
-    var body = '';
-    jobId === 0
-      ? (body = { title: title, content: content, catId: catId, isPublic: 0 })
-      : (body = {
-          title: title,
-          content: content,
-          catId: catId,
-          jobId: jobId,
-          isPublic: 0
-        });
+    const formData = new FormData();
+    if (jobId === 0) {
+      if (image) {
+        formData.set('title', title);
+        formData.set('content', content);
+        formData.set('catId', catId);
+        formData.set('isPublic', 0);
+        formData.append('image', image);
+      } else {
+        formData.set('title', title);
+        formData.set('content', content);
+        formData.set('catId', catId);
+        formData.set('isPublic', 0);
+      }
+    } else {
+      if (image) {
+        formData.set('title', title);
+        formData.set('content', content);
+        formData.set('catId', catId);
+        formData.set('jobId', jobId);
+        formData.set('isPublic', 0);
+        formData.append('image', image);
+      } else {
+        formData.set('title', title);
+        formData.set('content', content);
+        formData.set('catId', catId);
+        formData.set('jobId', jobId);
+        formData.set('isPublic', 0);
+      }
+    }
+
+    let configs = {
+      header: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json'
+      }
+    };
 
     var url = 'https://api.enclavei3dev.tk/api/article';
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    })
+
+    axios.defaults.headers.common = {
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    };
+    var urlHT = 'https://api.enclavei3dev.tk/api/article';
+    axios
+      .post(urlHT, formData, {})
       .then(res => {
         if (res.status === 401) {
           alert('Add Failed');
         }
         if (res.status === 422) {
           this.toggleModalError();
-          res.json().then(data => {
-            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
-            this.setState({
-              errorData: dataArray
-            });
+          const dataArray = Object.keys(res.data.errors).map(
+            i => res.data.errors[i]
+          );
+          this.setState({
+            errorData: dataArray
           });
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          res.json().then(data => {
-            this.setState({
-              urlArticle: '/dashboard/article/' + data.article.id
-            });
+          this.setState({
+            urlArticle: '/dashboard/article/' + res.data.article.id
           });
         }
       })
@@ -413,7 +482,16 @@ export default class AddNewArticlePage extends Component {
           >
             Title: {this.state.title}
           </ModalHeader>
-          <ModalBody>{renderHTML(this.state.content)}</ModalBody>
+          <ModalBody style={{ padding: '35px' }}>
+            <div>
+              <img
+                src={this.state.url}
+                style={{ width: '100%', marginBottom: '30px' }}
+              />
+              <br />
+              {renderHTML(this.state.content)}
+            </div>
+          </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalPreview}>
               Cancel
@@ -511,7 +589,12 @@ export default class AddNewArticlePage extends Component {
                       <Label className="title-input" for="Content">
                         Image
                       </Label>
-                      <Input type="file" />
+
+                      <Input
+                        type="file"
+                        name="image"
+                        onChange={this.handleChangeImage}
+                      />
                     </FormGroup>
                     <FormGroup>
                       <Label className="title-input" for="Content">
@@ -544,7 +627,7 @@ export default class AddNewArticlePage extends Component {
                         style={{
                           display: 'flex',
                           justifyContent: 'space-between',
-                          width: '350px'
+                          width: '380px'
                         }}
                       >
                         <Button
@@ -571,14 +654,14 @@ export default class AddNewArticlePage extends Component {
                         check &&
                         this.state.selectedCategoryOption ? (
                           <Button onClick={this.handleSave} color="warning">
-                            Save
+                            Unpublished
                           </Button>
                         ) : (
                           <Button
                             onClick={this.handleErrorMessage.bind(this)}
                             color="warning"
                           >
-                            Save
+                            Unpublished
                           </Button>
                         )}
                         <Button

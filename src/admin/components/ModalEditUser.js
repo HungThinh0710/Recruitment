@@ -59,12 +59,12 @@ export default class ModalEditUser extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    // data1.roles.map(e => {
-    //   var currentRole = { id: e.id, value: e.name, label: e.name };
-    //   selectedRoleOption.push(currentRole);
-    //   return selectedRoleOption;
-    // });
-    selectedRoleOption = [{ id: 100, value: 'hieu', label: 'hieu' }];
+    data1.roles.map(e => {
+      var currentRole = { id: e.id, value: e.name, label: e.name };
+      selectedRoleOption.push(currentRole);
+      return selectedRoleOption;
+    });
+
     dataRoles.map(e => {
       var permission = { id: e.id, value: e.name, label: e.name };
       optionRoles.push(permission);
