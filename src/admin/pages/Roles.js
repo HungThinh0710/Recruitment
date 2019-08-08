@@ -442,9 +442,7 @@ export default class Roles extends Component {
                     <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
                       <thead className="thead-light">
                         <tr>
-                          <th style={{ width: '70px' }}>
-                            <input type="checkbox" />
-                          </th>
+                          <th style={{ width: '70px' }} />
                           <th style={{ width: '70px' }}>#</th>
                           <th>Role</th>
                           <th style={{ width: '1000px' }}>Description</th>

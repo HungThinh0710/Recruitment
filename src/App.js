@@ -45,12 +45,13 @@ import ChangeProfilePage from './admin/pages/ChangeProfilePage';
 import ChangeAccountPage from './admin/pages/ChangeAccountPage';
 import React from 'react';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Router } from 'react-router-dom';
 import './admin/styles/reduction.scss';
 import Homepage from './candidate/components/Home/Hompage';
 import Careers from './candidate/components/Career/Careers';
 import About from './candidate/components/About/About';
 import Career1 from './candidate/components/Describe/Career1';
+import DetailOthers from './candidate/components/DetailOthers';
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
 };
@@ -270,8 +271,11 @@ class App extends React.Component {
             <Route path="/" component={Homepage} exact />
             <Route path="/careers" exact component={Careers} />
             <Route path="/about" exact component={About} />
-            <Route path="/article/:id" exact component={Career1} />
+            <Route path="/article/:id" exact render={(props) => (
+  <Career1 key={props.match.params.id} {...props} />) }/>
             <Route path="/article" exact component={Homepage} />
+            <Route path="/information/:id" exact render={(props) => (
+  <DetailOthers key={props.match.params.id} {...props} />) }/>
           </Switch>
         </GAListener>
       </BrowserRouter>

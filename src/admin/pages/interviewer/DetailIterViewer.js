@@ -27,6 +27,7 @@ import { Link } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import 'react-datepicker/dist/react-datepicker.css';
 import classnames from 'classnames';
+import TabInformation from './TagInterviews';
 import '../JobDetail.css';
 import moment from 'moment';
 import TechnicalSkill from '../../components/TechnicalSkill';
@@ -41,6 +42,7 @@ export default class JobDetail extends Component {
       email: '',
       phone: '',
       address: '',
+      image: '',
       interviews: [],
       technicalSkill: [],
       loading: true,
@@ -77,7 +79,7 @@ export default class JobDetail extends Component {
     const { id } = this.props.match.params;
     const { dataTechnicalSkills } = this.state;
     var j = -1;
-    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +91,7 @@ export default class JobDetail extends Component {
       dataTechnicalSkills.push(e.name + '-' + e.year);
       return dataTechnicalSkills;
     });
-    
+
     setTimeout(() => {
       this.setState({
         fullname: data.fullname,
@@ -100,6 +102,7 @@ export default class JobDetail extends Component {
         editEmail: data.email,
         phone: data.phone,
         editPhone: data.phone,
+        image: data.image,
         technicalSkill: data.technicalSkill,
         amountTechnicalSkills: data.technicalSkill.length,
         interviews: data.interviews,
@@ -155,12 +158,12 @@ export default class JobDetail extends Component {
     switch (event.target.name) {
       case 'editFullname':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'editEmail':
@@ -215,7 +218,7 @@ export default class JobDetail extends Component {
       return array;
     });
     var arrayString = array.toString();
-    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
+    var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -246,7 +249,7 @@ export default class JobDetail extends Component {
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
+          var url = 'https://api.enclavei3dev.tk/api/interviewer/' + id;
           fetch(url, {
             headers: {
               'Content-Type': 'application/json',
@@ -322,7 +325,15 @@ export default class JobDetail extends Component {
 
   render() {
     var i = 0;
-    const { dataTechnicalSkills, formError } = this.state;
+    const {
+      fullname,
+      email,
+      phone,
+      address,
+      dataTechnicalSkills,
+      technicalSkill,
+      formError
+    } = this.state;
     var string = '';
     {
       this.state.technicalSkill.map(e => {
@@ -341,6 +352,7 @@ export default class JobDetail extends Component {
     array.length === 0
       ? (errorTechnicalSkillMessage = 'Technical skill is required')
       : (errorTechnicalSkillMessage = '');
+    // console.log(technicalSkill);
     return (
       <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
@@ -423,36 +435,30 @@ export default class JobDetail extends Component {
         ) : (
           <CardBody>
             <Container>
-              <Row style={{ justifyContent: 'center' }}>
-                <div className="table-test" style={{ width: '100%' }}>
-                  <table style={{ width: '100%' }}>
-                    <tbody style={{ width: '100%' }}>
-                      <tr className="job-title3" key={1}>
-                        <td className="job-title">Fullname</td>
-                        <td className="job-title1">{this.state.fullname}</td>
-                      </tr>
-                      <tr className="job-title3" key={2}>
-                        <td className="job-title">Address</td>
-                        <td className="job-title1">{this.state.address}</td>
-                      </tr>
-                      <tr className="job-title3" key={3}>
-                        <td className="job-title">Email</td>
-                        <td className="job-title1">{this.state.email}</td>
-                      </tr>
-
-                      <tr className="job-title3" key={4}>
-                        <td className="job-title">Phone</td>
-                        <td className="job-title1">{this.state.phone}</td>
-                      </tr>
-                      <tr className="job-title3" key={5}>
-                        <td className="job-title">Skill</td>
-                        <td className="job-title1">
-                          <span>{newString}</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              <Row>
+                <Col xs="4">
+                  <div style={{ overflow: 'hidden' }}>
+                    <img
+                      className="avatar"
+                      src={
+                        'https://api.enclavei3dev.tk/upload/interviewer/avatars/' +
+                        `${this.state.image}`
+                      }
+                      alt="Card image cap"
+                    />
+                  </div>
+                </Col>
+                <Col xs="auto" />
+                <Col xs="6">
+                  <TabInformation
+                    fullName={fullname}
+                    Technical
+                    Skill={technicalSkill}
+                    phone={phone}
+                    email={email}
+                    address={address}
+                  />
+                </Col>
               </Row>
               <br />
               <Row>
@@ -512,9 +518,7 @@ export default class JobDetail extends Component {
                             </tr>
                           </thead>
                           <tbody>
-                            
                             {this.state.interviews.map(e => {
-                              
                               if (e.status == '1') {
                                 e.status = 'Pending';
                               }
@@ -552,18 +556,44 @@ export default class JobDetail extends Component {
                                   <td className="title1">{i}</td>
                                   <td className="title1">{e.name}</td>
                                   <td className="title1">{e.address}</td>
-                                  <td className="title1">{moment(e.timeStart).format(
-                                          'MMMM Do YYYY, h:mm:ss a'
-                                           )}
-                                           </td>
+                                  <td className="title1">
+                                    {moment(e.timeStart).format(
+                                      'MMMM Do YYYY, h:mm:ss a'
+                                    )}
+                                  </td>
                                   {e.status == 'Pending' ? (
-                                  <td className="title1 text-center"> 
-                                    <Badge style = {{backgroundColor: '#6a82fb', color: '#fff', borderRadius:4,}} color="#f59a92" pill>{e.status}</Badge>
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#6a82fb',
+                                          color: '#fff',
+                                          borderRadius: 4,
+                                          width: '80px'
+                                        }}
+                                        color="#f59a92"
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
                                     </td>
-                                     ) : e.status == 'Closed' ? (
-                                     <td className="title1 text-center">
-                                       <Badge style = {{backgroundColor: '#dd2c00', color: '#fff',borderRadius:4,}} color="#f59a92" pill>{e.status}</Badge>
-                                       </td>) : ( '') }
+                                  ) : e.status == 'Closed' ? (
+                                    <td className="title1 text-center">
+                                      <Badge
+                                        style={{
+                                          backgroundColor: '#dd2c00',
+                                          color: '#fff',
+                                          borderRadius: 4,
+                                          width: '80px'
+                                        }}
+                                        color="#f59a92"
+                                        pill
+                                      >
+                                        {e.status}
+                                      </Badge>
+                                    </td>
+                                  ) : (
+                                    ''
+                                  )}
                                 </tr>
                               );
                             })}
@@ -577,7 +607,7 @@ export default class JobDetail extends Component {
                       <br />
                       <br />
                       <Row>
-                        <Col xs="4">
+                        {/* <Col xs="4">
                           <div
                             style={{
                               display: 'flex',
@@ -599,10 +629,11 @@ export default class JobDetail extends Component {
                             />
                           </div>
                         </Col>
-                        <Col xs="8">
+                        <Col xs="8"> */}
+                        <Col>
                           <FormGroup>
                             <Label className="title-input" for="exampleName">
-                              Fullname
+                              Full Name
                             </Label>
                             <Input
                               type="text"

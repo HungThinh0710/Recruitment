@@ -438,11 +438,9 @@ export default class UsersPage extends Component {
                     <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
                       <thead className="thead-light">
                         <tr>
-                          <th style={{ width: '70px' }}>
-                            <input type="checkbox" />
-                          </th>
+                          <th style={{ width: '70px' }} />
                           <th style={{ width: '70px' }}>#</th>
-                          <th style={{ width: '400px' }}>Fullname</th>
+                          <th style={{ width: '400px' }}>Full Name</th>
                           <th>Email</th>
                           <th style={{ width: '250px' }}>Phone</th>
                           <th style={{ width: '180px' }}>

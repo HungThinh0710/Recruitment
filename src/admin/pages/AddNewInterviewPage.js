@@ -59,8 +59,8 @@ export default class AddNewInterviewPage extends Component {
         value: 2,
         label: 2
       },
-      selectedInterviewerOption: null,
-      selectedCandidateOption: null,
+      selectedInterviewerOption: [],
+      selectedCandidateOption: [],
       urlInterview: '',
       errorNameMessage: 'Name is required',
       errorInterviewers: [],
@@ -104,6 +104,7 @@ export default class AddNewInterviewPage extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+
     data1.map(e => {
       var interviewer = {
         id: e.id,
@@ -113,7 +114,8 @@ export default class AddNewInterviewPage extends Component {
       optionInterviewer.push(interviewer);
       return optionInterviewer;
     });
-    data2.map(e => {
+    var dataCandidateFilter = data2.filter(e => e.status === 3);
+    dataCandidateFilter.map(e => {
       var candidate = {
         id: e.id,
         value: e.fullname,
@@ -266,11 +268,11 @@ export default class AddNewInterviewPage extends Component {
     dataCandidate.map(e => {
       var data2 = this.fetchCandidate(e);
       data2.then(res => {
-        var interviewer = {
+        var candidate = {
           fullname: res.fullname,
           interviews: res.interviews
         };
-        dataFetchCandidate.push(interviewer);
+        dataFetchCandidate.push(candidate);
       });
       return dataFetchCandidate;
     });

@@ -34,7 +34,7 @@ export default class AddNewJobPage extends Component {
       salaryBegin: '',
       salaryEnd: '',
       status: 'Full-time',
-      experience: '1 year',
+      experience: 'No experience',
       amount: 0,
       publishedOn: '',
       deadline: '',
@@ -121,6 +121,9 @@ export default class AddNewJobPage extends Component {
     }
 
     switch (experience) {
+      case 'No experience':
+        exp = 0;
+        break;
       case '1 year':
         exp = 1;
         break;
@@ -574,6 +577,7 @@ export default class AddNewJobPage extends Component {
                   id="exampleSelect"
                   onChange={this.handleChange}
                 >
+                  <option>No experience</option>
                   <option>1 year</option>
                   <option>2 years</option>
                   <option>3 years</option>

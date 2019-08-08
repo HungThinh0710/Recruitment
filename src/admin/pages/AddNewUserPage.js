@@ -42,7 +42,7 @@ export default class AddNewUserPage extends Component {
       totalItems: '',
       formError: {
         name: 'Username is required',
-        fullname: 'Fullname is required',
+        fullname: 'Full Name is required',
         email: 'Email is required',
         phone: 'Phone is required',
         password: 'Password is required',
@@ -223,12 +223,12 @@ export default class AddNewUserPage extends Component {
         break;
       case 'fullname':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'email':
@@ -353,7 +353,7 @@ export default class AddNewUserPage extends Component {
         {/*--------Modal-Error-----*/}
 
         <CardHeader className="card-header-custom">
-          Create A New Role
+          Create A New User
         </CardHeader>
         {this.state.loading ? (
           <div
@@ -387,7 +387,7 @@ export default class AddNewUserPage extends Component {
                 </FormGroup>
                 <FormGroup>
                   <Label className="title-input" for="Fullname">
-                    Fullname
+                    Full Name
                   </Label>
                   <Input
                     type="text"

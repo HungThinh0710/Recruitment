@@ -12,16 +12,16 @@ import {
   Input,
   Label
 } from 'reactstrap';
-import Modal from './Modal';
-import ButtonReset from './ButtonReset';
+import Modal from '../../components/Modal';
+import ButtonReset from '../../components/ButtonReset';
 import classnames from 'classnames';
 import {
   MdAccountBox,
   MdPermDataSetting,
   MdContactPhone
 } from 'react-icons/md';
-import '../pages/ProfilePage.css';
-import '../pages/ChangeAccountPage';
+import '../../pages/ProfilePage.css';
+import '../../pages/ChangeAccountPage';
 export default class TabInformation extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +32,8 @@ export default class TabInformation extends Component {
       fullname: '',
       email: '',
       phone: '',
-      address: ''
+      address: '',
+      Skill: '',
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -43,15 +44,16 @@ export default class TabInformation extends Component {
     });
   }
   handleSubmit = () => {
-    const { fullname, email, phone, address } = this.state;
-    var url = 'https://api.enclavei3.tk/api/profile';
+    const { fullname, email, phone, address,Skill } = this.state;
+    var url = 'https://api.enclavei3.tk/api/interviewer';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
         fullname: fullname,
         email: email,
         phone: phone,
-        address: address
+        address: address,
+        Skill: Skill,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -61,7 +63,8 @@ export default class TabInformation extends Component {
     })
       .then(res => {
         res.json().then(data => {
-          this.props.function(fullname, email, phone, address);
+          this.props.function(fullname, email, phone, address,Skill);
+          
         });
       })
       .catch(error => console.error('Error:', error));
@@ -75,6 +78,14 @@ export default class TabInformation extends Component {
     }
   }
   render() {
+    var i = 0;
+    var string = '';
+    {this.props.Skill.map(e => {
+        string += e.name + ': ' + e.year + ' years; ';
+        return string;
+    })}
+    var length = string.length;
+    var newString = string.slice(0, length - 2);
     return (
       <div className="persional-title">
         <h4 style={{ fontSize: '200%' }}>{this.props.fullName}</h4>
@@ -117,16 +128,16 @@ export default class TabInformation extends Component {
             </Row>
             <br />
             <Row>
-              <Col className="contact-information">
-                <h6>Username:</h6>
+              <Col >
+                <h6>Fullname:</h6>
                 <br />
-                <h6>Full Name:</h6>
+                <h6 >Skill:</h6>
                 <br />
               </Col>
               <Col className="contact-information">
-                <h6>{this.props.name}</h6>
+                <h6 style ={{marginLeft:'-60%'}}>{this.props.fullName}</h6>
                 <br />
-                <h6>{this.props.fullName}</h6>
+                <h6 style ={{marginLeft:'-60%'}}>{newString}</h6>
                 <br />
               </Col>
             </Row>

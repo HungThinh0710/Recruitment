@@ -232,6 +232,9 @@ export default class ModalEditJob extends Component {
       salary = salaryBegin + '$';
     }
     switch (experience) {
+      case 'No experience':
+        exp = 0;
+        break;
       case '1 year':
         exp = 1;
         break;
@@ -685,6 +688,7 @@ export default class ModalEditJob extends Component {
                     value={this.state.experience}
                     onChange={this.handleChange}
                   >
+                    <option>No experience</option>
                     <option>1 year</option>
                     <option>2 years</option>
                     <option>3 years</option>

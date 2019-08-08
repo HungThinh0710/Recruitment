@@ -153,7 +153,7 @@ export default class Tab extends Component {
               <Col className="contact-information">
                 <h6>Name:</h6>
                 <br />
-                <h6>FullName:</h6>
+                <h6>Full Name:</h6>
                 <br />
               </Col>
               <Col className="contact-information">

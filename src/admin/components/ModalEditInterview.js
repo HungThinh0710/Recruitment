@@ -158,6 +158,7 @@ export default class ModalEditUser extends Component {
       selectedInterviewerOption.push(currentInterviewer);
       return selectedInterviewerOption;
     });
+
     data1.candidates.map(e => {
       var currentCandidate = {
         id: e.id,
@@ -173,7 +174,8 @@ export default class ModalEditUser extends Component {
       optionInterviewer.push(interviewer);
       return optionInterviewer;
     });
-    dataCandidates.map(e => {
+    var dataCandidatesFilter = dataCandidates.filter(e => e.status === 3);
+    dataCandidatesFilter.map(e => {
       var candidate = { id: e.id, value: e.fullname, label: e.fullname };
       optionCandidate.push(candidate);
       return optionCandidate;
@@ -279,7 +281,29 @@ export default class ModalEditUser extends Component {
       modalErrorDate: !prevState.modalErrorDate
     }));
   }
+  async fetchInterviewer(id) {
+    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
+    const data = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    return data;
+  }
 
+  async fetchCandidate(id) {
+    var url = 'https://api.enclavei3.tk/api/candidate/' + id;
+    const data = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => res.json());
+    return data;
+  }
   handleSubmit() {
     const {
       timeStart,

@@ -30,6 +30,7 @@ import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import './JobDetail.css';
 import moment from 'moment';
+import axios from 'axios';
 export default class ArticleDetail extends Component {
   constructor(props) {
     super(props);
@@ -64,7 +65,8 @@ export default class ArticleDetail extends Component {
       isDisabled: false,
       showJobError: false,
       loading: true,
-      image: ''
+      image: '',
+      editImage: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
@@ -97,6 +99,7 @@ export default class ArticleDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    
     const data1 = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -177,6 +180,7 @@ export default class ArticleDetail extends Component {
             userName: data1.user.fullname,
             created_at: data1.created_at,
             updated_at: data1.updated_at,
+            image: data1.image,
             loading: false,
             editTitle: data1.title,
             editContent: data1.content,
@@ -203,6 +207,7 @@ export default class ArticleDetail extends Component {
             title: data1.title,
             content: data1.content,
             status: status,
+            image: data1.image,
             jobId: null,
             jobName: null,
             catId: data1.catId,
@@ -240,6 +245,89 @@ export default class ArticleDetail extends Component {
     });
   };
 
+  handleSubmit = () => {
+    const { id } = this.props.match.params;
+    const {
+      editTitle,
+      editContent,
+      selectedCategoryOption,
+      selectedJobOption,
+      editStatus,
+      editImage
+    } = this.state;
+    var jobId = 0;
+    var catId = 0;
+    var statusString = '';
+    if (selectedCategoryOption) catId = selectedCategoryOption.id;
+    if (selectedJobOption) jobId = selectedJobOption.id;
+    const formData = new FormData();
+    if (jobId === 0) {
+      if (editImage) {
+        formData.set('title', editTitle);
+        formData.set('content', editContent);
+        formData.set('catId', catId);
+        formData.set('isPublic', editStatus);
+        formData.append('image', editImage);
+      } else {
+        formData.set('title', editTitle);
+        formData.set('content', editContent);
+        formData.set('catId', catId);
+        formData.set('isPublic', editStatus);
+      }
+    } else {
+      if (editImage) {
+        formData.set('title', editTitle);
+        formData.set('content', editContent);
+        formData.set('catId', catId);
+        formData.set('jobId', jobId);
+        formData.set('isPublic', editStatus);
+        formData.append('image', editImage);
+      } else {
+        formData.set('title', editTitle);
+        formData.set('content', editContent);
+        formData.set('catId', catId);
+        formData.set('jobId', jobId);
+        formData.set('isPublic', editStatus);
+      }
+    }
+    let configs = {
+      header: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json'
+      }
+    };
+
+    var url = 'https://api.enclavei3.tk/api/article/' + id;
+
+    axios.defaults.headers.common = {
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    };
+    var urlHT = 'https://api.enclavei3.tk/api/article/' + id;
+    axios
+      .post(urlHT, formData, {})
+      .then(res => {
+        if (res.status === 401) {
+          alert('Add Failed');
+        }
+        if (res.status === 422) {
+          this.toggleModalError();
+          const dataArray = Object.keys(res.data.errors).map(
+            i => res.data.errors[i]
+          );
+          this.setState({
+            errorData: dataArray
+          });
+        }
+        if (res.status === 200) {
+          this.toggleModalSuccess();
+          this.componentDidMount();
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  };
+
   handleChangeStatus = () => {
     let { editStatus } = this.state;
     let status = 0;
@@ -259,82 +347,78 @@ export default class ArticleDetail extends Component {
       editTitle,
       editContent,
       selectedCategoryOption,
-      selectedJobOption
+      selectedJobOption,
+      editImage
     } = this.state;
-    var body = '';
     var jobId = 0;
     var catId = 0;
     var statusString = '';
     if (selectedCategoryOption) catId = selectedCategoryOption.id;
     if (selectedJobOption) jobId = selectedJobOption.id;
-    var body = '';
-    jobId === 0
-      ? (body = {
-          title: editTitle,
-          content: editContent,
-          catId: catId,
-          isPublic: status
-        })
-      : (body = {
-          title: editTitle,
-          content: editContent,
-          catId: catId,
-          jobId: jobId,
-          isPublic: status
-        });
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+    const formData = new FormData();
+    if (jobId === 0) {
+      if (editImage) {
+        formData.set('title', editTitle);
+        formData.set('content', editContent);
+        formData.set('catId', catId);
+        formData.set('isPublic', status);
+        formData.append('image', editImage);
+      } else {
+        formData.set('title', editTitle);
+        formData.set('content', editContent);
+        formData.set('catId', catId);
+        formData.set('isPublic', status);
       }
-    })
+    } else {
+      if (editImage) {
+        formData.set('title', editTitle);
+        formData.set('content', editContent);
+        formData.set('catId', catId);
+        formData.set('jobId', jobId);
+        formData.set('isPublic', status);
+        formData.append('image', editImage);
+      } else {
+        formData.set('title', editTitle);
+        formData.set('content', editContent);
+        formData.set('catId', catId);
+        formData.set('jobId', jobId);
+        formData.set('isPublic', status);
+      }
+    }
+    let configs = {
+      header: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json'
+      }
+    };
+
+    var url = 'https://api.enclavei3.tk/api/article/' + id;
+
+    axios.defaults.headers.common = {
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json'
+    };
+    var urlHT = 'https://api.enclavei3.tk/api/article/' + id;
+    axios
+      .post(urlHT, formData, {})
       .then(res => {
         if (res.status === 401) {
-          alert('Update Failed');
+          alert('Add Failed');
         }
+
         if (res.status === 422) {
           this.toggleModalError();
-          res.json().then(data => {
-            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
-            this.setState({
-              errorData: dataArray
-            });
+          const dataArray = Object.keys(res.data.errors).map(
+            i => res.data.errors[i]
+          );
+          this.setState({
+            errorData: dataArray
           });
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          res.json().then(data => {
-            status === 1
-              ? (statusString = 'Publised')
-              : (statusString = 'Not publised');
-            if (selectedJobOption) {
-              this.setState({
-                title: editTitle,
-                content: editContent,
-                selectedJobOption: selectedJobOption,
-                selectedCategoryOption: selectedCategoryOption,
-                jobName: selectedJobOption.value,
-                jobId: selectedJobOption.id,
-                catName: selectedCategoryOption.value,
-                status: statusString
-              });
-            } else {
-              this.setState({
-                title: editTitle,
-                content: editContent,
-                selectedJobOption: selectedJobOption,
-                selectedCategoryOption: selectedCategoryOption,
-                jobName: null,
-                jobId: null,
-                catName: selectedCategoryOption.value,
-                status: statusString
-              });
-            }
-          });
+          this.componentDidMount();
         }
       })
       .catch(error => console.error('Error:', error));
@@ -412,93 +496,13 @@ export default class ArticleDetail extends Component {
       errorTitle: errorTitle
     });
   }
+  handleChangeImage = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      var url = URL.createObjectURL(e.target.files[0]);
 
-  handleSubmit = () => {
-    const { id } = this.props.match.params;
-    const {
-      editTitle,
-      editContent,
-      selectedCategoryOption,
-      selectedJobOption,
-      editStatus
-    } = this.state;
-    var body = '';
-    var jobId = 0;
-    var catId = 0;
-    var status = '';
-    if (selectedCategoryOption) catId = selectedCategoryOption.id;
-    if (selectedJobOption) jobId = selectedJobOption.id;
-    var body = '';
-    jobId === 0
-      ? (body = {
-          title: editTitle,
-          content: editContent,
-          catId: catId,
-          isPublic: editStatus
-        })
-      : (body = {
-          title: editTitle,
-          content: editContent,
-          catId: catId,
-          jobId: jobId,
-          isPublic: editStatus
-        });
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    })
-      .then(res => {
-        if (res.status === 401) {
-          alert('Update Failed');
-        }
-        if (res.status === 422) {
-          this.toggleModalError();
-          res.json().then(data => {
-            const dataArray = Object.keys(data.errors).map(i => data.errors[i]);
-            this.setState({
-              errorData: dataArray
-            });
-          });
-        }
-        if (res.status === 200) {
-          this.toggleModalSuccess();
-          res.json().then(data => {
-            editStatus === 1
-              ? (status = 'Publised')
-              : (status = 'Not publised');
-            if (selectedJobOption) {
-              this.setState({
-                title: editTitle,
-                content: editContent,
-                selectedJobOption: selectedJobOption,
-                selectedCategoryOption: selectedCategoryOption,
-                jobName: selectedJobOption.value,
-                jobId: selectedJobOption.id,
-                catName: selectedCategoryOption.value,
-                status: status
-              });
-            } else {
-              this.setState({
-                title: editTitle,
-                content: editContent,
-                selectedJobOption: selectedJobOption,
-                selectedCategoryOption: selectedCategoryOption,
-                jobName: null,
-                jobId: null,
-                catName: selectedCategoryOption.value,
-                status: status
-              });
-            }
-          });
-        }
-      })
-      .catch(error => console.error('Error:', error));
+      this.setState({ url: url, editImage: image });
+    }
   };
 
   render() {
@@ -516,6 +520,8 @@ export default class ArticleDetail extends Component {
     if (showJobError == false) {
       check = true;
     }
+    var imageURL =
+      'https://api.enclavei3.tk/upload/images/articles/' + this.state.image;
 
     return (
       <Card className="dashboard-card">
@@ -587,7 +593,16 @@ export default class ArticleDetail extends Component {
           <ModalHeader toggle={this.toggleModalPreview}>
             Title: {this.state.title}
           </ModalHeader>
-          <ModalBody>{renderHTML(this.state.editContent)}</ModalBody>
+          <ModalBody>
+            <div>
+              <img
+                src={this.state.url}
+                style={{ width: '100%', marginBottom: '30px' }}
+              />
+              <br />
+              {renderHTML(this.state.editContent)}
+            </div>
+          </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModalPreview}>
               Cancel
@@ -618,6 +633,24 @@ export default class ArticleDetail extends Component {
         ) : (
           <CardBody>
             <Container>
+              <br />
+              {this.state.image && (
+                <Row>
+                  <div
+                    style={{
+                      backgroundImage: "url('" + imageURL + "')",
+                      width: '100%',
+                      height: '600px',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: 'cover'
+                    }}
+                  />
+                </Row>
+              )}
+              
+              <br />
+              <br />
               <Row style={{ justifyContent: 'center' }}>
                 <div className="table-test" style={{ width: '100%' }}>
                   <table style={{ width: '100%' }}>
@@ -704,7 +737,6 @@ export default class ArticleDetail extends Component {
                   </Nav>
                 </div>
               </Row>
-
               <br />
               <br />
               <Row>
@@ -813,6 +845,17 @@ export default class ArticleDetail extends Component {
                               />
                             </div>
                           </FormGroup>
+                          <FormGroup>
+                            <Label className="title-input" for="Content">
+                              Image
+                            </Label>
+
+                            <Input
+                              type="file"
+                              name="editImage"
+                              onChange={this.handleChangeImage}
+                            />
+                          </FormGroup>
                           {this.state.content && (
                             <FormGroup>
                               <Label className="title-input" for="Content">
@@ -839,7 +882,7 @@ export default class ArticleDetail extends Component {
                               style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
-                                width: '350px'
+                                width: '380px'
                               }}
                             >
                               <Button
@@ -874,7 +917,7 @@ export default class ArticleDetail extends Component {
                                       onClick={this.handleChangeStatus}
                                       color="warning"
                                     >
-                                      Close
+                                      Unpublished
                                     </Button>
                                   ) : (
                                     <Button
@@ -883,7 +926,7 @@ export default class ArticleDetail extends Component {
                                       )}
                                       color="warning"
                                     >
-                                      Close
+                                      Unpublished
                                     </Button>
                                   )}
                                 </div>

@@ -353,30 +353,7 @@ export default class UserDetail extends Component {
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          res.json().then(data => {
-            array2.map(e => {
-              var url2 = 'https://api.enclavei3.tk/api/role/' + e;
-              fetch(url2, {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                  Authorization:
-                    'Bearer ' + localStorage.getItem('access_token')
-                }
-              }).then(res => {
-                res.json().then(data => {
-                  listEditRoles.push(data);
-                });
-              });
-            });
-            this.setState({
-              fullName: editFullName,
-              email: editEmail,
-              phone: editPhone,
-              address: editAddress,
-              roles: listEditRoles
-            });
-          });
+          this.componentDidMount();
         }
       })
       .catch(error => console.error('Error:', error));
@@ -492,7 +469,10 @@ export default class UserDetail extends Component {
                     <Col xs="4">
                       <img
                         className="avatar"
-                        src="/static/media/100_3.6e25d86d.jpg"
+                        src={
+                          'https://api.enclavei3.tk/upload/images/avatars/' +
+                          `${this.state.image}`
+                        }
                         alt="Card image cap"
                       />
                     </Col>

@@ -51,6 +51,7 @@ export default class ModalEditRole extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+
     data1.permissions.map(e => {
       var currentPermission = { id: e.id, value: e.name, label: e.name };
       selectedPermissionOption.push(currentPermission);
@@ -255,7 +256,7 @@ export default class ModalEditRole extends Component {
             <Form>
               <FormGroup>
                 <Label for="roleName" className="title-input">
-                  Role:
+                  Name:
                 </Label>
                 <Input
                   type="text"
