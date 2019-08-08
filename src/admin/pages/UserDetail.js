@@ -675,7 +675,7 @@ export default class UserDetail extends Component {
                             <CardBody>
                               <Form onSubmit={this.handleSubmit}>
                                 <FormGroup>
-                                  <Label for="Fullname">Fullname</Label>
+                                  <Label for="Fullname">Full Name</Label>
                                   <Input
                                     type="text"
                                     name="editFullName"
