@@ -33,7 +33,7 @@ export default class ChangeProfilePage extends Component {
   }
   handleSubmit = () => {
     const { fullname, email, phone, address } = this.state;
-    var url = 'https://api.enclavei3.tk/api/profile';
+    var url = 'https://api.enclavei3dev.tk/api/profile';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -61,7 +61,7 @@ export default class ChangeProfilePage extends Component {
         <CardBody>
           <Form id="profile-form" onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="exampleName">Fullname</Label>
+              <Label for="exampleName">Full Name</Label>
               <Input
                 type="text"
                 name="fullname"

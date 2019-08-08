@@ -67,14 +67,14 @@ jobs:
             command: |
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 scp -r frontend.tar.gz hungthinh@168.63.251.210:~/
-                ssh -tt hungthinh@168.63.251.210 'cd ../enclavei3.tk/public_html/ && sudo rm -rf * && sudo mv ../../hungthinh/frontend.tar.gz /home/enclavei3.tk/public_html && sudo tar xf frontend.tar.gz && sudo rm -rf frontend.tar.gz && exit && exit'
+                ssh -tt hungthinh@168.63.251.210 'cd ../enclavei3dev.tk/public_html/ && sudo rm -rf * && sudo mv ../../hungthinh/frontend.tar.gz /home/enclavei3dev.tk/public_html && sudo tar xf frontend.tar.gz && sudo rm -rf frontend.tar.gz && exit && exit'
               fi
       - run:
             name: test deploy to dev server
             command: |
               if [ "${CIRCLE_BRANCH}" == "dev" ]; then
                 scp -r frontend.tar.gz hungthinh@13.76.3.251:~/
-                ssh -tt hungthinh@13.76.3.251 'cd ../enclavei3.tk/public_html/ && sudo rm -rf * && sudo mv ../../hungthinh/frontend.tar.gz /home/enclavei3.tk/public_html && sudo tar xf frontend.tar.gz && sudo rm -rf frontend.tar.gz && exit && exit'
+                ssh -tt hungthinh@13.76.3.251 'cd ../enclavei3dev.tk/public_html/ && sudo rm -rf * && sudo mv ../../hungthinh/frontend.tar.gz /home/enclavei3dev.tk/public_html && sudo tar xf frontend.tar.gz && sudo rm -rf frontend.tar.gz && exit && exit'
               fi    
 workflows:
   version: 2

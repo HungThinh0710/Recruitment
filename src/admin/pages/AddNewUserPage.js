@@ -42,7 +42,7 @@ export default class AddNewUserPage extends Component {
       totalItems: '',
       formError: {
         name: 'Username is required',
-        fullname: 'Fullname is required',
+        fullname: 'Full Name is required',
         email: 'Email is required',
         phone: 'Phone is required',
         password: 'Password is required',
@@ -72,7 +72,7 @@ export default class AddNewUserPage extends Component {
   }
   async componentDidMount() {
     var { optionRole } = this.state;
-    var url = 'https://api.enclavei3.tk/api/list-role';
+    var url = 'https://api.enclavei3dev.tk/api/list-role';
     await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -139,7 +139,7 @@ export default class AddNewUserPage extends Component {
       array.push(e.id);
       return array;
     });
-    var url = 'https://api.enclavei3.tk/api/user';
+    var url = 'https://api.enclavei3dev.tk/api/user';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -223,12 +223,12 @@ export default class AddNewUserPage extends Component {
         break;
       case 'fullname':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'email':
@@ -387,7 +387,7 @@ export default class AddNewUserPage extends Component {
                 </FormGroup>
                 <FormGroup>
                   <Label className="title-input" for="Fullname">
-                    Fullname
+                    Full Name
                   </Label>
                   <Input
                     type="text"

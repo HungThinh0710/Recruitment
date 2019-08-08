@@ -94,7 +94,7 @@ export default class ProfilePage extends Component {
   }
   async componentDidMount() {
     //const {firstName, lastName, email} = this.state;
-    var url = 'https://api.enclavei3.tk/api/current-profile';
+    var url = 'https://api.enclavei3dev.tk/api/current-profile';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -176,12 +176,12 @@ export default class ProfilePage extends Component {
     switch (event.target.name) {
       case 'editFullName':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Fullname is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Fullname cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'editEmail':
@@ -268,7 +268,7 @@ export default class ProfilePage extends Component {
     this.setState({
       modalError: false
     });
-    var url = 'https://api.enclavei3.tk/api/profile';
+    var url = 'https://api.enclavei3dev.tk/api/profile';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -315,7 +315,7 @@ export default class ProfilePage extends Component {
 
   handleChangePassword() {
     const { old_password, password, password_confirmation } = this.state;
-    var url = 'https://api.enclavei3.tk/api/change-password';
+    var url = 'https://api.enclavei3dev.tk/api/change-password';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({

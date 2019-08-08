@@ -63,11 +63,11 @@ export default class UsersPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3.tk/api/list-interviewer';
+      url = 'https://api.enclavei3dev.tk/api/list-interviewer';
     } else {
       body = '';
       url =
-        'https://api.enclavei3.tk/api/list-interviewer?page=' +
+        'https://api.enclavei3dev.tk/api/list-interviewer?page=' +
         activePage +
         '&perpage=' +
         perPage;
@@ -119,11 +119,11 @@ export default class UsersPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3.tk/api/list-interviewer';
+      url = 'https://api.enclavei3dev.tk/api/list-interviewer';
     } else {
       body = '';
       url =
-        'https://api.enclavei3.tk/api/list-interviewer?page=' +
+        'https://api.enclavei3dev.tk/api/list-interviewer?page=' +
         pageNumber +
         '&perpage=' +
         perPage;
@@ -154,7 +154,7 @@ export default class UsersPage extends Component {
     const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3.tk/api/interviewer';
+    var url = 'https://api.enclavei3dev.tk/api/interviewer';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -206,7 +206,7 @@ export default class UsersPage extends Component {
   }
   removeManyItems() {
     const { listDeleteId, perPage, keyword } = this.state;
-    var url = 'https://api.enclavei3.tk/api/interviewer';
+    var url = 'https://api.enclavei3dev.tk/api/interviewer';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -413,7 +413,7 @@ export default class UsersPage extends Component {
                         <input type="checkbox" />
                       </th>
                       <th style={{ width: '70px' }}>#</th>
-                      <th style={{ width: '400px' }}>Fullname</th>
+                      <th style={{ width: '400px' }}>Full Name</th>
                       <th>Email</th>
                       <th style={{ width: '250px' }}>Phone</th>
                       <th style={{ width: '180px' }}>
