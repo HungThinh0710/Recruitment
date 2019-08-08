@@ -65,11 +65,11 @@ export default class UsersPage extends Component {
         keyword: keyword,
         property: 'created_at'
       };
-      url = 'https://api.enclavei3dev.tk/api/list-candidate';
+      url = 'https://api.enclavei3.tk/api/list-candidate';
     } else {
       body = { property: 'created_at' };
       url =
-        'https://api.enclavei3dev.tk/api/list-candidate?page=' +
+        'https://api.enclavei3.tk/api/list-candidate?page=' +
         activePage +
         '&perpage=' +
         perPage;
@@ -122,11 +122,11 @@ export default class UsersPage extends Component {
         keyword: keyword,
         property: 'created_at'
       };
-      url = 'https://api.enclavei3dev.tk/api/list-candidate';
+      url = 'https://api.enclavei3.tk/api/list-candidate';
     } else {
       body = { property: 'created_at' };
       url =
-        'https://api.enclavei3dev.tk/api/list-candidate?page=' +
+        'https://api.enclavei3.tk/api/list-candidate?page=' +
         pageNumber +
         '&perpage=' +
         perPage;
@@ -156,7 +156,7 @@ export default class UsersPage extends Component {
     const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/candidate';
+    var url = 'https://api.enclavei3.tk/api/candidate';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -208,7 +208,7 @@ export default class UsersPage extends Component {
   }
   removeManyItems() {
     const { listDeleteId, perPage, keyword } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/candidate';
+    var url = 'https://api.enclavei3.tk/api/candidate';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -406,9 +406,7 @@ export default class UsersPage extends Component {
                 <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
                   <thead className="thead-light">
                     <tr>
-                      <th style={{ width: '70px' }}>
-                        <input type="checkbox" />
-                      </th>
+                      <th style={{ width: '70px' }} />
                       <th style={{ width: '70px' }}>#</th>
                       <th style={{ width: '370px' }}>Full Name</th>
                       <th style={{ width: '370px' }}>Email</th>
