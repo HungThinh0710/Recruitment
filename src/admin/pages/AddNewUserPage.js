@@ -353,7 +353,7 @@ export default class AddNewUserPage extends Component {
         {/*--------Modal-Error-----*/}
 
         <CardHeader className="card-header-custom">
-          Create A New Role
+          Create A New User
         </CardHeader>
         {this.state.loading ? (
           <div

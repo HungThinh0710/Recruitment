@@ -7,7 +7,6 @@ import {
   CardSubtitle,
   CardImg,
   Button,
-  Badge,
   CardText,
   Row,
   Col,
@@ -43,13 +42,12 @@ export default class UserDetail extends Component {
       checkedRole: false,
       activeRole: false,
       // activeTab: '1',
-      activeTab: '2',
+      activeTab: '3',
       name: '',
       fullName: '',
       email: '',
       phone: '',
       address: '',
-      articles: '',
       editFullName: '',
       editEmail: '',
       editPhone: '',
@@ -127,7 +125,6 @@ export default class UserDetail extends Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      
       if (res.status === 403) {
         check = false;
         this.setState({
@@ -138,13 +135,10 @@ export default class UserDetail extends Component {
       if (res.status === 200) {
         res.json().then(response => {
           var data = response;
-          console.log(data);
-          
           check = true;
           this.setState({
             name: data.name,
             fullName: data.fullname,
-            articles: data.articles,
             email: data.email,
             phone: data.phone,
             address: data.address,
@@ -261,12 +255,12 @@ export default class UserDetail extends Component {
     switch (event.target.name) {
       case 'editFullName':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full Name is required';
+          formError.fullname = 'Full name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full Name cannot contain the number/special characters');
+                'Full name cannot contain the number/special characters');
         }
         break;
       case 'editEmail':
@@ -359,30 +353,7 @@ export default class UserDetail extends Component {
         }
         if (res.status === 200) {
           this.toggleModalSuccess();
-          res.json().then(data => {
-            array2.map(e => {
-              var url2 = 'https://api.enclavei3dev.tk/api/role/' + e;
-              fetch(url2, {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                  Authorization:
-                    'Bearer ' + localStorage.getItem('access_token')
-                }
-              }).then(res => {
-                res.json().then(data => {
-                  listEditRoles.push(data);
-                });
-              });
-            });
-            this.setState({
-              fullName: editFullName,
-              email: editEmail,
-              phone: editPhone,
-              address: editAddress,
-              roles: listEditRoles
-            });
-          });
+          this.componentDidMount();
         }
       })
       .catch(error => console.error('Error:', error));
@@ -496,13 +467,14 @@ export default class UserDetail extends Component {
                 <Container style={{ marginTop: '5%' }}>
                   <Row>
                     <Col xs="4">
-                      <div style= {{overflow: 'hidden'}}> 
-                        <img
+                      <img
                         className="avatar"
-                        src={'https://api.enclavei3dev.tk/upload/images/avatars/'+ `${this.state.image}`}
+                        src={
+                          'https://api.enclavei3dev.tk/upload/images/avatars/' +
+                          `${this.state.image}`
+                        }
                         alt="Card image cap"
-                      /></div>
-                     
+                      />
                     </Col>
                     <Col xs="auto" />
                     <Col xs="6">
@@ -531,15 +503,14 @@ export default class UserDetail extends Component {
                       Articles
                     </NavLink>
                   </NavItem>
-                  */}
                   <NavItem>
                     <NavLink
                       className={classnames({ tabactive: this.state.activeTab === '2' })}
                       onClick={() => { this.toggle('2'); }}
                     ><MdMap style={{marginRight:'5px'}}/>
-                      Articles
+                      Interviews
                     </NavLink>
-                  </NavItem> 
+                  </NavItem> */}
                         <NavItem>
                           <NavLink
                             className={classnames({
@@ -627,68 +598,6 @@ export default class UserDetail extends Component {
                     </Col>
                   </Row>
                   </TabPane> */}
-                  <TabPane tabId="2">
-                    <CardBody style={{ paddingLeft: 0, paddingRight: 0 }}>
-                      <div className="table-test">
-                        <table style={{ width: '100%' }}>
-                          <thead>
-                            <tr
-                              style={{
-                                background:
-                                  '#45b649 linear-gradient(180deg, #61c164, #45b649) repeat-x',
-                                color: 'white'
-                              }}
-                            >
-                              <th className="title1">#</th>
-                              <th className="title1">Title</th>
-                              <th className="title1">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.state.articles.map(e => {
-                              i++;
-                              return (
-                                <tr style={{ textAlign: 'center' }} key={e.id}>
-                                  <td className="title1">{i}</td>
-                                  <td className="title1">{e.title}</td>
-                                  {e.isPublic === 1 ? (
-                                    <td className="title1 text-center">
-                                      <Badge
-                                        style={{
-                                          backgroundColor: '#6a82fb',
-                                          color: '#fff',
-                                          width: 80,
-                                          borderRadius:4,
-                                        }}
-                                        pill
-                                      >
-                                        Published
-                                      </Badge>
-                                    </td>
-                                  ) : (
-                                    <td className="title1 text-center">
-                                      <Badge
-                                        style={{
-                                          backgroundColor: '#dd2c00',
-                                          color: '#fff',
-                                          width: 80,
-                                          borderRadius:4,
-                                        }}
-                                        pill
-                                      >
-                                        Closed
-                                      </Badge>
-                                    </td>
-                                  )}
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                        <br />
-                      </div>
-                    </CardBody>
-                  </TabPane>
                     <TabPane tabId="3">
                       <Row>
                         <Col>
@@ -696,7 +605,7 @@ export default class UserDetail extends Component {
                             <CardBody>
                               <Form onSubmit={this.handleSubmit}>
                                 <FormGroup>
-                                  <Label for="Fullname">Full Name</Label>
+                                  <Label for="Fullname">Fullname</Label>
                                   <Input
                                     type="text"
                                     name="editFullName"
