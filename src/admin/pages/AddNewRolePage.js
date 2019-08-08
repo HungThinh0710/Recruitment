@@ -53,8 +53,8 @@ export default class AddNewRolePage extends Component {
   }
   async componentDidMount() {
     var { optionPermission } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/permission';
-    var url2 = 'https://api.enclavei3dev.tk/api/role/1';
+    var url = 'https://api.enclavei3.tk/api/permission';
+    var url2 = 'https://api.enclavei3.tk/api/role/1';
     const data = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -149,7 +149,7 @@ export default class AddNewRolePage extends Component {
       array.push(e.id);
       return array;
     });
-    var url = 'https://api.enclavei3dev.tk/api/role';
+    var url = 'https://api.enclavei3.tk/api/role';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({

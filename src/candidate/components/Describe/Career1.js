@@ -139,7 +139,7 @@ onCopy = () => {
       "Content-Type": "application/json",
     }
     const { id } = this.props.match.params;
-    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
+    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
       headers: headers,
     }).then(response => response.json())
     await this.setState({
@@ -180,7 +180,7 @@ onCopy = () => {
       "experience": "",
       "orderby": "desc"
     }
-    var url = 'https://api.enclavei3dev.tk/api/article-web';
+    var url = 'https://api.enclavei3.tk/api/article-web';
     const data = await fetch(url, {
       method: 'POST',
       headers: headers,
@@ -216,7 +216,7 @@ onCopy = () => {
     formData.set('description', this.state.description);
     formData.set('technicalSkill', arrayString);
     formData.append('file', this.state.selectedFile);
-    var url = 'https://api.enclavei3dev.tk/api/candidate';
+    var url = 'https://api.enclavei3.tk/api/candidate';
     const data = axios.post(url, formData, {}, configs
     )
       .then(res => {
@@ -681,7 +681,7 @@ onCopy = () => {
                 <div className="col-lg-8">
                   <div className="mb-5">
                     {/**/}
-                    <figure className="mb-5"><img src={"https://api.enclavei3dev.tk/upload/images/articles/" + this.state.image} 
+                    <figure className="mb-5"><img src={"https://api.enclavei3.tk/upload/images/articles/" + this.state.image} 
                      alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
                   </div>
                   {renderHTML(this.state.content)}
