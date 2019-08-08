@@ -261,12 +261,12 @@ export default class UserDetail extends Component {
     switch (event.target.name) {
       case 'editFullName':
         if (event.target.value.length === 0) {
-          formError.fullname = 'Full name is required';
+          formError.fullname = 'Full Name is required';
         } else {
           fullNameRegex.test(event.target.value)
             ? (formError.fullname = '')
             : (formError.fullname =
-                'Full name cannot contain the number/special characters');
+                'Full Name cannot contain the number/special characters');
         }
         break;
       case 'editEmail':
@@ -696,7 +696,7 @@ export default class UserDetail extends Component {
                             <CardBody>
                               <Form onSubmit={this.handleSubmit}>
                                 <FormGroup>
-                                  <Label for="Fullname">Fullname</Label>
+                                  <Label for="Fullname">Full Name</Label>
                                   <Input
                                     type="text"
                                     name="editFullName"
