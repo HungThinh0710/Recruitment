@@ -71,7 +71,12 @@ export default class Careers extends Component {
       Accept: 'application/json'
     };
     let body = {
-      count: ''
+      keyword: '',
+      position: '',
+      location: '',
+      category: 'Others',
+      experience: '',
+      orderby: 'desc'
     };
 
     const {
