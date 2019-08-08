@@ -157,9 +157,8 @@ class Header extends React.Component {
     console.log(this.state.arrNotification);
     channel.bind('pusher:subscription_succeeded', function(members) {});
   }
-
   
-
+  
   toggleNotificationPopover = () => {
     this.setState({
       isOpenNotificationPopover: !this.state.isOpenNotificationPopover,
