@@ -19,14 +19,12 @@ export default class Careers extends Component {
       listOther: [],
       listid: this.props.match.params.id,
       copied: false,
-      image: '',
+      image: '', 
+      currentid: '', 
     }
-    console.log(this.state.listid)
     this.handleReload = this.handleReload.bind(this);
     this.onCopy = this.onCopy.bind(this);
   }
-
-
   async componentDidMount() {
     let headers = {
       "Accept": "application/json",
@@ -46,8 +44,8 @@ export default class Careers extends Component {
       title: data.title,
       content: data.content,
       image: data.image,
+      currentid: id,
     });
-    console.log(this.state.jobID)
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
     $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
   }
@@ -58,12 +56,7 @@ export default class Careers extends Component {
       "Accept": "application/json",
     }
     let body = {
-      "keyword": "",
-      "position": "",
-      "location": "",
-      "category": "Others",
-      "experience": "",
-      "orderby": "asc"
+      "count": ""
     }
     const {
       match: {
@@ -80,9 +73,7 @@ export default class Careers extends Component {
       this.setState({
         listOther: data.data,
         listid: data.id,
-
       });
-      console.log(this.state.listOther)
     }, 500);
   }
   handleReload() {
@@ -198,8 +189,9 @@ export default class Careers extends Component {
                     <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
                       <tbody>
                         {listOther.map((list, index) => {
-                          if (index < 10)
-                            return <tr className="border-title">
+                         if (!(this.state.currentid == list.id))
+                         if (index <10)
+                           return <tr className="border-title">
                               <td class="list-group-item article-recommend article-recommend-2" style={{paddingBottom: 3}}>
                                 <NavLink className="item-info" style={{ color: '#212629' }} to={"/information/" + list.id} >{list.title}</NavLink>
                                 <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
