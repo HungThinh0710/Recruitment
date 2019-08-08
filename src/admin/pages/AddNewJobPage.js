@@ -143,7 +143,7 @@ export default class AddNewJobPage extends Component {
         exp = 6;
         break;
     }
-    var url = 'https://api.enclavei3dev.tk/api/job';
+    var url = 'https://api.enclavei3.tk/api/job';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({

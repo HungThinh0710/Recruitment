@@ -1,41 +1,37 @@
 import React from 'react';
 import PropTypes from '../utils/propTypes';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Media } from 'reactstrap';
 import Avatar from '../components/Avatar';
 
-function maskAsRead(idNotification){
-  fetch('https://api.enclavei3.tk/api/notifications/'+idNotification, {
+function maskAsRead(idNotification) {
+  fetch('https://api.enclavei3.tk/api/notifications/' + idNotification, {
     headers: {
-      'Accept': "application/json",
-      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('access_token')
     }
   });
 }
 
 const Notifications = ({ notificationsData }) => {
-  
-  var url = "/dashboard/candidate/";
+  var url = '/dashboard/candidate/';
   if (notificationsData.length == 0) {
     return (
-      <Media key={"null"} className="pb-2">
+      <Media key={'null'} className="pb-2">
         <Media left className="align-self-center pr-3">
           {/* <Avatar tag={Media} object src={avatar} alt="Avatar" /> */}
         </Media>
         <Media body middle className="align-self-center">
-         Don't have notification.
+          Don't have notification.
           {/* <Link style={{ textDecoration: 'none', color: 'black' }} onClick={() => maskAsRead(id)} to={url + candidateId} >{message}</Link> */}
         </Media>
         <Media right className="align-self-center">
           {/* <small className="text-muted">{date}</small> */}
         </Media>
-       </Media>
+      </Media>
     );
-  }
-  else {
-
-
+  } else {
     return (
       notificationsData &&
       notificationsData.length &&
@@ -45,7 +41,13 @@ const Notifications = ({ notificationsData }) => {
             <Avatar tag={Media} object src={avatar} alt="Avatar" />
           </Media>
           <Media body middle className="align-self-center">
-            <Link style={{ textDecoration: 'none', color: 'black' }} onClick={() => maskAsRead(id)} to={url + candidateId} >{message}</Link>
+            <Link
+              style={{ textDecoration: 'none', color: 'black' }}
+              onClick={() => maskAsRead(id)}
+              to={url + candidateId}
+            >
+              {message}
+            </Link>
           </Media>
           <Media right className="align-self-center">
             <small className="text-muted">{date}</small>
@@ -56,8 +58,6 @@ const Notifications = ({ notificationsData }) => {
   }
 };
 
-
-
 Notifications.propTypes = {
   notificationsData: PropTypes.arrayOf(
     PropTypes.shape({
@@ -67,11 +67,11 @@ Notifications.propTypes = {
       date: PropTypes.date,
       candidateId: PropTypes.candidateId
     })
-  ),
+  )
 };
 
 Notifications.defaultProps = {
-  notificationsData: [],
+  notificationsData: []
 };
 
 export default Notifications;

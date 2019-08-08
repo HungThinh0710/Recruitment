@@ -38,7 +38,7 @@ export default class Careers extends Component {
       }
     } = this.props;
 
-    const data = await fetch('https://api.enclavei3dev.tk/api/article-web/' + id, {
+    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
       headers: headers,
     }).then(response => response.json())
     await this.setState({
@@ -70,7 +70,7 @@ export default class Careers extends Component {
         params: { id }
       }
     } = this.props;
-    var url = 'https://api.enclavei3dev.tk/api/article-web';
+    var url = 'https://api.enclavei3.tk/api/article-web';
     const data = await fetch(url, {
       method: 'POST',
       headers: headers,
@@ -184,7 +184,7 @@ export default class Careers extends Component {
               <div className="row">
                 <div className="col-lg-8 image-fixed-info" style={{ textAlign: 'justify' }}>
                   <div className="mb-5">
-                    <figure className="mb-5"><img src={"https://api.enclavei3dev.tk/upload/images/articles/" + this.state.image} alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
+                    <figure className="mb-5"><img src={"https://api.enclavei3.tk/upload/images/articles/" + this.state.image} alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
                   </div>
                   {renderHTML(this.state.content)}
                 </div>

@@ -64,17 +64,17 @@ export default class UsersPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3dev.tk/api/list-user';
+      url = 'https://api.enclavei3.tk/api/list-user';
     } else {
       body = '';
       url =
-        'https://api.enclavei3dev.tk/api/list-user?page=' +
+        'https://api.enclavei3.tk/api/list-user?page=' +
         activePage +
         '&perpage=' +
         perPage;
     }
 
-    var url2 = 'https://api.enclavei3dev.tk/api/list-role';
+    var url2 = 'https://api.enclavei3.tk/api/list-role';
     var data = '';
     fetch(url, {
       method: 'POST',
@@ -149,11 +149,11 @@ export default class UsersPage extends Component {
       body = {
         keyword: keyword
       };
-      url = 'https://api.enclavei3dev.tk/api/list-user';
+      url = 'https://api.enclavei3.tk/api/list-user';
     } else {
       body = '';
       url =
-        'https://api.enclavei3dev.tk/api/list-user?page=' +
+        'https://api.enclavei3.tk/api/list-user?page=' +
         pageNumber +
         '&perpage=' +
         perPage;
@@ -183,7 +183,7 @@ export default class UsersPage extends Component {
     const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3.tk/api/user';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -236,7 +236,7 @@ export default class UsersPage extends Component {
 
   removeManyItems() {
     const { listDeleteId, perPage, keyword } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3.tk/api/user';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -438,9 +438,7 @@ export default class UsersPage extends Component {
                     <table className="table table-responsive-sm table-bordered table-striped table-hover table-custom">
                       <thead className="thead-light">
                         <tr>
-                          <th style={{ width: '70px' }}>
-                            <input type="checkbox" />
-                          </th>
+                          <th style={{ width: '70px' }} />
                           <th style={{ width: '70px' }}>#</th>
                           <th style={{ width: '400px' }}>Full Name</th>
                           <th>Email</th>

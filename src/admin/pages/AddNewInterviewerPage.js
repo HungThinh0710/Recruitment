@@ -191,7 +191,7 @@ export default class AddNewInterviewerPage extends Component {
       return array;
     });
     var arrayString = array.toString();
-    var url = 'https://api.enclavei3dev.tk/api/interviewer';
+    var url = 'https://api.enclavei3.tk/api/interviewer';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -366,7 +366,7 @@ export default class AddNewInterviewerPage extends Component {
         <CardBody>
           <Form>
             <Row>
-              <Col xs="4">
+              {/* <Col xs="4">
                 <div
                   style={{
                     display: 'flex',
@@ -403,8 +403,9 @@ export default class AddNewInterviewerPage extends Component {
                     </Button>
                   </div>
                 </div>
-              </Col>
-              <Col xs="8">
+              </Col> */}
+              {/* <Col xs="8"> */}
+              <Col>
                 <FormGroup>
                   <Label className="title-input" for="exampleName">
                     Full Name

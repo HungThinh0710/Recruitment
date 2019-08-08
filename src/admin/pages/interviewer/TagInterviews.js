@@ -45,7 +45,7 @@ export default class TabInformation extends Component {
   }
   handleSubmit = () => {
     const { fullname, email, phone, address,Skill } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/interviewer';
+    var url = 'https://api.enclavei3.tk/api/interviewer';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({

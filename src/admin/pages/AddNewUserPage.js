@@ -72,7 +72,7 @@ export default class AddNewUserPage extends Component {
   }
   async componentDidMount() {
     var { optionRole } = this.state;
-    var url = 'https://api.enclavei3dev.tk/api/list-role';
+    var url = 'https://api.enclavei3.tk/api/list-role';
     await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -139,7 +139,7 @@ export default class AddNewUserPage extends Component {
       array.push(e.id);
       return array;
     });
-    var url = 'https://api.enclavei3dev.tk/api/user';
+    var url = 'https://api.enclavei3.tk/api/user';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -353,7 +353,7 @@ export default class AddNewUserPage extends Component {
         {/*--------Modal-Error-----*/}
 
         <CardHeader className="card-header-custom">
-          Create A New Role
+          Create A New User
         </CardHeader>
         {this.state.loading ? (
           <div
