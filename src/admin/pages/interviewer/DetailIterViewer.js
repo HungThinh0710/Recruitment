@@ -27,6 +27,7 @@ import { Link } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import 'react-datepicker/dist/react-datepicker.css';
 import classnames from 'classnames';
+import TabInformation from './TagInterviews';
 import '../JobDetail.css';
 import moment from 'moment';
 import TechnicalSkill from '../../components/TechnicalSkill';
@@ -41,6 +42,7 @@ export default class JobDetail extends Component {
       email: '',
       phone: '',
       address: '',
+      image: '',
       interviews: [],
       technicalSkill: [],
       loading: true,
@@ -84,7 +86,7 @@ export default class JobDetail extends Component {
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
-    }).then(res => res.json());
+    }).then(res => res.json());   
     data.technicalSkill.map(e => {
       dataTechnicalSkills.push(e.name + '-' + e.year);
       return dataTechnicalSkills;
@@ -100,6 +102,7 @@ export default class JobDetail extends Component {
         editEmail: data.email,
         phone: data.phone,
         editPhone: data.phone,
+        image: data.image,
         technicalSkill: data.technicalSkill,
         amountTechnicalSkills: data.technicalSkill.length,
         interviews: data.interviews,
@@ -322,7 +325,7 @@ export default class JobDetail extends Component {
 
   render() {
     var i = 0;
-    const { dataTechnicalSkills, formError } = this.state;
+    const { fullname, email, phone, address,dataTechnicalSkills, technicalSkill, formError } = this.state;
     var string = '';
     {
       this.state.technicalSkill.map(e => {
@@ -341,7 +344,10 @@ export default class JobDetail extends Component {
     array.length === 0
       ? (errorTechnicalSkillMessage = 'Technical skill is required')
       : (errorTechnicalSkillMessage = '');
+      // console.log(technicalSkill);
     return (
+     
+      
       <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
         <Modal
@@ -423,37 +429,28 @@ export default class JobDetail extends Component {
         ) : (
           <CardBody>
             <Container>
-              <Row style={{ justifyContent: 'center' }}>
-                <div className="table-test" style={{ width: '100%' }}>
-                  <table style={{ width: '100%' }}>
-                    <tbody style={{ width: '100%' }}>
-                      <tr className="job-title3" key={1}>
-                        <td className="job-title">Fullname</td>
-                        <td className="job-title1">{this.state.fullname}</td>
-                      </tr>
-                      <tr className="job-title3" key={2}>
-                        <td className="job-title">Address</td>
-                        <td className="job-title1">{this.state.address}</td>
-                      </tr>
-                      <tr className="job-title3" key={3}>
-                        <td className="job-title">Email</td>
-                        <td className="job-title1">{this.state.email}</td>
-                      </tr>
-
-                      <tr className="job-title3" key={4}>
-                        <td className="job-title">Phone</td>
-                        <td className="job-title1">{this.state.phone}</td>
-                      </tr>
-                      <tr className="job-title3" key={5}>
-                        <td className="job-title">Skill</td>
-                        <td className="job-title1">
-                          <span>{newString}</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </Row>
+              
+                  <Row>
+                    <Col xs="4">
+                      <div style= {{overflow: 'hidden'}}> 
+                        <img
+                        className="avatar"
+                        src={'https://api.enclavei3dev.tk/upload/interviewer/avatars/'+ `${this.state.image}`}
+                        alt="Card image cap"
+                      /></div>
+                     
+                    </Col>
+                    <Col xs="auto" />
+                    <Col xs="6">
+                      <TabInformation
+                        fullName={fullname}
+                        Technical Skill={technicalSkill}
+                        phone={phone}
+                        email={email}
+                        address={address}
+                      />
+                    </Col>
+                  </Row>
               <br />
               <Row>
                 <div className="job-tabs">
