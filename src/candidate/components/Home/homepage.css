@@ -289,4 +289,6 @@
 .list-group-wrap .list-group-item .item-info {
   font-weight: none !important;
 }
-
+#Home .site-section {
+  padding-bottom: 8rem !important;
+}

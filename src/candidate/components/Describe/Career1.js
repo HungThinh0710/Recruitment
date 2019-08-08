@@ -485,7 +485,7 @@ onCopy = () => {
                         {/* </div> */}
                       <div className="modify-copylink">
                         <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
-                        <button><span class="far fa-copy" aria-hidden="true"/> Link</button>
+                        <button className="hover-clipboard">&nbsp;<span class="far fa-copy" aria-hidden="true">&nbsp;</span> <span style={{fontSize: 14, fontWeight: 'bold'}}> Link&nbsp;</span></button>
                         </CopyToClipboard>
                       </div>
                       </div>
@@ -498,10 +498,6 @@ onCopy = () => {
                     <div className="col-6">
                     </div>
                     <div className="col-sm-6">
-                      <Button block={true} color="success" onClick={this.toggleModal.bind(this)} >Apply Now</Button>
-                      <Button color="danger" className="close"
-                        onClick={this.toggleModal.bind(this)}>{this.props.buttonLabel}
-                      </Button>
                       <Modal id="articleModal" isOpen={this.state.modalisOpen}
                         toggle={this.toggleModal.bind(this)} className={this.props.className}
                       >
@@ -652,7 +648,7 @@ onCopy = () => {
                   <div className="col-lg-4 jobsummary-moblie">
                     <div className="bg-light p-3 border rounded mb-4">
                       <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
-                      <ul className="list-unstyled pl-3 mb-0">
+                      <ul className="list-unstyled pl-3 mb-0" style={{paddingRight: 15}}>
                         <li className="mb-2"><strong className="text-black">Published on:</strong> <IntlProvider locale="fr">
                           <FormattedDate
                             value={this.state.publishedOn}
@@ -673,6 +669,10 @@ onCopy = () => {
                             month="long"
                             year="numeric" />
                         </IntlProvider></li>
+                        <Button block={true} color="success" onClick={this.toggleModal.bind(this)} style={{marginTop: 35}}>Apply Now</Button>
+                      <Button color="danger" className="close"
+                        onClick={this.toggleModal.bind(this)}>{this.props.buttonLabel}
+                      </Button>
                       </ul>
                     </div>
                     
@@ -689,8 +689,8 @@ onCopy = () => {
                 <div className="col-lg-4">
                   <div className="show-jobsummary">
                     <div className="bg-light p-3 border rounded mb-4" style={{height: 400}}>
-                      <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center" style={{paddingBottom: 30, paddingTop: 10}}>Job Summary</h3>
-                      <ul className="list-unstyled pl-3 mb-0 fix-job-padding-left" >
+                      <h3 className="text-jobsummary mt-3 h5 pl-3 mb-3 text-center">Job Summary</h3>
+                      <ul className="list-unstyled pl-3 mb-0 fix-job-padding-left" style={{paddingRight: 15}}>
                         <li className="mb-2"><strong className="text-black">Published on:</strong> <IntlProvider locale="fr">
                           <FormattedDate
                             value={this.state.publishedOn}
@@ -712,6 +712,10 @@ onCopy = () => {
                             year="numeric" />
                         </IntlProvider></li>
                       </ul>
+                      <Button block={true} color="success" onClick={this.toggleModal.bind(this)} style={{marginTop: 35}}>Apply Now</Button>
+                      <Button color="danger" className="close"
+                        onClick={this.toggleModal.bind(this)}>{this.props.buttonLabel}
+                      </Button>
                     </div>
 
                       {/* <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
@@ -732,7 +736,7 @@ onCopy = () => {
                           {listRecommend.map((list, index) => {
                             if (index < 3)
                               return <tr className="border-title">
-                                <td class="list-group-item article-recommend" >
+                                <td class="list-group-item article-recommend" style={{paddingBottom: 3}}>
                                   <Link className="item-info" style={{color: '#212629'}} to={"/article/" + list.id} >{list.title}</Link>
                                   <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
                                     value={list.updated_at}
@@ -753,7 +757,7 @@ onCopy = () => {
                           {listRecommend.map((list, index) => {
                             if (index > 2 && index < 6)
                               return <tr className="border-title">
-                                <td class="list-group-item article-recommend article-recommend-2" >
+                                <td class="list-group-item article-recommend article-recommend-2" style={{paddingBottom: 3}}>
                                   <Link className="item-info" style={{color: '#212629'}} to={"/article/" + list.id} >{list.title}</Link>
                                   <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
                                     value={list.updated_at}
