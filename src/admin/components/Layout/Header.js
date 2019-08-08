@@ -1,10 +1,15 @@
-import Avatar from '../../components/Avatar';
+import { Media } from 'reactstrap';
+
+import Avatar from '../Avatar';
 import { UserCard } from '../../components/Card';
-import Notifications from '../../components/Notifications';
+// import Notifications from '../../components/Notifications';
 import { notificationsData } from '../../demos/header';
 import withBadge from '../../hocs/withBadge';
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
+import Pusher from 'pusher-js';
+import axios from 'axios';
+import NotificationCard from '../../components/NotificationCard'
 import {
   MdMenu,
   MdExitToApp,
@@ -47,13 +52,25 @@ class Header extends React.Component {
       isNotificationConfirmed: false,
       isOpenUserCardPopover: false,
       redirect: false,
+      idUser: '',
       name: '',
       email: '',
-      image: ''
+      image: '',
+      arrNotification: [],
+
     };
   }
+
+  componentDidUpdate(prevProps, prevsState){
+    console.log(this.state.arrNotification)
+    this.setNotifications();
+  }
+  setNotifications(){
+    if(this.state.arrNotification == null){
+      }
+  }
   async componentDidMount() {
-    //const {firstName, lastName, email} = this.state;
+    const {firstName, lastName, email, arrNotification} = this.state;
     var url = 'https://api.enclavei3.tk/api/current-profile';
     const data = await fetch(url, {
       headers: {
@@ -62,11 +79,101 @@ class Header extends React.Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
+    console.log(data.id);
     this.setState({
+      idUser: data.id,
       name: data.name,
       email: data.email,
       image: data.image
     });
+
+    fetch('https://api.enclavei3.tk/api/notifications', {
+      headers: {
+        'Accept': "application/json",
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }).then(res => {
+      res.json().then( dataResponse => {
+        // console.log(dataResponse);
+        // this.setState({arrNotification});
+        // headerClass.setState({ arrNotification: dataResponse });
+        console.log(dataResponse);
+        this.setState({arrNotification: dataResponse});
+      });
+    });
+    console.log(this.state.arrNotification);
+
+
+    //Notification initial
+    // var pusher = new Pusher('app_key');
+    // pusher.connection.bind( 'error', function( err ) {
+    //   if( err.error.data.code === 4004 ) {
+    //     log('>>> detected limit error');
+    //   }
+    // });
+
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('47e53ceb02a16b8a22a7', {
+      cluster: 'ap1',
+      forceTLS: true,
+      auth: {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }
+    });
+
+
+
+    const { idUser } = this.state;
+
+    var channel = pusher.subscribe('user-notifications-id-' + idUser);
+    var event = "send-new-candidates";
+
+
+    console.log("Channel: " + channel);
+
+    console.log(this.state.arrNotification);
+    const abc = this;
+    channel.bind(event, function (data) {
+
+      // console.log("Data ne: " + data);
+      //fetch new notifications.
+      fetch('https://api.enclavei3.tk/api/notifications', {
+        headers: {
+          'Accept': "application/json",
+          'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+      }).then(res => {
+        res.json().then(dataResponse => {
+          // console.log(dataResponse);
+          // this.setState({arrNotification});
+          abc.setState({ arrNotification: dataResponse });
+          
+        });
+      });
+    });
+    console.log(this.state.arrNotification);
+    channel.bind('pusher:subscription_succeeded', function (members) {
+      console.log(members);
+    });
+
+
+
+
+    // channel.bind('pusher:subscription_succeeded', function(members) {
+    //   // for example
+    //   // update_member_count(members.count);
+
+    //   console.log(members);
+    //   // members.each(function(member) {
+    //   //   // for example:
+    //   //   // add_member(member.id, member.info);
+    //   //   console.log(member.id);
+    //   // });
+    // })
   }
 
   toggleNotificationPopover = () => {
@@ -107,7 +214,7 @@ class Header extends React.Component {
 
   render() {
     const { isNotificationConfirmed } = this.state;
-
+var i = 0;
     return (
       <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2">
@@ -119,7 +226,8 @@ class Header extends React.Component {
           </button>
         </Nav>
         <Nav navbar className={bem.e('nav-right')}>
-          {/* <NavItem className="d-inline-flex">
+          {/* Notifications */}
+          <NavItem className="d-inline-flex">
             <NavLink id="Popover1" className="position-relative">
               {isNotificationConfirmed ? (
                 <MdNotificationsNone
@@ -128,12 +236,12 @@ class Header extends React.Component {
                   onClick={this.toggleNotificationPopover}
                 />
               ) : (
-                <MdNotificationsActiveWithBadge
-                  size={25}
-                  className="text-secondary can-click animated swing infinite"
-                  onClick={this.toggleNotificationPopover}
-                />
-              )}
+                  <MdNotificationsActiveWithBadge
+                    size={25}
+                    className="text-secondary can-click animated swing infinite"
+                    onClick={this.toggleNotificationPopover}
+                  />
+                )}
             </NavLink>
             <Popover
               placement="bottom"
@@ -142,10 +250,32 @@ class Header extends React.Component {
               target="Popover1"
             >
               <PopoverBody>
-                <Notifications notificationsData={notificationsData} />
+                {/* <Notifications className="notifications-custom-react" notificationsData={this.state.arrNotification} /> */}
+                {/* <  className="notifications-custom-react" /> */}
+
+                {  this.state.arrNotification.length !==0 ? this.state.arrNotification.
+                 map((arr, index) => 
+                  { 
+                    i++;
+                    return (
+                //     <Media key={i} className="pb-2">
+                //   <Media left className="align-self-center pr-3">
+                //     <Avatar tag={'#'} object src={'avatar'} alt="Avatar" />
+                //   </Media>
+                //   <Media body middle className="align-self-center">
+                //     {'sss'}
+                //   </Media>
+                //   <Media right className="align-self-center">
+                //     <small className="text-muted">{''}</small>
+                //   </Media>
+                // </Media>
+                <NotificationCard />
+                
+                )
+                }):'h'}
               </PopoverBody>
             </Popover>
-          </NavItem> */}
+          </NavItem>
 
           <NavItem>
             <NavLink id="Popover2">
