@@ -196,7 +196,7 @@ export default class Careers extends Component {
                           if (index < 10)
                             return <tr className="border-title">
                               <td class="list-group-item article-recommend article-recommend-2" >
-                                <Link className="item-info" style={{ color: '#212629' }} to={"/article/" + list.id} >{list.title}</Link>
+                                <Link className="item-info" style={{ color: '#212629' }} to={"/information/" + list.id} >{list.title}</Link>
                                 <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
                                   value={list.updated_at}
                                   day="numeric"

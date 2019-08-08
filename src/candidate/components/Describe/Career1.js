@@ -265,7 +265,7 @@ onCopy = () => {
     switch (e.target.name) {
       case 'fullName':
         formErrors.fullName =
-          value.length < 1 ? 'Full name is required' : '';
+          value.length < 1 ? 'Full Name is required' : '';
         break;
       case 'addressed':
         formErrors.addressed =
@@ -511,7 +511,7 @@ onCopy = () => {
                           <Form encType="multipart/form-data" onSubmit={this.handleSubmit} noValidate>
                             <FormGroup>
                               <div className="fullName">
-                                <label class="col-form-label">Full name<span style={{ color: 'red' }}>*</span></label>
+                                <label class="col-form-label">Full Name<span style={{ color: 'red' }}>*</span></label>
                                 <input
                                   class="form-control"
                                   className={formErrors.fullName.length > 0 ? 'error' : null}
@@ -614,7 +614,7 @@ onCopy = () => {
                             </FormGroup>
                             <FormGroup>
                               <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Label className="title-input" for="exampleDescription">
+                                <Label for="exampleDescription">
                                   Technical skill{' '}
                                   <Button
                                     onClick={() => this.createTechnicalSkill()}
