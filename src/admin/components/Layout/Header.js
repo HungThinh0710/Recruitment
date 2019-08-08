@@ -2,14 +2,15 @@ import { Media } from 'reactstrap';
 
 import Avatar from '../Avatar';
 import { UserCard } from '../../components/Card';
-// import Notifications from '../../components/Notifications';
-import { notificationsData } from '../../demos/header';
+import Notifications from '../../components/Notifications';
+// import { notificationsData } from '../../demos/header';
 import withBadge from '../../hocs/withBadge';
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import Pusher from 'pusher-js';
 import axios from 'axios';
 import NotificationCard from '../../components/NotificationCard'
+import Moment from 'moment';
 import {
   MdMenu,
   MdExitToApp,
@@ -31,9 +32,11 @@ import bn from '../../utils/bemnames';
 import './Header.css';
 const bem = bn.create('header');
 
-const MdNotificationsActiveWithBadge = withBadge({
+var test = 100;
+
+var MdNotificationsActiveWithBadge = withBadge({
   size: 'md',
-  color: 'primary',
+  color: 'danger',
   style: {
     top: -10,
     right: -10,
@@ -41,8 +44,9 @@ const MdNotificationsActiveWithBadge = withBadge({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  children: <small>5</small>
+  // children: <small>{test}</small>
 })(MdNotificationsActive);
+
 
 class Header extends React.Component {
   constructor(props) {
@@ -57,20 +61,13 @@ class Header extends React.Component {
       email: '',
       image: '',
       arrNotification: [],
-
+      ringTheBell: false,
+      countNotifications: 0,
     };
   }
 
-  componentDidUpdate(prevProps, prevsState){
-    console.log(this.state.arrNotification)
-    this.setNotifications();
-  }
-  setNotifications(){
-    if(this.state.arrNotification == null){
-      }
-  }
   async componentDidMount() {
-    const {firstName, lastName, email, arrNotification} = this.state;
+    const { firstName, lastName, email, arrNotification } = this.state;
     var url = 'https://api.enclavei3.tk/api/current-profile';
     const data = await fetch(url, {
       headers: {
@@ -79,7 +76,7 @@ class Header extends React.Component {
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => res.json());
-    console.log(data.id);
+    // console.log(data.id);
     this.setState({
       idUser: data.id,
       name: data.name,
@@ -93,15 +90,15 @@ class Header extends React.Component {
         'Authorization': 'Bearer ' + localStorage.getItem('access_token')
       }
     }).then(res => {
-      res.json().then( dataResponse => {
+      res.json().then(dataResponse => {
         // console.log(dataResponse);
         // this.setState({arrNotification});
         // headerClass.setState({ arrNotification: dataResponse });
-        console.log(dataResponse);
-        this.setState({arrNotification: dataResponse});
+        // console.log(dataResponse);
+        this.setState({ arrNotification: dataResponse, countNotifications: dataResponse.length });
       });
     });
-    console.log(this.state.arrNotification);
+    // console.log(this.state.arrNotification);
 
 
     //Notification initial
@@ -112,7 +109,7 @@ class Header extends React.Component {
     //   }
     // });
 
-    Pusher.logToConsole = true;
+    // Pusher.logToConsole = true;
 
     var pusher = new Pusher('47e53ceb02a16b8a22a7', {
       cluster: 'ap1',
@@ -133,9 +130,9 @@ class Header extends React.Component {
     var event = "send-new-candidates";
 
 
-    console.log("Channel: " + channel);
+    // console.log("Channel: " + channel);
 
-    console.log(this.state.arrNotification);
+    // console.log(this.state.arrNotification);
     const abc = this;
     channel.bind(event, function (data) {
 
@@ -150,35 +147,22 @@ class Header extends React.Component {
         res.json().then(dataResponse => {
           // console.log(dataResponse);
           // this.setState({arrNotification});
-          abc.setState({ arrNotification: dataResponse });
-          
+          test = dataResponse.length;
+          abc.setState({ arrNotification: dataResponse, ringTheBell: true, countNotifications: dataResponse.length });
         });
       });
     });
+
     console.log(this.state.arrNotification);
     channel.bind('pusher:subscription_succeeded', function (members) {
-      console.log(members);
     });
 
-
-
-
-    // channel.bind('pusher:subscription_succeeded', function(members) {
-    //   // for example
-    //   // update_member_count(members.count);
-
-    //   console.log(members);
-    //   // members.each(function(member) {
-    //   //   // for example:
-    //   //   // add_member(member.id, member.info);
-    //   //   console.log(member.id);
-    //   // });
-    // })
   }
 
   toggleNotificationPopover = () => {
     this.setState({
-      isOpenNotificationPopover: !this.state.isOpenNotificationPopover
+      isOpenNotificationPopover: !this.state.isOpenNotificationPopover,
+      ringTheBell: false
     });
 
     if (!this.state.isNotificationConfirmed) {
@@ -214,7 +198,34 @@ class Header extends React.Component {
 
   render() {
     const { isNotificationConfirmed } = this.state;
-var i = 0;
+    var i = 0;
+    var data = [];
+    if (this.state.arrNotification.length !== 0) {
+      this.state.arrNotification.
+        map((arr, index) => {
+          // console.log(arr);
+          var item = {
+            id: arr.id,
+            candidateId: arr.data.candidate_id,
+            message: arr.data.candidate_name + " sent an application.",
+            date: Moment(arr.updated_at, "YYYYMMDD h:mm").fromNow(),
+          }
+          if (index < 10)
+            (
+              data.push(item)
+            )
+          if(index = 0){
+            var itemNull = {
+              id: null,
+              candidateId: null,
+              message: "Don't have notification.",
+              date: null,
+            }
+            data.push(itemNull);
+          }
+          return data;
+        })
+    }
     return (
       <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2">
@@ -229,18 +240,19 @@ var i = 0;
           {/* Notifications */}
           <NavItem className="d-inline-flex">
             <NavLink id="Popover1" className="position-relative">
-              {isNotificationConfirmed ? (
+              {this.state.countNotifications == 0 ? (
                 <MdNotificationsNone
                   size={25}
                   className="text-secondary can-click"
                   onClick={this.toggleNotificationPopover}
                 />
               ) : (
-                  <MdNotificationsActiveWithBadge
-                    size={25}
-                    className="text-secondary can-click animated swing infinite"
-                    onClick={this.toggleNotificationPopover}
-                  />
+                    <MdNotificationsActiveWithBadge
+                      data={this.state.countNotifications > 10 ? ("10+") : (this.state.countNotifications) }
+                      size={25}
+                      className="text-secondary can-click animated swing infinite badge-react-count-notify"
+                      onClick={this.toggleNotificationPopover}
+                    ></MdNotificationsActiveWithBadge>
                 )}
             </NavLink>
             <Popover
@@ -253,26 +265,9 @@ var i = 0;
                 {/* <Notifications className="notifications-custom-react" notificationsData={this.state.arrNotification} /> */}
                 {/* <  className="notifications-custom-react" /> */}
 
-                {  this.state.arrNotification.length !==0 ? this.state.arrNotification.
-                 map((arr, index) => 
-                  { 
-                    i++;
-                    return (
-                //     <Media key={i} className="pb-2">
-                //   <Media left className="align-self-center pr-3">
-                //     <Avatar tag={'#'} object src={'avatar'} alt="Avatar" />
-                //   </Media>
-                //   <Media body middle className="align-self-center">
-                //     {'sss'}
-                //   </Media>
-                //   <Media right className="align-self-center">
-                //     <small className="text-muted">{''}</small>
-                //   </Media>
-                // </Media>
-                <NotificationCard />
-                
-                )
-                }):'h'}
+                {/* <div className="text-right"><Link className="a-mask-as-read-header" to="#">Mask all as read</Link></div> */}
+                <Notifications notificationsData={data} />
+                <div className="text-center"><Link to="candidate"><button className="btn btn-more-header w-100">More</button></Link></div>
               </PopoverBody>
             </Popover>
           </NavItem>
@@ -330,3 +325,4 @@ var i = 0;
 }
 
 export default Header;
+
