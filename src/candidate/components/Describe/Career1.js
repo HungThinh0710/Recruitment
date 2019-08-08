@@ -16,7 +16,8 @@ import { HeadProvider, Meta, Title } from 'react-head';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import axios from 'axios';
-import TechnicalSkill from '../TechnicalSkill'
+import TechnicalSkill from '../TechnicalSkill';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const phonevalid = /(09|03|08|07|05|[0|1|2|4|6|8|9])+([0-9]{9})\b/g;
 const formValid = ({ formErrors, ...rest }) => {
@@ -49,6 +50,7 @@ export default class Careers extends Component {
       modalError: false,
       modalSuccess: false,
       jobID: [],
+      listRecommend: [],
       IDapply: '',
       loading: true,
       title: '',
@@ -83,6 +85,7 @@ export default class Careers extends Component {
       dotnet: false,
       java: false,
       Reactjs: false,
+      copied: false,
       listcandidate: [],
       formErrors: {
         fullName: '',
@@ -104,6 +107,7 @@ export default class Careers extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.toggleModalError = this.toggleModalError.bind(this);
     this.toggleModalSuccess = this.toggleModalSuccess.bind(this);
+    this.onCopy = this.onCopy.bind(this);
   }
   toggleAlert() {
     this.setState({
@@ -125,6 +129,9 @@ export default class Careers extends Component {
       modalSuccess: !prevState.modalSuccess
     }));
   }
+onCopy = () => {
+  this.setState({copied: true});
+};
   async componentDidMount() {
     let headers = {
       "Accept": "application/json",
@@ -157,6 +164,33 @@ export default class Careers extends Component {
     link.property = "og:title";
     link.content = "Content should be displayed";
     document.getElementsByTagName('head')[0].append(link);
+  }
+  async componentWillMount() {
+
+    let headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    }
+    let body = {
+      "keyword": "",
+      "position": "",
+      "location": "",
+      "category": "Recruitment",
+      "experience": "",
+      "orderby": "desc"
+    }
+    var url = 'https://api.enclavei3.tk/api/article-web';
+    const data = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(body)
+    }).then(res => res.json());
+    setTimeout(() => {
+      this.setState({
+        listRecommend: data.data,
+      });
+      console.log(this.state.listOther)
+    }, 500);
   }
   handleSubmit() {
     const { fullName,
@@ -322,7 +356,7 @@ export default class Careers extends Component {
 
     document.body.scrollTop = document.documentElement.scrollTop = 0;
     var i = 0;
-    const { formErrors, dataTechnicalSkills, urlInterviewer } = this.state;
+    const { formErrors, dataTechnicalSkills, urlInterviewer, listRecommend } = this.state;
     var array = [];
     dataTechnicalSkills.map(e => {
       if (typeof e == 'string') array.push(e);
@@ -615,25 +649,30 @@ export default class Careers extends Component {
                     <div className="bg-light p-3 border rounded">
                       {/* <h3 className="text-primary  mt-3 h5 pl-3 mb-3 text-center"> </h3> */}
                       <div className="row text-center">
-                      <div className="col-6">
-                        <div class="fb-share-button"
-                          data-href={"https://enclavei3.tk/article/" + id}
-                          data-layout="button_count"
-                          data-size="large">
-                        </div>
+                        <div className="col-4">
+                          <div class="fb-share-button"
+                            data-href={"https://enclavei3.tk/article/" + id}
+                            data-layout="button_count"
+                            data-size="large">
+                          </div>
                         </div>
                         <p></p>
-                        <div className="col-6">
-                        <a class="twitter-share-button ml-auto"
-                          href={"https://enclavei3.tk/article/" + id}
-                          data-size="large">
-                          Tweet</a>
-                          </div>
-                          </div>
-                        {/* <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter" /></NavLink> */}
-                        {/* <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-instagram" /></NavLink>
+                        <div className="col-4">
+                          <a class="twitter-share-button ml-auto"
+                            href={"https://enclavei3.tk/article/" + id}
+                            data-size="large">
+                            Tweet</a>
+                        </div>
+                        <div className="col-4 modify-copylink">
+                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3.tk/information/" +id}>
+                          <button>Copy link</button>
+                        </CopyToClipboard>
+                      </div>
+                      </div>
+                      {/* <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter" /></NavLink> */}
+                      {/* <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="pt-3 pb-3 pr-3 pl-0"><span class="icon-skype" /></NavLink> */}
-                      
+
                     </div>
                   </div>
                 </div>
@@ -671,35 +710,94 @@ export default class Careers extends Component {
                       </ul>
                     </div>
                     <div className="bg-light p-3 border rounded">
-                     <div className="row text-center">
-                      <div className="col-6">
-                        <div class="fb-share-button"
-                          data-href={"https://enclavei3.tk/article/" + id}
-                          data-layout="button_count"
-                          data-size="large">
-                        </div>
+                      <div className="row text-center">
+                        <div className="col-4">
+                          <div class="fb-share-button"
+                            data-href={"https://enclavei3.tk/article/" + id}
+                            data-layout="button_count"
+                            data-size="large">
+                          </div>
                         </div>
                         <p></p>
-                        <div className="col-6">
-                        <a class="twitter-share-button ml-auto"
-                          href={"https://enclavei3.tk/article/" + id}
-                          data-size="large">
-                          Tweet</a>
-                          </div>
-                          </div>
-                          
+                        <div className="col-4">
+                          <a class="twitter-share-button ml-auto"
+                            href={"https://enclavei3.tk/article/" + id}
+                            data-size="large">
+                            Tweet</a>
+                        </div>
+                        <div className="col-4 modify-copylink">
+                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3.tk/information/" +id}>
+                          <button>Copy link</button>
+                        </CopyToClipboard>
+                      </div>
+                      </div>
+
                       {/* <NavLink to={"#"} className="col-lg-3"><span class="icon-twitter" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-instagram" /></NavLink>
                         <NavLink to={"#"} className="col-lg-3"><span class="icon-skype" /></NavLink> */}
-                    
+
+                    </div>
                   </div>
+                </div>
+                <div className="col-lg-8 recommendjob">
+
+
+                  <h3 className="panel-title-article">We recommend</h3>
+                  <div className="row">
+                    <div className="col-lg-6 panel-article mr-auto">
+                      <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
+                        <tbody>
+                          {listRecommend.map((list, index) => {
+                            if (index < 3)
+                              return <tr className="border-title">
+                                <td class="list-group-item article-recommend" >
+                                  <Link className="item-info" to={"/article/" + list.id} >{list.title}</Link>
+                                  <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
+                                    value={list.updated_at}
+                                    day="numeric"
+                                    month="long"
+                                    year="numeric" />
+                                  </IntlProvider>
+                                  </h6>
+                                </td>
+                              </tr>
+                          })}
+                        </tbody>
+                      </div>
+                    </div>
+                    <div className="col-lg-6 panel-article ml-auto">
+                      <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
+                        <tbody>
+
+
+                          {listRecommend.map((list, index) => {
+                            if (index > 2 && index < 6)
+                              return <tr className="border-title">
+                                <td class="list-group-item article-recommend" >
+                                  <Link className="item-info" to={"/article/" + list.id} >{list.title}</Link>
+                                  <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
+                                    value={list.updated_at}
+                                    day="numeric"
+                                    month="long"
+                                    year="numeric" />
+                                  </IntlProvider>
+                                  </h6>
+                                </td>
+                              </tr>
+                          })}
+
+
+                        </tbody>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
-            </div>
           </section>
-        <Newfooter />
-      </div>
+          <Newfooter />
+        </div>
       </div >
     )
   }
