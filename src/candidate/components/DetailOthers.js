@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import RouterURL from '../components/RouterURL';
-import { Button, Modal, ModalFooter, Form, ModalBody, FormGroup, Label, ModalHeader } from 'reactstrap';
+import {
+  Button,
+  Modal,
+  ModalFooter,
+  Form,
+  ModalBody,
+  FormGroup,
+  Label,
+  ModalHeader
+} from 'reactstrap';
 import './DetailOthers.css';
 import { NavLink, Link } from 'react-router-dom';
 import Newfooter from '../components/Newfooter';
@@ -19,17 +28,19 @@ export default class Careers extends Component {
       listOther: [],
       listid: this.props.match.params.id,
       copied: false,
+
       image: '', 
       currentid: '', 
     }
     this.handleReload = this.handleReload.bind(this);
     this.onCopy = this.onCopy.bind(this);
   }
+
   async componentDidMount() {
     let headers = {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-    }
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    };
     const {
       match: {
         params: { id }
@@ -37,27 +48,30 @@ export default class Careers extends Component {
     } = this.props;
 
     const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
-      headers: headers,
-    }).then(response => response.json())
+      headers: headers
+    }).then(response => response.json());
     await this.setState({
       jobID: data,
       title: data.title,
       content: data.content,
+
       image: data.image,
       currentid: id,
     });
     $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
     $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
+
   }
   async componentWillMount() {
-
     let headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-    }
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    };
     let body = {
+
       "count": ""
     }
+
     const {
       match: {
         params: { id }
@@ -72,12 +86,15 @@ export default class Careers extends Component {
     setTimeout(() => {
       this.setState({
         listOther: data.data,
+
         listid: data.id,
       });
+
+
     }, 500);
   }
   handleReload() {
-    window.location.reload()
+    window.location.reload();
   }
   onCopy = () => {
     this.setState({ copied: true });
@@ -114,20 +131,23 @@ export default class Careers extends Component {
             </div>
           </div>
           <div className="site-mobile-menu-body" />
-        </div> {/* .site-mobile-menu */}
+        </div>{' '}
+        {/* .site-mobile-menu */}
         {/* NAVBAR */}
         <header className="site-navbar mt-3">
           <div className="container-fluid">
             <RouterURL />
           </div>
-
         </header>
         <div>
-          <section className="section-hero overlay inner-page bg-image" style={{ backgroundImage: 'url("/candidate/images/back5.jpg")' }} id="career1">
+          <section
+            className="section-hero overlay inner-page bg-image"
+            style={{ backgroundImage: 'url("/candidate/images/back5.jpg")' }}
+            id="career1"
+          >
             <div className="container">
               <div className="row">
-                <div className="col-md-7">
-                </div>
+                <div className="col-md-7" />
               </div>
             </div>
           </section>
@@ -139,31 +159,52 @@ export default class Careers extends Component {
                     <div>
                       <h2 className="modify-title">{this.state.title}</h2>
                       <div class="show-line-3">
-                        <div className="row text-center" style={{ paddingTop: 20, paddingLeft: 15 }}>
+                        <div
+                          className="row text-center"
+                          style={{ paddingTop: 20, paddingLeft: 15 }}
+                        >
                           {/* <span className="ml-0 mr-2 mb-2"><span className="icon-briefcase mr-2" />{this.state.position}</span>
                         <span className="m-2"><span className="icon-room mr-2" />{this.state.addressed}</span>
                         <span className="m-2"><span className="icon-clock-o mr-2" /><span className="text">{this.state.status} */}
                           {/* </span></span> */}
                           {/* <div className="col-4" style ={{paddingLeft: 0, paddingRight: 0}}> */}
                           <span className="ml-0 mr-2 mb-2">
-                            <div class="fb-share-button"
-                              data-href={"https://enclavei3dev.tk/information/" + id}
+                            <div
+                              class="fb-share-button"
+                              data-href={
+                                'https://enclavei3.tk/information/' + id
+                              }
                               data-layout="button_count"
-                              data-size="large">
-                            </div>
+                              data-size="large"
+                            />
                           </span>
                           {/* </div>   */}
                           {/* <div className="col-4" style ={{paddingLeft: 0, paddingRight: 0}}> */}
                           <span className="ml-0 mr-2 mb-2">
-                            <a class="twitter-share-button ml-auto"
-                              href={"https://enclavei3dev.tk/information/" + id}
-                              data-size="large">
-                            </a>
+                            <a
+                              class="twitter-share-button ml-auto"
+                              href={'https://enclavei3.tk/information/' + id}
+                              data-size="large"
+                            />
                           </span>
                           {/* </div> */}
                           <div className="modify-copylink">
-                            <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" + id}>
-                            <button className="hover-clipboard">&nbsp;<span class="far fa-copy" aria-hidden="true">&nbsp;</span> <span style={{fontSize: 14, fontWeight: 'bold'}}> Link&nbsp;</span></button>
+                            <CopyToClipboard
+                              onCopy={this.onCopy}
+                              text={'https://enclavei3.tk/information/' + id}
+                            >
+                              <button className="hover-clipboard">
+                                &nbsp;
+                                <span class="far fa-copy" aria-hidden="true">
+                                  &nbsp;
+                                </span>{' '}
+                                <span
+                                  style={{ fontSize: 14, fontWeight: 'bold' }}
+                                >
+                                  {' '}
+                                  Link&nbsp;
+                                </span>
+                              </button>
                             </CopyToClipboard>
                           </div>
                         </div>
@@ -173,22 +214,35 @@ export default class Careers extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-lg-8 image-fixed-info" style={{ textAlign: 'justify' }}>
+                <div
+                  className="col-lg-8 image-fixed-info"
+                  style={{ textAlign: 'justify' }}
+                >
                   <div className="mb-5">
-                    <figure className="mb-5"><img src={"https://api.enclavei3.tk/upload/images/articles/" + this.state.image} alt="Free Website Template by Free-Template.co" className="img-fluid rounded modify-img" /></figure>
+                    <figure className="mb-5">
+                      <img
+                        src={
+                          'https://api.enclavei3.tk/upload/images/articles/' +
+                          this.state.image
+                        }
+                        alt="Free Website Template by Free-Template.co"
+                        className="img-fluid rounded modify-img"
+                      />
+                    </figure>
                   </div>
                   {renderHTML(this.state.content)}
                 </div>
-                <div className="col-lg-4 " style={{paddingLeft: 25}}>
-                  <h2 class="panel-title-article-2">
-                    More Information
-                        </h2>
-                  <div className="show-information" style={{paddingTop: 10}}>
-
-
-                    <div className="table table-striped table-responsive-sm" cellspacing="0" cellpadding="0">
+                <div className="col-lg-4 " style={{ paddingLeft: 25 }}>
+                  <h2 class="panel-title-article-2">More Information</h2>
+                  <div className="show-information" style={{ paddingTop: 10 }}>
+                    <div
+                      className="table table-striped table-responsive-sm"
+                      cellspacing="0"
+                      cellpadding="0"
+                    >
                       <tbody>
                         {listOther.map((list, index) => {
+
                          if (!(this.state.currentid == list.id))
                          if (index <10)
                            return <tr className="border-title">
@@ -203,6 +257,7 @@ export default class Careers extends Component {
                                 </h6>
                               </td>
                             </tr>
+
                         })}
                       </tbody>
                     </div>
@@ -220,7 +275,7 @@ export default class Careers extends Component {
           </section>
           <Newfooter />
         </div>
-      </div >
-    )
+      </div>
+    );
   }
 }

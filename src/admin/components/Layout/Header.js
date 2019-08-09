@@ -157,24 +157,8 @@ class Header extends React.Component {
     console.log(this.state.arrNotification);
     channel.bind('pusher:subscription_succeeded', function(members) {});
   }
-
-  async componentDidUpdate() {
-    //const {firstName, lastName, email} = this.state;
-    var url = 'https://api.enclavei3.tk/api/current-profile';
-    const data = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
-      }
-    }).then(res => res.json());
-    this.setState({
-      name: data.name,
-      email: data.email,
-      image: data.image
-    });
-  }
-
+  
+  
   toggleNotificationPopover = () => {
     this.setState({
       isOpenNotificationPopover: !this.state.isOpenNotificationPopover,

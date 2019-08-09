@@ -471,7 +471,7 @@ onCopy = () => {
                         {/* <div className="col-4" style ={{paddingLeft: 0, paddingRight: 0}}> */}
                         <span className="ml-0 mr-2 mb-2">
                           <div class="fb-share-button"
-                            data-href={"https://enclavei3dev.tk/information/" + id}
+                            data-href={"https://enclavei3.tk/information/" + id}
                             data-layout="button_count"
                             data-size="large">
                           </div>
@@ -480,13 +480,13 @@ onCopy = () => {
                         {/* <div className="col-4" style ={{paddingLeft: 0, paddingRight: 0}}> */}
                         <span className="ml-0 mr-2 mb-2">
                           <a class="twitter-share-button ml-auto"
-                            href={"https://enclavei3dev.tk/information/" + id}
+                            href={"https://enclavei3.tk/information/" + id}
                             data-size="large">
                             </a>
                         </span>
                         {/* </div> */}
                       <div className="modify-copylink">
-                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3dev.tk/information/" +id}>
+                        <CopyToClipboard onCopy={this.onCopy} text={"https://enclavei3.tk/information/" +id}>
                         <button className="hover-clipboard">&nbsp;<span class="far fa-copy" aria-hidden="true">&nbsp;</span> <span style={{fontSize: 14, fontWeight: 'bold'}}> Link&nbsp;</span></button>
                         </CopyToClipboard>
                       </div>
