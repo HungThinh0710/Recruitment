@@ -468,7 +468,7 @@ export default class UserDetail extends Component {
                 <Container style={{ marginTop: '5%' }}>
                   <Row>
                     <Col xs="4">
-                      {this.state.img ? (
+                      {this.state.image ? (
                         <img
                           className="avatar"
                           src={
@@ -497,7 +497,6 @@ export default class UserDetail extends Component {
                     </Col>
                   </Row>
                   <br />
-                  <hr />
 
                   <br />
                   <br />

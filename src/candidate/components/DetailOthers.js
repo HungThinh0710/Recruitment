@@ -29,9 +29,9 @@ export default class Careers extends Component {
       listid: this.props.match.params.id,
       copied: false,
 
-      image: '', 
-      currentid: '', 
-    }
+      image: '',
+      currentid: ''
+    };
     this.handleReload = this.handleReload.bind(this);
     this.onCopy = this.onCopy.bind(this);
   }
@@ -56,11 +56,14 @@ export default class Careers extends Component {
       content: data.content,
 
       image: data.image,
-      currentid: id,
+      currentid: id
     });
-    $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
-    $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
-
+    $(
+      '<meta name="fb-id" property="fb:app_id" content="2309010198"/>'
+    ).insertAfter($('meta[name=application-name]'));
+    $(
+      '<meta property="og:title" content="Enclave Recruitment System" />'
+    ).insertAfter($('meta[name=fb-id]'));
   }
   async componentWillMount() {
     let headers = {
@@ -68,9 +71,8 @@ export default class Careers extends Component {
       Accept: 'application/json'
     };
     let body = {
-
-      "count": ""
-    }
+      count: ''
+    };
 
     const {
       match: {
@@ -87,10 +89,8 @@ export default class Careers extends Component {
       this.setState({
         listOther: data.data,
 
-        listid: data.id,
+        listid: data.id
       });
-
-
     }, 500);
   }
   handleReload() {
@@ -242,22 +242,35 @@ export default class Careers extends Component {
                     >
                       <tbody>
                         {listOther.map((list, index) => {
-
-                         if (!(this.state.currentid == list.id))
-                         if (index <10)
-                           return <tr className="border-title">
-                              <td class="list-group-item article-recommend article-recommend-2" style={{paddingBottom: 3}}>
-                                <NavLink className="item-info" style={{ color: '#212629' }} to={"/information/" + list.id} >{list.title}</NavLink>
-                                <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
-                                  value={list.updated_at}
-                                  day="numeric"
-                                  month="long"
-                                  year="numeric" />
-                                </IntlProvider>
-                                </h6>
-                              </td>
-                            </tr>
-
+                          if (!(this.state.currentid == list.id))
+                            if (index < 11)
+                              return (
+                                <tr className="border-title">
+                                  <td
+                                    class="list-group-item article-recommend article-recommend-2"
+                                    style={{ paddingBottom: 3 }}
+                                  >
+                                    <NavLink
+                                      className="item-info"
+                                      style={{ color: '#212629' }}
+                                      to={'/information/' + list.id}
+                                    >
+                                      {list.title}
+                                    </NavLink>
+                                    <h6 className="time-update">
+                                      {' '}
+                                      <IntlProvider locale="fr">
+                                        <FormattedDate
+                                          value={list.updated_at}
+                                          day="numeric"
+                                          month="long"
+                                          year="numeric"
+                                        />
+                                      </IntlProvider>
+                                    </h6>
+                                  </td>
+                                </tr>
+                              );
                         })}
                       </tbody>
                     </div>
