@@ -22,7 +22,7 @@ export default class ForgotPasswordPage extends React.Component {
       errorEmailMessage: '',
       circleLoading: false,
       showError: false,
-      message: 'Please enter the email to reset password.',
+      message: 'Please enter the email to reset password.'
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -66,14 +66,14 @@ export default class ForgotPasswordPage extends React.Component {
       showLoading: true
     });
 
-    if(email == ""){
+    if (email == '') {
       this.setState({
-        showError:true,
+        showError: true,
         circleLoading: false,
-        errorMessage: 'Email is invalid.',
-      })
+        errorMessage: 'Email is invalid.'
+      });
     }
-    if(email != ""){
+    if (email != '') {
       var url = 'https://api.enclavei3.tk/api/password/forgot';
 
       fetch(url, {
@@ -91,19 +91,19 @@ export default class ForgotPasswordPage extends React.Component {
           if (response.status === 404) {
             this.setState({
               circleLoading: false,
-              errorMessage: "We did not recognize this email.",
+              errorMessage: 'We did not recognize this email.',
               showLoading: false,
               showError: true,
-              checked: false,
-            }); 
+              checked: false
+            });
           }
           if (response.status === 422) {
             this.setState({
-              errorMessage: "Your email is invalid.",
+              errorMessage: 'Your email is invalid.',
               circleLoading: false,
               showLoading: false,
               showError: true,
-              checked: false,
+              checked: false
             });
           }
           if (response.status === 200) {
@@ -116,14 +116,14 @@ export default class ForgotPasswordPage extends React.Component {
                   showLoading: false,
                   showError: false,
                   circleLoading: false,
-                  email: '',
+                  email: ''
                 });
               });
             }, 3000);
           }
-        }).catch(error => console.error('Error:', error));
+        })
+        .catch(error => console.error('Error:', error));
     }
-
   }
 
   render() {
@@ -146,35 +146,65 @@ export default class ForgotPasswordPage extends React.Component {
             <hr />
             <div className="login-body">
               <div className="form-input" onKeyUp={this.handleKeyUp}>
-                {!this.state.showError && <div className="error-message-alert alert alert-success" role="alert">
-                  <div className="text-error">{this.state.message}</div>
-                </div>}
-                {this.state.showError && 
-                <div className="error-message-alert alert alert-danger" role="alert">
-                  <div className="text-error">{this.state.errorMessage}</div>
-                </div>}
-                <input onChange={this.handleChange} name="email" type="email" value={this.state.email} className="login-input-text" placeholder="Email" />
+                {!this.state.showError && (
+                  <div
+                    className="error-message-alert alert alert-success"
+                    role="alert"
+                  >
+                    <div className="text-error">{this.state.message}</div>
+                  </div>
+                )}
+                {this.state.showError && (
+                  <div
+                    className="error-message-alert alert alert-danger"
+                    role="alert"
+                  >
+                    <div className="text-error">{this.state.errorMessage}</div>
+                  </div>
+                )}
+                <input
+                  onChange={this.handleChange}
+                  name="email"
+                  type="email"
+                  value={this.state.email}
+                  className="login-input-text"
+                  placeholder="Email"
+                />
               </div>
-              <div className="form-forgot text-right"></div>
+              <div className="form-forgot text-right" />
               <div className="form-submit">
-              <button className="btn-login-form-back" onClick={() => this.handleBackToLogin()} disabled={this.state.circleLoading}>
-                 <span>BACK</span>
+                <button
+                  className="btn-login-form-back"
+                  onClick={() => this.handleBackToLogin()}
+                  disabled={this.state.circleLoading}
+                >
+                  <span>BACK</span>
                 </button>
-                <div className="login-two-button"></div>
-                <button className="btn-login-form" onClick={() => this.handleSubmit()} disabled={this.state.circleLoading}>
+                <div className="login-two-button" />
+                <button
+                  className="btn-login-form"
+                  onClick={() => this.handleSubmit()}
+                  disabled={this.state.circleLoading}
+                >
                   {!this.state.circleLoading && <span>SEND</span>}
                   {this.state.circleLoading && (
                     <div>
-                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
                       <span style={{ paddingLeft: '4px' }}>Loading...</span>
-                    </div>)}
-
+                    </div>
+                  )}
                 </button>
               </div>
             </div>
             <hr />
             <div className="login-footer">
-              <div className="login-footer-text">© 2007 - 2019 - Enclave Recruitment management</div>
+              <div className="login-footer-text">
+                © 2007 - 2019 - Enclave Recruitment management
+              </div>
             </div>
           </div>
         </div>
@@ -201,5 +231,5 @@ ForgotPasswordPage.defaultProps = {
     type: 'email',
     name: 'email'
   },
-  onLogoClick: () => { }
+  onLogoClick: () => {}
 };

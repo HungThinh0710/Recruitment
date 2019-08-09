@@ -77,12 +77,7 @@ const navItems = [
     exact: true,
     Icon: MdBook
   },
-  {
-    to: '/dashboard/interview',
-    name: 'interviews',
-    exact: true,
-    Icon: MdMap
-  },
+
   {
     to: '/dashboard/interviewer',
     name: 'interviewers',
@@ -95,6 +90,12 @@ const navItems = [
     name: 'candidates',
     exact: true,
     Icon: MdPeopleOutline
+  },
+  {
+    to: '/dashboard/interview',
+    name: 'interviews',
+    exact: true,
+    Icon: MdMap
   }
 
   // { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },

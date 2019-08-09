@@ -383,6 +383,7 @@ export default class UserDetail extends Component {
   render() {
     var i = 0;
     const { name, fullName, email, phone, address, formError } = this.state;
+
     return (
       <Card className="dashboard-card">
         {/*--------Modal-Success-----*/}
@@ -467,14 +468,22 @@ export default class UserDetail extends Component {
                 <Container style={{ marginTop: '5%' }}>
                   <Row>
                     <Col xs="4">
-                      <img
-                        className="avatar"
-                        src={
-                          'https://api.enclavei3.tk/upload/images/avatars/' +
-                          `${this.state.image}`
-                        }
-                        alt="Card image cap"
-                      />
+                      {this.state.img ? (
+                        <img
+                          className="avatar"
+                          src={
+                            'https://api.enclavei3.tk/upload/images/avatars/' +
+                            `${this.state.image}`
+                          }
+                          alt="Card image cap"
+                        />
+                      ) : (
+                        <img
+                          className="avatar"
+                          src="/admin/img/Default-avatar.png"
+                          alt="Card image cap"
+                        />
+                      )}
                     </Col>
                     <Col xs="auto" />
                     <Col xs="6">

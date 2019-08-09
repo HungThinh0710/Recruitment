@@ -438,14 +438,22 @@ export default class JobDetail extends Component {
               <Row>
                 <Col xs="4">
                   <div style={{ overflow: 'hidden' }}>
-                    <img
-                      className="avatar"
-                      src={
-                        'https://api.enclavei3.tk/upload/interviewer/avatars/' +
-                        `${this.state.image}`
-                      }
-                      alt="Card image cap"
-                    />
+                    {this.state.image ? (
+                      <img
+                        className="avatar"
+                        src={
+                          'https://api.enclavei3.tk/upload/interviewer/avatars/' +
+                          `${this.state.image}`
+                        }
+                        alt="Card image cap"
+                      />
+                    ) : (
+                      <img
+                        className="avatar"
+                        src="/admin/img/Default-avatar.png"
+                        alt="Card image cap"
+                      />
+                    )}
                   </div>
                 </Col>
                 <Col xs="auto" />

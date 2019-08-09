@@ -573,13 +573,19 @@ export default class ProfilePage extends Component {
                         src={this.state.url}
                         alt="Card image cap"
                       />
-                    ) : (
+                    ) : this.state.image ? (
                       <img
                         className="avatar"
                         src={
                           'https://api.enclavei3.tk/upload/images/avatars/' +
                           `${this.state.image}`
                         }
+                        alt="Card image cap"
+                      />
+                    ) : (
+                      <img
+                        className="avatar"
+                        src="/admin/img/Default-avatar.png"
                         alt="Card image cap"
                       />
                     )}
