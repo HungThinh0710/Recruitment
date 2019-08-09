@@ -28,9 +28,10 @@ export default class Careers extends Component {
       listOther: [],
       listid: this.props.match.params.id,
       copied: false,
-      image: ''
-    };
-    console.log(this.state.listid);
+
+      image: '', 
+      currentid: '', 
+    }
     this.handleReload = this.handleReload.bind(this);
     this.onCopy = this.onCopy.bind(this);
   }
@@ -53,15 +54,13 @@ export default class Careers extends Component {
       jobID: data,
       title: data.title,
       content: data.content,
-      image: data.image
+
+      image: data.image,
+      currentid: id,
     });
-    console.log(this.state.jobID);
-    $(
-      '<meta name="fb-id" property="fb:app_id" content="2309010198"/>'
-    ).insertAfter($('meta[name=application-name]'));
-    $(
-      '<meta property="og:title" content="Enclave Recruitment System" />'
-    ).insertAfter($('meta[name=fb-id]'));
+    $("<meta name=\"fb-id\" property=\"fb:app_id\" content=\"2309010198\"/>").insertAfter($('meta[name=application-name]'))
+    $("<meta property=\"og:title\" content=\"Enclave Recruitment System\" />").insertAfter($('meta[name=fb-id]'))
+
   }
   async componentWillMount() {
     let headers = {
@@ -69,13 +68,10 @@ export default class Careers extends Component {
       Accept: 'application/json'
     };
     let body = {
-      keyword: '',
-      position: '',
-      location: '',
-      category: 'Others',
-      experience: '',
-      orderby: 'asc'
-    };
+
+      "count": ""
+    }
+
     const {
       match: {
         params: { id }
@@ -90,9 +86,11 @@ export default class Careers extends Component {
     setTimeout(() => {
       this.setState({
         listOther: data.data,
-        listid: data.id
+
+        listid: data.id,
       });
-      console.log(this.state.listOther);
+
+
     }, 500);
   }
   handleReload() {
@@ -244,34 +242,22 @@ export default class Careers extends Component {
                     >
                       <tbody>
                         {listOther.map((list, index) => {
-                          if (index < 10)
-                            return (
-                              <tr className="border-title">
-                                <td
-                                  class="list-group-item article-recommend article-recommend-2"
-                                  style={{ paddingBottom: 3 }}
-                                >
-                                  <NavLink
-                                    className="item-info"
-                                    style={{ color: '#212629' }}
-                                    to={'/information/' + list.id}
-                                  >
-                                    {list.title}
-                                  </NavLink>
-                                  <h6 className="time-update">
-                                    {' '}
-                                    <IntlProvider locale="fr">
-                                      <FormattedDate
-                                        value={list.updated_at}
-                                        day="numeric"
-                                        month="long"
-                                        year="numeric"
-                                      />
-                                    </IntlProvider>
-                                  </h6>
-                                </td>
-                              </tr>
-                            );
+
+                         if (!(this.state.currentid == list.id))
+                         if (index <10)
+                           return <tr className="border-title">
+                              <td class="list-group-item article-recommend article-recommend-2" style={{paddingBottom: 3}}>
+                                <NavLink className="item-info" style={{ color: '#212629' }} to={"/information/" + list.id} >{list.title}</NavLink>
+                                <h6 className="time-update"> <IntlProvider locale="fr"><FormattedDate
+                                  value={list.updated_at}
+                                  day="numeric"
+                                  month="long"
+                                  year="numeric" />
+                                </IntlProvider>
+                                </h6>
+                              </td>
+                            </tr>
+
                         })}
                       </tbody>
                     </div>
