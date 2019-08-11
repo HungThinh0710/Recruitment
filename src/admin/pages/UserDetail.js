@@ -117,7 +117,7 @@ export default class UserDetail extends Component {
     const columns = this.state.listRoles.columns;
     let { editRoles } = this.state;
     var check = true;
-    var url = 'https://api.enclavei3.tk/api/user/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/user/' + id;
     await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export default class UserDetail extends Component {
     });
 
     if (check == true) {
-      var url2 = 'https://api.enclavei3.tk/api/list-role';
+      var url2 = 'https://enclave-recruitment-management.herokuapp.com/api/list-role';
       const data2 = await fetch(url2, {
         method: 'POST',
         body: JSON.stringify({
@@ -322,7 +322,7 @@ export default class UserDetail extends Component {
       }
       return array2;
     });
-    var url = 'https://api.enclavei3.tk/api/user/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/user/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -472,7 +472,7 @@ export default class UserDetail extends Component {
                         <img
                           className="avatar"
                           src={
-                            'https://api.enclavei3.tk/upload/images/avatars/' +
+                            'https://enclave-recruitment-management.herokuapp.com/upload/images/avatars/' +
                             `${this.state.image}`
                           }
                           alt="Card image cap"

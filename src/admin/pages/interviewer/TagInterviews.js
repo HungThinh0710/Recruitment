@@ -45,7 +45,7 @@ export default class TabInformation extends Component {
   }
   handleSubmit = () => {
     const { fullname, email, phone, address,Skill } = this.state;
-    var url = 'https://api.enclavei3.tk/api/interviewer';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/interviewer';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({

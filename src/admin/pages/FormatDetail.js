@@ -61,7 +61,7 @@ export default class AddNewFormatPage extends Component {
   }
   async componentDidMount() {
     const { id } = this.props.match.params;
-    var url = 'https://api.enclavei3.tk/api/format-article/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/format-article/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export default class AddNewFormatPage extends Component {
   handleSubmit() {
     const { id } = this.props.match.params;
     const { editTitle, editContent } = this.state;
-    var url = 'https://api.enclavei3.tk/api/format-article/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/format-article/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({

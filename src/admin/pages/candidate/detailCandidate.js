@@ -55,7 +55,7 @@ export default class JobDetail extends Component {
   }
   async componentDidMount() {
     const { id } = this.props.match.params;
-    var url = 'https://api.enclavei3.tk/api/candidate/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/candidate/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ export default class JobDetail extends Component {
 
   changeStatus(statusString) {
     const { id } = this.props.match.params;
-    const url = 'https://api.enclavei3.tk/api/candidate-status';
+    const url = 'https://enclave-recruitment-management.herokuapp.com/api/candidate-status';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -370,7 +370,7 @@ export default class JobDetail extends Component {
                         <td className="job-title1">
                           <a
                             href={
-                              'https://api.enclavei3.tk/upload/CV/' +
+                              'https://enclave-recruitment-management.herokuapp.com/upload/CV/' +
                               `${this.state.CV}`
                             }
                           >

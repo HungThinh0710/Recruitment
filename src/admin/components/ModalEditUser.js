@@ -51,7 +51,7 @@ export default class ModalEditUser extends Component {
   async componentDidMount() {
     var { optionRoles, selectedRoleOption } = this.state;
     const { id, dataRoles } = this.props;
-    var url1 = 'https://api.enclavei3.tk/api/user/' + id;
+    var url1 = 'https://enclave-recruitment-management.herokuapp.com/api/user/' + id;
     const data1 = await fetch(url1, {
       headers: {
         'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ export default class ModalEditUser extends Component {
       array.push(e.id);
       return array;
     });
-    var url = 'https://api.enclavei3.tk/api/user/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/user/' + id;
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({

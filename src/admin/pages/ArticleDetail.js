@@ -87,11 +87,11 @@ export default class ArticleDetail extends Component {
     var { optionsJob, optionsCategory, optionsFormat, isDisabled } = this.state;
     var status = '';
     var jobName = '';
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/article/' + id;
 
-    var url2 = 'https://api.enclavei3.tk/api/list-job';
-    var url3 = 'https://api.enclavei3.tk/api/category?page=1';
-    var url4 = 'https://api.enclavei3.tk/api/format-article';
+    var url2 = 'https://enclave-recruitment-management.herokuapp.com/api/list-job';
+    var url3 = 'https://enclave-recruitment-management.herokuapp.com/api/category?page=1';
+    var url4 = 'https://enclave-recruitment-management.herokuapp.com/api/format-article';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -297,14 +297,14 @@ export default class ArticleDetail extends Component {
       }
     };
 
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/article/' + id;
 
     axios.defaults.headers.common = {
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json'
     };
-    var urlHT = 'https://api.enclavei3.tk/api/article/' + id;
+    var urlHT = 'https://enclave-recruitment-management.herokuapp.com/api/article/' + id;
     axios
       .post(urlHT, formData, {})
       .then(res => {
@@ -392,14 +392,14 @@ export default class ArticleDetail extends Component {
       }
     };
 
-    var url = 'https://api.enclavei3.tk/api/article/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/article/' + id;
 
     axios.defaults.headers.common = {
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json'
     };
-    var urlHT = 'https://api.enclavei3.tk/api/article/' + id;
+    var urlHT = 'https://enclave-recruitment-management.herokuapp.com/api/article/' + id;
     axios
       .post(urlHT, formData, {})
       .then(res => {
@@ -521,7 +521,7 @@ export default class ArticleDetail extends Component {
       check = true;
     }
     var imageURL =
-      'https://api.enclavei3.tk/upload/images/articles/' + this.state.image;
+      'https://enclave-recruitment-management.herokuapp.com/upload/images/articles/' + this.state.image;
 
     return (
       <Card className="dashboard-card">

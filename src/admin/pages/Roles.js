@@ -71,17 +71,17 @@ export default class Roles extends Component {
       body = {
         keyword: keyword
       };
-      url1 = 'https://api.enclavei3.tk/api/list-role';
+      url1 = 'https://enclave-recruitment-management.herokuapp.com/api/list-role';
     } else {
       body = '';
       url1 =
-        'https://api.enclavei3.tk/api/list-role?page=' +
+        'https://enclave-recruitment-management.herokuapp.com/api/list-role?page=' +
         activePage +
         '&perpage=' +
         perPage;
     }
-    var url2 = 'https://api.enclavei3.tk/api/permission';
-    var url3 = 'https://api.enclavei3.tk/api/session/user-information';
+    var url2 = 'https://enclave-recruitment-management.herokuapp.com/api/permission';
+    var url3 = 'https://enclave-recruitment-management.herokuapp.com/api/session/user-information';
     var data1 = '';
     fetch(url1, {
       method: 'POST',
@@ -155,7 +155,7 @@ export default class Roles extends Component {
     const { perPage, keyword } = this.state;
     var array = [];
     array.push(id);
-    var url = 'https://api.enclavei3.tk/api/role';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/role';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -178,7 +178,7 @@ export default class Roles extends Component {
 
   removeManyItems() {
     const { listDeleteId, perPage, keyword } = this.state;
-    var url = 'https://api.enclavei3.tk/api/role';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/role';
     fetch(url, {
       method: 'DELETE',
       body: JSON.stringify({
@@ -206,7 +206,7 @@ export default class Roles extends Component {
   handlePageChange(pageNumber) {
     const { perPage } = this.state;
     var url =
-      'https://api.enclavei3.tk/api/list-role?page=' +
+      'https://enclave-recruitment-management.herokuapp.com/api/list-role?page=' +
       pageNumber +
       '&perpage=' +
       perPage;

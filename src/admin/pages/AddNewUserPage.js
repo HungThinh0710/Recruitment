@@ -72,7 +72,7 @@ export default class AddNewUserPage extends Component {
   }
   async componentDidMount() {
     var { optionRole } = this.state;
-    var url = 'https://api.enclavei3.tk/api/list-role';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/list-role';
     await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -139,7 +139,7 @@ export default class AddNewUserPage extends Component {
       array.push(e.id);
       return array;
     });
-    var url = 'https://api.enclavei3.tk/api/user';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/user';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({

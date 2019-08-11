@@ -57,8 +57,8 @@ export default class RoleDetail extends Component {
     var i = 0;
     const { id } = this.props.match.params;
     var listRoles = [];
-    var url = 'https://api.enclavei3.tk/api/role/' + id;
-    var url2 = 'https://api.enclavei3.tk/api/permission';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/role/' + id;
+    var url2 = 'https://enclave-recruitment-management.herokuapp.com/api/permission';
     var data = null;
     const data2 = await fetch(url2, {
       method: 'POST',

@@ -74,7 +74,7 @@ export default class ModalEditUser extends Component {
       selectedStreetOption
     } = this.state;
     const { id, dataInterviewers, dataCandidates } = this.props;
-    var url1 = 'https://api.enclavei3.tk/api/interview/' + id;
+    var url1 = 'https://enclave-recruitment-management.herokuapp.com/api/interview/' + id;
 
     const data1 = await fetch(url1, {
       headers: {
@@ -282,7 +282,7 @@ export default class ModalEditUser extends Component {
     }));
   }
   async fetchInterviewer(id) {
-    var url = 'https://api.enclavei3.tk/api/interviewer/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/interviewer/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -294,7 +294,7 @@ export default class ModalEditUser extends Component {
   }
 
   async fetchCandidate(id) {
-    var url = 'https://api.enclavei3.tk/api/candidate/' + id;
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/candidate/' + id;
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -436,7 +436,7 @@ export default class ModalEditUser extends Component {
           };
         }
         const { id } = this.props;
-        var url = 'https://api.enclavei3.tk/api/interview/' + id;
+        var url = 'https://enclave-recruitment-management.herokuapp.com/api/interview/' + id;
         fetch(url, {
           method: 'PUT',
           body: JSON.stringify(body),

@@ -100,7 +100,7 @@ export default class ProfilePage extends Component {
   }
   async componentDidMount() {
     //const {firstName, lastName, email} = this.state;
-    var url = 'https://api.enclavei3.tk/api/current-profile';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/current-profile';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -147,14 +147,14 @@ export default class ProfilePage extends Component {
       }
     };
 
-    var url = 'https://api.enclavei3.tk/api/profile/avatar';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/profile/avatar';
 
     axios.defaults.headers.common = {
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json'
     };
-    var urlHT = 'https://api.enclavei3.tk/api/profile/avatar';
+    var urlHT = 'https://enclave-recruitment-management.herokuapp.com/api/profile/avatar';
     axios
       .post(urlHT, formData, {})
       .then(res => {
@@ -330,7 +330,7 @@ export default class ProfilePage extends Component {
     this.setState({
       modalError: false
     });
-    var url = 'https://api.enclavei3.tk/api/profile';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/profile';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -377,7 +377,7 @@ export default class ProfilePage extends Component {
 
   handleChangePassword() {
     const { old_password, password, password_confirmation } = this.state;
-    var url = 'https://api.enclavei3.tk/api/change-password';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/change-password';
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify({
@@ -577,7 +577,7 @@ export default class ProfilePage extends Component {
                       <img
                         className="avatar"
                         src={
-                          'https://api.enclavei3.tk/upload/images/avatars/' +
+                          'https://enclave-recruitment-management.herokuapp.com/upload/images/avatars/' +
                           `${this.state.image}`
                         }
                         alt="Card image cap"

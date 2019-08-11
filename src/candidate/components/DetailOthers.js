@@ -47,7 +47,7 @@ export default class Careers extends Component {
       }
     } = this.props;
 
-    const data = await fetch('https://api.enclavei3.tk/api/article-web/' + id, {
+    const data = await fetch('https://enclave-recruitment-management.herokuapp.com/api/article-web/' + id, {
       headers: headers
     }).then(response => response.json());
     await this.setState({
@@ -84,7 +84,7 @@ export default class Careers extends Component {
         params: { id }
       }
     } = this.props;
-    var url = 'https://api.enclavei3.tk/api/article-web';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/article-web';
     const data = await fetch(url, {
       method: 'POST',
       headers: headers,
@@ -227,7 +227,7 @@ export default class Careers extends Component {
                     <figure className="mb-5">
                       <img
                         src={
-                          'https://api.enclavei3.tk/upload/images/articles/' +
+                          'https://enclave-recruitment-management.herokuapp.com/upload/images/articles/' +
                           this.state.image
                         }
                         alt="Free Website Template by Free-Template.co"

@@ -67,7 +67,7 @@ class Header extends React.Component {
 
   async componentDidMount() {
     const { firstName, lastName, email, arrNotification } = this.state;
-    var url = 'https://api.enclavei3.tk/api/current-profile';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/current-profile';
     const data = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ class Header extends React.Component {
       image: data.image
     });
 
-    fetch('https://api.enclavei3.tk/api/notifications', {
+    fetch('https://enclave-recruitment-management.herokuapp.com/api/notifications', {
       headers: {
         Accept: 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('access_token')
@@ -135,7 +135,7 @@ class Header extends React.Component {
     channel.bind(event, function(data) {
       // console.log("Data ne: " + data);
       //fetch new notifications.
-      fetch('https://api.enclavei3.tk/api/notifications', {
+      fetch('https://enclave-recruitment-management.herokuapp.com/api/notifications', {
         headers: {
           Accept: 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('access_token')
@@ -280,7 +280,7 @@ class Header extends React.Component {
             <NavLink id="Popover2">
               <Avatar
                 src={
-                  'https://api.enclavei3.tk/upload/images/avatars/' +
+                  'https://enclave-recruitment-management.herokuapp.com/upload/images/avatars/' +
                   `${this.state.image}`
                 }
                 onClick={this.toggleUserCardPopover}
@@ -300,7 +300,7 @@ class Header extends React.Component {
                   title={this.state.name}
                   subtitle={this.state.email}
                   avatar={
-                    'https://api.enclavei3.tk/upload/images/avatars/' +
+                    'https://enclave-recruitment-management.herokuapp.com/upload/images/avatars/' +
                     `${this.state.image}`
                   }
                   // text="Last updated 3 mins ago"

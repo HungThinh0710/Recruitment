@@ -6,7 +6,7 @@ import { Media } from 'reactstrap';
 import Avatar from '../components/Avatar';
 
 function maskAsRead(idNotification) {
-  fetch('https://api.enclavei3.tk/api/notifications/' + idNotification, {
+  fetch('https://enclave-recruitment-management.herokuapp.com/api/notifications/' + idNotification, {
     headers: {
       Accept: 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('access_token')

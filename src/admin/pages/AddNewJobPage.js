@@ -143,7 +143,7 @@ export default class AddNewJobPage extends Component {
         exp = 6;
         break;
     }
-    var url = 'https://api.enclavei3.tk/api/job';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/job';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({

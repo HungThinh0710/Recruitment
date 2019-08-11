@@ -78,9 +78,9 @@ export default class AddNewArticlePage extends Component {
   }
   async componentDidMount() {
     var { optionsJob, optionsCategory, optionsFormat } = this.state;
-    var url1 = 'https://api.enclavei3.tk/api/list-job';
-    var url2 = 'https://api.enclavei3.tk/api/category?page=1';
-    var url3 = 'https://api.enclavei3.tk/api/format-article';
+    var url1 = 'https://enclave-recruitment-management.herokuapp.com/api/list-job';
+    var url2 = 'https://enclave-recruitment-management.herokuapp.com/api/category?page=1';
+    var url3 = 'https://enclave-recruitment-management.herokuapp.com/api/format-article';
     const data1 = await fetch(url1, {
       method: 'POST',
       body: JSON.stringify({
@@ -263,14 +263,14 @@ export default class AddNewArticlePage extends Component {
       }
     };
 
-    var url = 'https://api.enclavei3.tk/api/article';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/article';
 
     axios.defaults.headers.common = {
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json'
     };
-    var urlHT = 'https://api.enclavei3.tk/api/article';
+    var urlHT = 'https://enclave-recruitment-management.herokuapp.com/api/article';
     axios
       .post(urlHT, formData, {})
       .then(res => {
@@ -348,14 +348,14 @@ export default class AddNewArticlePage extends Component {
       }
     };
 
-    var url = 'https://api.enclavei3.tk/api/article';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/article';
 
     axios.defaults.headers.common = {
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json'
     };
-    var urlHT = 'https://api.enclavei3.tk/api/article';
+    var urlHT = 'https://enclave-recruitment-management.herokuapp.com/api/article';
     axios
       .post(urlHT, formData, {})
       .then(res => {

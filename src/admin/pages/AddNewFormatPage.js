@@ -83,7 +83,7 @@ export default class AddNewFormatPage extends Component {
 
   handleSubmit() {
     const { title, content } = this.state;
-    var url = 'https://api.enclavei3.tk/api/format-article';
+    var url = 'https://enclave-recruitment-management.herokuapp.com/api/format-article';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
